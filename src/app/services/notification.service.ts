@@ -1,6 +1,7 @@
 import { Injectable, inject, signal, effect } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { AuthService } from './auth.service';
+import { environment } from '../../environments/environment';
 
 export interface AppNotification {
   id: string;
@@ -44,7 +45,7 @@ export class NotificationService {
     
     // Build connection with JWT query token parameter
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('http://localhost:5153/api/notification-hub', {
+      .withUrl(`${environment.apiUrl}/api/notification-hub`, {
         accessTokenFactory: () => token || '',
         skipNegotiation: true,
         transport: signalR.HttpTransportType.WebSockets
