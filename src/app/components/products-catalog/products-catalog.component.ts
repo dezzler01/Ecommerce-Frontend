@@ -1,5 +1,5 @@
 import { Component, OnInit, inject, signal, computed, HostListener } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CatalogService, ProductDto, Brand } from '../../core/services/catalog.service';
@@ -12,7 +12,7 @@ import { lastValueFrom } from 'rxjs';
 @Component({
   selector: 'app-products-catalog',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, NgOptimizedImage],
   template: `
     <div class="min-h-screen bg-transparent text-left font-sans-luxury w-full overflow-x-hidden">
       <div class="animate-fade-in">
@@ -20,9 +20,11 @@ import { lastValueFrom } from 'rxjs';
       <div class="immersive-hero-vision">
         <!-- Lifestyle Snapshot Image -->
         <img 
-          [src]="activeCategoryBannerUrl()" 
+          [ngSrc]="activeCategoryBannerUrl()" 
           [alt]="activeCategoryTitle()" 
           class="immersive-vision-img"
+          fill
+          priority
         />
 
         <!-- Dark Tint Vignette & Elegant Text Overlay with soft bottom fade mask -->
@@ -272,10 +274,12 @@ import { lastValueFrom } from 'rxjs';
             <div class="lookbook-image-wrapper">
               <img 
                 *ngIf="getProductDisplayImage(product)" 
-                [src]="getProductDisplayImage(product)" 
+                [ngSrc]="getProductDisplayImage(product)" 
                 [alt]="product.title" 
                 class="lookbook-image"
                 [ngClass]="{'blur-[2px]': !product.isVisible}"
+                fill
+                loading="lazy"
               />
               <div *ngIf="!product.imageUrl" class="w-full h-full flex flex-col items-center justify-center bg-[#2A2522]/5 text-[#6B5E57]/60 text-[10px] uppercase tracking-[2px] font-light frosted-fallback">
                 <span>No Image</span>
@@ -412,6 +416,18 @@ import { lastValueFrom } from 'rxjs';
             </div>
           </div>
         </div>
+
+        <!-- Load More Button -->
+        <div *ngIf="currentPage() < totalPages()" class="flex justify-center mt-12 mb-6">
+          <button 
+            type="button"
+            (click)="loadMore()"
+            class="px-8 py-3.5 bg-[#2A2522] hover:bg-[#E07A5F] text-[#FBF9F6] text-[10px] font-semibold tracking-[0.2em] uppercase rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform active:scale-95"
+          >
+            Load More Pieces
+          </button>
+        </div>
+
       </div>
     </div>
   </div>
@@ -1822,19 +1838,32 @@ export class ProductsCatalogComponent implements OnInit {
   }
 
   activeMatrixTag = signal<string>('All');
+  currentPage = signal<number>(1);
+  pageSize = 12;
+  totalPages = signal<number>(1);
+  totalProducts = signal<number>(0);
 
   setCollectionTag(tag: string): void {
     this.activeMatrixTag.set(tag);
-    this.loadProducts();
+    this.currentPage.set(1);
+    this.loadProducts(false);
   }
 
-  loadProducts(): void {
-    this.loading.set(true);
+  loadProducts(append: boolean = false): void {
+    if (!append) {
+      this.currentPage.set(1);
+      this.loading.set(true);
+    }
     const tag = this.activeMatrixTag();
     const collectionType = tag === 'All' ? undefined : tag;
     const brandId = this.selectedBrandId() || undefined;
-    // Request up to 100 products initially with the active collectionType
-    this.catalogService.getProducts({ collectionType, pageSize: 100, brandId }).subscribe({
+    
+    this.catalogService.getProducts({ 
+      collectionType, 
+      page: this.currentPage(), 
+      pageSize: this.pageSize, 
+      brandId 
+    }).subscribe({
       next: (res) => {
         if (res.isSuccess && res.data && res.data.items) {
           const items = res.data.items.map(p => {
@@ -1858,7 +1887,17 @@ export class ProductsCatalogComponent implements OnInit {
             }
             return p;
           });
-          this.products.set(items);
+
+          if (append) {
+            this.products.set([...this.products(), ...items]);
+          } else {
+            this.products.set(items);
+          }
+
+          if (res.data.metadata) {
+            this.totalPages.set(res.data.metadata.totalPages);
+            this.totalProducts.set(res.data.metadata.totalCount);
+          }
         }
         this.loading.set(false);
       },
@@ -1866,6 +1905,13 @@ export class ProductsCatalogComponent implements OnInit {
         this.loading.set(false);
       }
     });
+  }
+
+  loadMore(): void {
+    if (this.currentPage() < this.totalPages()) {
+      this.currentPage.update(p => p + 1);
+      this.loadProducts(true);
+    }
   }
 
   onSearchChange(): void {
