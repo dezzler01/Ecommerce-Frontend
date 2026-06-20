@@ -95,10 +95,12 @@ interface BulkProductRow {
   imageUrl: string;
 }
 
+import { AppImageUploaderComponent } from '../image-uploader/image-uploader.component';
+
 @Component({
   selector: 'app-admin-orders-board',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, AppImageUploaderComponent],
   template: `
     <div class="admin-canvas min-h-screen text-left animate-fade-in">
       <!-- Left Sidebar Navigation Index -->
@@ -698,9 +700,14 @@ interface BulkProductRow {
                     <input type="text" [(ngModel)]="row.description" placeholder="Premium linen fabric..." class="px-2 py-1 bg-transparent focus:bg-white border-b border-[#2A2522]/10 text-xs w-full focus:outline-none" />
                   </td>
 
-                  <!-- ImageUrl -->
-                  <td class="py-2 px-3">
-                    <input type="text" [(ngModel)]="row.imageUrl" placeholder="/products/blazer.png" class="px-2 py-1 bg-transparent focus:bg-white border-b border-[#2A2522]/10 text-xs w-full focus:outline-none" />
+                  <!-- ImageUrl Upload -->
+                  <td class="py-2 px-3 min-w-[140px]">
+                    <app-image-uploader 
+                      [imageUrl]="row.imageUrl" 
+                      (uploaded)="row.imageUrl = $event"
+                      label="Upload"
+                      [compact]="true"
+                    ></app-image-uploader>
                   </td>
 
                   <!-- Delete Row -->
@@ -953,11 +960,15 @@ interface BulkProductRow {
                   <input type="text" [(ngModel)]="brandFormName" placeholder="E.g. Gucci, Chanel" class="w-full px-3 py-2 bg-white border border-[#2A2522]/10 rounded-lg text-xs focus:outline-none" />
                 </div>
 
-                <!-- Logo URL input -->
-                <div class="space-y-1">
-                  <label class="text-[8px] uppercase tracking-widest font-semibold text-[#8A817C] block">Logo Image URL *</label>
-                  <input type="text" [(ngModel)]="brandFormLogoUrl" placeholder="E.g. /brands/gucci.png" class="w-full px-3 py-2 bg-white border border-[#2A2522]/10 rounded-lg text-xs focus:outline-none" />
-                </div>
+                <!-- Logo Upload instead of URL input -->
+                <div class="space-y-2">
+                   <label class="text-[8px] uppercase tracking-widest font-semibold text-[#8A817C] block">Logo Image *</label>
+                   <app-image-uploader 
+                     [imageUrl]="brandFormLogoUrl" 
+                     (uploaded)="brandFormLogoUrl = $event"
+                     label="Choose Logo File"
+                   ></app-image-uploader>
+                 </div>
 
                 <!-- Show in Cards checkbox -->
                 <div class="flex items-center gap-2.5 py-1">
@@ -2780,6 +2791,8 @@ export class AdminOrdersBoardComponent implements OnInit, OnDestroy {
     this.brandFormShowInCards = true;
     this.brandFormIsVisible = true;
   }
+
+
 
   loadRoles() {
     this.loadingRoles.set(true);

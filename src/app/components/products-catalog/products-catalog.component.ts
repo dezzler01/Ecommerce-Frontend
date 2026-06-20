@@ -9,10 +9,12 @@ import { CartService } from '../../core/services/cart.service';
 import { gsap } from 'gsap';
 import { lastValueFrom } from 'rxjs';
 
+import { AppImageUploaderComponent } from '../image-uploader/image-uploader.component';
+
 @Component({
   selector: 'app-products-catalog',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, NgOptimizedImage],
+  imports: [CommonModule, RouterModule, FormsModule, NgOptimizedImage, AppImageUploaderComponent],
   template: `
     <div class="min-h-screen bg-transparent text-left font-sans-luxury w-full overflow-x-hidden">
       <div class="animate-fade-in">
@@ -747,16 +749,14 @@ import { lastValueFrom } from 'rxjs';
               </select>
             </div>
 
-            <!-- Form Row: Image URL -->
-            <div class="space-y-1">
-              <label class="text-[8px] uppercase tracking-widest font-bold text-[#6B5E57] block">Primary Image URL</label>
-              <input 
-                type="text" 
-                [ngModel]="formImageUrl()" 
-                (ngModelChange)="formImageUrl.set($event)" 
-                placeholder="/products/dress.png" 
-                class="w-full px-3 py-2 bg-white/70 border border-[#2A2522]/10 rounded-lg text-xs text-[#2A2522] focus:outline-none focus:border-[#E07A5F] transition-all"
-              />
+            <!-- Form Row: Primary Image Upload -->
+            <div class="space-y-2">
+              <label class="text-[8px] uppercase tracking-widest font-bold text-[#6B5E57] block">Primary Image *</label>
+              <app-image-uploader 
+                [imageUrl]="formImageUrl()" 
+                (uploaded)="formImageUrl.set($event)"
+                label="Choose Image File"
+              ></app-image-uploader>
             </div>
 
             <!-- Form Row: Colors & Sizes -->
@@ -2076,6 +2076,8 @@ export class ProductsCatalogComponent implements OnInit {
       }
     });
   }
+
+
 
   submitAdminProductForm(): void {
     this.formValidationError.set('');
