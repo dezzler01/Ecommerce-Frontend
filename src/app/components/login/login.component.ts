@@ -1,12 +1,23 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+
+function passwordValidator(control: AbstractControl): ValidationErrors | null {
+  const value = control.value;
+  if (!value) return null;
+  const hasUpperCase = /[A-Z]/.test(value);
+  const hasNumber = /[0-9]/.test(value);
+  const hasSpecial = /[^A-Za-z0-9]/.test(value);
+  const valid = hasUpperCase && hasNumber && hasSpecial && value.length >= 8;
+  return !valid ? { passwordStrength: true } : null;
+}
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   template: `
     <div 
       *ngIf="authService.showLoginModal()" 
@@ -59,18 +70,21 @@ import { AuthService } from '../../services/auth.service';
         </div>
 
         <!-- Form -->
-        <form (submit)="onSubmit($event)" class="space-y-5">
+        <form [formGroup]="authForm" (ngSubmit)="onSubmit()" class="space-y-5">
           <!-- Name Field (Register Only) -->
           <div *ngIf="isRegister()" class="space-y-1.5">
             <label class="text-[10px] uppercase tracking-[0.2em] font-semibold text-[#8A817C] block">Full Name</label>
             <input 
               type="text" 
-              name="fullName"
-              [(ngModel)]="fullName"
-              required
+              formControlName="fullName"
               placeholder="E.g. Alexander Mercer"
-              class="w-full px-4 py-3 bg-[#FBF9F6] border border-[#EEDFD2] rounded-lg text-sm text-[#2A2522] placeholder-[#8A817C]/50 focus:outline-none focus:border-[#E07A5F] focus:ring-1 focus:ring-[#E07A5F] transition-all"
+              class="w-full px-4 py-3 bg-[#FBF9F6] border rounded-lg text-sm text-[#2A2522] placeholder-[#8A817C]/50 focus:outline-none focus:border-[#E07A5F] focus:ring-1 focus:ring-[#E07A5F] transition-all"
+              [class.border-red-400]="isFieldInvalid('fullName')"
+              [class.border-[#EEDFD2]]="!isFieldInvalid('fullName')"
             />
+            <span *ngIf="isFieldInvalid('fullName')" class="text-[10px] text-red-500 block mt-1">
+              Full Name is required and must be at least 3 characters.
+            </span>
           </div>
 
           <!-- Email Field -->
@@ -78,12 +92,15 @@ import { AuthService } from '../../services/auth.service';
             <label class="text-[10px] uppercase tracking-[0.2em] font-semibold text-[#8A817C] block">Email Address</label>
             <input 
               type="email" 
-              name="email"
-              [(ngModel)]="email"
-              required
+              formControlName="email"
               placeholder="name@example.com"
-              class="w-full px-4 py-3 bg-[#FBF9F6] border border-[#EEDFD2] rounded-lg text-sm text-[#2A2522] placeholder-[#8A817C]/50 focus:outline-none focus:border-[#E07A5F] focus:ring-1 focus:ring-[#E07A5F] transition-all"
+              class="w-full px-4 py-3 bg-[#FBF9F6] border rounded-lg text-sm text-[#2A2522] placeholder-[#8A817C]/50 focus:outline-none focus:border-[#E07A5F] focus:ring-1 focus:ring-[#E07A5F] transition-all"
+              [class.border-red-400]="isFieldInvalid('email')"
+              [class.border-[#EEDFD2]]="!isFieldInvalid('email')"
             />
+            <span *ngIf="isFieldInvalid('email')" class="text-[10px] text-red-500 block mt-1">
+              Please enter a valid email address.
+            </span>
           </div>
 
           <!-- Password Field -->
@@ -91,12 +108,15 @@ import { AuthService } from '../../services/auth.service';
             <label class="text-[10px] uppercase tracking-[0.2em] font-semibold text-[#8A817C] block">Password</label>
             <input 
               type="password" 
-              name="password"
-              [(ngModel)]="password"
-              required
+              formControlName="password"
               placeholder="••••••••"
-              class="w-full px-4 py-3 bg-[#FBF9F6] border border-[#EEDFD2] rounded-lg text-sm text-[#2A2522] placeholder-[#8A817C]/50 focus:outline-none focus:border-[#E07A5F] focus:ring-1 focus:ring-[#E07A5F] transition-all"
+              class="w-full px-4 py-3 bg-[#FBF9F6] border rounded-lg text-sm text-[#2A2522] placeholder-[#8A817C]/50 focus:outline-none focus:border-[#E07A5F] focus:ring-1 focus:ring-[#E07A5F] transition-all"
+              [class.border-red-400]="isFieldInvalid('password')"
+              [class.border-[#EEDFD2]]="!isFieldInvalid('password')"
             />
+            <span *ngIf="isFieldInvalid('password')" class="text-[10px] text-red-500 block mt-1 leading-relaxed">
+              Password must be at least 8 characters with a capital letter, a number, and a special character.
+            </span>
           </div>
 
           <!-- Role Selection (Register Only - Dev Mode Testing) -->
@@ -134,7 +154,7 @@ import { AuthService } from '../../services/auth.service';
           <!-- Submit Button -->
           <button 
             type="submit" 
-            [disabled]="loading()"
+            [disabled]="loading() || authForm.invalid && (authForm.touched || isRegister())"
             class="w-full py-3.5 mt-2 bg-[#2A2522] hover:bg-[#E07A5F] text-[#FBF9F6] text-xs font-semibold tracking-[0.2em] uppercase rounded-lg shadow-md hover:shadow-lg hover:shadow-[#E07A5F]/15 transition-all duration-300 transform active:scale-[0.98] disabled:opacity-55 flex justify-center items-center gap-2"
           >
             <span *ngIf="loading()" class="animate-spin rounded-full h-3.5 w-3.5 border-b-2 border-white"></span>
@@ -169,6 +189,8 @@ import { AuthService } from '../../services/auth.service';
 })
 export class LoginComponent {
   authService = inject(AuthService);
+  private fb = inject(FormBuilder);
+  private router = inject(Router);
 
   // Constants
   readonly CUSTOMER_ROLE_ID = 'c3b07384-d113-40e1-a3f2-861f2113d077';
@@ -180,16 +202,30 @@ export class LoginComponent {
   message = signal<string>('');
   isSuccess = signal<boolean>(false);
 
-  // Form Fields
-  fullName = '';
-  email = '';
-  password = '';
+  // Form Group definitions
+  authForm = this.fb.group({
+    fullName: ['', [Validators.required, Validators.minLength(3)]],
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, passwordValidator]]
+  });
+
+  // Track roleId separately (Dev Mode)
   roleId = signal<string>(this.CUSTOMER_ROLE_ID);
 
   toggleMode() {
-    this.isRegister.update(val => !val);
+    const nextVal = !this.isRegister();
+    this.isRegister.set(nextVal);
     this.message.set('');
-    this.clearForm();
+    this.authForm.reset();
+    
+    // Configure validation rules contextually based on mode
+    const nameControl = this.authForm.get('fullName');
+    if (nextVal) {
+      nameControl?.setValidators([Validators.required, Validators.minLength(3)]);
+    } else {
+      nameControl?.clearValidators();
+    }
+    nameControl?.updateValueAndValidity();
   }
 
   setRole(role: string) {
@@ -199,33 +235,61 @@ export class LoginComponent {
   closeModal() {
     this.authService.showLoginModal.set(false);
     this.message.set('');
-    this.clearForm();
+    this.authForm.reset();
   }
 
-  clearForm() {
-    this.fullName = '';
-    this.email = '';
-    this.password = '';
-    this.roleId.set(this.CUSTOMER_ROLE_ID);
-  }
-
-  onSubmit(event: Event) {
-    event.preventDefault();
-    this.message.set('');
+  isFieldInvalid(name: string): boolean {
+    const control = this.authForm.get(name);
+    if (!control) return false;
     
-    if (!this.email || !this.password || (this.isRegister() && !this.fullName)) {
+    // Ignore validation for fullName in login mode
+    if (name === 'fullName' && !this.isRegister()) {
+      return false;
+    }
+    
+    return control.invalid && control.touched;
+  }
+
+  decodeToken(token: string): any {
+    try {
+      const parts = token.split('.');
+      if (parts.length !== 3) return null;
+      const base64Url = parts[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split('')
+          .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+          .join('')
+      );
+      return JSON.parse(jsonPayload);
+    } catch {
+      return null;
+    }
+  }
+
+  onSubmit() {
+    // Trigger validation styling
+    this.authForm.markAllAsTouched();
+
+    if (this.authForm.invalid && (this.authForm.touched || this.isRegister())) {
       this.isSuccess.set(false);
-      this.message.set('Please fill in all required fields.');
+      this.message.set('Please resolve all validation errors in the form.');
       return;
     }
 
+    const email = this.authForm.get('email')?.value ?? '';
+    const password = this.authForm.get('password')?.value ?? '';
+    const fullName = this.authForm.get('fullName')?.value ?? '';
+
+    this.message.set('');
     this.loading.set(true);
 
     if (this.isRegister()) {
       const payload = {
-        fullName: this.fullName,
-        email: this.email,
-        password: this.password,
+        fullName,
+        email,
+        password,
         roleId: this.roleId()
       };
 
@@ -237,11 +301,11 @@ export class LoginComponent {
             
             // Auto login on successful registration
             setTimeout(() => {
-              this.authService.login({ email: this.email, password: this.password }).subscribe({
+              this.authService.login({ email, password }).subscribe({
                 next: (loginRes) => {
                   this.loading.set(false);
                   if (loginRes.isSuccess) {
-                    this.closeModal();
+                    this.handleRoleBasedRouting(loginRes.data.token);
                   } else {
                     this.isRegister.set(false);
                     this.message.set('Registration completed. Please sign in.');
@@ -267,14 +331,14 @@ export class LoginComponent {
         }
       });
     } else {
-      this.authService.login({ email: this.email, password: this.password }).subscribe({
+      this.authService.login({ email, password }).subscribe({
         next: (res) => {
           this.loading.set(false);
           if (res.isSuccess) {
             this.isSuccess.set(true);
             this.message.set('Login successful!');
             setTimeout(() => {
-              this.closeModal();
+              this.handleRoleBasedRouting(res.data.token);
             }, 500);
           } else {
             this.isSuccess.set(false);
@@ -287,6 +351,18 @@ export class LoginComponent {
           this.message.set(err?.error?.message || 'Authentication failed.');
         }
       });
+    }
+  }
+
+  private handleRoleBasedRouting(token: string) {
+    const decoded = this.decodeToken(token);
+    const role = decoded?.role || decoded?.['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+    
+    // Clean up modal states
+    this.closeModal();
+    
+    if (role === 'Admin') {
+      this.router.navigate(['/admin/dashboard']);
     }
   }
 }
