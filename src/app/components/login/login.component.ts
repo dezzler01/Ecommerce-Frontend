@@ -119,38 +119,6 @@ function passwordValidator(control: AbstractControl): ValidationErrors | null {
             </span>
           </div>
 
-          <!-- Role Selection (Register Only - Dev Mode Testing) -->
-          <div *ngIf="isRegister()" class="space-y-1.5">
-            <div class="flex justify-between items-center">
-              <label class="text-[10px] uppercase tracking-[0.2em] font-semibold text-[#8A817C]">Select Security Role</label>
-              <span class="text-[8px] tracking-widest text-[#E07A5F] uppercase font-bold bg-[#E07A5F]/10 px-2 py-0.5 rounded-full">Dev Mode</span>
-            </div>
-            <div class="grid grid-cols-2 gap-3">
-              <button 
-                type="button"
-                [ngClass]="{
-                  'bg-[#EEDFD2] border-[#E07A5F] text-[#2A2522]': roleId() === CUSTOMER_ROLE_ID,
-                  'border-[#EEDFD2] text-[#8A817C]': roleId() !== CUSTOMER_ROLE_ID
-                }"
-                (click)="setRole(CUSTOMER_ROLE_ID)"
-                class="px-3 py-2 text-xs border rounded-lg bg-[#FBF9F6] transition-all uppercase tracking-widest"
-              >
-                Customer
-              </button>
-              <button 
-                type="button"
-                [ngClass]="{
-                  'bg-[#E07A5F]/10 border-[#E07A5F] text-[#E07A5F]': roleId() === ADMIN_ROLE_ID,
-                  'border-[#EEDFD2] text-[#8A817C]': roleId() !== ADMIN_ROLE_ID
-                }"
-                (click)="setRole(ADMIN_ROLE_ID)"
-                class="px-3 py-2 text-xs border rounded-lg bg-[#FBF9F6] transition-all uppercase tracking-widest"
-              >
-                Admin (Manager)
-              </button>
-            </div>
-          </div>
-
           <!-- Submit Button -->
           <button 
             type="submit" 
@@ -209,9 +177,6 @@ export class LoginComponent {
     password: ['', [Validators.required, passwordValidator]]
   });
 
-  // Track roleId separately (Dev Mode)
-  roleId = signal<string>(this.CUSTOMER_ROLE_ID);
-
   toggleMode() {
     const nextVal = !this.isRegister();
     this.isRegister.set(nextVal);
@@ -226,10 +191,6 @@ export class LoginComponent {
       nameControl?.clearValidators();
     }
     nameControl?.updateValueAndValidity();
-  }
-
-  setRole(role: string) {
-    this.roleId.set(role);
   }
 
   closeModal() {
@@ -290,7 +251,7 @@ export class LoginComponent {
         fullName,
         email,
         password,
-        roleId: this.roleId()
+        roleId: this.CUSTOMER_ROLE_ID
       };
 
       this.authService.register(payload).subscribe({
