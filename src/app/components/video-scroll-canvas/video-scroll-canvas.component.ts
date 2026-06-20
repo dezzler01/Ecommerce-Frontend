@@ -188,32 +188,90 @@ export class VideoScrollCanvasComponent implements OnInit, AfterViewInit, OnDest
 
   private preloadImages(): void {
     const totalFrames = TOTAL_FRAMES_PER_VIDEO * 5; // 5 videos × 48 frames
-    let loadedCount = 0;
+    
+    // First frames of the 5 sequences: index 0, 48, 96, 144, 192
+    const placeholderIndices = [0, 48, 96, 144, 192];
+    let placeholdersLoaded = 0;
+    const totalPlaceholders = placeholderIndices.length;
 
-    const handleImageLoad = (path: string) => {
-      loadedCount++;
-      this.loadingProgress = Math.round((loadedCount / totalFrames) * 100);
-      console.log(`[Preloader] Image ${loadedCount}/${totalFrames} loaded: ${path}`);
+    // Pre-initialize the images array with Image objects
+    this.images = [];
+    for (let i = 0; i < totalFrames; i++) {
+      const img = new Image();
+      this.images.push(img);
+    }
 
-      if (loadedCount === totalFrames) {
-        console.log(`[Preloader] All ${totalFrames} frames preloaded successfully.`);
+    const handlePlaceholderLoad = (index: number) => {
+      placeholdersLoaded++;
+      this.loadingProgress = Math.round((placeholdersLoaded / totalPlaceholders) * 100);
+
+      if (placeholdersLoaded === totalPlaceholders) {
         this.loaded = true;
         this.loadComplete.emit();
-        setTimeout(() => this.initializeCanvas(), 50);
+        setTimeout(() => {
+          this.initializeCanvas();
+          // Stream the rest of the frames in the background
+          this.startBackgroundQueue(placeholderIndices);
+        }, 50);
       }
     };
 
-    for (let i = 0; i < totalFrames; i++) {
-      const img = new Image();
-      const path = this.getFramePath(i);
+    // Load only the placeholder images first
+    placeholderIndices.forEach(idx => {
+      const img = this.images[idx];
+      const path = this.getFramePath(idx);
       img.src = path;
-      img.onload = () => handleImageLoad(path);
+      img.onload = () => handlePlaceholderLoad(idx);
       img.onerror = () => {
-        console.error(`[Preloader] Failed to load frame ${i}: ${path}`);
-        handleImageLoad(path);
+        handlePlaceholderLoad(idx);
       };
-      this.images.push(img);
+    });
+  }
+
+  private startBackgroundQueue(excludeIndices: number[]): void {
+    const totalFrames = TOTAL_FRAMES_PER_VIDEO * 5;
+    const remainingIndices: number[] = [];
+
+    for (let i = 0; i < totalFrames; i++) {
+      if (!excludeIndices.includes(i)) {
+        remainingIndices.push(i);
+      }
     }
+
+    // Load remaining frames asynchronously in background batches to keep main thread free
+    setTimeout(() => {
+      this.loadBatch(remainingIndices, 0);
+    }, 500);
+  }
+
+  private loadBatch(indices: number[], startIndex: number): void {
+    const batchSize = 4;
+    const endIndex = Math.min(startIndex + batchSize, indices.length);
+
+    if (startIndex >= indices.length) {
+      return;
+    }
+
+    const promises = [];
+    for (let i = startIndex; i < endIndex; i++) {
+      const idx = indices[i];
+      const img = this.images[idx];
+      const path = this.getFramePath(idx);
+
+      const p = new Promise<void>((resolve) => {
+        img.src = path;
+        img.onload = () => resolve();
+        img.onerror = () => resolve();
+      });
+      promises.push(p);
+    }
+
+    Promise.all(promises).then(() => {
+      // Schedule next batch loading after a small delay
+      setTimeout(() => {
+        this.loadBatch(indices, endIndex);
+      }, 50);
+    });
   }
 
   private initializeCanvas(): void {
@@ -363,34 +421,13 @@ export class VideoScrollCanvasComponent implements OnInit, AfterViewInit, OnDest
     canvas.style.height = '100vh';
   }
 
-  private drawFrame(index: number, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D): void {
-    let targetIndex = index;
-    if (typeof document !== 'undefined' && document.body.classList.contains('accessibility-freeze-motion')) {
-      targetIndex = 0;
-    }
-    const img = this.images[targetIndex];
-    
-    // Safely capture canvas/window dimensions
-    const width = canvas.width || (typeof window !== 'undefined' ? window.innerWidth : 1920);
-    const height = canvas.height || (typeof window !== 'undefined' ? window.innerHeight : 1080);
-    
-    const safeWidth = width > 0 ? width : 1920;
-    const safeHeight = height > 0 ? height : 1080;
-
-    // Clear background with solid color fallback first
-    ctx.fillStyle = '#FBF9F6';
-    ctx.fillRect(0, 0, safeWidth, safeHeight);
-
-    // Verify if image is fully loaded and valid
-    const isImageValid = img && img.complete && (img.naturalWidth || img.width) > 0;
-    if (!isImageValid) {
-      ctx.fillStyle = '#2A2522';
-      ctx.font = '16px monospace';
-      ctx.textAlign = 'center';
-      ctx.fillText(`[Missing/Loading Frame ${index}]`, safeWidth / 2, safeHeight / 2);
-      return;
-    }
-
+  private drawActualImage(
+    img: HTMLImageElement,
+    safeWidth: number,
+    safeHeight: number,
+    ctx: CanvasRenderingContext2D,
+    index: number
+  ): void {
     const imgWidth = img.naturalWidth || img.width || 1920;
     const imgHeight = img.naturalHeight || img.height || 1000;
     
@@ -433,6 +470,57 @@ export class VideoScrollCanvasComponent implements OnInit, AfterViewInit, OnDest
       ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
     } catch (err) {
       console.error(`[Canvas] Error drawing frame ${index}:`, err);
+    }
+  }
+
+  private drawFrame(index: number, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D): void {
+    let targetIndex = index;
+    if (typeof document !== 'undefined' && document.body.classList.contains('accessibility-freeze-motion')) {
+      targetIndex = 0;
+    }
+    const img = this.images[targetIndex];
+    
+    // Safely capture canvas/window dimensions
+    const width = canvas.width || (typeof window !== 'undefined' ? window.innerWidth : 1920);
+    const height = canvas.height || (typeof window !== 'undefined' ? window.innerHeight : 1080);
+    
+    const safeWidth = width > 0 ? width : 1920;
+    const safeHeight = height > 0 ? height : 1080;
+
+    // Clear background with solid color fallback first
+    ctx.fillStyle = '#FBF9F6';
+    ctx.fillRect(0, 0, safeWidth, safeHeight);
+
+    // Verify if image is fully loaded and valid
+    const isImageValid = img && img.complete && (img.naturalWidth || img.width) > 0;
+    if (isImageValid) {
+      this.drawActualImage(img, safeWidth, safeHeight, ctx, targetIndex);
+    } else {
+      // Find the placeholder for this sequence
+      let placeholderIndex = 0;
+      if (targetIndex < 48) {
+        placeholderIndex = 0;
+      } else if (targetIndex < 96) {
+        placeholderIndex = 48;
+      } else if (targetIndex < 144) {
+        placeholderIndex = 96;
+      } else if (targetIndex < 192) {
+        placeholderIndex = 144;
+      } else {
+        placeholderIndex = 192;
+      }
+
+      const placeholderImg = this.images[placeholderIndex];
+      const isPlaceholderValid = placeholderImg && placeholderImg.complete && (placeholderImg.naturalWidth || placeholderImg.width) > 0;
+
+      if (isPlaceholderValid) {
+        this.drawActualImage(placeholderImg, safeWidth, safeHeight, ctx, placeholderIndex);
+      } else {
+        ctx.fillStyle = '#2A2522';
+        ctx.font = '16px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(`[Missing/Loading Frame ${index}]`, safeWidth / 2, safeHeight / 2);
+      }
     }
 
     // Apply local deflection warp around mouse position
