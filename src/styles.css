@@ -1,0 +1,454 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Lexend:wght@300;400;500;600;700&family=Outfit:wght@100;200;300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-luxury-beige: #FAF6F0;
+  --bg-frosted-warm: rgba(250, 246, 240, 0.82);
+  --text-charcoal: #2A2522;
+  --text-muted-umber: #6B5E57;
+  --brand-accent: #E07A5F;
+  --border-delicate: rgba(42, 37, 34, 0.08);
+}
+
+body, .global-canvas-base, .admin-canvas {
+  background-image: url('assets/images/studio-botanical-shadows-4k.webp') !important;
+  background-size: cover !important;
+  background-position: center center !important;
+  background-attachment: fixed !important; /* Locks the 4K backdrop so products float over it dynamically */
+  background-repeat: no-repeat !important;
+  background-color: #FBF9F6 !important;
+}
+
+body {
+  color: var(--text-charcoal);
+  overflow-x: hidden;
+  margin: 0;
+  font-family: 'Lexend', sans-serif;
+}
+/* Global Form Input Transitions & Focus Enhancements */
+input, select, textarea {
+  transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1) !important;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--brand-accent) !important;
+  box-shadow: 
+    0 0 0 4px rgba(224, 122, 95, 0.08), 
+    0 4px 20px rgba(42, 37, 34, 0.03) !important;
+  transform: translateY(-1px);
+}
+
+.font-serif-luxury {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+.font-sans-luxury {
+  font-family: 'Lexend', sans-serif;
+}
+
+::selection {
+  background-color: #EEDFD2;
+}
+
+/* Hide default cursor globally on ALL elements */
+*, *::before, *::after {
+  cursor: none !important;
+}
+
+/* Custom Cursor Elements */
+.custom-cursor-dot {
+  width: 30px;
+  height: 30px;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-3px, -3px); /* Align visual top-left pointing tip (3,3) with mouse coordinates */
+  background: transparent !important;
+  border-radius: 0 !important;
+  mix-blend-mode: normal !important; /* Display exact brand colors */
+  transition: none !important; /* Zero latency pointer tracking */
+}
+
+.custom-cursor-halo {
+  display: none; /* Hidden by default in favor of high-performance particle paint trail */
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  background: transparent;
+}
+
+/* Organic Cursor SVGs styling */
+.custom-cursor-dot .cursor-svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0px 3px 5px rgba(26, 24, 22, 0.22)); /* Premium depth & readability on dark layers */
+  transform-origin: 5px 5px; /* Scale down relative to the pointer tip coordinate */
+  transition: transform 0.15s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Toggle pointers based on hover state */
+.custom-cursor-dot .hover-pointer {
+  display: none;
+}
+.custom-cursor-dot .default-pointer {
+  display: block;
+}
+.custom-cursor-dot.hovered .hover-pointer {
+  display: block;
+}
+.custom-cursor-dot.hovered .default-pointer {
+  display: none;
+}
+
+/* Tactile Click Press Feedback (Visual scale animation towards pointer tip) */
+.custom-cursor-dot.clicked .cursor-svg {
+  transform: scale(0.82);
+  transition: transform 0.08s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Accessibility Core Styles */
+
+/* 1. Text Magnifier */
+body.accessibility-large-text, body.accessibility-large-text p, body.accessibility-large-text span, body.accessibility-large-text li, body.accessibility-large-text button, body.accessibility-large-text a, body.accessibility-large-text input {
+  font-size: 1.25rem !important;
+  line-height: 1.8 !important;
+}
+body.accessibility-large-text h1 { font-size: 3rem !important; }
+body.accessibility-large-text h2 { font-size: 2.25rem !important; }
+
+/* 2. High Contrast Theme */
+body.accessibility-high-contrast { background-color: #000000 !important; color: #ffffff !important; }
+body.accessibility-high-contrast canvas, body.accessibility-high-contrast app-video-scroll-canvas { display: none !important; }
+body.accessibility-high-contrast a, body.accessibility-high-contrast button { color: #ffff00 !important; text-decoration: underline !important; }
+
+/* 3. Giant Cursor with Crosshair Grid */
+body.accessibility-giant-cursor { cursor: default !important; }
+body.accessibility-giant-cursor .custom-cursor-dot { width: 32px !important; height: 32px !important; background: #ffff00 !important; border: 2px solid #000 !important; }
+body.accessibility-giant-cursor .custom-cursor-dot::before { content: ''; position: absolute; top: 50%; left: -200px; width: 400px; height: 2px; background: rgba(255,255,0,0.6); }
+body.accessibility-giant-cursor .custom-cursor-dot::after { content: ''; position: absolute; left: 50%; top: -200px; height: 400px; width: 2px; background: rgba(255,255,0,0.6); }
+body.accessibility-giant-cursor .custom-cursor-ring, body.accessibility-giant-cursor .custom-cursor-halo { width: 80px !important; height: 80px !important; border: 4px solid #ffff00 !important; }
+
+/* 5. Dyslexia Font (Lexend) */
+body.accessibility-dyslexia-font, body.accessibility-dyslexia-font * { font-family: 'Lexend', 'Arial', sans-serif !important; letter-spacing: 0.06em !important; word-spacing: 0.12em !important; }
+
+/* 6. Keyboard Focus Helper Outline */
+body.accessibility-focus-aid *:focus { outline: 4px solid #ffff00 !important; outline-offset: 4px !important; box-shadow: 0 0 0 8px #000000 !important; }
+
+/* Custom Trailing Drops (Color effect that moves) */
+.custom-cursor-trail {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0px 2px 3px rgba(26, 24, 22, 0.16));
+  transition: none !important; /* Let GSAP requestAnimationFrame drive smooth motion */
+}
+.trail-purple {
+  width: 7px;
+  height: 7px;
+  background: #E07A5F;
+}
+.trail-pink {
+  width: 5.5px;
+  height: 5.5px;
+  background: #6B5E57;
+}
+.trail-yellow {
+  width: 4.5px;
+  height: 4.5px;
+  background: #2A2522;
+}
+
+/* Hide custom elements in accessibility modes */
+body.accessibility-giant-cursor .custom-cursor-trail {
+  display: none !important;
+}
+body.accessibility-giant-cursor .custom-cursor-dot svg {
+  display: none !important;
+}
+body.accessibility-giant-cursor .custom-cursor-dot {
+  width: 32px !important;
+  height: 32px !important;
+  background: #ffff00 !important;
+  border: 2px solid #000 !important;
+  border-radius: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  mix-blend-mode: normal !important;
+}
+body.accessibility-giant-cursor .custom-cursor-halo {
+  display: block !important;
+}
+
+/* Intro Cinematic Lock State */
+body.intro-running {
+  pointer-events: none !important;
+}
+body.intro-running .custom-cursor-dot,
+body.intro-running .custom-cursor-halo,
+body.intro-running .custom-cursor-trail {
+  display: none !important;
+  opacity: 0 !important;
+}
+
+header {
+  opacity: 0;
+  transform: translateY(-60px);
+}
+body.intro-running header {
+  transition: none !important;
+}
+
+/* Unified Premium Luxury Brand Experience Loader */
+.luxury-experience-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at center, #FCFBF9 0%, #F5F1EB 100%);
+  padding: 5rem 2rem;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px -15px rgba(42, 37, 34, 0.05);
+}
+
+/* Fullscreen mode overlay */
+.luxury-experience-loader.fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: radial-gradient(circle at center, #FCFBF9 0%, #F5F1EB 100%);
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+}
+
+/* Logo container for SVG + Text overlay */
+.luxury-experience-loader .loader-logo-container {
+  position: relative;
+  width: 320px;
+  height: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+  overflow: visible;
+}
+
+.luxury-experience-loader .loader-logo-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  animation: logoSvgPulse 4s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+}
+
+@keyframes logoSvgPulse {
+  0% { transform: scale(0.97) rotate(-0.5deg); opacity: 0.85; }
+  100% { transform: scale(1.03) rotate(0.5deg); opacity: 1; }
+}
+
+.luxury-experience-loader .loader-logo-text {
+  position: relative;
+  z-index: 10;
+  font-family: 'Outfit', 'Lexend', sans-serif;
+  font-size: 2.75rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  color: #1A1816;
+  text-transform: uppercase;
+  user-select: none;
+  pointer-events: none;
+  animation: logoTextScale 4s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+}
+
+@keyframes logoTextScale {
+  0% { transform: scale(0.98); text-shadow: 0 0 2px rgba(26,24,22,0.02); }
+  100% { transform: scale(1.02); text-shadow: 0 2px 10px rgba(224, 122, 95, 0.1); }
+}
+
+.luxury-experience-loader .loader-subtitle {
+  font-family: 'Outfit', 'Lexend', sans-serif;
+  font-size: 9.5px;
+  font-weight: 400;
+  letter-spacing: 0.35em;
+  color: var(--text-muted-umber, #6B5E57);
+  text-transform: uppercase;
+  margin-top: 0.5rem;
+  margin-bottom: 2rem;
+  opacity: 0.85;
+  animation: subtitlePulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes subtitlePulse {
+  0% { opacity: 0.6; letter-spacing: 0.33em; }
+  100% { opacity: 0.95; letter-spacing: 0.37em; }
+}
+
+.luxury-experience-loader .loader-bar-container {
+  position: relative;
+  height: 1.5px;
+  width: 260px;
+  background: rgba(42, 37, 34, 0.05);
+  border-radius: 9999px;
+  overflow: hidden;
+  margin: 0 auto 1.5rem;
+}
+
+/* Indeterminate loader bar fill (shimmer sweep) */
+.luxury-experience-loader .loader-bar-fill-indeterminate {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(to right, 
+    rgba(244, 162, 97, 0.1) 0%, 
+    #F4A261 30%, 
+    #E76F51 50%, 
+    #B84F7D 70%, 
+    rgba(184, 79, 125, 0.1) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmerSweep 1.6s infinite cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes shimmerSweep {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Determinate loader bar fill */
+.luxury-experience-loader .loader-bar-fill-determinate {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(to right, #F4A261, #E76F51, #B84F7D);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 8px rgba(231, 111, 81, 0.35);
+}
+
+.luxury-experience-loader .loader-status {
+  font-family: monospace;
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 2.2px;
+  font-weight: 700;
+  color: #B84F7D;
+  animation: statusPulse 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes statusPulse {
+  0% { opacity: 0.5; letter-spacing: 2px; }
+  100% { opacity: 0.95; letter-spacing: 2.5px; }
+}
+
+/* Table row smooth entrance animation */
+@keyframes rowFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-rows tbody tr {
+  opacity: 0;
+  animation: rowFadeIn 0.45s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.animate-rows tbody tr:nth-child(1) { animation-delay: 0.03s; }
+.animate-rows tbody tr:nth-child(2) { animation-delay: 0.06s; }
+.animate-rows tbody tr:nth-child(3) { animation-delay: 0.09s; }
+.animate-rows tbody tr:nth-child(4) { animation-delay: 0.12s; }
+.animate-rows tbody tr:nth-child(5) { animation-delay: 0.15s; }
+.animate-rows tbody tr:nth-child(n+6) { opacity: 1; animation: none; }
+
+/* Premium hardware-accelerated fade-in animation for page transitions */
+@keyframes fadeInPage {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeInPage 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+/* --- Premium Custom Alert Popup Animations & Glassmorphism --- */
+
+@keyframes scaleUpBounce {
+  0% {
+    transform: scale(0.92) translateY(12px);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.02) translateY(-2px);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes drawCheck {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes shakeError {
+  0%, 100% { transform: translateX(0) scale(1); }
+  20%, 60% { transform: translateX(-3px) scale(0.98); }
+  40%, 80% { transform: translateX(3px) scale(1.02); }
+}
+
+@keyframes pulseInfo {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+
+@keyframes wiggleWarning {
+  0%, 100% { transform: rotate(0deg); }
+  15% { transform: rotate(-9deg); }
+  30% { transform: rotate(8deg); }
+  45% { transform: rotate(-6deg); }
+  60% { transform: rotate(5deg); }
+  75% { transform: rotate(0deg); }
+}
+
+.animate-scale-up-bounce {
+  animation: scaleUpBounce 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.animate-draw-check {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: drawCheck 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.15s forwards;
+}
+
+.animate-shake-error {
+  animation: shakeError 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+.animate-pulse-info {
+  animation: pulseInfo 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animate-wiggle-warning {
+  animation: wiggleWarning 0.8s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+/* Glassmorphism custom light highlight & inner radial glow */
+.luxury-alert-box {
+  background: radial-gradient(circle at 50% 0%, rgba(224, 122, 95, 0.03) 0%, transparent 75%), #FBF9F6;
+  box-shadow: 
+    0 4px 30px rgba(42, 37, 34, 0.03),
+    0 20px 50px -10px rgba(42, 37, 34, 0.12),
+    inset 0 1px 1px rgba(255, 255, 255, 0.8);
+}
+

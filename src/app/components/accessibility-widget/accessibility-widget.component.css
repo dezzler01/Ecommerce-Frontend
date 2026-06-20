@@ -1,0 +1,61 @@
+:host {
+  display: block;
+}
+
+/* Slide animation for panel */
+.accessibility-panel-container {
+  transform-origin: bottom right;
+  animation: slideIn 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* High Contrast overrides specifically for the widget itself when active */
+body.accessibility-high-contrast .accessibility-panel-container {
+  background: #000000 !important;
+  border: 2px solid #ffffff !important;
+  box-shadow: none !important;
+}
+
+body.accessibility-high-contrast .accessibility-panel-container h3,
+body.accessibility-high-contrast .accessibility-panel-container label,
+body.accessibility-high-contrast .accessibility-panel-container button:not(.reset-btn) {
+  color: #ffffff !important;
+}
+
+body.accessibility-high-contrast .accessibility-widget-btn {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 2px solid #000000 !important;
+}
+
+body.accessibility-high-contrast .toggle-switch {
+  background-color: #555555 !important;
+}
+
+body.accessibility-high-contrast .toggle-switch[aria-checked="true"] {
+  background-color: #ffff00 !important;
+}
+
+body.accessibility-high-contrast .toggle-slider {
+  background-color: #000000 !important;
+}
+
+body.accessibility-high-contrast .reset-btn {
+  border-color: #ffff00 !important;
+  color: #ffff00 !important;
+}
+
+body.accessibility-high-contrast .reset-btn:hover {
+  background-color: #ffff00 !important;
+  color: #000000 !important;
+}

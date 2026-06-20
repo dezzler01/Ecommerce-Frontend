@@ -1,0 +1,147 @@
+<!-- Main container wrapping the routing viewport -->
+<main class="relative w-full overflow-x-hidden min-h-screen">
+  <!-- Shared Navbar -->
+  <app-navbar></app-navbar>
+
+  <!-- Router outlet where Storefront Landing, Catalog, Cart, and Admin Dashboard load -->
+  <router-outlet></router-outlet>
+
+  <!-- Global Authentication Modal -->
+  <app-login class="pointer-events-auto"></app-login>
+
+  <!-- Floating Accessibility Extension Widget -->
+  <app-accessibility-widget></app-accessibility-widget>
+
+  <!-- Global Frosted Micro-Toasts Real-Time Feed -->
+  <app-notification-toast></app-notification-toast>
+
+  <!-- Bespoke custom cursor elements -->
+  <div #cursorDot class="custom-cursor-dot">
+    <!-- Sleek Triangle Pointer SVG with animated shifting gradient -->
+    <svg class="cursor-svg default-pointer" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="cursor-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#1F85A0">
+            <animate attributeName="stop-color" values="#1F85A0;#B84F7D;#F4A261;#1F85A0" dur="4s" repeatCount="indefinite" />
+          </stop>
+          <stop offset="50%" stop-color="#B84F7D">
+            <animate attributeName="stop-color" values="#B84F7D;#F4A261;#1F85A0;#B84F7D" dur="4s" repeatCount="indefinite" />
+          </stop>
+          <stop offset="100%" stop-color="#F4A261">
+            <animate attributeName="stop-color" values="#F4A261;#1F85A0;#B84F7D;#F4A261" dur="4s" repeatCount="indefinite" />
+          </stop>
+        </linearGradient>
+      </defs>
+      <!-- Sleek classic triangle arrow with rounded corners -->
+      <path d="M 3,3 L 24,10 L 16,16 L 10,24 Z" fill="url(#cursor-grad)" stroke="url(#cursor-grad)" stroke-width="3" stroke-linejoin="round" />
+    </svg>
+
+    <!-- Inline SVG for Hover Hand Pointer (Stylized organic pointing hand with animated gradient) -->
+    <svg class="cursor-svg hover-pointer" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="cursor-grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#1F85A0">
+            <animate attributeName="stop-color" values="#1F85A0;#B84F7D;#F4A261;#1F85A0" dur="4s" repeatCount="indefinite" />
+          </stop>
+          <stop offset="50%" stop-color="#B84F7D">
+            <animate attributeName="stop-color" values="#B84F7D;#F4A261;#1F85A0;#B84F7D" dur="4s" repeatCount="indefinite" />
+          </stop>
+          <stop offset="100%" stop-color="#F4A261">
+            <animate attributeName="stop-color" values="#F4A261;#1F85A0;#B84F7D;#F4A261" dur="4s" repeatCount="indefinite" />
+          </stop>
+        </linearGradient>
+      </defs>
+      <!-- Yellow Layer (Thumb / Left side) -->
+      <line x1="4" y1="14" x2="12" y2="22" stroke="url(#cursor-grad2)" stroke-width="7.5" stroke-linecap="round" />
+      <!-- Purple Layer (Ring/Pinky fingers / Right side) -->
+      <line x1="18" y1="12" x2="26" y2="20" stroke="url(#cursor-grad2)" stroke-width="7.5" stroke-linecap="round" />
+      <!-- Pink Layer (Index Finger / Middle - Longest) -->
+      <line x1="10" y1="4" x2="22" y2="16" stroke="url(#cursor-grad2)" stroke-width="7.5" stroke-linecap="round" />
+    </svg>
+  </div>
+  <div #cursorHalo class="custom-cursor-halo"></div>
+
+  <!-- Advanced Luxury Custom Alert Modal -->
+  <div *ngIf="alertService.isOpen()" class="fixed inset-0 z-[100] flex items-center justify-center p-4 animate-fade-in pointer-events-auto">
+    <!-- Frosted Backdrop with Deepened Glassmorphism -->
+    <div (click)="alertService.cancel()" class="fixed inset-0 bg-[#2A2522]/20 backdrop-blur-[8px] cursor-pointer"></div>
+    
+    <!-- Sleek Glassmorphic Luxury Alert Box -->
+    <div class="luxury-alert-box relative w-full max-w-md border border-[#2A2522]/10 p-6 md:p-8 rounded-2xl flex flex-col space-y-6 max-h-[90vh] overflow-y-auto custom-scrollbar animate-scale-up-bounce z-10 text-left transform duration-300 hover:shadow-[#E07A5F]/5">
+      <!-- Top Decorative Aesthetic Accent Bar -->
+      <div 
+        [ngClass]="{
+          'bg-[#E07A5F]': alertService.type() === 'success',
+          'bg-red-500': alertService.type() === 'error',
+          'bg-[#8C857B]': alertService.type() === 'info',
+          'bg-amber-500': alertService.type() === 'warning'
+        }"
+        class="absolute top-0 left-0 right-0 h-[3px] rounded-t-2xl"
+      ></div>
+ 
+      <!-- Icon & Header Info -->
+      <div class="flex items-start gap-4">
+        <!-- Stylized Icon Container with Custom Animations -->
+        <div 
+          [ngClass]="{
+            'bg-[#E07A5F]/10 text-[#E07A5F]': alertService.type() === 'success',
+            'bg-red-500/10 text-red-500 animate-shake-error': alertService.type() === 'error',
+            'bg-[#8C857B]/10 text-[#8C857B] animate-pulse-info': alertService.type() === 'info',
+            'bg-amber-500/10 text-amber-500 animate-wiggle-warning': alertService.type() === 'warning'
+          }"
+          class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
+        >
+          <!-- Success (Checkmark SVG with draw animation) -->
+          <svg *ngIf="alertService.type() === 'success'" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path class="animate-draw-check" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+          </svg>
+          <!-- Error (Cross) -->
+          <svg *ngIf="alertService.type() === 'error'" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+          <!-- Info (I-letter) -->
+          <svg *ngIf="alertService.type() === 'info'" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 111.083 1.083l-.041.02a.75.75 0 01-1.083-1.083zM12 8.25a.75.75 0 100-1.5.75.75 0 000 1.5zM21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <!-- Warning (Exclamation) -->
+          <svg *ngIf="alertService.type() === 'warning'" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+        </div>
+ 
+        <!-- Text Context -->
+        <div class="flex-1 min-w-0">
+          <h3 class="font-serif-luxury text-base uppercase tracking-wider text-[#2A2522] leading-tight mb-2">
+            {{ alertService.title() }}
+          </h3>
+          <p class="font-sans text-xs leading-relaxed text-[#6B5E57] break-words whitespace-pre-line">
+            {{ alertService.message() }}
+          </p>
+        </div>
+      </div>
+ 
+      <!-- Action Buttons Footer -->
+      <div class="flex justify-end items-center gap-3 pt-2">
+        <button 
+          *ngIf="alertService.cancelText()" 
+          (click)="alertService.cancel()"
+          class="px-5 py-2.5 border border-[#2A2522]/10 hover:bg-[#2A2522]/5 text-[#2A2522] text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all duration-300 transform active:scale-95 hover:border-[#2A2522]/25"
+        >
+          {{ alertService.cancelText() }}
+        </button>
+        <button 
+          (click)="alertService.confirm()"
+          [ngClass]="{
+            'bg-[#E07A5F] hover:bg-[#E07A5F]/90 hover:shadow-[#E07A5F]/20': alertService.type() === 'success',
+            'bg-red-600 hover:bg-red-700 hover:shadow-red-600/20': alertService.type() === 'error',
+            'bg-[#2A2522] hover:bg-[#B84F7D] hover:shadow-[#B84F7D]/20': alertService.type() === 'info',
+            'bg-amber-600 hover:bg-amber-700 hover:shadow-amber-600/20': alertService.type() === 'warning'
+          }"
+          class="px-5 py-2.5 text-white text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all duration-300 shadow-sm hover:shadow-md transform active:scale-95"
+        >
+          {{ alertService.confirmText() }}
+        </button>
+      </div>
+    </div>
+  </div>
+</main>

@@ -1,0 +1,444 @@
+<div class="min-h-screen bg-transparent pt-28 pb-20 px-6 md:px-12 lg:px-24 text-left font-sans-luxury animate-fade-in">
+  <!-- Advanced Luxury Experience Loader (Component indeterminate mode) -->
+  <div *ngIf="loading()" class="luxury-experience-loader py-32 bg-transparent">
+    <div class="loader-logo-container">
+      <!-- Watercolor SVG Accent -->
+      <svg class="loader-logo-svg" viewBox="0 0 600 180" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="loader-watercolor-gradient-detail" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#F4A261" stop-opacity="0.85"/>
+            <stop offset="30%" stop-color="#E76F51" stop-opacity="0.95"/>
+            <stop offset="65%" stop-color="#F38E75" stop-opacity="0.88"/>
+            <stop offset="100%" stop-color="#B84F7D" stop-opacity="0.9"/>
+            <animate attributeName="x1" dur="4s" values="0%;50%;0%" repeatCount="indefinite" />
+            <animate attributeName="x2" dur="4s" values="100%;150%;100%" repeatCount="indefinite" />
+          </linearGradient>
+          <filter id="loader-paint-bleed-detail">
+            <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="4" result="noise">
+              <animate attributeName="baseFrequency" dur="6s" values="0.012;0.022;0.012" repeatCount="indefinite" />
+            </feTurbulence>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="18" xChannelSelector="R" yChannelSelector="G" result="displaced" />
+            <feGaussianBlur in="displaced" stdDeviation="1.2" />
+          </filter>
+        </defs>
+        <g filter="url(#loader-paint-bleed-detail)">
+          <path d="M 40,88 C 110,65 230,78 350,70 C 470,62 520,78 560,88 C 575,92 570,102 555,108 C 510,128 390,122 280,128 C 170,134 90,118 45,108 C 30,105 30,92 40,88 Z" fill="url(#loader-watercolor-gradient-detail)" />
+        </g>
+      </svg>
+      <div class="loader-logo-text">Picks&amp;More</div>
+    </div>
+    <div class="loader-subtitle">Luxury Women &amp; Baby Boutique</div>
+    <div class="loader-bar-container">
+      <div class="loader-bar-fill-indeterminate"></div>
+    </div>
+    <div class="loader-status">Decoding Specimen Context...</div>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="!loading() && error()" class="max-w-6xl mx-auto w-full flex flex-col justify-center items-center py-32 text-center">
+    <div class="p-6 bg-red-50 border border-red-200 rounded-2xl max-w-md">
+      <span class="text-xs font-mono uppercase tracking-widest text-red-500 font-bold block mb-2">Refusal Code</span>
+      <p class="text-sm text-[#2A2522] leading-relaxed font-light mb-6">{{ error() }}</p>
+      <button routerLink="/products" class="px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold uppercase tracking-widest rounded-xl transition-all">
+        Return to Catalog
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Details Page -->
+  <div *ngIf="!loading() && !error() && product()" class="max-w-6xl mx-auto w-full">
+    <!-- Breadcrumbs / Navigation Back -->
+    <div class="mb-8">
+      <a routerLink="/products" class="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#6B5E57] hover:text-[#E07A5F] transition-colors cursor-pointer">
+        ← Back to Catalog
+      </a>
+    </div>
+
+    <!-- Main Container -->
+    <div class="glass-container">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <!-- Left Column: Gallery -->
+        <div class="flex flex-col gap-4">
+          <!-- Main Image Box -->
+          <div class="w-full aspect-square rounded-2xl overflow-hidden bg-[#2A2522]/5 border border-[#2A2522]/5 relative group">
+            <img 
+              *ngIf="activeImageUrl()" 
+              #mainImage
+              [src]="activeImageUrl()" 
+              [alt]="product()?.title" 
+              class="w-full h-full object-cover transition-transform duration-700 ease-out origin-center"
+              (mouseenter)="zoomImage(true)"
+              (mouseleave)="zoomImage(false)"
+            />
+            
+            <!-- Fallback image -->
+            <div *ngIf="!activeImageUrl()" class="w-full h-full flex flex-col items-center justify-center text-[#6B5E57]/40 gap-3">
+              <svg class="w-12 h-12 text-[#E07A5F]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+              </svg>
+              <span class="text-[10px] uppercase tracking-widest font-mono text-[#E07A5F] font-bold">Exclusive Specimen</span>
+            </div>
+
+            <!-- Glassmorphic Category Tag -->
+            <span class="absolute top-4 left-4 bg-white/95 border border-[#2A2522]/5 text-[#2A2522]/80 text-[9px] uppercase tracking-widest font-mono px-3 py-1 rounded-lg">
+              {{ getProductCategoriesList(product()) }}
+            </span>
+          </div>
+
+          <!-- Thumbnail Navigation Strip -->
+          <div *ngIf="product()?.imageUrls && product()!.imageUrls.length > 1" class="thumbnail-strip custom-scrollbar">
+            <button 
+              *ngFor="let img of product()?.imageUrls; let i = index"
+              (click)="selectImage(i)"
+              [class.active]="activeImageIndex() === i"
+              class="thumbnail-btn"
+            >
+              <img [src]="img.url" [alt]="img.altText || 'Product image ' + (i + 1)" />
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Column: Info & Action Configurator -->
+        <div class="flex flex-col justify-between space-y-6">
+          <div>
+            <span class="tracking-widest font-mono text-[10px] uppercase font-bold text-[#E07A5F] block mb-2">
+              Curated Specimen Profile
+            </span>
+            <h1 class="text-3xl font-serif-luxury font-light text-[#2A2522] tracking-wider uppercase mb-4">
+              {{ product()?.title }}
+            </h1>
+            <!-- Category and Age Badges -->
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span class="text-[9px] bg-[#E07A5F]/10 border border-[#E07A5F]/20 text-[#E07A5F] px-2.5 py-0.5 rounded uppercase font-bold tracking-widest" *ngFor="let cat of product()?.categories">
+                {{ cat.name }}
+              </span>
+              <span class="text-[9px] bg-[#2A2522]/5 border border-[#2A2522]/10 text-[#6B5E57] px-2.5 py-0.5 rounded uppercase font-semibold tracking-widest" *ngIf="product()?.age">
+                Age: {{ product()?.age }}
+              </span>
+            </div>
+            <div class="flex items-center gap-6 mb-6">
+              <span class="text-2xl font-mono text-[#E07A5F] font-bold">
+                {{ product()?.price | currency:'EGP ' }}
+              </span>
+              <!-- Stock Status -->
+              <div>
+                <span *ngIf="product()?.stockQuantity === 0" class="text-[9px] bg-red-50 border border-red-200 text-red-500 px-3 py-1 rounded-lg uppercase font-bold tracking-widest">
+                  Sold Out
+                </span>
+                <span *ngIf="product() && product()!.stockQuantity > 0 && product()!.stockQuantity <= 5" class="text-[9px] bg-amber-50 border border-amber-200 text-amber-600 px-3 py-1 rounded-lg uppercase font-bold tracking-widest">
+                  Only {{ product()?.stockQuantity }} Remaining
+                </span>
+                <span *ngIf="product() && product()!.stockQuantity > 5" class="text-[9px] bg-emerald-50 border border-emerald-200 text-emerald-600 px-3 py-1 rounded-lg uppercase font-bold tracking-widest">
+                  In Stock
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Validation Warning -->
+          <div *ngIf="validationError()" class="p-3 bg-red-50 border border-red-200 text-red-500 text-xs rounded-xl">
+            {{ validationError() }}
+          </div>
+
+          <!-- Selection Matrix -->
+          <div class="space-y-6">
+            <!-- Colors Selector -->
+            <div class="space-y-2.5" *ngIf="colors().length > 0">
+              <label class="text-[9px] uppercase tracking-widest font-bold text-[#E07A5F] block">Select Color *</label>
+              <div class="flex flex-wrap gap-2">
+                <button 
+                  *ngFor="let color of colors()"
+                  (click)="selectColor(color)"
+                  [ngClass]="{
+                    'active-pill': selectedColor() === color,
+                    'inactive-pill': selectedColor() !== color
+                  }"
+                  class="px-4 py-2 text-[10px] uppercase tracking-widest font-bold border rounded-lg transition-all"
+                >
+                  {{ color }}
+                </button>
+              </div>
+            </div>
+
+            <!-- Sizes Selector -->
+            <div class="space-y-2.5" *ngIf="sizes().length > 0">
+              <label class="text-[9px] uppercase tracking-widest font-bold text-[#E07A5F] block">Select Size *</label>
+              <div class="flex flex-wrap gap-2">
+                <button 
+                  *ngFor="let size of sizes()"
+                  (click)="selectSize(size)"
+                  [ngClass]="{
+                    'active-pill': selectedSize() === size,
+                    'inactive-pill': selectedSize() !== size
+                  }"
+                  class="px-4 py-2 text-[10px] uppercase tracking-widest font-bold border rounded-lg transition-all"
+                >
+                  {{ size }}
+                </button>
+              </div>
+            </div>
+
+            <!-- Quantity Selector -->
+            <div class="space-y-2.5" *ngIf="product() && product()!.stockQuantity > 0">
+              <label class="text-[9px] uppercase tracking-widest font-bold text-[#E07A5F] block">Purchase Quantity</label>
+              <div class="flex items-center gap-4">
+                <div class="flex items-center border border-[#2A2522]/10 bg-[#2A2522]/5 rounded-lg overflow-hidden quantity-wrapper">
+                  <button 
+                    type="button"
+                    (click)="decrementQuantity()"
+                    [disabled]="selectedQuantity() <= 1"
+                    class="px-4 py-2 text-[#2A2522]/60 hover:text-[#2A2522] hover:bg-[#2A2522]/5 disabled:opacity-30 disabled:hover:bg-transparent transition-all text-xs font-mono select-none"
+                  >
+                    －
+                  </button>
+                  <span class="px-6 py-2 text-[11px] font-mono font-bold text-[#2A2522] select-none">
+                    {{ selectedQuantity() }}
+                  </span>
+                  <button 
+                    type="button"
+                    (click)="incrementQuantity()"
+                    [disabled]="selectedQuantity() >= product()!.stockQuantity"
+                    class="px-4 py-2 text-[#2A2522]/60 hover:text-[#2A2522] hover:bg-[#2A2522]/5 disabled:opacity-30 disabled:hover:bg-transparent transition-all text-xs font-mono select-none"
+                  >
+                    ＋
+                  </button>
+                </div>
+                <span class="text-[9px] font-mono text-[#6B5E57] uppercase tracking-widest">
+                  Live Stock Available: {{ product()?.stockQuantity }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Acquire Action -->
+          <div class="pt-6 border-t border-[#2A2522]/10 space-y-3">
+            <button 
+              [disabled]="product()?.stockQuantity === 0"
+              (click)="acquireProduct()"
+              class="w-full py-4 text-[#FBF9F6] text-xs font-bold uppercase tracking-[0.2em] rounded-xl transition-all flex justify-center items-center gap-2 neon-btn disabled:opacity-50"
+            >
+              {{ product()?.stockQuantity === 0 ? 'OUT OF STOCK' : 'Acquire Piece' }}
+            </button>
+            
+            <div *ngIf="addedToCart()" class="p-3 bg-emerald-50 border border-emerald-200 text-emerald-600 text-[10px] font-bold uppercase tracking-wider text-center rounded-xl animate-fade-in">
+              ✓ Secured in Bag
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Layout Tabs/Sections -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 pt-12 border-t border-[#2A2522]/10 mt-12">
+        <!-- Specs & Profile -->
+        <div class="space-y-6">
+          <div class="space-y-2">
+            <h4 class="text-[10px] uppercase tracking-widest font-bold text-[#E07A5F]">Asset Profile</h4>
+            <p class="text-xs text-[#6B5E57] leading-relaxed font-light">
+              {{ product()?.description }}
+            </p>
+          </div>
+
+          <!-- Materials & Seasonality -->
+          <div class="grid grid-cols-2 gap-6 pt-4">
+            <div class="space-y-2" *ngIf="product()?.materials && product()!.materials!.length > 0">
+              <h4 class="text-[10px] uppercase tracking-widest font-bold text-[#E07A5F]">Composition</h4>
+              <div class="flex flex-wrap gap-1.5">
+                <span 
+                  *ngFor="let mat of product()?.materials"
+                  class="text-[9px] font-medium uppercase tracking-wider text-[#2A2522] border border-[#2A2522]/10 bg-[#2A2522]/5 px-2.5 py-1 rounded-lg hover:border-[#E07A5F]/40 transition-colors"
+                >
+                  {{ mat }}
+                </span>
+              </div>
+            </div>
+
+            <div class="space-y-2" *ngIf="product()?.seasonTags && product()!.seasonTags!.length > 0">
+              <h4 class="text-[10px] uppercase tracking-widest font-bold text-[#E07A5F]">Seasonality</h4>
+              <div class="flex flex-wrap gap-1.5">
+                <span 
+                  *ngFor="let tag of product()?.seasonTags"
+                  class="text-[9px] font-medium uppercase tracking-wider text-[#E07A5F] bg-[#E07A5F]/10 px-2.5 py-1 rounded-lg"
+                >
+                  {{ tag }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Appraisals / Reviews -->
+        <div class="space-y-6">
+          <div class="flex justify-between items-center">
+            <h4 class="text-[10px] uppercase tracking-widest font-bold text-[#E07A5F]">Client Appraisals</h4>
+            <div class="flex items-center gap-0.5">
+              <svg 
+                *ngFor="let s of getStars(evaluationScore())" 
+                class="w-3.5 h-3.5 text-amber-400 drop-shadow-[0_0_3px_rgba(251,191,36,0.5)]" 
+                fill="currentColor" 
+                viewBox="0 0 20 20"
+              >
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+              </svg>
+              <svg 
+                *ngFor="let s of getEmptyStars(evaluationScore())" 
+                class="w-3.5 h-3.5 text-[#2A2522]/20" 
+                fill="none" 
+                stroke="currentColor" 
+                stroke-width="1.5" 
+                viewBox="0 0 20 20"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+              </svg>
+              <span class="text-[9px] font-mono text-[#6B5E57] ml-2">({{ reviews().length }})</span>
+            </div>
+          </div>
+
+          <div class="space-y-4 max-h-[300px] overflow-y-auto custom-scrollbar pr-2">
+            <div 
+              *ngFor="let r of reviews()" 
+              class="review-card"
+            >
+              <div class="flex justify-between items-baseline mb-1">
+                <span class="text-[10px] font-bold text-[#2A2522] tracking-wide">{{ r.reviewerName }}</span>
+                <span class="text-[8px] font-mono text-[#6B5E57]/60">{{ r.createdAt | date:'mediumDate' }}</span>
+              </div>
+
+              <div class="flex items-center gap-0.5 mb-2">
+                <svg 
+                  *ngFor="let s of getStars(r.rating)" 
+                  class="w-3 h-3 text-amber-400 drop-shadow-[0_0_2px_rgba(251,191,36,0.4)]" 
+                  fill="currentColor" 
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
+                <svg 
+                  *ngFor="let s of getEmptyStars(r.rating)" 
+                  class="w-3 h-3 text-[#2A2522]/10" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  stroke-width="1.5" 
+                  viewBox="0 0 20 20"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
+              </div>
+
+              <p class="text-[10px] text-[#6B5E57] leading-relaxed font-light">
+                {{ r.comment }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Submit Review Form -->
+          <div class="p-5 bg-white/50 border border-[#2A2522]/5 rounded-2xl space-y-4 mt-6">
+            <h5 class="text-[9px] uppercase tracking-widest font-bold text-[#E07A5F]">Post Your Appraisal</h5>
+            
+            <div *ngIf="authService.currentUser() !== null; else loginPrompt">
+              <div class="space-y-3">
+                <!-- Rating Stars Selector -->
+                <div class="flex items-center gap-2">
+                  <span class="text-[8px] uppercase tracking-widest font-mono text-[#6B5E57]">Rating:</span>
+                  <div class="flex gap-1">
+                    <button 
+                      *ngFor="let star of [1, 2, 3, 4, 5]" 
+                      type="button" 
+                      (click)="newRating.set(star)"
+                      class="text-xs transition-transform hover:scale-125 focus:outline-none"
+                    >
+                      <svg 
+                        class="w-4 h-4" 
+                        [ngClass]="star <= newRating() ? 'text-amber-400 drop-shadow-[0_0_3px_rgba(251,191,36,0.5)]' : 'text-[#2A2522]/20'" 
+                        fill="currentColor" 
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Comment Input -->
+                <textarea 
+                  [(ngModel)]="newComment"
+                  placeholder="Share your thoughts on the tailoring, fabric composition, and overall fit..." 
+                  rows="3"
+                  class="w-full p-3 bg-white border border-[#2A2522]/10 rounded-xl text-xs text-[#2A2522] placeholder-[#6B5E57]/40 focus:outline-none focus:border-[#E07A5F]/50 transition-colors"
+                ></textarea>
+
+                <!-- Feedback Messages -->
+                <div *ngIf="reviewError()" class="text-[9px] uppercase tracking-wider text-red-600 font-bold font-mono">
+                  ⚠ {{ reviewError() }}
+                </div>
+                <div *ngIf="reviewSuccess()" class="text-[9px] uppercase tracking-wider text-emerald-600 font-bold font-mono">
+                  ✓ {{ reviewSuccess() }}
+                </div>
+
+                <!-- Action Button -->
+                <button 
+                  [disabled]="submittingReview()"
+                  (click)="submitReview()"
+                  class="w-full py-2 bg-[#2A2522] hover:bg-[#E07A5F] disabled:opacity-50 text-white text-[9px] font-bold uppercase tracking-widest rounded-xl transition-all shadow-sm font-mono"
+                >
+                  {{ submittingReview() ? 'Transmitting...' : 'Submit Appraisal' }}
+                </button>
+              </div>
+            </div>
+
+            <ng-template #loginPrompt>
+              <div class="text-center py-4">
+                <p class="text-[10px] text-[#6B5E57] uppercase tracking-widest font-light mb-2">Authenticity required to leave reviews</p>
+                <p class="text-xs text-[#E07A5F] font-bold">Please log in to your account</p>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+
+      <!-- Placed Orders Section (Full Width at Bottom) -->
+      <div class="mt-12 pt-12 border-t border-[#2A2522]/10">
+        <h4 class="text-[10px] uppercase tracking-widest font-bold text-[#E07A5F] mb-6">Your Placed Orders</h4>
+        
+        <div *ngIf="loadingOrders()" class="flex justify-center items-center py-8">
+          <span class="animate-spin rounded-full h-6 w-6 border-b-2 border-[#E07A5F]"></span>
+        </div>
+
+        <div *ngIf="!loadingOrders() && myProductOrders().length === 0" class="p-6 border border-dashed border-[#2A2522]/10 rounded-xl text-center">
+          <p class="text-xs text-[#6B5E57]/60 tracking-wide">You haven't placed any orders for this piece yet.</p>
+        </div>
+
+        <div *ngIf="!loadingOrders() && myProductOrders().length > 0" class="overflow-x-auto custom-scrollbar">
+          <table class="orders-table">
+            <thead>
+              <tr>
+                <th>Order Number</th>
+                <th>Placed Date</th>
+                <th>Quantity Placed</th>
+                <th>Total Price</th>
+                <th>Order Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let order of myProductOrders()">
+                <td class="font-mono text-[#E07A5F] font-semibold">{{ order.orderNumber }}</td>
+                <td>{{ order.createdAt | date:'mediumDate' }}</td>
+                <td class="font-mono">{{ getProductQtyInOrder(order) }}</td>
+                <td class="font-mono text-[#2A2522] font-semibold">{{ order.totalPrice | currency:'EGP ' }}</td>
+                <td>
+                  <span class="status-badge" [ngClass]="{
+                    'status-pending': order.status === 'PendingVerification',
+                    'status-completed': order.status === 'Delivered',
+                    'status-shipping': order.status === 'ConfirmedPreparing' || order.status === 'OutForDelivery',
+                    'status-returned': order.status === 'ReturnedRejected'
+                  }">
+                    {{ order.status }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,166 @@
+<!-- Accessibility Floating Circular Button -->
+<button
+  class="accessibility-widget-btn fixed bottom-6 right-6 z-[9999] w-12 h-12 rounded-full bg-[#E07A5F] text-[#FBF9F6] flex items-center justify-center shadow-lg hover:scale-105 transition-transform duration-300 pointer-events-auto"
+  [class.active-panel]="panelOpen"
+  (click)="togglePanel()"
+  aria-label="Accessibility Settings"
+  aria-haspopup="true"
+  [attr.aria-expanded]="panelOpen"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+    <path d="M12 2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm9 7h-6v13h-2v-6h-2v6H9V9H3V7h18v2z"/>
+  </svg>
+</button>
+
+<!-- Slide-out Accessibility Control Panel -->
+<div
+  #panelContainer
+  *ngIf="panelOpen"
+  class="accessibility-panel-container fixed bottom-24 right-6 z-[9999] w-80 bg-[#FBF9F6] border border-[#2A2522]/10 rounded-2xl shadow-2xl p-6 text-left transition-all duration-300 ease-out pointer-events-auto"
+  role="dialog"
+  aria-label="Accessibility Control Panel"
+>
+  <div class="flex items-center justify-between mb-5 border-b border-[#2A2522]/10 pb-3">
+    <h3 class="text-sm font-bold tracking-wider text-[#2A2522] uppercase">
+      Accessibility Options
+    </h3>
+    <button
+      class="text-[#8A817C] hover:text-[#2A2522] transition-colors text-xs"
+      (click)="togglePanel()"
+      aria-label="Close panel"
+    >
+      Close
+    </button>
+  </div>
+
+  <div class="flex flex-col gap-4">
+    <!-- Toggle 1: Enlarge Typography -->
+    <div class="flex items-center justify-between">
+      <label for="toggle-large-text" class="text-xs font-semibold tracking-wider text-[#4A4340] uppercase cursor-pointer select-none">
+        Enlarge Typography
+      </label>
+      <button
+        id="toggle-large-text"
+        role="switch"
+        [attr.aria-checked]="largeText"
+        class="toggle-switch relative w-10 h-6 bg-[#EEDFD2] rounded-full transition-colors duration-200 focus:outline-none"
+        [class.bg-[#E07A5F]]="largeText"
+        (click)="toggleLargeText()"
+      >
+        <span
+          class="toggle-slider absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform duration-200"
+          [class.translate-x-4]="largeText"
+        ></span>
+      </button>
+    </div>
+
+    <!-- Toggle 2: High Contrast Mode -->
+    <div class="flex items-center justify-between">
+      <label for="toggle-high-contrast" class="text-xs font-semibold tracking-wider text-[#4A4340] uppercase cursor-pointer select-none">
+        High Contrast Mode
+      </label>
+      <button
+        id="toggle-high-contrast"
+        role="switch"
+        [attr.aria-checked]="highContrast"
+        class="toggle-switch relative w-10 h-6 bg-[#EEDFD2] rounded-full transition-colors duration-200 focus:outline-none"
+        [class.bg-[#E07A5F]]="highContrast"
+        (click)="toggleHighContrast()"
+      >
+        <span
+          class="toggle-slider absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform duration-200"
+          [class.translate-x-4]="highContrast"
+        ></span>
+      </button>
+    </div>
+
+    <!-- Toggle 3: Target Tracking Cursor -->
+    <div class="flex items-center justify-between">
+      <label for="toggle-giant-cursor" class="text-xs font-semibold tracking-wider text-[#4A4340] uppercase cursor-pointer select-none">
+        Target Tracking Cursor
+      </label>
+      <button
+        id="toggle-giant-cursor"
+        role="switch"
+        [attr.aria-checked]="giantCursor"
+        class="toggle-switch relative w-10 h-6 bg-[#EEDFD2] rounded-full transition-colors duration-200 focus:outline-none"
+        [class.bg-[#E07A5F]]="giantCursor"
+        (click)="toggleGiantCursor()"
+      >
+        <span
+          class="toggle-slider absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform duration-200"
+          [class.translate-x-4]="giantCursor"
+        ></span>
+      </button>
+    </div>
+
+    <!-- Toggle 4: Stop Background Motion -->
+    <div class="flex items-center justify-between">
+      <label for="toggle-freeze-motion" class="text-xs font-semibold tracking-wider text-[#4A4340] uppercase cursor-pointer select-none">
+        Stop Background Motion
+      </label>
+      <button
+        id="toggle-freeze-motion"
+        role="switch"
+        [attr.aria-checked]="freezeMotion"
+        class="toggle-switch relative w-10 h-6 bg-[#EEDFD2] rounded-full transition-colors duration-200 focus:outline-none"
+        [class.bg-[#E07A5F]]="freezeMotion"
+        (click)="toggleFreezeMotion()"
+      >
+        <span
+          class="toggle-slider absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform duration-200"
+          [class.translate-x-4]="freezeMotion"
+        ></span>
+      </button>
+    </div>
+
+    <!-- Toggle 5: Dyslexia Reading Font -->
+    <div class="flex items-center justify-between">
+      <label for="toggle-dyslexia-font" class="text-xs font-semibold tracking-wider text-[#4A4340] uppercase cursor-pointer select-none">
+        Dyslexia Reading Font
+      </label>
+      <button
+        id="toggle-dyslexia-font"
+        role="switch"
+        [attr.aria-checked]="dyslexiaFont"
+        class="toggle-switch relative w-10 h-6 bg-[#EEDFD2] rounded-full transition-colors duration-200 focus:outline-none"
+        [class.bg-[#E07A5F]]="dyslexiaFont"
+        (click)="toggleDyslexiaFont()"
+      >
+        <span
+          class="toggle-slider absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform duration-200"
+          [class.translate-x-4]="dyslexiaFont"
+        ></span>
+      </button>
+    </div>
+
+    <!-- Toggle 6: Keyboard Focus Helper -->
+    <div class="flex items-center justify-between">
+      <label for="toggle-focus-aid" class="text-xs font-semibold tracking-wider text-[#4A4340] uppercase cursor-pointer select-none">
+        Keyboard Focus Helper
+      </label>
+      <button
+        id="toggle-focus-aid"
+        role="switch"
+        [attr.aria-checked]="focusAid"
+        class="toggle-switch relative w-10 h-6 bg-[#EEDFD2] rounded-full transition-colors duration-200 focus:outline-none"
+        [class.bg-[#E07A5F]]="focusAid"
+        (click)="toggleFocusAid()"
+      >
+        <span
+          class="toggle-slider absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform duration-200"
+          [class.translate-x-4]="focusAid"
+        ></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Reset Button -->
+  <button
+    class="reset-btn mt-6 w-full py-2.5 px-4 text-xs font-bold tracking-wider text-center uppercase border border-[#E07A5F] text-[#E07A5F] hover:bg-[#E07A5F] hover:text-white rounded-xl transition-all duration-300"
+    (click)="resetAll()"
+    aria-label="Reset all accessibility settings"
+  >
+    Reset All Settings
+  </button>
+</div>
