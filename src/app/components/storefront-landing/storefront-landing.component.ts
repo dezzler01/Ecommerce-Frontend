@@ -124,15 +124,8 @@ import { gsap } from 'gsap';
 
       <!-- Real scrollable footer at the bottom of the page (occupies normal flow, z-index 20) -->
       <footer class="relative z-20 w-full py-12 px-6 md:px-12 border-t border-[#2A2522]/5 bg-[#FBF9F6] text-[#8A817C] pointer-events-auto">
-        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 text-[9px] tracking-[0.2em] uppercase font-light text-left">
-          <!-- Col 1: Brand Info -->
-          <div>
-            <h4 class="font-bold text-[#2A2522] mb-4">Picks&amp;More</h4>
-            <p class="leading-relaxed text-xs lowercase tracking-normal">
-              A curated experience in modern luxury, handcrafted design, and premium organic materials.
-            </p>
-          </div>
-          <!-- Col 2: Collections -->
+        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 text-[9px] tracking-[0.2em] uppercase font-light text-left">
+          <!-- Col 1: Collections -->
           <div>
             <h4 class="font-bold text-[#2A2522] mb-4">Collections</h4>
             <ul class="flex flex-col gap-2">
@@ -141,7 +134,7 @@ import { gsap } from 'gsap';
               <li><a href="#mothers" class="hover:text-[#E07A5F] transition-colors">Maternity Luxe</a></li>
             </ul>
           </div>
-          <!-- Col 3: Assistance -->
+          <!-- Col 2: Assistance -->
           <div>
             <h4 class="font-bold text-[#2A2522] mb-4">Assistance</h4>
             <ul class="flex flex-col gap-2">
@@ -150,7 +143,7 @@ import { gsap } from 'gsap';
               <li><a href="#" class="hover:text-[#E07A5F] transition-colors">Size Guide</a></li>
             </ul>
           </div>
-          <!-- Col 4: Corporate -->
+          <!-- Col 3: Corporate -->
           <div>
             <h4 class="font-bold text-[#2A2522] mb-4">Corporate</h4>
             <ul class="flex flex-col gap-2">
@@ -161,7 +154,7 @@ import { gsap } from 'gsap';
           </div>
         </div>
         <div class="max-w-6xl mx-auto w-full pt-6 border-t border-[#2A2522]/5 text-center text-[10px] tracking-[0.2em]">
-          © {{ currentYear }} Picks&amp;More. All Rights Reserved.
+          © {{ currentYear }}. All Rights Reserved.
         </div>
       </footer>
     </div>
