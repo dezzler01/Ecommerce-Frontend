@@ -7,6 +7,7 @@ import { AuthService } from '../../services/auth.service';
 import { AlertService } from '../../services/alert.service';
 import { NotificationService } from '../../services/notification.service';
 import { Subscription } from 'rxjs';
+import { resolveImageUrl } from '../../core/utils/image-resolver';
 
 interface OrderItem {
   id: string;
@@ -911,7 +912,7 @@ import { AppImageUploaderComponent } from '../image-uploader/image-uploader.comp
                   <div class="flex items-center gap-3.5">
                     <!-- Brand Logo Wrapper -->
                     <div class="w-12 h-12 rounded-full overflow-hidden border border-[#2A2522]/10 bg-white p-1 flex items-center justify-center flex-shrink-0">
-                      <img [src]="brand.logoUrl" [alt]="brand.name" class="w-full h-full object-contain" />
+                      <img [src]="resolveImageUrl(brand.logoUrl)" [alt]="brand.name" class="w-full h-full object-contain" />
                     </div>
                     <div>
                       <h4 class="font-lexend text-sm font-semibold text-[#2A2522] tracking-wide">{{ brand.name }}</h4>
@@ -1368,8 +1369,8 @@ import { AppImageUploaderComponent } from '../image-uploader/image-uploader.comp
 
             <!-- Image Screenshot -->
             <div class="w-full aspect-[4/3] rounded-lg overflow-hidden border border-[#2A2522]/10 bg-[#2A2522]/5 relative group">
-              <img [src]="selectedOrder()?.walletVerification?.screenshotUrl" alt="Payment Screenshot" class="w-full h-full object-contain cursor-zoom-in"/>
-              <a [href]="selectedOrder()?.walletVerification?.screenshotUrl" target="_blank" class="absolute bottom-2 right-2 bg-[#2A2522]/80 text-white text-[9px] uppercase font-bold tracking-widest px-2.5 py-1 rounded transition-all opacity-0 group-hover:opacity-100 font-lexend">View Fullscreen</a>
+              <img [src]="resolveImageUrl(selectedOrder()?.walletVerification?.screenshotUrl)" alt="Payment Screenshot" class="w-full h-full object-contain cursor-zoom-in"/>
+              <a [href]="resolveImageUrl(selectedOrder()?.walletVerification?.screenshotUrl)" target="_blank" class="absolute bottom-2 right-2 bg-[#2A2522]/80 text-white text-[9px] uppercase font-bold tracking-widest px-2.5 py-1 rounded transition-all opacity-0 group-hover:opacity-100 font-lexend">View Fullscreen</a>
             </div>
 
             <!-- Audit Approve / Reject Controls -->
@@ -1765,6 +1766,7 @@ export class AdminOrdersBoardComponent implements OnInit, OnDestroy {
   private alertService = inject(AlertService);
   public notificationService = inject(NotificationService);
   private permissionsSubscription?: Subscription;
+  resolveImageUrl = resolveImageUrl;
 
   orders = signal<Order[]>([]);
   loading = signal<boolean>(true);

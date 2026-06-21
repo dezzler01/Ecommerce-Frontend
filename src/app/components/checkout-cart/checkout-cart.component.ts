@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { AuthService, GuestCheckoutContext } from '../../services/auth.service';
 import { CartService, CartItem } from '../../core/services/cart.service';
+import { resolveImageUrl } from '../../core/utils/image-resolver';
 
 @Component({
   selector: 'app-checkout-cart',
@@ -48,7 +49,7 @@ import { CartService, CartItem } from '../../core/services/cart.service';
               <div *ngIf="cartItems().length > 0" class="space-y-4">
                 <div *ngFor="let item of cartItems(); let idx = index" class="flex items-center gap-4 pb-4 border-b border-[#2A2522]/5 last:border-b-0 last:pb-0">
                   <div class="w-16 h-16 rounded-lg bg-[#2A2522]/5 overflow-hidden flex-shrink-0">
-                    <img *ngIf="item.imageUrl" [src]="item.imageUrl" [alt]="item.productName" class="w-full h-full object-cover"/>
+                    <img *ngIf="item.imageUrl" [src]="resolveImageUrl(item.imageUrl)" [alt]="item.productName" class="w-full h-full object-cover"/>
                   </div>
                   <div class="flex-1 min-w-0">
                     <h4 class="text-xs font-light text-[#2A2522] uppercase tracking-wide truncate">{{ item.productName }}</h4>
@@ -278,6 +279,7 @@ export class CheckoutCartComponent implements OnInit {
   private authService = inject(AuthService);
   private router = inject(Router);
   private cartService = inject(CartService);
+  resolveImageUrl = resolveImageUrl;
 
   // Cart Data Signals pointing directly to the unified CartService
   cartItems = this.cartService.cartItems;

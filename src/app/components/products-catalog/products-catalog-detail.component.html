@@ -93,7 +93,7 @@
               [class.active]="activeImageIndex() === i"
               class="thumbnail-btn"
             >
-              <img [src]="img.url" [alt]="img.altText || 'Product image ' + (i + 1)" />
+              <img [src]="resolveImageUrl(img.url)" [alt]="img.altText || 'Product image ' + (i + 1)" />
             </button>
           </div>
         </div>

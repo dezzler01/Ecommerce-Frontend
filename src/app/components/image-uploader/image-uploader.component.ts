@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MediaService } from '../../services/media.service';
+import { resolveImageUrl } from '../../core/utils/image-resolver';
 
 @Component({
   selector: 'app-image-uploader',
@@ -13,7 +14,7 @@ import { MediaService } from '../../services/media.service';
         [ngClass]="compact ? 'w-8 h-8 rounded' : 'w-16 h-16 rounded-xl'"
         class="relative border border-[#2A2522]/10 bg-white overflow-hidden flex items-center justify-center flex-shrink-0 shadow-sm transition-all duration-300"
       >
-        <img *ngIf="imageUrl" [src]="imageUrl" class="w-full h-full object-cover" />
+        <img *ngIf="imageUrl" [src]="resolveImageUrl(imageUrl)" class="w-full h-full object-cover" />
         <div *ngIf="!imageUrl" class="w-full h-full flex flex-col items-center justify-center text-[7px] text-[#8A817C] uppercase font-bold tracking-widest bg-gray-50 border-2 border-dashed border-[#2A2522]/10 select-none">
           No Img
         </div>
@@ -41,6 +42,7 @@ import { MediaService } from '../../services/media.service';
 })
 export class AppImageUploaderComponent {
   private mediaService = inject(MediaService);
+  resolveImageUrl = resolveImageUrl;
 
   @Input() imageUrl: string | null | undefined = null;
   @Input() label: string = 'Choose File';

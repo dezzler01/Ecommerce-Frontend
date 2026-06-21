@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { AuthService, UserProfile } from '../../services/auth.service';
 import { CartService } from '../../core/services/cart.service';
 import { gsap } from 'gsap';
+import { resolveImageUrl } from '../../core/utils/image-resolver';
 
 @Component({
   selector: 'app-navbar',
@@ -95,7 +96,7 @@ import { gsap } from 'gsap';
               <div *ngIf="cartItems().length > 0" class="space-y-3 mb-4 max-h-[220px] overflow-y-auto pr-1">
                 <div *ngFor="let item of latestItems()" class="flex items-center gap-3 pb-3 border-b border-white/5 last:border-b-0 last:pb-0">
                   <div class="w-10 h-10 rounded-lg bg-white/5 overflow-hidden flex-shrink-0 border border-white/5">
-                    <img *ngIf="item.imageUrl" [src]="item.imageUrl" [alt]="item.productName" class="w-full h-full object-cover"/>
+                    <img *ngIf="item.imageUrl" [src]="resolveImageUrl(item.imageUrl)" [alt]="item.productName" class="w-full h-full object-cover"/>
                     <div *ngIf="!item.imageUrl" class="w-full h-full flex items-center justify-center text-[7px] text-white/30 uppercase tracking-widest font-semibold bg-white/5">No img</div>
                   </div>
                   <div class="flex-1 min-w-0">
@@ -535,6 +536,7 @@ export class NavbarComponent implements AfterViewInit {
   private router = inject(Router);
   private platformId = inject(PLATFORM_ID);
   private cartService = inject(CartService);
+  resolveImageUrl = resolveImageUrl;
 
   // Cart properties wired to unified CartService
   cartCount = this.cartService.cartCount;

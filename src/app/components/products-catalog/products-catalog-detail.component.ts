@@ -7,6 +7,7 @@ import { CatalogService, ProductDto } from '../../core/services/catalog.service'
 import { CartService } from '../../core/services/cart.service';
 import { AuthService } from '../../services/auth.service';
 import { gsap } from 'gsap';
+import { resolveImageUrl } from '../../core/utils/image-resolver';
 
 @Component({
   selector: 'app-products-catalog-detail',
@@ -22,6 +23,7 @@ export class ProductsCatalogDetailComponent implements OnInit, AfterViewInit {
   private cartService = inject(CartService);
   private http = inject(HttpClient);
   authService = inject(AuthService);
+  resolveImageUrl = resolveImageUrl;
 
   @ViewChild('mainImage') mainImageRef!: ElementRef<HTMLImageElement>;
 
@@ -35,13 +37,16 @@ export class ProductsCatalogDetailComponent implements OnInit, AfterViewInit {
     const p = this.product();
     if (!p) return '';
     const images = p.imageUrls;
+    let url = '';
     if (images && images.length > 0) {
       const idx = this.activeImageIndex();
       if (idx >= 0 && idx < images.length) {
-        return images[idx].url;
+        url = images[idx].url;
       }
+    } else {
+      url = p.imageUrl || '';
     }
-    return p.imageUrl || '';
+    return resolveImageUrl(url);
   });
 
   selectImage(index: number): void {

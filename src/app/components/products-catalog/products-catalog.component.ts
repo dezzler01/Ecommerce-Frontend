@@ -10,6 +10,7 @@ import { gsap } from 'gsap';
 import { lastValueFrom } from 'rxjs';
 
 import { AppImageUploaderComponent } from '../image-uploader/image-uploader.component';
+import { resolveImageUrl } from '../../core/utils/image-resolver';
 
 @Component({
   selector: 'app-products-catalog',
@@ -466,7 +467,7 @@ import { AppImageUploaderComponent } from '../image-uploader/image-uploader.comp
             <div class="w-full aspect-video rounded-xl overflow-hidden bg-[#2A2522]/5 border border-[#2A2522]/5 relative flex-shrink-0 animate-fade-in">
               <img 
                 *ngIf="quickBuyProduct()?.imageUrl" 
-                [src]="quickBuyProduct()?.imageUrl" 
+                [src]="resolveImageUrl(quickBuyProduct()?.imageUrl)" 
                 [alt]="quickBuyProduct()?.title" 
                 class="w-full h-full object-cover"
               />
@@ -775,6 +776,22 @@ import { AppImageUploaderComponent } from '../image-uploader/image-uploader.comp
                   class="px-3 py-1.5 text-[9px] uppercase tracking-widest font-bold border rounded-lg transition-all"
                 >
                   {{ cat }}
+                </button>
+              </div>
+            </div>
+
+            <!-- Form Row: Collection Tag -->
+            <div class="space-y-1.5 animate-fade-in">
+              <label class="text-[8px] uppercase tracking-widest font-bold text-[#6B5E57] block">Collection Tag (Optional)</label>
+              <div class="flex flex-wrap gap-2 pt-1">
+                <button 
+                  *ngFor="let tag of ['Latest', 'Bestsellers', 'Featured', 'On Sale']"
+                  type="button"
+                  (click)="formCollectionType() === tag ? formCollectionType.set('') : formCollectionType.set(tag)"
+                  [ngClass]="formCollectionType() === tag ? 'active-pill' : 'inactive-pill'"
+                  class="px-3 py-1.5 text-[9px] uppercase tracking-widest font-bold border rounded-lg transition-all"
+                >
+                  {{ tag }}
                 </button>
               </div>
             </div>
@@ -1204,6 +1221,7 @@ export class ProductsCatalogComponent implements OnInit {
   private alertService = inject(AlertService);
   private route = inject(ActivatedRoute);
   private cartService = inject(CartService);
+  resolveImageUrl = resolveImageUrl;
 
   activeDropdown = signal<string | null>(null);
 
@@ -1765,6 +1783,7 @@ export class ProductsCatalogComponent implements OnInit {
   formValidationError = signal<string>('');
   formSubmitting = signal<boolean>(false);
   formBrandId = signal<string>('');
+  formCollectionType = signal<string>('');
 
   readonly subCategoryGuidMap: Record<string, string> = {
     'fashion': '11111111-1111-1111-1111-111111111111',
@@ -2147,6 +2166,7 @@ export class ProductsCatalogComponent implements OnInit {
       this.formIsFreeShipping.set(product.isFreeShipping || false);
       this.formFixedShippingPrice.set(product.fixedShippingPrice || null);
       this.formBrandId.set(product.brandId || '');
+      this.formCollectionType.set(product.collectionType || '');
     } else {
       // New product: show chooser step first
       this.adminFormStep.set('chooser');
@@ -2168,6 +2188,7 @@ export class ProductsCatalogComponent implements OnInit {
       this.formIsFreeShipping.set(false);
       this.formFixedShippingPrice.set(null);
       this.formBrandId.set('');
+      this.formCollectionType.set('');
     }
 
     this.isFormColorDropdownOpen.set(false);
@@ -2250,7 +2271,8 @@ export class ProductsCatalogComponent implements OnInit {
         overrideStandardShipping: this.formOverrideShipping(),
         isFreeShipping: this.formIsFreeShipping(),
         fixedShippingPrice: this.formFixedShippingPrice(),
-        brandId: this.formBrandId() || null
+        brandId: this.formBrandId() || null,
+        collectionType: this.formCollectionType() || null
       };
  
       this.catalogService.updateProduct(editId, updateData).subscribe({
@@ -2288,7 +2310,8 @@ export class ProductsCatalogComponent implements OnInit {
         overrideStandardShipping: this.formOverrideShipping(),
         isFreeShipping: this.formIsFreeShipping(),
         fixedShippingPrice: this.formFixedShippingPrice(),
-        brandId: this.formBrandId() || null
+        brandId: this.formBrandId() || null,
+        collectionType: this.formCollectionType() || null
       };
 
       this.catalogService.bulkAddProducts([createData]).subscribe({
@@ -2346,10 +2369,13 @@ export class ProductsCatalogComponent implements OnInit {
 
   getProductDisplayImage(product: ProductDto): string {
     const activeHovered = this.hoveredProduct();
+    let url = '';
     if (activeHovered && activeHovered.id === product.id && product.imageUrls && product.imageUrls.length > 0) {
-      return product.imageUrls[this.hoveredImageIndex()].url;
+      url = product.imageUrls[this.hoveredImageIndex()].url;
+    } else {
+      url = product.imageUrl || '';
     }
-    return product.imageUrl || '';
+    return this.resolveImageUrl(url);
   }
 
   favorites = signal<Set<string>>(new Set());

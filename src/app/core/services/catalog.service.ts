@@ -29,6 +29,7 @@ export interface ProductDto {
   imageUrl?: string;
   imageUrls: ProductImageDto[];
   age?: string;
+  collectionType?: string;
   categories: CategoryDto[];
   overrideStandardShipping?: boolean;
   isFreeShipping?: boolean;
