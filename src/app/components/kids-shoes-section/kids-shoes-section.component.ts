@@ -1,8 +1,10 @@
 import { 
   Component, 
-  OnInit 
+  OnInit,
+  inject
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { ProductService, ProductDto } from '../../services/product.service';
 
 @Component({
@@ -17,10 +19,10 @@ import { ProductService, ProductDto } from '../../services/product.service';
       <!-- Sleek department label at the top center/left (shifted down to clear navbar) -->
       <div class="max-w-6xl mx-auto w-full text-left pt-6 mt-16 relative z-10">
         <span class="tracking-widest font-mono text-[10px] md:text-xs uppercase font-semibold text-[#E07A5F] block mb-1">
-          DEPARTMENT / JUNIOR ACTIVE
+          DEPARTMENT / KIDS FOOTWEAR
         </span>
         <h2 class="text-2xl md:text-4xl font-extralight text-[#2A2522] tracking-wider uppercase leading-tight drop-shadow-[0_2px_10px_rgba(251,249,246,0.9)]">
-          Junior Active <span class="font-light italic text-[#8A817C]">&amp;</span> Play
+          Kids Active <span class="font-light italic text-[#8A817C]">&amp;</span> Play
         </h2>
       </div>
 
@@ -33,10 +35,10 @@ import { ProductService, ProductDto } from '../../services/product.service';
           <div class="flex flex-col justify-between md:col-span-2">
             <div>
               <span class="text-[9px] font-mono tracking-[0.2em] text-[#E07A5F] uppercase block mb-2 font-semibold">
-                01 / Junior Footwear
+                01 / Kids Shoes
               </span>
               <h3 class="text-lg font-light text-white tracking-wide uppercase mb-2">
-                {{ kidsSneakerProduct?.title || 'Junior Active Sneakers' }}
+                {{ kidsSneakerProduct?.title || 'Kids Active Sneakers' }}
               </h3>
               <p class="text-[11px] text-white/60 font-light leading-relaxed mb-4">
                 {{ kidsSneakerProduct?.description || 'Soft knit uppers and lightweight, high-traction soles designed to protect growing feet.' }}
@@ -44,8 +46,11 @@ import { ProductService, ProductDto } from '../../services/product.service';
             </div>
             <div class="flex justify-between items-center mt-2 pt-2 border-t border-white/5">
               <span class="text-xs font-mono text-white/90 font-semibold">\${{ kidsSneakerProduct?.price || '110' }}</span>
-              <button class="relative overflow-hidden px-6 py-2 bg-[#E07A5F] hover:bg-[#FBF9F6] text-[#FBF9F6] hover:text-[#2A2522] text-[9px] font-bold tracking-[0.15em] uppercase rounded transition-all duration-300 transform hover:-translate-y-0.5 group pointer-events-auto">
-                <span class="relative z-10 transition-colors duration-300 group-hover:text-[#2A2522]">Shop Junior</span>
+              <button 
+                (click)="shopJunior()"
+                class="relative overflow-hidden px-6 py-2 bg-[#E07A5F] hover:bg-[#FBF9F6] text-[#FBF9F6] hover:text-[#2A2522] text-[9px] font-bold tracking-[0.15em] uppercase rounded transition-all duration-300 transform hover:-translate-y-0.5 group pointer-events-auto cursor-pointer select-none"
+              >
+                <span class="relative z-10 transition-colors duration-300 group-hover:text-[#2A2522]">Shop Kids Shoes</span>
                 <span class="absolute inset-0 bg-[#FBF9F6] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-0"></span>
               </button>
             </div>
@@ -54,7 +59,7 @@ import { ProductService, ProductDto } from '../../services/product.service';
           <!-- HUD Section 2: Department info -->
           <div class="flex flex-col justify-center border-t md:border-t-0 md:border-l border-white/10 pt-6 md:pt-0 md:pl-8">
             <span class="text-[9px] font-mono tracking-[0.2em] text-[#E07A5F] uppercase block mb-3 font-semibold">
-              02 / Active Categories
+              02 / Kids Collections
             </span>
             <ul class="flex flex-col gap-2.5 text-[10px] text-white/85 font-light uppercase tracking-widest">
               <li *ngFor="let cat of categories" class="flex items-center gap-2">
@@ -73,21 +78,25 @@ import { ProductService, ProductDto } from '../../services/product.service';
       flex-direction: column;
       flex: 1 1 0%;
       min-height: 0;
+      width: 100%;
     }
   `]
 })
 export class KidsShoesSectionComponent implements OnInit {
-  categories = ["Active Play Sneakers", "Toddler Athletics", "Lightweight Runners"];
+  categories = ["Active Play Sneakers", "Toddler Play Clogs", "Infant Soft Shoes"];
   kidsSneakerProduct?: ProductDto;
+  
+  private router = inject(Router);
+  private productService = inject(ProductService);
 
-  constructor(
-    private productService: ProductService
-  ) {}
+  shopJunior() {
+    this.router.navigate(['/products'], { queryParams: { target: 'Kids', subcategory: 'shoes' } });
+  }
 
   ngOnInit(): void {
     this.productService.getProducts({ pageSize: 100 }).subscribe(res => {
       if (res.isSuccess && res.data && res.data.items) {
-        this.kidsSneakerProduct = res.data.items.find(p => p.mainCategory === 'Kids');
+        this.kidsSneakerProduct = res.data.items.find(p => p.mainCategory?.toLowerCase() === 'kids' && (p.subCategory?.toLowerCase() === 'kids boys' || p.title.toLowerCase().includes('sneaker')));
       }
     });
   }

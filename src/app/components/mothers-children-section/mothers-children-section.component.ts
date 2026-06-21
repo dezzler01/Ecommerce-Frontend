@@ -1,8 +1,10 @@
 import { 
   Component, 
-  OnInit 
+  OnInit,
+  inject
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { ProductService, ProductDto } from '../../services/product.service';
 
 @Component({
@@ -44,7 +46,10 @@ import { ProductService, ProductDto } from '../../services/product.service';
             </div>
             <div class="flex justify-between items-center mt-2 pt-2 border-t border-white/5">
               <span class="text-xs font-mono text-white/90 font-semibold">\${{ diaperBagProduct?.price || '290' }}</span>
-              <button class="relative overflow-hidden px-6 py-2 bg-[#E07A5F] hover:bg-[#FBF9F6] text-[#FBF9F6] hover:text-[#2A2522] text-[9px] font-bold tracking-[0.15em] uppercase rounded transition-all duration-300 transform hover:-translate-y-0.5 group pointer-events-auto">
+              <button 
+                (click)="configureBags()"
+                class="relative overflow-hidden px-6 py-2 bg-[#E07A5F] hover:bg-[#FBF9F6] text-[#FBF9F6] hover:text-[#2A2522] text-[9px] font-bold tracking-[0.15em] uppercase rounded transition-all duration-300 transform hover:-translate-y-0.5 group pointer-events-auto cursor-pointer"
+              >
                 <span class="relative z-10 transition-colors duration-300 group-hover:text-[#2A2522]">Configure</span>
                 <span class="absolute inset-0 bg-[#FBF9F6] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-0"></span>
               </button>
@@ -73,21 +78,25 @@ import { ProductService, ProductDto } from '../../services/product.service';
       flex-direction: column;
       flex: 1 1 0%;
       min-height: 0;
+      width: 100%;
     }
   `]
 })
 export class MothersChildrenSectionComponent implements OnInit {
   categories = ["Newborn Essentials", "Leather Stroller Bags", "Maternity Luxe"];
   diaperBagProduct?: ProductDto;
+  
+  private router = inject(Router);
+  private productService = inject(ProductService);
 
-  constructor(
-    private productService: ProductService
-  ) {}
+  configureBags() {
+    this.router.navigate(['/products'], { queryParams: { target: 'Kids', subcategory: 'baby needs' } });
+  }
 
   ngOnInit(): void {
     this.productService.getProducts({ pageSize: 100 }).subscribe(res => {
       if (res.isSuccess && res.data && res.data.items) {
-        this.diaperBagProduct = res.data.items.find(p => p.subCategory === 'DiaperBags');
+        this.diaperBagProduct = res.data.items.find(p => p.subCategory?.toLowerCase() === 'baby needs');
       }
     });
   }

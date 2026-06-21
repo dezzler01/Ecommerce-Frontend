@@ -1584,6 +1584,11 @@ export class ProductsCatalogComponent implements OnInit {
         if (subCatTarget !== 'All' && p.mainCategory.toLowerCase() !== subCatTarget.toLowerCase()) {
           return false;
         }
+        // Special mapping: if target is Kids and subCat is 'shoes', filter kids products that are shoes!
+        if (subCatTarget.toLowerCase() === 'kids' && subCat.toLowerCase() === 'shoes') {
+          const titleLower = p.title.toLowerCase();
+          return titleLower.includes('sneaker') || titleLower.includes('shoe') || titleLower.includes('clog') || titleLower.includes('heel');
+        }
         if (p.categories && p.categories.length > 0) {
           return p.categories.some(c => c.name.toLowerCase() === subCat.toLowerCase());
         }
@@ -1809,7 +1814,11 @@ export class ProductsCatalogComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       const target = params['target'] || 'All';
       this.targetAudience.set(target);
-      this.selectedSubCategory.set('All');
+      
+      const subCat = params['subcategory'] || 'All';
+      this.selectedSubCategory.set(subCat);
+      this.selectedSubCategoryTarget.set(subCat === 'All' ? 'All' : target);
+
       if (target === 'Women') {
         this.selectedAge.set('All');
       }

@@ -3,14 +3,13 @@ import {
   OnInit 
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { ProductService, ProductDto } from '../../services/product.service';
-
-
 
 @Component({
   selector: 'app-bags-shoes-section',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   template: `
     <section
       id="women"
@@ -37,13 +36,13 @@ import { ProductService, ProductDto } from '../../services/product.service';
           class="backdrop-blur-xl bg-[#110F0E]/70 p-8 md:p-10 rounded-2xl shadow-2xl shadow-black/35 hover:shadow-[#E07A5F]/5 transition-all duration-500 w-full md:w-[380px] self-start md:self-center text-left"
         >
           <span class="tracking-widest font-mono text-[10px] md:text-xs uppercase font-semibold text-[#E07A5F] block mb-3">
-            WOMEN'S LUXURY ACCESSORIES / 01
+            WOMEN'S LUXURY BAGS / 01
           </span>
           <h3 class="text-2xl md:text-3xl font-extralight text-white tracking-wide mb-4 uppercase leading-tight">
             {{ bagProduct?.title || 'Sculpted Leather Handbag' }}
           </h3>
           
-          <div *ngIf="bagProduct" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-white/10 bg-white/5 text-[10px] text-white/90 uppercase tracking-[0.15em] font-semibold mb-6">
+          <div *ngIf="bagProduct" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border/10 bg-white/5 text-[10px] text-white/90 uppercase tracking-[0.15em] font-semibold mb-6">
             \${{ bagProduct.price }}
           </div>
           
@@ -52,10 +51,10 @@ import { ProductService, ProductDto } from '../../services/product.service';
           </p>
           
           <div class="flex gap-4">
-            <button class="relative overflow-hidden px-8 py-3.5 bg-[#E07A5F] hover:bg-[#FBF9F6] text-[#FBF9F6] hover:text-[#2A2522] text-[10px] font-bold tracking-[0.2em] uppercase rounded-lg transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg shadow-black/20 group pointer-events-auto">
-              <span class="relative z-10 transition-colors duration-300 group-hover:text-[#2A2522]">Explore Collection</span>
+            <a [routerLink]="['/products']" [queryParams]="{ target: 'Women', subcategory: 'bags' }" class="relative overflow-hidden px-8 py-3.5 bg-[#E07A5F] hover:bg-[#FBF9F6] text-[#FBF9F6] hover:text-[#2A2522] text-[10px] font-bold tracking-[0.2em] uppercase rounded-lg transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg shadow-black/20 group pointer-events-auto select-none">
+              <span class="relative z-10 transition-colors duration-300 group-hover:text-[#2A2522]">Explore Bags</span>
               <span class="absolute inset-0 bg-[#FBF9F6] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-0"></span>
-            </button>
+            </a>
           </div>
         </div>
 
@@ -65,7 +64,7 @@ import { ProductService, ProductDto } from '../../services/product.service';
           class="backdrop-blur-xl bg-[#110F0E]/70 p-8 md:p-10 rounded-2xl shadow-2xl shadow-black/35 hover:shadow-[#E07A5F]/5 transition-all duration-500 w-full md:w-[330px] self-end md:self-center md:mt-24 text-left pointer-events-auto"
         >
           <span class="tracking-widest font-mono text-[10px] md:text-xs uppercase font-semibold text-[#E07A5F] block mb-3">
-            WOMEN'S COUTURE FOOTWEAR / 02
+            WOMEN'S DESIGNER SHOES / 02
           </span>
           <h3 class="text-2xl md:text-3xl font-extralight text-white tracking-wide mb-4 uppercase leading-tight">
             {{ heelProduct?.title || 'Stiletto Heels' }}
@@ -80,10 +79,10 @@ import { ProductService, ProductDto } from '../../services/product.service';
           </p>
           
           <div class="flex gap-4">
-            <button class="relative py-2 text-[10px] font-bold tracking-[0.2em] uppercase text-white group transition-colors">
-              <span class="relative z-10 transition-colors duration-300 group-hover:text-[#E07A5F]">Discover Fits</span>
+            <a [routerLink]="['/products']" [queryParams]="{ target: 'Women', subcategory: 'shoes' }" class="relative py-2 text-[10px] font-bold tracking-[0.2em] uppercase text-white group transition-colors select-none">
+              <span class="relative z-10 transition-colors duration-300 group-hover:text-[#E07A5F]">Shop Shoes</span>
               <span class="absolute bottom-0 left-0 w-full h-[1px] bg-[#E07A5F] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"></span>
-            </button>
+            </a>
           </div>
         </div>
       </div>
@@ -109,8 +108,8 @@ export class BagsShoesSectionComponent implements OnInit {
   ngOnInit(): void {
     this.productService.getProducts({ pageSize: 100 }).subscribe(res => {
       if (res.isSuccess && res.data && res.data.items) {
-        this.bagProduct = res.data.items.find(p => p.subCategory === 'Bags');
-        this.heelProduct = res.data.items.find(p => p.subCategory === 'Shoes' && p.mainCategory === 'Women');
+        this.bagProduct = res.data.items.find(p => p.subCategory?.toLowerCase() === 'bags');
+        this.heelProduct = res.data.items.find(p => p.subCategory?.toLowerCase() === 'shoes' && p.mainCategory?.toLowerCase() === 'women');
       }
     });
   }

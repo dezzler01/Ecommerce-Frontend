@@ -1,8 +1,10 @@
 import { 
   Component, 
-  OnInit 
+  OnInit,
+  inject
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { ProductService } from '../../services/product.service';
 
 @Component({
@@ -31,7 +33,10 @@ import { ProductService } from '../../services/product.service';
             Sculpted fabrics and flowing textures designed to embrace movement. Our silk organza gowns and asymmetric knitwear are meticulously tailored for the modern woman who demands sophistication.
           </p>
           <div class="pointer-events-auto">
-            <button class="relative overflow-hidden px-8 py-3.5 bg-[#2A2522] hover:bg-[#E07A5F] text-[#FBF9F6] text-xs font-bold tracking-[0.2em] uppercase rounded-lg transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg shadow-black/10 group">
+            <button 
+              (click)="exploreApparel()"
+              class="relative overflow-hidden px-8 py-3.5 bg-[#2A2522] hover:bg-[#E07A5F] text-[#FBF9F6] text-xs font-bold tracking-[0.2em] uppercase rounded-lg transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg shadow-black/10 group cursor-pointer"
+            >
               <span class="relative z-10 transition-colors duration-300">Explore Apparel</span>
               <span class="absolute inset-0 bg-[#E07A5F] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-0"></span>
             </button>
@@ -74,15 +79,18 @@ import { ProductService } from '../../services/product.service';
 export class ClothingSectionComponent implements OnInit {
   categories = ["Prêt-à-Porter", "Evening Gowns", "Silk Slips", "Linen Sets"];
   cards: any[] = [];
+  
+  private router = inject(Router);
+  private productService = inject(ProductService);
 
-  constructor(
-    private productService: ProductService
-  ) {}
+  exploreApparel() {
+    this.router.navigate(['/products'], { queryParams: { target: 'Women', subcategory: 'fashion' } });
+  }
 
   ngOnInit(): void {
     this.productService.getProducts({ pageSize: 100 }).subscribe(res => {
       if (res.isSuccess && res.data && res.data.items) {
-        const clothes = res.data.items.filter(p => p.subCategory === 'Clothes');
+        const clothes = res.data.items.filter(p => p.subCategory?.toLowerCase() === 'fashion');
         if (clothes.length > 0) {
           this.cards = clothes.map(p => {
             let categoryName = 'Apparel';
