@@ -596,17 +596,99 @@ import { AppImageUploaderComponent } from '../image-uploader/image-uploader.comp
           class="fixed inset-0 bg-[#2A2522]/10 backdrop-blur-[3px] pointer-events-auto cursor-pointer"
         ></div>
 
-        <!-- Frosted Glass Configurator Sheet -->
-        <div class="quick-buy-sheet admin-product-sheet pointer-events-auto max-w-[450px] w-full">
+        <!-- ========== STEP 1: Category Chooser ========== -->
+        <div *ngIf="adminFormStep() === 'chooser'" class="admin-product-sheet admin-chooser-sheet pointer-events-auto max-w-[480px] w-full">
           <!-- Header -->
           <div class="flex justify-between items-center border-b border-[#2A2522]/10 pb-4 flex-shrink-0">
             <div>
               <span class="tracking-widest font-mono text-[9px] uppercase font-bold text-[#E07A5F] block mb-1">
-                Storefront Management
+                New Product
               </span>
-              <h3 class="text-base font-serif-luxury font-light text-[#2A2522] tracking-wider uppercase truncate">
-                {{ editingProductId() ? 'Edit Product' : 'Create Product' }}
+              <h3 class="text-base font-serif-luxury font-light text-[#2A2522] tracking-wider uppercase">
+                Choose Collection
               </h3>
+            </div>
+            <button (click)="closeAdminProductModal()" class="text-[#2A2522]/40 hover:text-[#E07A5F] text-sm p-1.5 transition-colors">
+              ✕
+            </button>
+          </div>
+
+          <!-- Chooser Cards -->
+          <div class="py-6 space-y-4">
+            <p class="text-[10px] uppercase tracking-widest text-[#6B5E57] font-light text-center mb-2">
+              Select the collection for your new product
+            </p>
+            <div class="grid grid-cols-2 gap-4">
+              <!-- Women Card -->
+              <button 
+                type="button"
+                (click)="selectCategoryAndProceed('Women')"
+                class="category-chooser-card group"
+              >
+                <div class="category-chooser-img-wrapper">
+                  <img src="/products/banner_women.png" alt="Women Collection" class="category-chooser-img" />
+                  <div class="category-chooser-img-overlay"></div>
+                </div>
+                <div class="category-chooser-info">
+                  <span class="category-chooser-icon">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                    </svg>
+                  </span>
+                  <span class="category-chooser-title">Women</span>
+                  <span class="category-chooser-subtitle">Fashion · Pajama · Bags · Shoes</span>
+                  <span class="category-chooser-arrow">→</span>
+                </div>
+              </button>
+
+              <!-- Kids Card -->
+              <button 
+                type="button"
+                (click)="selectCategoryAndProceed('Kids')"
+                class="category-chooser-card group"
+              >
+                <div class="category-chooser-img-wrapper">
+                  <img src="/products/banner_kids.png" alt="Kids Collection" class="category-chooser-img" />
+                  <div class="category-chooser-img-overlay"></div>
+                </div>
+                <div class="category-chooser-info">
+                  <span class="category-chooser-icon">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                    </svg>
+                  </span>
+                  <span class="category-chooser-title">Kids</span>
+                  <span class="category-chooser-subtitle">Boys · Girls · Unisex · Baby</span>
+                  <span class="category-chooser-arrow">→</span>
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========== STEP 2: Product Form ========== -->
+        <div *ngIf="adminFormStep() === 'form'" class="quick-buy-sheet admin-product-sheet pointer-events-auto max-w-[450px] w-full">
+          <!-- Header -->
+          <div class="flex justify-between items-center border-b border-[#2A2522]/10 pb-4 flex-shrink-0">
+            <div class="flex items-center gap-3">
+              <!-- Back button for new products -->
+              <button 
+                *ngIf="!editingProductId()"
+                (click)="adminFormStep.set('chooser')"
+                class="text-[#2A2522]/40 hover:text-[#E07A5F] text-sm p-1 transition-colors rounded-md hover:bg-[#E07A5F]/5"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                </svg>
+              </button>
+              <div>
+                <span class="tracking-widest font-mono text-[9px] uppercase font-bold text-[#E07A5F] block mb-1">
+                  {{ editingProductId() ? 'Storefront Management' : formMainCategory() + ' Collection' }}
+                </span>
+                <h3 class="text-base font-serif-luxury font-light text-[#2A2522] tracking-wider uppercase truncate">
+                  {{ editingProductId() ? 'Edit Product' : 'Create Product' }}
+                </h3>
+              </div>
             </div>
             <button (click)="closeAdminProductModal()" class="text-[#2A2522]/40 hover:text-[#E07A5F] text-sm p-1.5 transition-colors">
               ✕
@@ -618,6 +700,14 @@ import { AppImageUploaderComponent } from '../image-uploader/image-uploader.comp
             <!-- Validation Error -->
             <div *ngIf="formValidationError()" class="p-3 bg-red-50 border border-red-200 text-red-500 text-xs rounded-xl">
               {{ formValidationError() }}
+            </div>
+
+            <!-- Selected Collection Badge (for new products) -->
+            <div *ngIf="!editingProductId()" class="flex items-center gap-2 mb-1">
+              <span class="px-2.5 py-1 text-[9px] uppercase tracking-widest font-bold rounded-lg border" 
+                [ngClass]="formMainCategory() === 'Women' ? 'bg-[#E07A5F]/10 text-[#E07A5F] border-[#E07A5F]/20' : 'bg-[#B84F7D]/10 text-[#B84F7D] border-[#B84F7D]/20'">
+                {{ formMainCategory() }} Collection
+              </span>
             </div>
 
             <!-- Form Row: Title -->
@@ -644,9 +734,9 @@ import { AppImageUploaderComponent } from '../image-uploader/image-uploader.comp
               ></textarea>
             </div>
 
-            <!-- Form Row: Main Category & Age -->
+            <!-- Form Row: Main Category & Age (for editing, or hidden category display for new) -->
             <div class="grid grid-cols-2 gap-4">
-              <div class="space-y-1">
+              <div class="space-y-1" *ngIf="editingProductId()">
                 <label class="text-[8px] uppercase tracking-widest font-bold text-[#6B5E57] block">Collection Type *</label>
                 <select 
                   [ngModel]="formMainCategory()" 
@@ -1651,6 +1741,7 @@ export class ProductsCatalogComponent implements OnInit {
 
   // Admin Form States
   isAdminModalOpen = signal<boolean>(false);
+  adminFormStep = signal<'chooser' | 'form'>('chooser');
   editingProductId = signal<string | null>(null);
   formTitle = signal<string>('');
   formDescription = signal<string>('');
@@ -2013,11 +2104,29 @@ export class ProductsCatalogComponent implements OnInit {
     }
   }
 
+  selectCategoryAndProceed(category: string): void {
+    this.formMainCategory.set(category);
+    this.formSelectedSubCategories.set([]);
+    this.adminFormStep.set('form');
+
+    setTimeout(() => {
+      const scrollableElements = document.querySelectorAll('.admin-product-sheet, .admin-product-sheet .overflow-y-auto');
+      scrollableElements.forEach(el => el.scrollTop = 0);
+
+      gsap.fromTo('.admin-product-sheet', 
+        { x: '40px', opacity: 0 }, 
+        { x: '0px', opacity: 1, duration: 0.4, ease: 'power3.out' }
+      );
+    }, 50);
+  }
+
   openAdminProductModal(product: ProductDto | null, event: Event): void {
     event.stopPropagation();
     this.formValidationError.set('');
     
     if (product) {
+      // Editing: skip chooser, go straight to form
+      this.adminFormStep.set('form');
       this.editingProductId.set(product.id);
       this.formTitle.set(product.title);
       this.formDescription.set(product.description);
@@ -2039,6 +2148,8 @@ export class ProductsCatalogComponent implements OnInit {
       this.formFixedShippingPrice.set(product.fixedShippingPrice || null);
       this.formBrandId.set(product.brandId || '');
     } else {
+      // New product: show chooser step first
+      this.adminFormStep.set('chooser');
       this.editingProductId.set(null);
       this.formTitle.set('');
       this.formDescription.set('');
@@ -2064,10 +2175,11 @@ export class ProductsCatalogComponent implements OnInit {
     this.isAdminModalOpen.set(true);
 
     setTimeout(() => {
-      const scrollableElements = document.querySelectorAll('.admin-product-sheet, .admin-product-sheet .overflow-y-auto');
+      const targetSheet = product ? '.admin-product-sheet' : '.admin-chooser-sheet';
+      const scrollableElements = document.querySelectorAll(targetSheet + ', ' + targetSheet + ' .overflow-y-auto');
       scrollableElements.forEach(el => el.scrollTop = 0);
 
-      gsap.fromTo('.admin-product-sheet', 
+      gsap.fromTo(targetSheet, 
         { y: '40px', opacity: 0 }, 
         { y: '0px', opacity: 1, duration: 0.5, ease: 'power3.out' }
       );
