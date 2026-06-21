@@ -172,7 +172,7 @@ export class LoginComponent {
 
   // Form Group definitions
   authForm = this.fb.group({
-    fullName: ['', [Validators.required, Validators.minLength(3)]],
+    fullName: ['', []], // Clear validators initially as component starts in Login mode
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, passwordValidator]]
   });
@@ -195,8 +195,14 @@ export class LoginComponent {
 
   closeModal() {
     this.authService.showLoginModal.set(false);
+    this.isRegister.set(false);
     this.message.set('');
     this.authForm.reset();
+    
+    // Clear name validators since we default back to login mode on close
+    const nameControl = this.authForm.get('fullName');
+    nameControl?.clearValidators();
+    nameControl?.updateValueAndValidity();
   }
 
   isFieldInvalid(name: string): boolean {
