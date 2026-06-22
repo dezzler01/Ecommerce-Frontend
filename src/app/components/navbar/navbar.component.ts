@@ -47,7 +47,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
           </div>
 
           <!-- Core Catalog Links -->
-          <nav [ngClass]="showScrolledState ? 'drop-shadow-[0_1px_2px_rgba(251,249,246,0.9)]' : 'drop-shadow-[0_1px_2px_rgba(26,24,22,0.45)]'" class="flex gap-6 text-[9px] font-extrabold uppercase tracking-[0.2em] items-center transition-all">
+          <nav [ngClass]="showScrolledState ? 'drop-shadow-[0_1px_2px_rgba(251,249,246,0.9)]' : 'drop-shadow-[0_1px_2px_rgba(26,24,22,0.45)]'" class="hidden md:flex gap-6 text-[9px] font-extrabold uppercase tracking-[0.2em] items-center transition-all">
             <a [routerLink]="['/']" [ngClass]="linkClass('/')" class="transition-colors relative group py-1">
               Home
               <span class="absolute bottom-0 left-0 w-full h-[1px] nav-line-gradient transition-transform duration-300 origin-left" [ngClass]="isLinkActive('/') ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'"></span>
@@ -144,11 +144,11 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                   {{ getUserInitials(user.username) }}
                 </div>
                 <!-- Username -->
-                <span [ngClass]="showScrolledState ? 'text-[#4A4340]' : 'text-[#FBF9F6]/90'" class="font-bold tracking-[0.05em] text-[9.5px] transition-colors duration-300">
+                <span [ngClass]="showScrolledState ? 'text-[#4A4340]' : 'text-[#FBF9F6]/90'" class="hidden sm:inline font-bold tracking-[0.05em] text-[9.5px] transition-colors duration-300">
                   {{ user.username }}
                 </span>
                 <!-- Caret Down Icon -->
-                <svg [ngClass]="showScrolledState ? 'text-[#4A4340]/60' : 'text-[#FBF9F6]/60'" class="w-2.5 h-2.5 transition-transform duration-300 dropdown-arrow" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg [ngClass]="showScrolledState ? 'text-[#4A4340]/60' : 'text-[#FBF9F6]/60'" class="hidden sm:block w-2.5 h-2.5 transition-transform duration-300 dropdown-arrow" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                 </svg>
               </div>
@@ -205,14 +205,117 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
             <button 
               (click)="authService.showLoginModal.set(true)" 
               [ngClass]="showScrolledState ? 'nav-link-scrolled' : 'nav-link-transparent'" 
-              class="font-extrabold uppercase tracking-[0.2em] text-[9px] transition-colors"
+              class="hidden sm:block font-extrabold uppercase tracking-[0.2em] text-[9px] transition-colors"
             >
               Sign In
             </button>
           </ng-template>
+
+          <!-- Hamburger Toggle Button -->
+          <button 
+            (click)="isMobileMenuOpen.set(!isMobileMenuOpen())"
+            [ngClass]="showScrolledState ? 'text-[#2A2522]' : 'text-[#FBF9F6]'"
+            class="md:hidden relative z-50 flex items-center justify-center w-8 h-8 focus:outline-none pointer-events-auto transition-colors duration-300 ml-2"
+          >
+            <span class="sr-only">Toggle Menu</span>
+            <div class="flex flex-col justify-between w-4.5 h-3 transform transition-all duration-300">
+              <span [ngClass]="isMobileMenuOpen() ? 'rotate-45 translate-y-[5px]' : ''" class="w-full h-[1.5px] bg-current transform transition-all duration-300 origin-center"></span>
+              <span [ngClass]="isMobileMenuOpen() ? '-rotate-45 -translate-y-[5.5px]' : ''" class="w-full h-[1.5px] bg-current transform transition-all duration-300 origin-center"></span>
+            </div>
+          </button>
         </div>
       </div>
     </header>
+
+    <!-- Mobile Menu Drawer Overlay -->
+    <div 
+      (click)="isMobileMenuOpen.set(false)"
+      [ngClass]="isMobileMenuOpen() ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'"
+      class="fixed inset-0 z-40 bg-[#1A1816]/40 backdrop-blur-sm md:hidden transition-opacity duration-300"
+    ></div>
+
+    <!-- Mobile Menu Drawer Content -->
+    <div 
+      [ngClass]="isMobileMenuOpen() ? 'translate-x-0 shadow-2xl' : 'translate-x-full'"
+      class="fixed top-0 right-0 bottom-0 z-50 w-[280px] max-w-[85vw] bg-[#FDFBF9]/95 backdrop-blur-xl border-l border-[#2A2522]/10 md:hidden flex flex-col p-6 transition-transform duration-500 ease-out z-50 pointer-events-auto"
+    >
+      <!-- Close button and header -->
+      <div class="h-16 flex items-center justify-between border-b border-[#2A2522]/5 pb-4 mb-6">
+        <span class="text-[10px] font-mono tracking-widest text-[#E07A5F] uppercase font-bold">Catalog Navigation</span>
+        <button (click)="isMobileMenuOpen.set(false)" class="text-[#8A817C] hover:text-[#E07A5F] text-xs p-1 transition-colors">
+          ✕
+        </button>
+      </div>
+
+      <!-- Vertical Catalog Routes -->
+      <nav class="flex flex-col gap-6 text-[10px] font-extrabold uppercase tracking-[0.25em] text-left">
+        <a [routerLink]="['/']" (click)="isMobileMenuOpen.set(false)" [ngClass]="isLinkActive('/') ? 'text-[#E07A5F]' : 'text-[#2A2522]'" class="transition-colors py-1 block">
+          Home
+        </a>
+        <a [routerLink]="['/products']" [queryParams]="{ target: 'Women' }" (click)="isMobileMenuOpen.set(false)" [ngClass]="isLinkActive('/products', 'Women') ? 'text-[#E07A5F]' : 'text-[#2A2522]'" class="transition-colors py-1 block">
+          WOMEN collection
+        </a>
+        <a [routerLink]="['/products']" [queryParams]="{ target: 'Kids' }" (click)="isMobileMenuOpen.set(false)" [ngClass]="isLinkActive('/products', 'Kids') ? 'text-[#E07A5F]' : 'text-[#2A2522]'" class="transition-colors py-1 block">
+          Kids collection
+        </a>
+        <a [routerLink]="['/products']" [queryParams]="{ target: 'All' }" (click)="isMobileMenuOpen.set(false)" [ngClass]="isLinkActive('/products', 'All') ? 'text-[#E07A5F]' : 'text-[#2A2522]'" class="transition-colors py-1 block">
+          ALL COLLECTIONS
+        </a>
+        <a [routerLink]="['/cart']" (click)="isMobileMenuOpen.set(false)" [ngClass]="isLinkActive('/cart') ? 'text-[#E07A5F]' : 'text-[#2A2522]'" class="transition-colors py-1 block flex items-center justify-between">
+          <span>My Bag ({{ cartCount() }})</span>
+          <span class="w-4 h-4 rounded-full bg-[#FF0055] text-[7.5px] font-bold text-white flex items-center justify-center border border-white/10" *ngIf="cartCount() > 0">
+            {{ cartCount() }}
+          </span>
+        </a>
+      </nav>
+
+      <!-- Bottom Session Settings/Profile -->
+      <div class="mt-auto border-t border-[#2A2522]/5 pt-6 space-y-4 text-left">
+        <ng-container *ngIf="authService.currentUser() as user; else guestMobileNav">
+          <div class="flex items-center gap-3">
+            <div class="h-7 w-7 rounded-full bg-gradient-to-tr from-[#E07A5F] to-[#B84F7D] flex items-center justify-center text-[10px] font-black text-white uppercase shadow-sm">
+              {{ getUserInitials(user.username) }}
+            </div>
+            <div class="flex flex-col min-w-0">
+              <span class="text-[10.5px] font-bold text-[#2A2522] truncate">{{ user.username }}</span>
+              <span class="text-[7.5px] font-mono tracking-widest text-[#8A817C] uppercase">{{ user.role || 'Patron' }}</span>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <a 
+              *ngIf="showAdminLink()"
+              [routerLink]="['/admin/dashboard']"
+              (click)="isMobileMenuOpen.set(false)"
+              class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-[#2A2522]/70 hover:text-[#2A2522] hover:bg-[#2A2522]/5 text-[9px] uppercase tracking-wider font-semibold transition-all text-left"
+            >
+              Store Dashboard
+            </a>
+            <button 
+              (click)="isMobileMenuOpen.set(false); openSettingsModal()" 
+              class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-[#2A2522]/70 hover:text-[#2A2522] hover:bg-[#2A2522]/5 text-[9px] uppercase tracking-wider font-semibold transition-all text-left"
+            >
+              Profile Settings
+            </button>
+            <button 
+              (click)="isMobileMenuOpen.set(false); authService.logout()" 
+              class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-red-500 hover:bg-red-500/5 text-[9px] uppercase tracking-wider font-semibold transition-all text-left"
+            >
+              Logout
+            </button>
+          </div>
+        </ng-container>
+        
+        <ng-template #guestMobileNav>
+          <button 
+            (click)="isMobileMenuOpen.set(false); authService.showLoginModal.set(true)" 
+            class="w-full py-2.5 bg-[#2A2522] hover:bg-[#E07A5F] text-[#FBF9F6] text-[10px] font-bold uppercase tracking-[0.2em] rounded-xl transition-all"
+          >
+            Sign In
+          </button>
+        </ng-template>
+      </div>
+    </div>
 
     <!-- Premium Profile Settings Glassmorphic Modal -->
     <div 
@@ -543,6 +646,7 @@ export class NavbarComponent implements AfterViewInit {
   cartItems = this.cartService.cartItems;
   subtotal = this.cartService.subtotal;
   animateBadge = signal(false);
+  isMobileMenuOpen = signal<boolean>(false);
 
   // Profile Settings Signals
   showSettingsModal = signal(false);

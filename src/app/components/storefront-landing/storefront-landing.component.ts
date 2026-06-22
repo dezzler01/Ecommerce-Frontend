@@ -9,6 +9,7 @@ import { ClothingSectionComponent } from '../clothing-section/clothing-section.c
 import { KidsShoesSectionComponent } from '../kids-shoes-section/kids-shoes-section.component';
 import { MothersChildrenSectionComponent } from '../mothers-children-section/mothers-children-section.component';
 import { CatalogService, Brand } from '../../core/services/catalog.service';
+import { AlertService } from '../../services/alert.service';
 import { gsap } from 'gsap';
 
 @Component({
@@ -92,7 +93,7 @@ import { gsap } from 'gsap';
 
       <!-- Real scrollable footer at the bottom of the page (occupies normal flow, z-index 20) -->
       <footer class="relative z-20 w-full py-12 px-6 md:px-12 border-t border-[#2A2522]/5 bg-[#FBF9F6] text-[#8A817C] pointer-events-auto">
-        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-12 text-[9px] tracking-[0.2em] uppercase font-light text-left">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-12 text-[9px] tracking-[0.2em] uppercase font-light text-left">
           <!-- Col 1: Collections -->
           <div>
             <h4 class="font-bold text-[#2A2522] mb-4">Collections</h4>
@@ -107,17 +108,17 @@ import { gsap } from 'gsap';
             <h4 class="font-bold text-[#2A2522] mb-4">Assistance</h4>
             <ul class="flex flex-col gap-2.5">
               <li><button (click)="openTrackOrderModal($event)" class="hover:text-[#E07A5F] transition-colors text-left bg-transparent border-none p-0 outline-none uppercase tracking-[0.2em] font-light text-[9px] cursor-pointer">Track My Order</button></li>
-              <li><a href="#" class="hover:text-[#E07A5F] transition-colors">Shipping &amp; Returns</a></li>
-              <li><a href="#" class="hover:text-[#E07A5F] transition-colors">Size Guide</a></li>
+              <li><a href="#" (click)="openStaticFallback($event, 'Shipping & Returns')" class="hover:text-[#E07A5F] transition-colors">Shipping &amp; Returns</a></li>
+              <li><a href="#" (click)="openStaticFallback($event, 'Size Guide')" class="hover:text-[#E07A5F] transition-colors">Size Guide</a></li>
             </ul>
           </div>
           <!-- Col 3: Corporate -->
           <div>
             <h4 class="font-bold text-[#2A2522] mb-4">Corporate</h4>
             <ul class="flex flex-col gap-2.5">
-              <li><a href="#" class="hover:text-[#E07A5F] transition-colors">Our Story</a></li>
-              <li><a href="#" class="hover:text-[#E07A5F] transition-colors">Sustainability</a></li>
-              <li><a href="#" class="hover:text-[#E07A5F] transition-colors">Careers</a></li>
+              <li><a href="#" (click)="openStaticFallback($event, 'Our Story')" class="hover:text-[#E07A5F] transition-colors">Our Story</a></li>
+              <li><a href="#" (click)="openStaticFallback($event, 'Sustainability')" class="hover:text-[#E07A5F] transition-colors">Sustainability</a></li>
+              <li><a href="#" (click)="openStaticFallback($event, 'Careers')" class="hover:text-[#E07A5F] transition-colors">Careers</a></li>
             </ul>
           </div>
           <!-- Col 4: Social & Connect -->
@@ -154,10 +155,10 @@ import { gsap } from 'gsap';
 
         <div class="max-w-6xl mx-auto w-full pt-8 border-t border-[#2A2522]/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] tracking-[0.2em] text-[#8A817C]">
           <div>© {{ currentYear }}. All Rights Reserved.</div>
-          <div class="flex gap-6 uppercase text-[8px] tracking-widest font-mono">
-            <a href="#" class="hover:text-[#E07A5F] transition-colors">Privacy Policy</a>
-            <a href="#" class="hover:text-[#E07A5F] transition-colors">Terms of Service</a>
-            <a href="#" class="hover:text-[#E07A5F] transition-colors">Cookies</a>
+          <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 uppercase text-[8px] tracking-widest font-mono">
+            <a href="#" (click)="openStaticFallback($event, 'Privacy Policy')" class="hover:text-[#E07A5F] transition-colors">Privacy Policy</a>
+            <a href="#" (click)="openStaticFallback($event, 'Terms of Service')" class="hover:text-[#E07A5F] transition-colors">Terms of Service</a>
+            <a href="#" (click)="openStaticFallback($event, 'Cookie Policy')" class="hover:text-[#E07A5F] transition-colors">Cookies</a>
           </div>
         </div>
       </footer>
@@ -352,10 +353,21 @@ export class StorefrontLandingComponent implements OnInit {
   private platformId = inject(PLATFORM_ID);
   private catalogService = inject(CatalogService);
   private router = inject(Router);
+  private alertService = inject(AlertService);
   experienceLoaded = false;
   currentYear = new Date().getFullYear();
   currentSection = 0;
   featuredBrands = signal<Brand[]>([]);
+
+  openStaticFallback(event: Event, pageName: string) {
+    event.preventDefault();
+    this.alertService.showAlert({
+      title: pageName,
+      message: `The ${pageName} page is currently under development. Our luxury curation team is finalizing this brand experience to ensure perfection. Please check back shortly.`,
+      type: 'info',
+      confirmText: 'Understood'
+    });
+  }
 
   isTrackOrderModalOpen = signal<boolean>(false);
   trackOrderId = '';
