@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -33,10 +33,11 @@ function passwordValidator(control: AbstractControl): ValidationErrors | null {
         <!-- Left Cinematic Pane -->
         <div class="hidden md:block w-1/2 relative bg-black select-none pointer-events-none">
           <video 
+            #loginVideo
             src="/logo_reveal.mp4" 
             autoplay 
             loop 
-            muted 
+            [muted]="true"
             playsinline 
             class="absolute inset-0 w-full h-full object-cover"
           ></video>
@@ -207,10 +208,21 @@ function passwordValidator(control: AbstractControl): ValidationErrors | null {
     }
   `]
 })
-export class LoginComponent {
+export class LoginComponent implements AfterViewInit {
   authService = inject(AuthService);
   private fb = inject(FormBuilder);
   private router = inject(Router);
+
+  @ViewChild('loginVideo') loginVideoRef!: ElementRef<HTMLVideoElement>;
+
+  ngAfterViewInit(): void {
+    // Force mute programmatically — some browsers ignore the HTML muted attribute
+    const vid = this.loginVideoRef?.nativeElement;
+    if (vid) {
+      vid.muted = true;
+      vid.volume = 0;
+    }
+  }
 
   // Constants
   readonly CUSTOMER_ROLE_ID = 'c3b07384-d113-40e1-a3f2-861f2113d077';
