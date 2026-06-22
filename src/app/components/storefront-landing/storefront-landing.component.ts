@@ -154,29 +154,8 @@ import { gsap } from 'gsap';
             </div>
           </div>
 
-          <!-- Tier 2: Premium Newsletter Block -->
-          <div class="border-t border-b border-white/5 py-8 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="text-left max-w-md">
-              <h5 class="text-[10px] font-bold text-[#FAF6F0] tracking-[0.25em] uppercase mb-1">Newsletter Subscription</h5>
-              <p class="text-[9px] text-[#FAF6F0]/50 tracking-wider lowercase normal-case">Be the first to receive updates on seasonal catalog drops, editorial highlights, and VIP-only events.</p>
-            </div>
-            <div class="w-full md:w-auto flex flex-col sm:flex-row gap-3">
-              <input 
-                type="email" 
-                placeholder="Email Address" 
-                class="px-4 py-2.5 bg-white/5 border border-white/10 text-white placeholder-white/30 text-[10px] rounded-lg tracking-widest focus:outline-none focus:border-[#E07A5F] transition-all min-w-[240px] uppercase font-mono"
-              />
-              <button 
-                (click)="openStaticFallback($event, 'Newsletter Subscription')"
-                class="px-6 py-2.5 bg-[#E07A5F] hover:bg-[#F38E75] text-[#12100E] text-[9px] font-extrabold uppercase tracking-[0.2em] rounded-lg transition-all shadow-[0_0_12px_rgba(224,122,95,0.2)] active:scale-95 duration-300"
-              >
-                Subscribe
-              </button>
-            </div>
-          </div>
-
           <!-- Tier 3: Social & Connect + Legal & Copyright -->
-          <div class="flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] tracking-[0.2em] text-[#FAF6F0]/50 font-light border-t border-white/0 pt-2">
+          <div class="flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] tracking-[0.2em] text-[#FAF6F0]/50 font-light border-t border-white/5 pt-8">
             <!-- Copyright & Social Icons -->
             <div class="flex flex-col sm:flex-row items-center gap-6">
               <div>© {{ currentYear }} picks&amp;more. All Rights Reserved.</div>
