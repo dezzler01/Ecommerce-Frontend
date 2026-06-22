@@ -445,13 +445,13 @@ import { AppImageUploaderComponent } from '../image-uploader/image-uploader.comp
                     </span>
                   </td>
                   <td class="py-4 px-6 text-right" (click)="$event.stopPropagation()">
-                    <a 
-                      [href]="'http://localhost:5153/api/admin/orders/' + order.id + '/shipping-label'" 
-                      target="_blank"
-                      class="text-[10px] uppercase font-bold tracking-widest text-[#1F85A0] hover:underline"
+                    <button
+                      type="button"
+                      (click)="printShippingLabel(order.id)"
+                      class="text-[10px] uppercase font-bold tracking-widest text-[#1F85A0] hover:underline cursor-pointer bg-transparent border-none p-0"
                     >
                       Label
-                    </a>
+                    </button>
                   </td>
                 </tr>
               </tbody>
@@ -1416,13 +1416,13 @@ import { AppImageUploaderComponent } from '../image-uploader/image-uploader.comp
             >
               Mark Returned (Failed)
             </button>
-            <a 
-              [href]="'http://localhost:5153/api/admin/orders/' + selectedOrder()?.id + '/shipping-label'" 
-              target="_blank"
-              class="py-2.5 bg-[#1F85A0] hover:bg-[#1F85A0]/80 text-white text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all text-center block"
+            <button
+              type="button"
+              (click)="printShippingLabel(selectedOrder()?.id)"
+              class="py-2.5 bg-[#1F85A0] hover:bg-[#1F85A0]/80 text-white text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all text-center block w-full cursor-pointer"
             >
               Print Shipping Label
-            </a>
+            </button>
           </div>
         </div>
 
@@ -1767,6 +1767,37 @@ export class AdminOrdersBoardComponent implements OnInit, OnDestroy {
   public notificationService = inject(NotificationService);
   private permissionsSubscription?: Subscription;
   resolveImageUrl = resolveImageUrl;
+
+  printShippingLabel(orderId: string | undefined): void {
+    if (!orderId) return;
+    const token = localStorage.getItem('auth_token');
+    if (!token) {
+      this.alertService.showAlert({ title: 'Auth Error', message: 'You must be logged in to print shipping labels.', type: 'error', confirmText: 'OK' });
+      return;
+    }
+    this.http.get(`http://localhost:5153/api/admin/orders/${orderId}/shipping-label`, {
+      headers: { Authorization: `Bearer ${token}` },
+      responseType: 'text'
+    }).subscribe({
+      next: (html) => {
+        const blob = new Blob([html], { type: 'text/html' });
+        const url  = URL.createObjectURL(blob);
+        const win  = window.open(url, '_blank');
+        // Auto-revoke the blob URL after the window loads
+        if (win) {
+          win.addEventListener('load', () => URL.revokeObjectURL(url), { once: true });
+        }
+      },
+      error: (err) => {
+        this.alertService.showAlert({
+          title: 'Label Error',
+          message: err.status === 401 ? 'Session expired. Please log in again.' : 'Could not load shipping label. Please try again.',
+          type: 'error',
+          confirmText: 'OK'
+        });
+      }
+    });
+  }
 
   orders = signal<Order[]>([]);
   loading = signal<boolean>(true);
