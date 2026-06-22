@@ -209,4 +209,8 @@ export class CatalogService {
   deleteBrand(id: string): Observable<ApiResponse<boolean>> {
     return this.http.delete<ApiResponse<boolean>>(`http://localhost:5153/api/admin/brands/${id}`);
   }
+
+  trackOrder(orderId: string): Observable<ApiResponse<any>> {
+    return this.http.get<ApiResponse<any>>(`http://localhost:5153/api/orders/track/${orderId}`);
+  }
 }

@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild, ElementRef, AfterViewInit, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { Component, inject, ViewChild, ElementRef, AfterViewInit, OnDestroy, PLATFORM_ID, HostListener } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -198,4 +198,28 @@ export class AppComponent implements AfterViewInit, OnDestroy {
 
     this.animationFrameId = requestAnimationFrame(this.updateCursor);
   };
+
+  @HostListener('window:keydown', ['$event'])
+  handleSpacebarScroll(event: KeyboardEvent): void {
+    if (event.key === ' ' || event.code === 'Space') {
+      const activeEl = document.activeElement as HTMLElement;
+      if (activeEl && (
+        activeEl.tagName === 'INPUT' || 
+        activeEl.tagName === 'TEXTAREA' || 
+        activeEl.tagName === 'SELECT' ||
+        activeEl.contentEditable === 'true'
+      )) {
+        return;
+      }
+
+      event.preventDefault();
+      const direction = event.shiftKey ? -1 : 1;
+      const scrollAmount = window.innerHeight * 0.7 * direction;
+      
+      window.scrollBy({
+        top: scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  }
 }

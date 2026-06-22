@@ -1,6 +1,7 @@
 import { Component, inject, PLATFORM_ID, AfterViewInit, OnInit, signal } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { VideoScrollCanvasComponent } from '../video-scroll-canvas/video-scroll-canvas.component';
 import { WelcomeSectionComponent } from '../welcome-section/welcome-section.component';
 import { BagsShoesSectionComponent } from '../bags-shoes-section/bags-shoes-section.component';
@@ -16,6 +17,7 @@ import { gsap } from 'gsap';
   imports: [
     CommonModule,
     RouterModule,
+    FormsModule,
     VideoScrollCanvasComponent,
     WelcomeSectionComponent,
     BagsShoesSectionComponent,
@@ -95,17 +97,17 @@ import { gsap } from 'gsap';
           <div>
             <h4 class="font-bold text-[#2A2522] mb-4">Collections</h4>
             <ul class="flex flex-col gap-2.5">
-              <li><a href="#women" class="hover:text-[#E07A5F] transition-colors">Women's Accessories</a></li>
-              <li><a href="#clothing" class="hover:text-[#E07A5F] transition-colors">Premium Apparel</a></li>
-              <li><a href="#mothers" class="hover:text-[#E07A5F] transition-colors">Maternity Luxe</a></li>
+              <li><a [routerLink]="['/products']" [queryParams]="{ target: 'Women', subcategory: 'bags' }" class="hover:text-[#E07A5F] transition-colors">Women's Accessories</a></li>
+              <li><a [routerLink]="['/products']" [queryParams]="{ target: 'Women', subcategory: 'fashion' }" class="hover:text-[#E07A5F] transition-colors">Premium Apparel</a></li>
+              <li><a [routerLink]="['/products']" [queryParams]="{ target: 'Kids', subcategory: 'baby needs' }" class="hover:text-[#E07A5F] transition-colors">Maternity Luxe</a></li>
             </ul>
           </div>
           <!-- Col 2: Assistance -->
           <div>
             <h4 class="font-bold text-[#2A2522] mb-4">Assistance</h4>
             <ul class="flex flex-col gap-2.5">
-              <li><a href="#" class="hover:text-[#E07A5F] transition-colors">Customer Support</a></li>
-              <li><a href="#" class="hover:text-[#E07A5F] transition-colors">Shipping & Returns</a></li>
+              <li><button (click)="openTrackOrderModal($event)" class="hover:text-[#E07A5F] transition-colors text-left bg-transparent border-none p-0 outline-none uppercase tracking-[0.2em] font-light text-[9px] cursor-pointer">Track My Order</button></li>
+              <li><a href="#" class="hover:text-[#E07A5F] transition-colors">Shipping &amp; Returns</a></li>
               <li><a href="#" class="hover:text-[#E07A5F] transition-colors">Size Guide</a></li>
             </ul>
           </div>
@@ -150,28 +152,6 @@ import { gsap } from 'gsap';
           </div>
         </div>
 
-        <!-- Advanced Footer Newsletter Section -->
-        <div class="max-w-6xl mx-auto w-full pt-8 pb-4 border-t border-[#2A2522]/5 flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-8">
-          <div class="space-y-2">
-            <h4 class="font-bold text-[#2A2522] text-[9px] tracking-[0.2em] uppercase">Newsletter Subscription</h4>
-            <p class="leading-relaxed text-[11px] lowercase tracking-normal text-[#8A817C] max-w-sm">
-              subscribe to receive notices of private sales, new collections, and bespoke designs.
-            </p>
-          </div>
-          <div class="relative w-full max-w-[320px]">
-            <input 
-              type="email" 
-              placeholder="enter your email address" 
-              class="w-full bg-[#FAF6F0] border border-[#2A2522]/15 rounded-md py-3 pl-4 pr-12 text-xs text-[#2A2522] placeholder-[#8A817C]/60 tracking-wider focus:outline-none"
-            />
-            <button class="absolute right-0 top-0 h-full px-4 text-[#2A2522] hover:text-[#E07A5F] transition-colors duration-300">
-              <svg class="w-4 h-4 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
-              </svg>
-            </button>
-          </div>
-        </div>
-
         <div class="max-w-6xl mx-auto w-full pt-8 border-t border-[#2A2522]/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] tracking-[0.2em] text-[#8A817C]">
           <div>© {{ currentYear }}. All Rights Reserved.</div>
           <div class="flex gap-6 uppercase text-[8px] tracking-widest font-mono">
@@ -181,6 +161,190 @@ import { gsap } from 'gsap';
           </div>
         </div>
       </footer>
+
+      <!-- Premium Glassmorphic Live Order Tracking Modal -->
+      <div *ngIf="isTrackOrderModalOpen()" class="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fade-in pointer-events-auto">
+        <!-- Backdrop Layer -->
+        <div 
+          (click)="closeTrackOrderModal()" 
+          class="fixed inset-0 bg-[#2A2522]/15 backdrop-blur-[4px] cursor-pointer"
+        ></div>
+
+        <!-- Frosted Glass Modal Sheet -->
+        <div class="relative w-full max-w-lg bg-[#FAF6F0]/85 backdrop-blur-xl border border-[#2A2522]/10 p-6 md:p-8 rounded-2xl flex flex-col space-y-5 max-h-[85vh] overflow-y-auto custom-scrollbar shadow-2xl z-10 text-left">
+          <!-- Close Button -->
+          <button (click)="closeTrackOrderModal()" class="absolute top-4 right-4 text-[#2A2522]/40 hover:text-[#E07A5F] text-sm p-1.5 transition-colors cursor-pointer">
+            ✕
+          </button>
+
+          <!-- Header -->
+          <div class="border-b border-[#2A2522]/10 pb-3">
+            <span class="tracking-widest font-mono text-[9px] uppercase font-bold text-[#E07A5F] block mb-1">
+              Active Logistics Pipeline
+            </span>
+            <h3 class="text-base font-serif-luxury font-light text-[#2A2522] tracking-wider uppercase">
+              Track Your Order
+            </h3>
+          </div>
+
+          <!-- Input query row -->
+          <div class="space-y-2">
+            <label class="text-[8px] uppercase tracking-widest font-bold text-[#6B5E57] block">Order Reference ID (GUID) *</label>
+            <div class="flex gap-2">
+              <input 
+                type="text" 
+                [(ngModel)]="trackOrderId" 
+                (ngModelChange)="trackingError.set('')"
+                placeholder="E.g. d3b07384-d113-40e1-a3f2-861f2113d077" 
+                class="flex-1 px-3 py-2 bg-white/70 border border-[#2A2522]/10 rounded-lg text-xs text-[#2A2522] focus:outline-none focus:border-[#E07A5F] transition-all"
+              />
+              <button 
+                (click)="trackOrder()" 
+                [disabled]="trackingLoading()"
+                class="px-5 py-2 bg-[#2A2522] hover:bg-[#E07A5F] text-[#FBF9F6] text-[9px] font-bold uppercase tracking-widest rounded-lg transition-all disabled:opacity-50 cursor-pointer"
+              >
+                {{ trackingLoading() ? 'Querying...' : 'Query' }}
+              </button>
+            </div>
+            <p *ngIf="trackingError()" class="text-[9px] text-red-500 font-semibold tracking-wide uppercase mt-1">
+              {{ trackingError() }}
+            </p>
+          </div>
+
+          <!-- Spinner -->
+          <div *ngIf="trackingLoading()" class="flex flex-col items-center py-6 justify-center space-y-2">
+            <div class="w-6 h-6 border-2 border-[#E07A5F]/20 border-t-[#E07A5F] rounded-full animate-spin"></div>
+            <span class="text-[9px] uppercase tracking-wider text-[#6B5E57] font-light">Querying Live Hub...</span>
+          </div>
+
+          <!-- Order Status & Stepper Info -->
+          <div *ngIf="!trackingLoading() && trackedOrder()" class="space-y-5 pt-2 animate-fade-in">
+            <!-- Stepper UI -->
+            <div class="space-y-3">
+              <h4 class="text-[8px] uppercase tracking-widest font-bold text-[#E07A5F]">Logistics Status</h4>
+              <div class="flex justify-between items-center relative py-2">
+                <!-- Progress Line -->
+                <div class="absolute left-0 right-0 top-1/2 h-[2px] bg-[#2A2522]/10 -translate-y-1/2 z-0"></div>
+                <!-- Active Progress Line -->
+                <div 
+                  [ngStyle]="{
+                    'width': getStepPercentage(trackedOrder().orderStatus)
+                  }"
+                  class="absolute left-0 top-1/2 h-[2px] bg-[#E07A5F] -translate-y-1/2 z-0 transition-all duration-700"
+                ></div>
+
+                <!-- Step 1: Pending -->
+                <div class="flex flex-col items-center z-10">
+                  <div 
+                    [ngClass]="{
+                      'bg-[#E07A5F] text-white border-[#E07A5F]': isStepActive(trackedOrder().orderStatus, 0),
+                      'bg-white text-[#6B5E57] border-[#2A2522]/10': !isStepActive(trackedOrder().orderStatus, 0)
+                    }"
+                    class="w-5 h-5 rounded-full border flex items-center justify-center text-[8px] font-bold transition-colors duration-300"
+                  >
+                    1
+                  </div>
+                  <span class="text-[7px] uppercase tracking-wider mt-1 text-center font-medium max-w-[60px] text-[#2A2522]">Pending Verification</span>
+                </div>
+
+                <!-- Step 2: Confirmed -->
+                <div class="flex flex-col items-center z-10">
+                  <div 
+                    [ngClass]="{
+                      'bg-[#E07A5F] text-white border-[#E07A5F]': isStepActive(trackedOrder().orderStatus, 1),
+                      'bg-white text-[#6B5E57] border-[#2A2522]/10': !isStepActive(trackedOrder().orderStatus, 1)
+                    }"
+                    class="w-5 h-5 rounded-full border flex items-center justify-center text-[8px] font-bold transition-colors duration-300"
+                  >
+                    2
+                  </div>
+                  <span class="text-[7px] uppercase tracking-wider mt-1 text-center font-medium max-w-[60px] text-[#2A2522]">Preparing Order</span>
+                </div>
+
+                <!-- Step 3: Out For Delivery -->
+                <div class="flex flex-col items-center z-10">
+                  <div 
+                    [ngClass]="{
+                      'bg-[#E07A5F] text-white border-[#E07A5F]': isStepActive(trackedOrder().orderStatus, 2),
+                      'bg-white text-[#6B5E57] border-[#2A2522]/10': !isStepActive(trackedOrder().orderStatus, 2)
+                    }"
+                    class="w-5 h-5 rounded-full border flex items-center justify-center text-[8px] font-bold transition-colors duration-300"
+                  >
+                    3
+                  </div>
+                  <span class="text-[7px] uppercase tracking-wider mt-1 text-center font-medium max-w-[60px] text-[#2A2522]">Out For Delivery</span>
+                </div>
+
+                <!-- Step 4: Delivered -->
+                <div class="flex flex-col items-center z-10">
+                  <div 
+                    [ngClass]="{
+                      'bg-[#E07A5F] text-white border-[#E07A5F]': isStepActive(trackedOrder().orderStatus, 3),
+                      'bg-white text-[#6B5E57] border-[#2A2522]/10': !isStepActive(trackedOrder().orderStatus, 3)
+                    }"
+                    class="w-5 h-5 rounded-full border flex items-center justify-center text-[8px] font-bold transition-colors duration-300"
+                  >
+                    4
+                  </div>
+                  <span class="text-[7px] uppercase tracking-wider mt-1 text-center font-medium max-w-[60px] text-[#2A2522]">Delivered</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Rejected banner -->
+            <div *ngIf="trackedOrder().orderStatus === 'ReturnedRejected'" class="p-3 bg-red-50 border border-red-200 text-red-500 rounded-xl text-[10px] uppercase font-bold tracking-widest text-center">
+              ⚠ Order Rejected or Returned
+            </div>
+
+            <!-- Meta details -->
+            <div class="grid grid-cols-2 gap-4 bg-white/45 p-4 rounded-xl border border-[#2A2522]/5 text-[9px] tracking-widest uppercase text-[#6B5E57]">
+              <div>
+                <span class="opacity-60 block mb-0.5">Order Date</span>
+                <span class="font-bold text-[#2A2522]">{{ trackedOrder().orderDate | date:'medium' }}</span>
+              </div>
+              <div>
+                <span class="opacity-60 block mb-0.5">Payment Method</span>
+                <span class="font-bold text-[#2A2522]">{{ trackedOrder().paymentMethod }}</span>
+              </div>
+              <div>
+                <span class="opacity-60 block mb-0.5">Shipment Target</span>
+                <span class="font-bold text-[#2A2522]">{{ trackedOrder().shippingAddress.fullName }}</span>
+              </div>
+              <div>
+                <span class="opacity-60 block mb-0.5">Contact Phone</span>
+                <span class="font-bold text-[#2A2522]">{{ trackedOrder().shippingAddress.phoneNumber }}</span>
+              </div>
+              <div class="col-span-2">
+                <span class="opacity-60 block mb-0.5">Destination Address</span>
+                <span class="font-bold text-[#2A2522]">{{ trackedOrder().shippingAddress.street }}, {{ trackedOrder().shippingAddress.city }}, {{ trackedOrder().shippingAddress.governorate }}</span>
+              </div>
+            </div>
+
+            <!-- Purchased items -->
+            <div class="space-y-2">
+              <h4 class="text-[8px] uppercase tracking-widest font-bold text-[#E07A5F]">Items Secured</h4>
+              <div class="max-h-[150px] overflow-y-auto custom-scrollbar border border-[#2A2522]/5 rounded-xl divide-y divide-[#2A2522]/5 bg-white/45">
+                <div *ngFor="let item of trackedOrder().items" class="p-3 flex justify-between items-center text-[9px] uppercase tracking-widest text-[#2A2522]">
+                  <div class="flex flex-col gap-0.5">
+                    <span class="font-bold">{{ item.productTitle || 'Premium Boutique Specimen' }}</span>
+                    <span class="text-[7px] text-[#6B5E57] font-normal">Qty: {{ item.quantity }} × LE {{ item.unitPrice | number:'1.2-2' }}</span>
+                  </div>
+                  <span class="font-mono font-bold">LE {{ (item.quantity * item.unitPrice) | number:'1.2-2' }}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Totals row -->
+            <div class="flex justify-between items-center border-t border-[#2A2522]/10 pt-3 text-[10px] uppercase tracking-widest text-[#2A2522]">
+              <div class="flex flex-col gap-0.5">
+                <span class="opacity-70 text-[8px]">Including LE {{ trackedOrder().shippingCost | number:'1.2-2' }} shipping</span>
+                <span class="font-bold">Total Valuation</span>
+              </div>
+              <span class="font-mono text-base font-bold text-[#E07A5F]">LE {{ trackedOrder().totalPrice | number:'1.2-2' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   `
 })
@@ -192,6 +356,80 @@ export class StorefrontLandingComponent implements OnInit {
   currentYear = new Date().getFullYear();
   currentSection = 0;
   featuredBrands = signal<Brand[]>([]);
+
+  isTrackOrderModalOpen = signal<boolean>(false);
+  trackOrderId = '';
+  trackedOrder = signal<any>(null);
+  trackingError = signal<string>('');
+  trackingLoading = signal<boolean>(false);
+
+  openTrackOrderModal(event: Event) {
+    event.preventDefault();
+    this.trackOrderId = '';
+    this.trackedOrder.set(null);
+    this.trackingError.set('');
+    this.trackingLoading.set(false);
+    this.isTrackOrderModalOpen.set(true);
+  }
+
+  closeTrackOrderModal() {
+    this.isTrackOrderModalOpen.set(false);
+  }
+
+  trackOrder() {
+    const id = this.trackOrderId.trim();
+    if (!id) {
+      this.trackingError.set('Please enter an Order reference ID.');
+      return;
+    }
+
+    const guidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
+    if (!guidRegex.test(id)) {
+      this.trackingError.set('Please enter a valid 36-character Order ID (GUID).');
+      return;
+    }
+
+    this.trackingError.set('');
+    this.trackingLoading.set(true);
+    this.trackedOrder.set(null);
+
+    this.catalogService.trackOrder(id).subscribe({
+      next: (res) => {
+        if (res.isSuccess && res.data) {
+          this.trackedOrder.set(res.data);
+        } else {
+          this.trackingError.set(res.message || 'Unable to find order. Please verify the reference ID.');
+        }
+        this.trackingLoading.set(false);
+      },
+      error: (err) => {
+        this.trackingError.set(err.error?.message || 'Order not found. Please verify the reference ID.');
+        this.trackingLoading.set(false);
+      }
+    });
+  }
+
+  isStepActive(status: string, stepIndex: number): boolean {
+    const statusMap: Record<string, number> = {
+      'PendingVerification': 0,
+      'ConfirmedPreparing': 1,
+      'OutForDelivery': 2,
+      'Delivered': 3
+    };
+    if (status === 'ReturnedRejected') return false;
+    const currentStep = statusMap[status] ?? 0;
+    return currentStep >= stepIndex;
+  }
+
+  getStepPercentage(status: string): string {
+    const statusMap: Record<string, string> = {
+      'PendingVerification': '0%',
+      'ConfirmedPreparing': '33%',
+      'OutForDelivery': '66%',
+      'Delivered': '100%'
+    };
+    return statusMap[status] ?? '0%';
+  }
 
   ngOnInit() {
     this.catalogService.getBrands().subscribe({
