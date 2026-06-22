@@ -1,4 +1,5 @@
-import { Component, OnInit, inject, signal, computed, HostListener } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, inject, signal, computed, HostListener, ViewChild, ElementRef, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -430,15 +431,14 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
           </div>
         </div>
 
-        <!-- Load More Button -->
-        <div *ngIf="currentPage() < totalPages()" class="flex justify-center mt-12 mb-6">
-          <button 
-            type="button"
-            (click)="loadMore()"
-            class="px-8 py-3.5 bg-[#2A2522] hover:bg-[#E07A5F] text-[#FBF9F6] text-[10px] font-semibold tracking-[0.2em] uppercase rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform active:scale-95"
-          >
-            Load More Pieces
-          </button>
+        <!-- Infinite Scroll Sentinel + Loading Indicator -->
+        <div #scrollAnchor class="w-full h-1"></div>
+        <div *ngIf="loadingMore()" class="flex flex-col items-center justify-center py-10 gap-3">
+          <div class="w-7 h-7 border-2 border-[#E07A5F]/20 border-t-[#E07A5F] rounded-full animate-spin"></div>
+          <span class="text-[9px] uppercase tracking-[0.2em] text-[#6B5E57] font-light">Loading more pieces...</span>
+        </div>
+        <div *ngIf="!loadingMore() && currentPage() >= totalPages() && products().length > 0" class="flex justify-center py-8">
+          <span class="text-[9px] uppercase tracking-[0.2em] text-[#2A2522]/30 font-light">— All {{ totalProducts() }} pieces displayed —</span>
         </div>
 
       </div>
@@ -1225,13 +1225,17 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
   `,
   styleUrl: './products-catalog.component.css'
 })
-export class ProductsCatalogComponent implements OnInit {
+export class ProductsCatalogComponent implements OnInit, AfterViewInit, OnDestroy {
   private catalogService = inject(CatalogService);
   public authService = inject(AuthService);
   private alertService = inject(AlertService);
   private route = inject(ActivatedRoute);
   private cartService = inject(CartService);
+  private platformId = inject(PLATFORM_ID);
   resolveImageUrl = resolveImageUrl;
+
+  @ViewChild('scrollAnchor') scrollAnchorRef!: ElementRef<HTMLDivElement>;
+  private scrollObserver?: IntersectionObserver;
 
   activeDropdown = signal<string | null>(null);
 
@@ -1968,7 +1972,8 @@ export class ProductsCatalogComponent implements OnInit {
 
   activeMatrixTag = signal<string>('All');
   currentPage = signal<number>(1);
-  pageSize = 12;
+  pageSize = 20;
+  loadingMore = signal<boolean>(false);
   totalPages = signal<number>(1);
   totalProducts = signal<number>(0);
 
@@ -2007,9 +2012,9 @@ export class ProductsCatalogComponent implements OnInit {
                 } else if (p.title.includes('Dress') || p.title.includes('Slip') || p.title.includes('Gown')) {
                   newUrl = '/products/casual_dress_2.png';
                 } else if (p.title.includes('Heels')) {
-                  newUrl = '/products/handbag.png'; // fallback to demonstrate different visual item
+                  newUrl = '/products/handbag.png';
                 } else if (p.title.includes('Sneakers')) {
-                  newUrl = '/products/baby_clogs.png'; // kids shoe alternative
+                  newUrl = '/products/baby_clogs.png';
                 }
                 return { ...img, url: newUrl };
               });
@@ -2029,18 +2034,43 @@ export class ProductsCatalogComponent implements OnInit {
           }
         }
         this.loading.set(false);
+        this.loadingMore.set(false);
       },
       error: () => {
         this.loading.set(false);
+        this.loadingMore.set(false);
       }
     });
   }
 
   loadMore(): void {
-    if (this.currentPage() < this.totalPages()) {
-      this.currentPage.update(p => p + 1);
-      this.loadProducts(true);
-    }
+    if (this.loadingMore() || this.currentPage() >= this.totalPages()) return;
+    this.loadingMore.set(true);
+    this.currentPage.update(p => p + 1);
+    this.loadProducts(true);
+  }
+
+  ngAfterViewInit(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+    // Small delay to ensure the sentinel is in the DOM
+    setTimeout(() => this.setupInfiniteScroll(), 300);
+  }
+
+  setupInfiniteScroll(): void {
+    if (!this.scrollAnchorRef?.nativeElement) return;
+    this.scrollObserver = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          this.loadMore();
+        }
+      },
+      { rootMargin: '200px', threshold: 0 }
+    );
+    this.scrollObserver.observe(this.scrollAnchorRef.nativeElement);
+  }
+
+  ngOnDestroy(): void {
+    this.scrollObserver?.disconnect();
   }
 
   onSearchChange(): void {
