@@ -1,17 +1,24 @@
 import { Injectable, inject, signal, effect } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import * as signalR from '@microsoft/signalr';
+import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 import { environment } from '../../environments/environment';
 
 export interface AppNotification {
   id: string;
-  type: string;
+  userId?: string;
+  title?: string;
   message: string;
+  type: string;
+  isRead?: boolean;
+  relatedEntityId?: string;
+  createdAt?: string | Date;
   orderId?: string;
   orderNumber?: string;
   code?: string;
   status?: string;
-  timestamp: Date;
+  timestamp?: Date;
 }
 
 @Injectable({
@@ -19,9 +26,12 @@ export interface AppNotification {
 })
 export class NotificationService {
   private authService = inject(AuthService);
+  private http = inject(HttpClient);
   private hubConnection: signalR.HubConnection | null = null;
 
   activeToasts = signal<AppNotification[]>([]);
+  notifications = signal<AppNotification[]>([]);
+  unreadCount = signal<number>(0);
   hasNewOrders = signal<boolean>(false);
 
   constructor() {
@@ -30,9 +40,76 @@ export class NotificationService {
       const user = this.authService.currentUser();
       if (user) {
         this.startConnection();
+        this.loadNotifications();
+        this.loadUnreadCount();
       } else {
         this.stopConnection();
+        this.notifications.set([]);
+        this.unreadCount.set(0);
       }
+    });
+  }
+
+  // Load user notifications from DB
+  loadNotifications() {
+    this.http.get<any>(`${environment.apiUrl}/api/notifications`).subscribe({
+      next: (res) => {
+        if (res.isSuccess && res.data) {
+          this.notifications.set(res.data);
+        }
+      }
+    });
+  }
+
+  // Load unread count from DB
+  loadUnreadCount() {
+    this.http.get<any>(`${environment.apiUrl}/api/notifications/unread-count`).subscribe({
+      next: (res) => {
+        if (res.isSuccess && typeof res.data === 'number') {
+          this.unreadCount.set(res.data);
+        }
+      }
+    });
+  }
+
+  // Mark single notification as read
+  markAsRead(id: string) {
+    this.http.post<any>(`${environment.apiUrl}/api/notifications/${id}/read`, {}).subscribe({
+      next: (res) => {
+        if (res.isSuccess) {
+          this.notifications.update(list => 
+            list.map(n => n.id === id ? { ...n, isRead: true } : n)
+          );
+          this.loadUnreadCount();
+        }
+      }
+    });
+  }
+
+  // Mark all notifications as read
+  markAllAsRead() {
+    this.http.post<any>(`${environment.apiUrl}/api/notifications/read-all`, {}).subscribe({
+      next: (res) => {
+        if (res.isSuccess) {
+          this.notifications.update(list => 
+            list.map(n => ({ ...n, isRead: true }))
+          );
+          this.unreadCount.set(0);
+        }
+      }
+    });
+  }
+
+  // Admin: Get subscriptions list
+  getSubscriptions(): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/api/admin/notifications/subscriptions`);
+  }
+
+  // Admin: Toggle subscription
+  updateSubscription(userId: string, isSubscribed: boolean): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/api/admin/notifications/subscriptions`, {
+      userId,
+      isSubscribed
     });
   }
 
@@ -73,15 +150,23 @@ export class NotificationService {
       console.log('Notification received:', notification);
       
       const newNotif: AppNotification = {
-        id: crypto.randomUUID(),
-        type: notification.type,
+        id: notification.id || crypto.randomUUID(),
+        userId: notification.userId,
+        title: notification.title || 'New Alert',
         message: notification.message,
+        type: notification.type,
+        isRead: notification.isRead || false,
+        relatedEntityId: notification.relatedEntityId || notification.orderId,
+        createdAt: notification.createdAt || new Date(),
         orderId: notification.orderId,
         orderNumber: notification.orderNumber,
         code: notification.code,
-        status: notification.status,
-        timestamp: new Date()
+        status: notification.status
       };
+
+      // Append to the notifications list signal
+      this.notifications.update(list => [newNotif, ...list]);
+      this.unreadCount.update(c => c + 1);
 
       // Add to toast queue
       this.activeToasts.update(toasts => [...toasts, newNotif]);

@@ -184,6 +184,17 @@ import { AppImageUploaderComponent } from '../image-uploader/image-uploader.comp
           <span class="indicator-line"></span>
           🔑 Access Control Ledger
         </button>
+
+        <!-- Notifications Matrix Tab Button -->
+        <button 
+          *ngIf="authService.hasPermission('Orders:Read')"
+          (click)="currentTab.set('notifications'); loadSubscriptions()"
+          [class.active]="currentTab() === 'notifications'"
+          class="sidebar-btn"
+        >
+          <span class="indicator-line"></span>
+          🔔 Notifications Matrix
+        </button>
       </aside>
 
       <!-- Main right viewport -->
@@ -1314,6 +1325,81 @@ import { AppImageUploaderComponent } from '../image-uploader/image-uploader.comp
           </div>
         </div>
 
+        <!-- Notifications Matrix Tab Content -->
+        <div *ngIf="currentTab() === 'notifications'" class="space-y-6 animate-fade-in text-[#2A2522]">
+          <div class="border-b border-[#2A2522]/10 pb-4">
+            <h3 class="title-header text-lg font-light text-[#2A2522] tracking-[0.05em] uppercase">Notification Routing Matrix</h3>
+            <p class="text-[9px] uppercase tracking-widest text-[#8A817C] font-lexend mt-2 leading-relaxed">
+              Designate which personnel and staff members receive real-time alerts when new orders are placed.
+            </p>
+          </div>
+
+          <div class="frosted-card p-6 rounded-2xl space-y-6">
+            <div class="flex justify-between items-center border-b border-[#2A2522]/5 pb-3">
+              <div>
+                <h4 class="title-header text-sm font-semibold text-[#2A2522] uppercase">Staff Alerts Subscriptions</h4>
+                <span class="text-[9px] uppercase tracking-widest text-[#8A817C] font-lexend">Check/uncheck users to configure new order notification dispatch</span>
+              </div>
+              <button 
+                (click)="loadSubscriptions()"
+                class="px-4 py-2 border border-[#2A2522]/10 hover:bg-[#2A2522]/5 text-[#2A2522] text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all"
+              >
+                Refresh Matrix
+              </button>
+            </div>
+
+            <!-- Loader or subscriptions table -->
+            <div *ngIf="loadingSubscriptions()" class="py-8 text-center">
+              <span class="animate-spin rounded-full h-6 w-6 border-b-2 border-[#B84F7D] inline-block"></span>
+            </div>
+
+            <div *ngIf="!loadingSubscriptions() && subscriptions().length === 0" class="text-center py-10 text-[#8A817C] text-xs font-light">
+              No personnel found to configure alert subscriptions.
+            </div>
+
+            <div *ngIf="!loadingSubscriptions() && subscriptions().length > 0" class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="border-b border-[#2A2522]/5 text-[9px] uppercase tracking-widest font-bold text-[#8A817C]">
+                    <th class="py-3 px-4">Full Name</th>
+                    <th class="py-3 px-4">Email</th>
+                    <th class="py-3 px-4">Assigned Role</th>
+                    <th class="py-3 px-4 text-center">Receive New Order Alerts</th>
+                  </tr>
+                </thead>
+                <tbody class="text-xs font-light text-[#4A4340] divide-y divide-[#2A2522]/5">
+                  <tr *ngFor="let sub of subscriptions()" class="hover:bg-[#2A2522]/5 transition-colors">
+                    <td class="py-3.5 px-4 font-semibold text-[#2A2522]">{{ sub.fullName }}</td>
+                    <td class="py-3.5 px-4 font-lexend">{{ sub.email }}</td>
+                    <td class="py-3.5 px-4">
+                      <span class="text-[9px] uppercase tracking-wider font-bold bg-[#B84F7D]/10 text-[#B84F7D] px-2 py-0.5 rounded">
+                        {{ sub.roleName }}
+                      </span>
+                    </td>
+                    <td class="py-3.5 px-4 text-center flex justify-center">
+                      <!-- Toggle Checkbox -->
+                      <div 
+                        (click)="toggleSubscription(sub)"
+                        class="flex items-center gap-2 cursor-pointer select-none group/toggle"
+                      >
+                        <!-- Custom Checkbox -->
+                        <div 
+                          [ngClass]="sub.isSubscribed ? 'border-[#B84F7D] bg-[#B84F7D]' : 'border-[#2A2522]/20 bg-transparent group-hover/toggle:border-[#B84F7D]/50'" 
+                          class="w-5 h-5 rounded border flex items-center justify-center transition-all flex-shrink-0"
+                        >
+                          <svg *ngIf="sub.isSubscribed" class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                          </svg>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
       </main> <!-- Closes admin-main -->
     </div> <!-- Closes admin-canvas -->
 
@@ -1767,6 +1853,59 @@ export class AdminOrdersBoardComponent implements OnInit, OnDestroy {
   public notificationService = inject(NotificationService);
   private permissionsSubscription?: Subscription;
   resolveImageUrl = resolveImageUrl;
+
+  subscriptions = signal<any[]>([]);
+  loadingSubscriptions = signal<boolean>(false);
+
+  loadSubscriptions() {
+    this.loadingSubscriptions.set(true);
+    this.notificationService.getSubscriptions().subscribe({
+      next: (res) => {
+        this.loadingSubscriptions.set(false);
+        if (res.isSuccess && res.data) {
+          this.subscriptions.set(res.data);
+        }
+      },
+      error: (err) => {
+        this.loadingSubscriptions.set(false);
+        this.alertService.showAlert({
+          title: 'Retrieval Error',
+          message: 'Could not load staff notification subscriptions.',
+          type: 'error',
+          confirmText: 'OK'
+        });
+      }
+    });
+  }
+
+  toggleSubscription(sub: any) {
+    const targetState = !sub.isSubscribed;
+    this.notificationService.updateSubscription(sub.userId, targetState).subscribe({
+      next: (res) => {
+        if (res.isSuccess) {
+          // Sync local signal
+          this.subscriptions.update(list =>
+            list.map(s => s.userId === sub.userId ? { ...s, isSubscribed: targetState } : s)
+          );
+        } else {
+          this.alertService.showAlert({
+            title: 'Update Error',
+            message: res.message || 'Failed to update subscription.',
+            type: 'error',
+            confirmText: 'OK'
+          });
+        }
+      },
+      error: (err) => {
+        this.alertService.showAlert({
+          title: 'Update Error',
+          message: err?.error?.message || 'Server error updating subscription.',
+          type: 'error',
+          confirmText: 'OK'
+        });
+      }
+    });
+  }
 
   printShippingLabel(orderId: string | undefined): void {
     if (!orderId) return;

@@ -6,6 +6,7 @@ import { AuthService, UserProfile } from '../../services/auth.service';
 import { CartService } from '../../core/services/cart.service';
 import { gsap } from 'gsap';
 import { resolveImageUrl } from '../../core/utils/image-resolver';
+import { NotificationService, AppNotification } from '../../services/notification.service';
 
 @Component({
   selector: 'app-navbar',
@@ -132,6 +133,86 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
           <span [ngClass]="showScrolledState ? 'bg-[#4A4340]/25' : 'bg-[#FBF9F6]/40'" class="hidden sm:block h-3.5 w-[1px] transition-colors"></span>
           
           <ng-container *ngIf="authService.currentUser() as user; else guestNav">
+            <!-- Premium Notification Bell with Dropdown -->
+            <div class="relative notification-bell-wrapper py-1 mr-3 flex items-center">
+              <!-- Bell Trigger -->
+              <button 
+                (click)="toggleNotificationsDropdown($event)"
+                class="relative p-1.5 rounded-full hover:bg-white/10 transition-colors focus:outline-none flex items-center justify-center"
+                [ngClass]="showScrolledState ? 'text-[#4A4340] hover:bg-black/5' : 'text-[#FBF9F6]/90 hover:bg-white/10'"
+                aria-label="Notifications"
+              >
+                <!-- Bell SVG Icon -->
+                <svg class="w-4.5 h-4.5 transition-transform duration-300 hover:scale-105" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
+                </svg>
+                
+                <!-- Unread count badge -->
+                <span 
+                  *ngIf="notificationService.unreadCount() > 0"
+                  class="absolute top-0 right-0 min-w-[13px] h-[13px] bg-[#E07A5F] text-[#FBF9F6] text-[7.5px] font-black rounded-full flex items-center justify-center px-0.5 shadow-sm border border-[#FBF9F6]/20 animate-pulse"
+                >
+                  {{ notificationService.unreadCount() }}
+                </span>
+              </button>
+
+              <!-- Notifications Dropdown Panel -->
+              <div 
+                *ngIf="isNotificationsDropdownOpen()" 
+                class="absolute right-0 top-full mt-2 w-72 bg-[#1A1816]/95 border border-white/10 rounded-2xl shadow-2xl p-4 backdrop-blur-xl z-50 text-left"
+                (click)="$event.stopPropagation()"
+              >
+                <div class="flex justify-between items-center border-b border-white/10 pb-2.5 mb-2.5">
+                  <div class="flex items-center gap-1.5">
+                    <span class="text-[9px] font-mono tracking-widest text-[#E07A5F] uppercase font-bold">Alert Ledger</span>
+                    <span *ngIf="notificationService.unreadCount() > 0" class="text-[7px] bg-[#E07A5F]/20 text-[#E07A5F] px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider font-mono">
+                      {{ notificationService.unreadCount() }} New
+                    </span>
+                  </div>
+                  <button 
+                    *ngIf="notificationService.notifications().length > 0"
+                    (click)="markAllAsRead()"
+                    class="text-[7.5px] font-mono uppercase tracking-widest text-[#8A817C] hover:text-[#E07A5F] transition-colors"
+                  >
+                    Clear All
+                  </button>
+                </div>
+
+                <!-- Notifications List -->
+                <div class="max-h-[220px] overflow-y-auto custom-scrollbar space-y-2 mb-1 pr-1">
+                  <!-- Empty State -->
+                  <div *ngIf="notificationService.notifications().length === 0" class="py-8 text-center">
+                    <span class="text-[8px] uppercase tracking-widest text-white/30 font-medium block">Canvas is peaceful</span>
+                    <span class="text-[6.5px] uppercase tracking-widest text-white/20 mt-1 block">No notifications recorded</span>
+                  </div>
+
+                  <!-- Notification Item -->
+                  <div 
+                    *ngFor="let note of notificationService.notifications()" 
+                    (click)="markAsRead(note)"
+                    [ngClass]="note.isRead ? 'opacity-55 hover:opacity-85' : 'bg-white/5 border-l-2 border-[#E07A5F] pl-2.5'"
+                    class="p-2.5 rounded-lg border border-white/5 bg-white/[0.01] hover:bg-white/[0.04] transition-all cursor-pointer relative group/item"
+                  >
+                    <div class="flex justify-between items-start gap-1">
+                      <span class="text-[8.5px] font-bold text-white/95 uppercase tracking-wide truncate max-w-[80%]">{{ note.title }}</span>
+                      <span class="text-[6px] text-white/40 font-mono tracking-tighter">{{ formatTimeAgo(note.createdAt) }}</span>
+                    </div>
+                    <p class="text-[8px] text-white/60 mt-1 font-normal leading-relaxed break-words">{{ note.message }}</p>
+                    
+                    <!-- Quick action context link -->
+                    <div *ngIf="note.relatedEntityId" class="mt-1.5 flex justify-end">
+                      <span class="text-[6.5px] font-mono text-[#E07A5F] uppercase tracking-widest group-hover/item:underline">
+                        Reference Details →
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Small vertical divider -->
+            <span [ngClass]="showScrolledState ? 'bg-[#4A4340]/15' : 'bg-[#FBF9F6]/20'" class="hidden sm:block h-3.5 w-[1px] mr-3"></span>
+
             <!-- Advanced Profile Pill with Hover Dropdown -->
             <div class="relative profile-badge-wrapper py-1">
               <!-- Pill Trigger -->
@@ -639,7 +720,43 @@ export class NavbarComponent implements AfterViewInit {
   private router = inject(Router);
   private platformId = inject(PLATFORM_ID);
   private cartService = inject(CartService);
+  notificationService = inject(NotificationService);
   resolveImageUrl = resolveImageUrl;
+
+  isNotificationsDropdownOpen = signal<boolean>(false);
+
+  toggleNotificationsDropdown(event: Event) {
+    event.stopPropagation();
+    this.isNotificationsDropdownOpen.update(v => !v);
+  }
+
+  markAsRead(note: AppNotification) {
+    if (note.id && !note.isRead) {
+      this.notificationService.markAsRead(note.id);
+    }
+  }
+
+  markAllAsRead() {
+    this.notificationService.markAllAsRead();
+  }
+
+  formatTimeAgo(dateInput: string | Date | undefined): string {
+    if (!dateInput) return 'just now';
+    const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
+    const seconds = Math.floor((new Date().getTime() - date.getTime()) / 1000);
+    if (seconds < 60) return 'just now';
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) return `${minutes}m ago`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours}h ago`;
+    const days = Math.floor(hours / 24);
+    return `${days}d ago`;
+  }
+
+  @HostListener('document:click')
+  closeDropdowns() {
+    this.isNotificationsDropdownOpen.set(false);
+  }
 
   // Cart properties wired to unified CartService
   cartCount = this.cartService.cartCount;
