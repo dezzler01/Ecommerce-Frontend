@@ -1,4 +1,4 @@
-﻿import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -106,24 +106,52 @@ import { AlertService } from '../../services/alert.service';
     <div *ngIf="isTrackOrderModalOpen()" class="fixed inset-0 z-[60] flex items-center justify-center p-4 pointer-events-auto">
       <div (click)="closeTrackOrderModal()" class="fixed inset-0 bg-[#2A2522]/15 backdrop-blur-[4px] cursor-pointer"></div>
       <div class="relative w-full max-w-lg bg-[#FAF6F0]/85 backdrop-blur-xl border border-[#2A2522]/10 p-6 md:p-8 rounded-2xl flex flex-col space-y-5 max-h-[85vh] overflow-y-auto shadow-2xl z-10 text-left">
-        <button (click)="closeTrackOrderModal()" class="absolute top-4 right-4 text-[#2A2522]/40 hover:text-[#E07A5F] text-sm p-1.5 transition-colors cursor-pointer">x</button>
+        <button (click)="closeTrackOrderModal()" class="absolute top-4 right-4 text-[#2A2522]/40 hover:text-[#E07A5F] text-sm p-1.5 transition-colors cursor-pointer">&#x2715;</button>
+
+        <!-- Header -->
         <div class="border-b border-[#2A2522]/10 pb-3">
           <span class="tracking-widest font-mono text-[9px] uppercase font-bold text-[#E07A5F] block mb-1">Active Logistics Pipeline</span>
           <h3 class="text-base font-serif font-light text-[#2A2522] tracking-wider uppercase">Track Your Order</h3>
+          <p class="text-[9px] text-[#6B5E57] mt-1 normal-case tracking-normal">Enter your order number and the last 4 digits of your phone to view your shipment status.</p>
         </div>
-        <div class="space-y-2">
-          <label class="text-[8px] uppercase tracking-widest font-bold text-[#6B5E57] block">Order Reference ID (GUID) *</label>
-          <div class="flex gap-2">
-            <input type="text" [(ngModel)]="trackOrderId" (ngModelChange)="trackingError.set('')" placeholder="E.g. d3b07384-d113-40e1-a3f2-861f2113d077" class="flex-1 px-3 py-2 bg-white/70 border border-[#2A2522]/10 rounded-lg text-xs text-[#2A2522] focus:outline-none focus:border-[#E07A5F] transition-all"/>
-            <button (click)="trackOrder()" [disabled]="trackingLoading()" class="px-5 py-2 bg-[#2A2522] hover:bg-[#E07A5F] text-[#FBF9F6] text-[9px] font-bold uppercase tracking-widest rounded-lg transition-all disabled:opacity-50 cursor-pointer">{{ trackingLoading() ? 'Querying...' : 'Query' }}</button>
+
+        <!-- Two-field verification form -->
+        <div class="space-y-3">
+          <div>
+            <label class="text-[8px] uppercase tracking-widest font-bold text-[#6B5E57] block mb-1">Order Number *</label>
+            <input type="text" [(ngModel)]="trackOrderId" (ngModelChange)="trackingError.set('')"
+              placeholder="e.g. ORD-7E417AB5"
+              class="w-full px-3 py-2 bg-white/70 border border-[#2A2522]/10 rounded-lg text-xs text-[#2A2522] focus:outline-none focus:border-[#E07A5F] transition-all uppercase"/>
           </div>
-          <p *ngIf="trackingError()" class="text-[9px] text-red-500 font-semibold tracking-wide uppercase mt-1">{{ trackingError() }}</p>
+          <div>
+            <label class="text-[8px] uppercase tracking-widest font-bold text-[#6B5E57] block mb-1">Last 4 Digits of Phone *</label>
+            <input type="text" [(ngModel)]="trackPhone" (ngModelChange)="trackingError.set('')"
+              placeholder="e.g. 4528" maxlength="4" inputmode="numeric"
+              class="w-full px-3 py-2 bg-white/70 border border-[#2A2522]/10 rounded-lg text-xs text-[#2A2522] focus:outline-none focus:border-[#E07A5F] transition-all"/>
+          </div>
+          <button (click)="trackOrder()" [disabled]="trackingLoading()"
+            class="w-full py-2.5 bg-[#2A2522] hover:bg-[#E07A5F] text-[#FBF9F6] text-[9px] font-bold uppercase tracking-widest rounded-lg transition-all disabled:opacity-50 cursor-pointer">
+            {{ trackingLoading() ? 'Querying...' : 'Track Order' }}
+          </button>
+          <p *ngIf="trackingError()" class="text-[9px] text-red-500 font-semibold tracking-wide uppercase">{{ trackingError() }}</p>
         </div>
+
+        <!-- Spinner -->
         <div *ngIf="trackingLoading()" class="flex flex-col items-center py-6 justify-center space-y-2">
           <div class="w-6 h-6 border-2 border-[#E07A5F]/20 border-t-[#E07A5F] rounded-full animate-spin"></div>
           <span class="text-[9px] uppercase tracking-wider text-[#6B5E57] font-light">Querying Live Hub...</span>
         </div>
+
+        <!-- Result -->
         <div *ngIf="!trackingLoading() && trackedOrder()" class="space-y-5 pt-2">
+
+          <!-- Order number badge -->
+          <div class="flex items-center justify-between">
+            <span class="text-[9px] font-mono font-bold text-[#E07A5F] uppercase tracking-widest">{{ trackedOrder().orderNumber }}</span>
+            <span class="text-[8px] uppercase tracking-widest text-[#6B5E57]">{{ trackedOrder().orderStatus }}</span>
+          </div>
+
+          <!-- Stepper -->
           <div class="space-y-3">
             <h4 class="text-[8px] uppercase tracking-widest font-bold text-[#E07A5F]">Logistics Status</h4>
             <div class="flex justify-between items-center relative py-2">
@@ -135,26 +163,34 @@ import { AlertService } from '../../services/alert.service';
               </div>
             </div>
           </div>
+
+          <!-- Rejected banner -->
           <div *ngIf="trackedOrder().orderStatus === 'ReturnedRejected'" class="p-3 bg-red-50 border border-red-200 text-red-500 rounded-xl text-[10px] uppercase font-bold tracking-widest text-center">Order Rejected or Returned</div>
+
+          <!-- Masked meta details -->
           <div class="grid grid-cols-2 gap-4 bg-white/45 p-4 rounded-xl border border-[#2A2522]/5 text-[9px] tracking-widest uppercase text-[#6B5E57]">
-            <div><span class="opacity-60 block mb-0.5">Order Date</span><span class="font-bold text-[#2A2522]">{{ trackedOrder().orderDate | date:'medium' }}</span></div>
-            <div><span class="opacity-60 block mb-0.5">Payment Method</span><span class="font-bold text-[#2A2522]">{{ trackedOrder().paymentMethod }}</span></div>
-            <div><span class="opacity-60 block mb-0.5">Shipment Target</span><span class="font-bold text-[#2A2522]">{{ trackedOrder().shippingAddress.fullName }}</span></div>
-            <div><span class="opacity-60 block mb-0.5">Contact Phone</span><span class="font-bold text-[#2A2522]">{{ trackedOrder().shippingAddress.phoneNumber }}</span></div>
-            <div class="col-span-2"><span class="opacity-60 block mb-0.5">Destination</span><span class="font-bold text-[#2A2522]">{{ trackedOrder().shippingAddress.street }}, {{ trackedOrder().shippingAddress.city }}, {{ trackedOrder().shippingAddress.governorate }}</span></div>
+            <div><span class="opacity-60 block mb-0.5">Order Date</span><span class="font-bold text-[#2A2522]">{{ trackedOrder().orderDate | date:'mediumDate' }}</span></div>
+            <div><span class="opacity-60 block mb-0.5">Payment</span><span class="font-bold text-[#2A2522]">{{ trackedOrder().paymentMethod }}</span></div>
+            <div><span class="opacity-60 block mb-0.5">Recipient</span><span class="font-bold text-[#2A2522]">{{ trackedOrder().maskedName }}</span></div>
+            <div><span class="opacity-60 block mb-0.5">Phone</span><span class="font-bold text-[#2A2522]">{{ trackedOrder().maskedPhone }}</span></div>
+            <div class="col-span-2"><span class="opacity-60 block mb-0.5">Governorate</span><span class="font-bold text-[#2A2522]">{{ trackedOrder().city }}</span></div>
           </div>
+
+          <!-- Items -->
           <div class="space-y-2">
             <h4 class="text-[8px] uppercase tracking-widest font-bold text-[#E07A5F]">Items Secured</h4>
             <div class="max-h-[150px] overflow-y-auto border border-[#2A2522]/5 rounded-xl divide-y divide-[#2A2522]/5 bg-white/45">
               <div *ngFor="let item of trackedOrder().items" class="p-3 flex justify-between items-center text-[9px] uppercase tracking-widest text-[#2A2522]">
                 <div class="flex flex-col gap-0.5">
-                  <span class="font-bold">{{ item.productTitle || 'Premium Boutique Specimen' }}</span>
+                  <span class="font-bold">{{ item.productTitle }}</span>
                   <span class="text-[7px] text-[#6B5E57] font-normal">Qty: {{ item.quantity }} x LE {{ item.unitPrice | number:'1.2-2' }}</span>
                 </div>
                 <span class="font-mono font-bold">LE {{ (item.quantity * item.unitPrice) | number:'1.2-2' }}</span>
               </div>
             </div>
           </div>
+
+          <!-- Totals -->
           <div class="flex justify-between items-center border-t border-[#2A2522]/10 pt-3 text-[10px] uppercase tracking-widest text-[#2A2522]">
             <div class="flex flex-col gap-0.5">
               <span class="opacity-70 text-[8px]">Including LE {{ trackedOrder().shippingCost | number:'1.2-2' }} shipping</span>
@@ -177,6 +213,7 @@ export class FooterComponent {
 
   isTrackOrderModalOpen = signal<boolean>(false);
   trackOrderId = '';
+  trackPhone = '';
   trackedOrder = signal<any>(null);
   trackingError = signal<string>('');
   trackingLoading = signal<boolean>(false);
@@ -194,6 +231,7 @@ export class FooterComponent {
   openTrackOrderModal(event: Event) {
     event.preventDefault();
     this.trackOrderId = '';
+    this.trackPhone = '';
     this.trackedOrder.set(null);
     this.trackingError.set('');
     this.trackingLoading.set(false);
@@ -204,13 +242,33 @@ export class FooterComponent {
 
   trackOrder() {
     const id = this.trackOrderId.trim();
-    if (!id) { this.trackingError.set('Please enter an Order reference ID.'); return; }
-    const guidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
-    if (!guidRegex.test(id)) { this.trackingError.set('Please enter a valid 36-character Order ID (GUID).'); return; }
+    const phone = this.trackPhone.trim();
+
+    if (!id) { this.trackingError.set('Please enter your Order Number.'); return; }
+
+    // Accept either full GUID or the ORD-XXXXXXXX short form
+    const guidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/i;
+    const shortRegex = /^ORD-[0-9a-fA-F]{8}$/i;
+    if (!guidRegex.test(id) && !shortRegex.test(id)) {
+      this.trackingError.set('Please enter a valid Order Number (e.g. ORD-7E417AB5 or the full order ID).');
+      return;
+    }
+
+    if (!phone || phone.length !== 4 || !/^\d{4}$/.test(phone)) {
+      this.trackingError.set('Please enter the last 4 digits of your phone number.');
+      return;
+    }
+
+    // If user entered short form, we need the full GUID — prompt them
+    if (shortRegex.test(id)) {
+      this.trackingError.set('Please use the full Order ID from your confirmation SMS/email.');
+      return;
+    }
+
     this.trackingError.set('');
     this.trackingLoading.set(true);
     this.trackedOrder.set(null);
-    this.catalogService.trackOrder(id).subscribe({
+    this.catalogService.trackOrder(id, phone).subscribe({
       next: (res) => {
         if (res.isSuccess && res.data) { this.trackedOrder.set(res.data); }
         else { this.trackingError.set(res.message || 'Unable to find order.'); }

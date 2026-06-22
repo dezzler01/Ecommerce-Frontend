@@ -210,7 +210,7 @@ export class CatalogService {
     return this.http.delete<ApiResponse<boolean>>(`http://localhost:5153/api/admin/brands/${id}`);
   }
 
-  trackOrder(orderId: string): Observable<ApiResponse<any>> {
-    return this.http.get<ApiResponse<any>>(`http://localhost:5153/api/orders/track/${orderId}`);
+  trackOrder(orderId: string, phone: string): Observable<ApiResponse<any>> {
+    return this.http.get<ApiResponse<any>>(`http://localhost:5153/api/orders/track/${orderId}?phone=${encodeURIComponent(phone)}`);
   }
 }
