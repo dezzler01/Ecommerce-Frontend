@@ -444,12 +444,14 @@
 }
 
 
-/* ─── Red Circle Sale Badge ─── */
-.card-sale-badge {
+/* ─── Circular Badges (Sale, Latest, Bestseller, Featured) ─── */
+.card-sale-badge,
+.card-latest-badge,
+.card-bestseller-badge,
+.card-featured-badge {
   position: absolute;
   top: 16px;
   right: 16px;
-  background: #E30613; /* Bright crimson red */
   color: #ffffff;
   width: 44px;
   height: 44px;
@@ -463,8 +465,27 @@
   text-transform: capitalize;
   pointer-events: none;
   z-index: 10;
-  box-shadow: 0 4px 12px rgba(227, 6, 19, 0.25);
   animation: saleRibbonIn 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.card-sale-badge {
+  background: #E30613; /* Bright crimson red */
+  box-shadow: 0 4px 12px rgba(227, 6, 19, 0.25);
+}
+
+.card-latest-badge {
+  background: #5F8575; /* Sage Green */
+  box-shadow: 0 4px 12px rgba(95, 133, 117, 0.25);
+}
+
+.card-bestseller-badge {
+  background: #B84F7D; /* Muted Rose */
+  box-shadow: 0 4px 12px rgba(184, 79, 125, 0.25);
+}
+
+.card-featured-badge {
+  background: #C39B62; /* Bronze Gold */
+  box-shadow: 0 4px 12px rgba(195, 155, 98, 0.25);
 }
 
 @keyframes saleRibbonIn {
@@ -1115,7 +1136,10 @@
     padding: 6px 0 !important;
   }
 
-  .card-sale-badge {
+  .card-sale-badge,
+  .card-latest-badge,
+  .card-bestseller-badge,
+  .card-featured-badge {
     width: 30px !important;
     height: 30px !important;
     font-size: 8.5px !important;

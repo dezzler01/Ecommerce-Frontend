@@ -319,13 +319,23 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                 </button>
               </div>
 
-              <!-- Sale Circular Badge (Top Right) -->
-              <div 
-                *ngIf="activeMatrixTag() === 'On Sale' || (product.costPrice && product.price < product.costPrice)" 
-                class="card-sale-badge"
-              >
-                Sale
-              </div>
+              <!-- Dynamic Collection Badges (Top Right) -->
+              <ng-container>
+                <div *ngIf="product.collectionType === 'On Sale' || (product.costPrice && product.price < product.costPrice); else checkOthers" class="card-sale-badge">
+                  Sale
+                </div>
+                <ng-template #checkOthers>
+                  <div *ngIf="product.collectionType === 'Latest'" class="card-latest-badge">
+                    New
+                  </div>
+                  <div *ngIf="product.collectionType === 'Bestsellers'" class="card-bestseller-badge">
+                    Best
+                  </div>
+                  <div *ngIf="product.collectionType === 'Featured'" class="card-featured-badge">
+                    Feat
+                  </div>
+                </ng-template>
+              </ng-container>
 
               <!-- Size Preview Overlay (Bottom of Image) -->
               <div class="card-sizes-overlay" *ngIf="product.isVisible && product.sizes && product.sizes.length > 0">
