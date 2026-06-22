@@ -5,6 +5,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { LoginComponent } from './components/login/login.component';
 import { AccessibilityWidgetComponent } from './components/accessibility-widget/accessibility-widget.component';
 import { NotificationToastComponent } from './components/notification-toast/notification-toast.component';
+import { FooterComponent } from './components/footer/footer.component';
 import { AuthService } from './services/auth.service';
 import { AlertService } from './services/alert.service';
 
@@ -17,7 +18,8 @@ import { AlertService } from './services/alert.service';
     NavbarComponent,
     LoginComponent,
     AccessibilityWidgetComponent,
-    NotificationToastComponent
+    NotificationToastComponent,
+    FooterComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
