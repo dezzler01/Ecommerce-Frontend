@@ -411,6 +411,14 @@ export class VideoScrollCanvasComponent implements OnInit, AfterViewInit, OnDest
       { opacity: 1, y: 0, pointerEvents: 'auto', duration: 0.03, ease: 'power1.out' }, 
       0.80
     );
+    // Fade out Section 4 near the very bottom to allow the footer to display cleanly without overlap
+    tl.to('#overlay-section-4', {
+      opacity: 0,
+      y: -30,
+      pointerEvents: 'none',
+      duration: 0.05,
+      ease: 'power1.in'
+    }, 0.94);
   }
 
   private resizeCanvas(canvas: HTMLCanvasElement): void {

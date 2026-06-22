@@ -129,7 +129,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
           </div>
           
 
-          <span [ngClass]="showScrolledState ? 'bg-[#4A4340]/25' : 'bg-[#FBF9F6]/40'" class="h-3.5 w-[1px] transition-colors"></span>
+          <span [ngClass]="showScrolledState ? 'bg-[#4A4340]/25' : 'bg-[#FBF9F6]/40'" class="hidden sm:block h-3.5 w-[1px] transition-colors"></span>
           
           <ng-container *ngIf="authService.currentUser() as user; else guestNav">
             <!-- Advanced Profile Pill with Hover Dropdown -->
@@ -218,7 +218,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
             class="md:hidden relative z-50 flex items-center justify-center w-8 h-8 focus:outline-none pointer-events-auto transition-colors duration-300 ml-2"
           >
             <span class="sr-only">Toggle Menu</span>
-            <div class="flex flex-col justify-between w-4.5 h-3 transform transition-all duration-300">
+            <div class="flex flex-col justify-between w-5 h-3 transform transition-all duration-300">
               <span [ngClass]="isMobileMenuOpen() ? 'rotate-45 translate-y-[5px]' : ''" class="w-full h-[1.5px] bg-current transform transition-all duration-300 origin-center"></span>
               <span [ngClass]="isMobileMenuOpen() ? '-rotate-45 -translate-y-[5.5px]' : ''" class="w-full h-[1.5px] bg-current transform transition-all duration-300 origin-center"></span>
             </div>

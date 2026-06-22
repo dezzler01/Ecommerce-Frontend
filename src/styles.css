@@ -452,3 +452,16 @@ body.intro-running header {
     inset 0 1px 1px rgba(255, 255, 255, 0.8);
 }
 
+/* Disable custom cursor on mobile and touch devices, and restore standard cursor */
+@media (pointer: coarse), (max-width: 1024px) {
+  .custom-cursor-dot,
+  .custom-cursor-halo,
+  .custom-cursor-trail {
+    display: none !important;
+  }
+  
+  *, *::before, *::after {
+    cursor: auto !important;
+  }
+}
+
