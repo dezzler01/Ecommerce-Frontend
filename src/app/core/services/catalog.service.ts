@@ -232,11 +232,11 @@ export class CatalogService {
     return this.http.get<ApiResponse<any[]>>('http://localhost:5153/api/attributes/sizes');
   }
 
-  createSize(size: { name: string; targetAudience: string; sortOrder: number }): Observable<ApiResponse<any>> {
+  createSize(size: { name: string; targetAudience: string; sortOrder: number; categoryType?: string }): Observable<ApiResponse<any>> {
     return this.http.post<ApiResponse<any>>('http://localhost:5153/api/admin/attributes/sizes', size);
   }
 
-  updateSize(id: string, size: { name: string; targetAudience: string; sortOrder: number }): Observable<ApiResponse<any>> {
+  updateSize(id: string, size: { name: string; targetAudience: string; sortOrder: number; categoryType?: string }): Observable<ApiResponse<any>> {
     return this.http.put<ApiResponse<any>>(`http://localhost:5153/api/admin/attributes/sizes/${id}`, size);
   }
 

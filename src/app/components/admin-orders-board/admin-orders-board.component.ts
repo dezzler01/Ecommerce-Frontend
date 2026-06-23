@@ -1574,7 +1574,7 @@ import { MediaService } from '../../services/media.service';
                   <div *ngFor="let sz of availableSizes()" class="p-3 bg-white/40 border border-[#2A2522]/5 rounded-xl flex items-center justify-between hover:bg-white/60 transition-all">
                     <div class="flex flex-col">
                       <span class="text-xs font-bold text-[#2A2522]">{{ sz.name }}</span>
-                      <span class="text-[9px] uppercase tracking-widest text-[#8A817C] font-lexend font-semibold">Audience: {{ sz.targetAudience }}</span>
+                      <span class="text-[9px] uppercase tracking-widest text-[#8A817C] font-lexend font-semibold">Category: {{ sz.categoryType }}</span>
                     </div>
                     <div class="flex items-center gap-3">
                       <span class="text-[9px] font-mono text-[#8A817C] bg-[#2A2522]/5 px-2 py-0.5 rounded">Order: {{ sz.sortOrder }}</span>
@@ -1603,24 +1603,19 @@ import { MediaService } from '../../services/media.service';
                         class="w-full px-3 py-2 bg-white border border-[#2A2522]/10 rounded-xl text-xs focus:outline-none focus:border-[#B84F7D] transition-colors" 
                       />
                     </div>
-                    <div class="space-y-1">
-                      <label class="text-[8px] uppercase tracking-widest text-[#8A817C] font-bold">Target Audience</label>
+                    <div class="space-y-1 col-span-2">
+                      <label class="text-[8px] uppercase tracking-widest text-[#8A817C] font-bold">Category / Size Type</label>
                       <select 
-                        [(ngModel)]="newSizeAudience" 
+                        [ngModel]="newSizeCategoryType()" 
+                        (ngModelChange)="onSizeCategoryTypeChange($event)"
                         class="w-full px-3 py-2 bg-white border border-[#2A2522]/10 rounded-xl text-xs focus:outline-none focus:border-[#B84F7D] transition-colors"
                       >
-                        <option value="Both">Both</option>
-                        <option value="Women">Women</option>
-                        <option value="Kids">Kids</option>
+                        <option value="Women Clothing">Women Clothing</option>
+                        <option value="Women Shoes">Women Shoes</option>
+                        <option value="Kids Clothing">Kids Clothing</option>
+                        <option value="Kids Shoes">Kids Shoes</option>
+                        <option value="Universal">Universal</option>
                       </select>
-                    </div>
-                    <div class="space-y-1">
-                      <label class="text-[8px] uppercase tracking-widest text-[#8A817C] font-bold">Sort Order</label>
-                      <input 
-                        type="number" 
-                        [(ngModel)]="newSizeSortOrder" 
-                        class="w-full px-3 py-2 bg-white border border-[#2A2522]/10 rounded-xl text-xs focus:outline-none focus:border-[#B84F7D] transition-colors" 
-                      />
                     </div>
                   </div>
                   <div class="flex gap-2 pt-1">
@@ -2254,6 +2249,7 @@ export class AdminOrdersBoardComponent implements OnInit, OnDestroy {
   newSizeName = signal<string>('');
   newSizeAudience = signal<string>('Both');
   newSizeSortOrder = signal<number>(0);
+  newSizeCategoryType = signal<string>('Women Clothing');
   editingSizeId = signal<string | null>(null);
 
   // Shipping Console Ledger States
@@ -3103,10 +3099,16 @@ export class AdminOrdersBoardComponent implements OnInit, OnDestroy {
       next: (res: any) => {
         if (res.isSuccess && res.data) {
           const sorted = [...res.data].sort((a, b) => {
-            const audienceOrder: Record<string, number> = { 'Women': 1, 'Kids': 2, 'Both': 3 };
-            const audA = audienceOrder[a.targetAudience] || 4;
-            const audB = audienceOrder[b.targetAudience] || 4;
-            if (audA !== audB) return audA - audB;
+            const categoryOrder: Record<string, number> = { 
+              'Women Clothing': 1, 
+              'Women Shoes': 2, 
+              'Kids Clothing': 3, 
+              'Kids Shoes': 4, 
+              'Universal': 5 
+            };
+            const catA = categoryOrder[a.categoryType] || 6;
+            const catB = categoryOrder[b.categoryType] || 6;
+            if (catA !== catB) return catA - catB;
             return a.sortOrder - b.sortOrder;
           });
           this.availableSizes.set(sorted);
@@ -3279,10 +3281,41 @@ export class AdminOrdersBoardComponent implements OnInit, OnDestroy {
     this.newColorHex.set('#FFFFFF');
   }
 
+  onSizeCategoryTypeChange(catType: string): void {
+    this.newSizeCategoryType.set(catType);
+    if (catType === 'Universal') {
+      this.newSizeAudience.set('Both');
+    } else if (catType.startsWith('Women')) {
+      this.newSizeAudience.set('Women');
+    } else if (catType.startsWith('Kids')) {
+      this.newSizeAudience.set('Kids');
+    }
+  }
+
+  autoCalculateSortOrder(catType: string): number {
+    const sizesInCat = this.availableSizes().filter(s => s.categoryType === catType);
+    if (sizesInCat.length === 0) return 0;
+    const maxOrder = Math.max(...sizesInCat.map(s => s.sortOrder));
+    return maxOrder + 1;
+  }
+
   saveSize(): void {
     const name = this.newSizeName().trim();
-    const audience = this.newSizeAudience();
-    const order = this.newSizeSortOrder();
+    const catType = this.newSizeCategoryType();
+    
+    let audience = 'Both';
+    if (catType === 'Universal') {
+      audience = 'Both';
+    } else if (catType.startsWith('Women')) {
+      audience = 'Women';
+    } else if (catType.startsWith('Kids')) {
+      audience = 'Kids';
+    }
+
+    const order = this.editingSizeId() 
+      ? this.newSizeSortOrder() 
+      : this.autoCalculateSortOrder(catType);
+
     if (!name) {
       this.alertService.showAlert({
         title: 'Error',
@@ -3295,7 +3328,7 @@ export class AdminOrdersBoardComponent implements OnInit, OnDestroy {
 
     const editId = this.editingSizeId();
     if (editId) {
-      this.catalogService.updateSize(editId, { name, targetAudience: audience, sortOrder: order }).subscribe({
+      this.catalogService.updateSize(editId, { name, targetAudience: audience, sortOrder: order, categoryType: catType }).subscribe({
         next: (res: any) => {
           if (res.isSuccess) {
             this.alertService.showAlert({
@@ -3317,7 +3350,7 @@ export class AdminOrdersBoardComponent implements OnInit, OnDestroy {
         }
       });
     } else {
-      this.catalogService.createSize({ name, targetAudience: audience, sortOrder: order }).subscribe({
+      this.catalogService.createSize({ name, targetAudience: audience, sortOrder: order, categoryType: catType }).subscribe({
         next: (res: any) => {
           if (res.isSuccess) {
             this.alertService.showAlert({
@@ -3371,6 +3404,7 @@ export class AdminOrdersBoardComponent implements OnInit, OnDestroy {
     this.newSizeName.set(size.name);
     this.newSizeAudience.set(size.targetAudience);
     this.newSizeSortOrder.set(size.sortOrder);
+    this.newSizeCategoryType.set(size.categoryType || 'Women Clothing');
   }
 
   cancelEditSize(): void {
@@ -3378,6 +3412,7 @@ export class AdminOrdersBoardComponent implements OnInit, OnDestroy {
     this.newSizeName.set('');
     this.newSizeAudience.set('Both');
     this.newSizeSortOrder.set(0);
+    this.newSizeCategoryType.set('Women Clothing');
   }
 
   loadBrands(): void {

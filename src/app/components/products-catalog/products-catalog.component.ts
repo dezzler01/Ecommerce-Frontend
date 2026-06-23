@@ -989,48 +989,48 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                   <span class="text-[8px] text-[#8A817C] font-mono ml-1 flex-shrink-0">{{ isFormSizeDropdownOpen() ? '▲' : '▼' }}</span>
                 </button>
 
-                <!-- Dropdown Menu -->
-                <div 
-                  *ngIf="isFormSizeDropdownOpen()" 
-                  (click)="$event.stopPropagation()"
-                  class="absolute left-0 right-0 mt-1 bg-white border border-[#2A2522]/15 rounded-xl shadow-lg z-50 max-h-48 overflow-y-auto p-2 custom-scrollbar space-y-3"
-                >
-                  <!-- Women's sizes section (shown if mainCategory is Women) -->
-                  <div *ngIf="formMainCategory() === 'Women'" class="space-y-1">
-                    <div class="text-[8px] uppercase tracking-widest font-bold text-[#B84F7D] px-2 py-0.5 border-b border-[#2A2522]/5">Women's Sizes</div>
-                    <div class="grid grid-cols-1 gap-1">
-                      <button 
-                        *ngFor="let size of getSizesForAudience('Women')"
-                        type="button"
-                        (click)="toggleFormSize(size)"
-                        [ngClass]="{'bg-[#2A2522]/5 border-[#B84F7D]/20': isFormSizeSelected(size)}"
-                        class="flex items-center justify-between px-2.5 py-1.5 border border-transparent rounded-lg text-left text-xs text-[#2A2522] hover:bg-[#2A2522]/5 transition-all w-full"
-                      >
-                        <span class="font-medium truncate text-[11px] font-mono uppercase">{{ size }}</span>
-                        <span *ngIf="isFormSizeSelected(size)" class="text-[#B84F7D] font-bold text-[10px]">✓</span>
-                      </button>
+                  <!-- Dropdown Menu -->
+                  <div 
+                    *ngIf="isFormSizeDropdownOpen()" 
+                    (click)="$event.stopPropagation()"
+                    class="absolute left-0 right-0 mt-1 bg-white border border-[#2A2522]/15 rounded-xl shadow-lg z-50 max-h-48 overflow-y-auto p-2 custom-scrollbar space-y-3"
+                  >
+                    <!-- Women's sizes section (shown if mainCategory is Women) -->
+                    <div *ngIf="formMainCategory() === 'Women'" class="space-y-1">
+                      <div class="text-[8px] uppercase tracking-widest font-bold text-[#B84F7D] px-2 py-0.5 border-b border-[#2A2522]/5">Women's Sizes</div>
+                      <div class="grid grid-cols-1 gap-1">
+                        <button 
+                          *ngFor="let size of getFormSizesForAudience('Women')"
+                          type="button"
+                          (click)="toggleFormSize(size)"
+                          [ngClass]="{'bg-[#2A2522]/5 border-[#B84F7D]/20': isFormSizeSelected(size)}"
+                          class="flex items-center justify-between px-2.5 py-1.5 border border-transparent rounded-lg text-left text-xs text-[#2A2522] hover:bg-[#2A2522]/5 transition-all w-full"
+                        >
+                          <span class="font-medium truncate text-[11px] font-mono uppercase">{{ size }}</span>
+                          <span *ngIf="isFormSizeSelected(size)" class="text-[#B84F7D] font-bold text-[10px]">✓</span>
+                        </button>
+                      </div>
+                      <div *ngIf="getFormSizesForAudience('Women').length === 0" class="text-[10px] text-[#8A817C] italic px-2">No women's sizes available.</div>
                     </div>
-                    <div *ngIf="getSizesForAudience('Women').length === 0" class="text-[10px] text-[#8A817C] italic px-2">No women's sizes available.</div>
-                  </div>
 
-                  <!-- Children's sizes section (shown if mainCategory is Kids) -->
-                  <div *ngIf="formMainCategory() === 'Kids'" class="space-y-1">
-                    <div class="text-[8px] uppercase tracking-widest font-bold text-[#B84F7D] px-2 py-0.5 border-b border-[#2A2522]/5">Children's Sizes</div>
-                    <div class="grid grid-cols-1 gap-1">
-                      <button 
-                        *ngFor="let size of getSizesForAudience('Kids')"
-                        type="button"
-                        (click)="toggleFormSize(size)"
-                        [ngClass]="{'bg-[#2A2522]/5 border-[#B84F7D]/20': isFormSizeSelected(size)}"
-                        class="flex items-center justify-between px-2.5 py-1.5 border border-transparent rounded-lg text-left text-xs text-[#2A2522] hover:bg-[#2A2522]/5 transition-all w-full"
-                      >
-                        <span class="font-medium truncate text-[11px] font-mono uppercase">{{ size }}</span>
-                        <span *ngIf="isFormSizeSelected(size)" class="text-[#B84F7D] font-bold text-[10px]">✓</span>
-                      </button>
+                    <!-- Children's sizes section (shown if mainCategory is Kids) -->
+                    <div *ngIf="formMainCategory() === 'Kids'" class="space-y-1">
+                      <div class="text-[8px] uppercase tracking-widest font-bold text-[#B84F7D] px-2 py-0.5 border-b border-[#2A2522]/5">Children's Sizes</div>
+                      <div class="grid grid-cols-1 gap-1">
+                        <button 
+                          *ngFor="let size of getFormSizesForAudience('Kids')"
+                          type="button"
+                          (click)="toggleFormSize(size)"
+                          [ngClass]="{'bg-[#2A2522]/5 border-[#B84F7D]/20': isFormSizeSelected(size)}"
+                          class="flex items-center justify-between px-2.5 py-1.5 border border-transparent rounded-lg text-left text-xs text-[#2A2522] hover:bg-[#2A2522]/5 transition-all w-full"
+                        >
+                          <span class="font-medium truncate text-[11px] font-mono uppercase">{{ size }}</span>
+                          <span *ngIf="isFormSizeSelected(size)" class="text-[#B84F7D] font-bold text-[10px]">✓</span>
+                        </button>
+                      </div>
+                      <div *ngIf="getFormSizesForAudience('Kids').length === 0" class="text-[10px] text-[#8A817C] italic px-2">No children's sizes available.</div>
                     </div>
-                    <div *ngIf="getSizesForAudience('Kids').length === 0" class="text-[10px] text-[#8A817C] italic px-2">No children's sizes available.</div>
                   </div>
-                </div>
               </div>
             </div>
 
@@ -1648,42 +1648,42 @@ export class ProductsCatalogComponent implements OnInit, AfterViewInit, OnDestro
   ]);
 
   availableSizes = signal<any[]>([
-    { name: 'One Size', targetAudience: 'Both', sortOrder: 0 },
-    { name: 'XS', targetAudience: 'Women', sortOrder: 1 },
-    { name: 'S', targetAudience: 'Women', sortOrder: 2 },
-    { name: 'M', targetAudience: 'Women', sortOrder: 3 },
-    { name: 'L', targetAudience: 'Women', sortOrder: 4 },
-    { name: 'XL', targetAudience: 'Women', sortOrder: 5 },
-    { name: 'XXL', targetAudience: 'Women', sortOrder: 6 },
-    { name: '37', targetAudience: 'Women', sortOrder: 7 },
-    { name: '38', targetAudience: 'Women', sortOrder: 8 },
-    { name: '39', targetAudience: 'Women', sortOrder: 9 },
-    { name: '40', targetAudience: 'Women', sortOrder: 10 },
-    { name: '41', targetAudience: 'Women', sortOrder: 11 },
-    { name: '3-6 Months (62-68cm)', targetAudience: 'Kids', sortOrder: 12 },
-    { name: '6-9 Months (68-74cm)', targetAudience: 'Kids', sortOrder: 13 },
-    { name: '9-12 Months (74-80cm)', targetAudience: 'Kids', sortOrder: 14 },
-    { name: '12-18 Months (80-86cm)', targetAudience: 'Kids', sortOrder: 15 },
-    { name: '1.5-2 Years (86-92cm)', targetAudience: 'Kids', sortOrder: 16 },
-    { name: '2-3 Years (92-98cm)', targetAudience: 'Kids', sortOrder: 17 },
-    { name: '3-4 Years (98-104cm)', targetAudience: 'Kids', sortOrder: 18 },
-    { name: '4-5 Years (104-110cm)', targetAudience: 'Kids', sortOrder: 19 },
-    { name: '5-6 Years (110-116cm)', targetAudience: 'Kids', sortOrder: 20 },
-    { name: '6-7 Years (116-122cm)', targetAudience: 'Kids', sortOrder: 21 },
-    { name: 'EU 19', targetAudience: 'Kids', sortOrder: 22 },
-    { name: 'EU 20.5', targetAudience: 'Kids', sortOrder: 23 },
-    { name: 'EU 21.5', targetAudience: 'Kids', sortOrder: 24 },
-    { name: 'EU 23', targetAudience: 'Kids', sortOrder: 25 },
-    { name: 'EU 24', targetAudience: 'Kids', sortOrder: 26 },
-    { name: 'EU 25.5', targetAudience: 'Kids', sortOrder: 27 },
-    { name: 'EU 26.5', targetAudience: 'Kids', sortOrder: 28 },
-    { name: 'EU 28', targetAudience: 'Kids', sortOrder: 29 },
-    { name: 'EU 29', targetAudience: 'Kids', sortOrder: 30 },
-    { name: 'EU 30.5', targetAudience: 'Kids', sortOrder: 31 },
-    { name: 'EU 32', targetAudience: 'Kids', sortOrder: 32 },
-    { name: 'EU 33', targetAudience: 'Kids', sortOrder: 33 },
-    { name: 'EU 34.5', targetAudience: 'Kids', sortOrder: 34 },
-    { name: 'EU 35.5', targetAudience: 'Kids', sortOrder: 35 }
+    { name: 'One Size', targetAudience: 'Both', sortOrder: 0, categoryType: 'Universal' },
+    { name: 'XS', targetAudience: 'Women', sortOrder: 1, categoryType: 'Women Clothing' },
+    { name: 'S', targetAudience: 'Women', sortOrder: 2, categoryType: 'Women Clothing' },
+    { name: 'M', targetAudience: 'Women', sortOrder: 3, categoryType: 'Women Clothing' },
+    { name: 'L', targetAudience: 'Women', sortOrder: 4, categoryType: 'Women Clothing' },
+    { name: 'XL', targetAudience: 'Women', sortOrder: 5, categoryType: 'Women Clothing' },
+    { name: 'XXL', targetAudience: 'Women', sortOrder: 6, categoryType: 'Women Clothing' },
+    { name: '37', targetAudience: 'Women', sortOrder: 7, categoryType: 'Women Shoes' },
+    { name: '38', targetAudience: 'Women', sortOrder: 8, categoryType: 'Women Shoes' },
+    { name: '39', targetAudience: 'Women', sortOrder: 9, categoryType: 'Women Shoes' },
+    { name: '40', targetAudience: 'Women', sortOrder: 10, categoryType: 'Women Shoes' },
+    { name: '41', targetAudience: 'Women', sortOrder: 11, categoryType: 'Women Shoes' },
+    { name: '3-6 Months (62-68cm)', targetAudience: 'Kids', sortOrder: 12, categoryType: 'Kids Clothing' },
+    { name: '6-9 Months (68-74cm)', targetAudience: 'Kids', sortOrder: 13, categoryType: 'Kids Clothing' },
+    { name: '9-12 Months (74-80cm)', targetAudience: 'Kids', sortOrder: 14, categoryType: 'Kids Clothing' },
+    { name: '12-18 Months (80-86cm)', targetAudience: 'Kids', sortOrder: 15, categoryType: 'Kids Clothing' },
+    { name: '1.5-2 Years (86-92cm)', targetAudience: 'Kids', sortOrder: 16, categoryType: 'Kids Clothing' },
+    { name: '2-3 Years (92-98cm)', targetAudience: 'Kids', sortOrder: 17, categoryType: 'Kids Clothing' },
+    { name: '3-4 Years (98-104cm)', targetAudience: 'Kids', sortOrder: 18, categoryType: 'Kids Clothing' },
+    { name: '4-5 Years (104-110cm)', targetAudience: 'Kids', sortOrder: 19, categoryType: 'Kids Clothing' },
+    { name: '5-6 Years (110-116cm)', targetAudience: 'Kids', sortOrder: 20, categoryType: 'Kids Clothing' },
+    { name: '6-7 Years (116-122cm)', targetAudience: 'Kids', sortOrder: 21, categoryType: 'Kids Clothing' },
+    { name: 'EU 19', targetAudience: 'Kids', sortOrder: 22, categoryType: 'Kids Shoes' },
+    { name: 'EU 20.5', targetAudience: 'Kids', sortOrder: 23, categoryType: 'Kids Shoes' },
+    { name: 'EU 21.5', targetAudience: 'Kids', sortOrder: 24, categoryType: 'Kids Shoes' },
+    { name: 'EU 23', targetAudience: 'Kids', sortOrder: 25, categoryType: 'Kids Shoes' },
+    { name: 'EU 24', targetAudience: 'Kids', sortOrder: 26, categoryType: 'Kids Shoes' },
+    { name: 'EU 25.5', targetAudience: 'Kids', sortOrder: 27, categoryType: 'Kids Shoes' },
+    { name: 'EU 26.5', targetAudience: 'Kids', sortOrder: 28, categoryType: 'Kids Shoes' },
+    { name: 'EU 28', targetAudience: 'Kids', sortOrder: 29, categoryType: 'Kids Shoes' },
+    { name: 'EU 29', targetAudience: 'Kids', sortOrder: 30, categoryType: 'Kids Shoes' },
+    { name: 'EU 30.5', targetAudience: 'Kids', sortOrder: 31, categoryType: 'Kids Shoes' },
+    { name: 'EU 32', targetAudience: 'Kids', sortOrder: 32, categoryType: 'Kids Shoes' },
+    { name: 'EU 33', targetAudience: 'Kids', sortOrder: 33, categoryType: 'Kids Shoes' },
+    { name: 'EU 34.5', targetAudience: 'Kids', sortOrder: 34, categoryType: 'Kids Shoes' },
+    { name: 'EU 35.5', targetAudience: 'Kids', sortOrder: 35, categoryType: 'Kids Shoes' }
   ]);
 
   activeAvailableSizes = computed(() => {
@@ -1699,8 +1699,44 @@ export class ProductsCatalogComponent implements OnInit, AfterViewInit, OnDestro
   });
 
   getSizesForAudience(audience: string): string[] {
+    const subCat = this.selectedSubCategory().toLowerCase();
+    
     return this.availableSizes()
-      .filter(s => s.targetAudience === audience || s.targetAudience === 'Both')
+      .filter(s => {
+        if (s.targetAudience !== audience && s.targetAudience !== 'Both') {
+          return false;
+        }
+        
+        if (subCat === 'shoes') {
+          return s.categoryType === (audience === 'Women' ? 'Women Shoes' : 'Kids Shoes') || s.categoryType === 'Universal';
+        } else if (subCat === 'fashion' || subCat === 'pajama' || subCat === 'kids boys' || subCat === 'girls' || subCat === 'unisex collection') {
+          return s.categoryType === (audience === 'Women' ? 'Women Clothing' : 'Kids Clothing') || s.categoryType === 'Universal';
+        }
+        
+        return true;
+      })
+      .map(s => s.name);
+  }
+
+  getFormSizesForAudience(audience: string): string[] {
+    const subCats = this.formSelectedSubCategories().map(s => s.toLowerCase());
+    const isShoes = subCats.includes('shoes');
+    const isApparel = subCats.some(s => s === 'fashion' || s === 'pajama' || s === 'kids boys' || s === 'girls' || s === 'unisex collection');
+
+    return this.availableSizes()
+      .filter(s => {
+        if (s.targetAudience !== audience && s.targetAudience !== 'Both') {
+          return false;
+        }
+
+        if (isShoes) {
+          return s.categoryType === (audience === 'Women' ? 'Women Shoes' : 'Kids Shoes') || s.categoryType === 'Universal';
+        } else if (isApparel) {
+          return s.categoryType === (audience === 'Women' ? 'Women Clothing' : 'Kids Clothing') || s.categoryType === 'Universal';
+        }
+
+        return true;
+      })
       .map(s => s.name);
   }
 
