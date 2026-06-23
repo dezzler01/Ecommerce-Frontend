@@ -210,6 +210,40 @@ export class CatalogService {
     return this.http.delete<ApiResponse<boolean>>(`http://localhost:5153/api/admin/brands/${id}`);
   }
 
+  // Colors management
+  getColors(): Observable<ApiResponse<any[]>> {
+    return this.http.get<ApiResponse<any[]>>('http://localhost:5153/api/attributes/colors');
+  }
+
+  createColor(color: { name: string; hexCode: string }): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>('http://localhost:5153/api/admin/attributes/colors', color);
+  }
+
+  updateColor(id: string, color: { name: string; hexCode: string }): Observable<ApiResponse<any>> {
+    return this.http.put<ApiResponse<any>>(`http://localhost:5153/api/admin/attributes/colors/${id}`, color);
+  }
+
+  deleteColor(id: string): Observable<ApiResponse<boolean>> {
+    return this.http.delete<ApiResponse<boolean>>(`http://localhost:5153/api/admin/attributes/colors/${id}`);
+  }
+
+  // Sizes management
+  getSizes(): Observable<ApiResponse<any[]>> {
+    return this.http.get<ApiResponse<any[]>>('http://localhost:5153/api/attributes/sizes');
+  }
+
+  createSize(size: { name: string; targetAudience: string; sortOrder: number }): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>('http://localhost:5153/api/admin/attributes/sizes', size);
+  }
+
+  updateSize(id: string, size: { name: string; targetAudience: string; sortOrder: number }): Observable<ApiResponse<any>> {
+    return this.http.put<ApiResponse<any>>(`http://localhost:5153/api/admin/attributes/sizes/${id}`, size);
+  }
+
+  deleteSize(id: string): Observable<ApiResponse<boolean>> {
+    return this.http.delete<ApiResponse<boolean>>(`http://localhost:5153/api/admin/attributes/sizes/${id}`);
+  }
+
   trackOrder(orderId: string, phone: string): Observable<ApiResponse<any>> {
     return this.http.get<ApiResponse<any>>(`http://localhost:5153/api/orders/track/${orderId}?phone=${encodeURIComponent(phone)}`);
   }

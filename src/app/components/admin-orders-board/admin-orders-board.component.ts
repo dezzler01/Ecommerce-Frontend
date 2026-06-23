@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
 import { AlertService } from '../../services/alert.service';
 import { NotificationService } from '../../services/notification.service';
+import { CatalogService } from '../../core/services/catalog.service';
 import { Subscription } from 'rxjs';
 import { resolveImageUrl } from '../../core/utils/image-resolver';
 
@@ -94,9 +95,11 @@ interface BulkProductRow {
   age: string;
   description: string;
   imageUrl: string;
+  imageUrls?: string[];
 }
 
 import { AppImageUploaderComponent } from '../image-uploader/image-uploader.component';
+import { MediaService } from '../../services/media.service';
 
 @Component({
   selector: 'app-admin-orders-board',
@@ -161,6 +164,17 @@ import { AppImageUploaderComponent } from '../image-uploader/image-uploader.comp
         >
           <span class="indicator-line"></span>
           🎨 Brands House
+        </button>
+
+        <!-- Attributes Ledger Tab Button -->
+        <button 
+          *ngIf="authService.hasPermission('Products:Update')"
+          (click)="currentTab.set('attributes'); loadColors(); loadSizes()"
+          [class.active]="currentTab() === 'attributes'"
+          class="sidebar-btn"
+        >
+          <span class="indicator-line"></span>
+          🎨 Colors & Sizes
         </button>
 
         <!-- Analytics Ledger Tab Button -->
@@ -712,14 +726,18 @@ import { AppImageUploaderComponent } from '../image-uploader/image-uploader.comp
                     <input type="text" [(ngModel)]="row.description" placeholder="Premium linen fabric..." class="px-2 py-1 bg-transparent focus:bg-white border-b border-[#2A2522]/10 text-xs w-full focus:outline-none" />
                   </td>
 
-                  <!-- ImageUrl Upload -->
+                  <!-- ImageUrl Upload (Multiple) -->
                   <td class="py-2 px-3 min-w-[140px]">
-                    <app-image-uploader 
-                      [imageUrl]="row.imageUrl" 
-                      (uploaded)="row.imageUrl = $event"
-                      label="Upload"
-                      [compact]="true"
-                    ></app-image-uploader>
+                    <div class="flex items-center gap-1.5">
+                      <button 
+                        type="button"
+                        (click)="openBulkRowImagesModal(row)"
+                        class="px-2 py-1.5 border border-[#2A2522]/15 hover:bg-[#2A2522]/5 text-[#2A2522] rounded-lg text-[9px] uppercase tracking-widest font-bold flex items-center gap-1 min-w-[90px]"
+                      >
+                        📷 Images ({{ row.imageUrls?.length || 0 }})
+                      </button>
+                      <img *ngIf="row.imageUrls && row.imageUrls.length > 0" [src]="resolveImageUrl(row.imageUrls?.[0] || '')" class="w-6 h-6 rounded object-cover border border-[#2A2522]/10" />
+                    </div>
                   </td>
 
                   <!-- Delete Row -->
@@ -749,6 +767,55 @@ import { AppImageUploaderComponent } from '../image-uploader/image-uploader.comp
             >
               {{ publishingBulk() ? 'Publishing Batch...' : 'Publish Product Batch' }}
             </button>
+          </div>
+
+          <!-- Row Images Modal Overlay -->
+          <div *ngIf="activeBulkImageRow() !== null" class="fixed inset-0 bg-[#2A2522]/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" (click)="closeBulkRowImagesModal()">
+            <div class="frosted-card w-full max-w-md p-6 rounded-2xl space-y-6 text-[#2A2522] animate-fade-in shadow-2xl" (click)="$event.stopPropagation()">
+              <div class="flex justify-between items-center border-b border-[#2A2522]/10 pb-3">
+                <div>
+                  <h4 class="title-header text-sm font-bold text-[#B84F7D]">Manage Row Images</h4>
+                  <span class="text-[9px] uppercase tracking-widest text-[#8A817C] font-lexend">Upload up to 10 images for: {{ activeBulkImageRow()?.title || 'this row' }}</span>
+                </div>
+                <button (click)="closeBulkRowImagesModal()" class="text-xs text-[#8A817C] hover:text-[#B84F7D] font-bold">✕</button>
+              </div>
+
+              <div class="flex flex-wrap gap-3">
+                <div 
+                  *ngFor="let imgUrl of activeBulkImageRow()?.imageUrls || []; let i = index" 
+                  class="relative w-20 h-20 rounded-xl border border-[#2A2522]/10 bg-white overflow-hidden flex items-center justify-center group/bulk-img shadow-sm animate-fade-in"
+                >
+                  <img [src]="resolveImageUrl(imgUrl)" class="w-full h-full object-cover" />
+                  <div *ngIf="i === 0" class="absolute bottom-0 left-0 right-0 bg-[#2A2522]/80 text-[7px] text-white text-center py-0.5 font-bold uppercase tracking-wider">
+                    Primary
+                  </div>
+                  <!-- Delete Swatch Button -->
+                  <button 
+                    type="button"
+                    (click)="removeBulkRowImage(i)" 
+                    class="absolute top-1 right-1 w-4 h-4 bg-red-655 hover:bg-red-700 text-white rounded-full flex items-center justify-center text-[8px] font-bold shadow-md opacity-0 group-hover/bulk-img:opacity-100 transition-opacity"
+                  >
+                    ✕
+                  </button>
+                </div>
+
+                <!-- Upload Box -->
+                <label 
+                  *ngIf="(activeBulkImageRow()?.imageUrls?.length || 0) < 10"
+                  class="w-20 h-20 rounded-xl border-2 border-dashed border-[#2A2522]/15 hover:border-[#E07A5F] bg-[#FBF9F6] flex flex-col items-center justify-center text-[#8A817C] hover:text-[#E07A5F] cursor-pointer select-none transition-all"
+                >
+                  <span class="text-base font-bold leading-none">+</span>
+                  <span class="text-[8px] font-bold uppercase tracking-widest mt-0.5 animate-pulse">Upload</span>
+                  <input type="file" accept="image/*" class="hidden" (change)="uploadBulkRowImage($event)" />
+                </label>
+              </div>
+
+              <div class="pt-4 border-t border-[#2A2522]/10 flex justify-end">
+                <button (click)="closeBulkRowImagesModal()" class="px-5 py-2 bg-[#2A2522] hover:bg-[#B84F7D] text-[#FBF9F6] text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all shadow-sm">
+                  Done
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -1400,6 +1467,181 @@ import { AppImageUploaderComponent } from '../image-uploader/image-uploader.comp
           </div>
         </div>
 
+        <!-- TAB 9: INVENTORY ATTRIBUTES LEDGER (Colors & Sizes) -->
+        <div *ngIf="currentTab() === 'attributes'" class="space-y-8 animate-fade-in text-[#2A2522]">
+          <div class="border-b border-[#2A2522]/10 pb-4">
+            <h3 class="title-header text-lg font-light text-[#2A2522]">Inventory Attributes Matrix</h3>
+            <span class="text-[9px] uppercase tracking-widest text-[#8A817C] font-lexend">Manage dynamic product colors and size choices across all categories</span>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Left Panel: Colors Swatches & Palette Builder -->
+            <div class="space-y-6">
+              <div class="frosted-card p-6 rounded-2xl space-y-6">
+                <div class="flex justify-between items-center border-b border-[#2A2522]/5 pb-3">
+                  <div>
+                    <h4 class="title-header text-sm font-semibold text-[#2A2522] uppercase">🎨 Colors Registry</h4>
+                    <span class="text-[9px] uppercase tracking-widest text-[#8A817C] font-lexend">Predefined color palette with visual previews</span>
+                  </div>
+                  <button (click)="loadColors()" class="text-[9px] font-lexend text-[#B84F7D] hover:underline uppercase tracking-wider font-bold">Refresh</button>
+                </div>
+
+                <!-- Colors List -->
+                <div class="grid grid-cols-1 gap-2 max-h-[300px] overflow-y-auto pr-1 custom-scrollbar">
+                  <div *ngFor="let col of availableColors()" class="p-3 bg-white/40 border border-[#2A2522]/5 rounded-xl flex items-center justify-between hover:bg-white/60 transition-all">
+                    <div class="flex items-center gap-3">
+                      <span class="w-6 h-6 rounded-full border border-black/10 flex-shrink-0" [style.background-color]="col.hexCode"></span>
+                      <div class="flex flex-col">
+                        <span class="text-xs font-bold text-[#2A2522]">{{ col.name }}</span>
+                        <span class="text-[9px] font-mono text-[#8A817C] uppercase">{{ col.hexCode }}</span>
+                      </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <button (click)="startEditColor(col)" class="text-[#B84F7D] hover:text-[#B84F7D]/85 text-[10px] uppercase font-bold tracking-widest">Edit</button>
+                      <span class="text-[#2A2522]/10 text-xs">|</span>
+                      <button (click)="deleteColor(col.id)" class="text-red-500 hover:text-red-700 text-[10px] uppercase font-bold tracking-widest">Delete</button>
+                    </div>
+                  </div>
+                  <div *ngIf="availableColors().length === 0" class="text-center py-6 text-xs text-[#8A817C] italic">No colors defined.</div>
+                </div>
+
+                <!-- Add/Edit Color Form -->
+                <div class="border-t border-[#2A2522]/10 pt-4 space-y-3">
+                  <h5 class="text-[9px] uppercase tracking-widest font-bold text-[#B84F7D]">
+                    {{ editingColorId() ? 'Modify Color Option' : 'Register New Color Swatch' }}
+                  </h5>
+                  <div class="grid grid-cols-3 gap-2 items-end">
+                    <div class="col-span-2 space-y-1">
+                      <label class="text-[8px] uppercase tracking-widest text-[#8A817C] font-bold">Color Name</label>
+                      <input 
+                        type="text" 
+                        [(ngModel)]="newColorName" 
+                        placeholder="E.g. Sage, Blush" 
+                        class="w-full px-3 py-2 bg-white border border-[#2A2522]/10 rounded-xl text-xs focus:outline-none focus:border-[#B84F7D] transition-colors" 
+                      />
+                    </div>
+                    <div class="space-y-1">
+                      <label class="text-[8px] uppercase tracking-widest text-[#8A817C] font-bold block">Hex / Color</label>
+                      <div class="flex items-center gap-2">
+                        <input 
+                          type="color" 
+                          [(ngModel)]="newColorHex" 
+                          class="w-8 h-8 rounded-lg cursor-pointer border border-[#2A2522]/10 p-0 flex-shrink-0"
+                        />
+                        <input 
+                          type="text" 
+                          [(ngModel)]="newColorHex" 
+                          placeholder="#FFFFFF" 
+                          class="w-full px-2 py-1.5 bg-white border border-[#2A2522]/10 rounded-lg text-[10px] font-mono uppercase text-center focus:outline-none" 
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="flex gap-2 pt-1">
+                    <button 
+                      (click)="saveColor()" 
+                      class="flex-1 py-2 bg-[#2A2522] hover:bg-[#B84F7D] text-[#FBF9F6] text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all"
+                    >
+                      {{ editingColorId() ? 'Save Color' : '+ Register Swatch' }}
+                    </button>
+                    <button 
+                      *ngIf="editingColorId()"
+                      (click)="cancelEditColor()" 
+                      class="px-4 py-2 border border-[#2A2522]/15 text-[#8A817C] hover:bg-[#2A2522]/5 text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Panel: Sizes Matrix -->
+            <div class="space-y-6">
+              <div class="frosted-card p-6 rounded-2xl space-y-6">
+                <div class="flex justify-between items-center border-b border-[#2A2522]/5 pb-3">
+                  <div>
+                    <h4 class="title-header text-sm font-semibold text-[#2A2522] uppercase">📏 Sizes Registry</h4>
+                    <span class="text-[9px] uppercase tracking-widest text-[#8A817C] font-lexend">Configured size lists filtered by target collection</span>
+                  </div>
+                  <button (click)="loadSizes()" class="text-[9px] font-lexend text-[#B84F7D] hover:underline uppercase tracking-wider font-bold">Refresh</button>
+                </div>
+
+                <!-- Sizes List -->
+                <div class="grid grid-cols-1 gap-2 max-h-[300px] overflow-y-auto pr-1 custom-scrollbar">
+                  <div *ngFor="let sz of availableSizes()" class="p-3 bg-white/40 border border-[#2A2522]/5 rounded-xl flex items-center justify-between hover:bg-white/60 transition-all">
+                    <div class="flex flex-col">
+                      <span class="text-xs font-bold text-[#2A2522]">{{ sz.name }}</span>
+                      <span class="text-[9px] uppercase tracking-widest text-[#8A817C] font-lexend font-semibold">Audience: {{ sz.targetAudience }}</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                      <span class="text-[9px] font-mono text-[#8A817C] bg-[#2A2522]/5 px-2 py-0.5 rounded">Order: {{ sz.sortOrder }}</span>
+                      <div class="flex items-center gap-2">
+                        <button (click)="startEditSize(sz)" class="text-[#B84F7D] hover:text-[#B84F7D]/85 text-[10px] uppercase font-bold tracking-widest">Edit</button>
+                        <span class="text-[#2A2522]/10 text-xs">|</span>
+                        <button (click)="deleteSize(sz.id)" class="text-red-500 hover:text-red-700 text-[10px] uppercase font-bold tracking-widest">Delete</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="availableSizes().length === 0" class="text-center py-6 text-xs text-[#8A817C] italic">No sizes defined.</div>
+                </div>
+
+                <!-- Add/Edit Size Form -->
+                <div class="border-t border-[#2A2522]/10 pt-4 space-y-3">
+                  <h5 class="text-[9px] uppercase tracking-widest font-bold text-[#B84F7D]">
+                    {{ editingSizeId() ? 'Modify Size Option' : 'Register New Size Option' }}
+                  </h5>
+                  <div class="grid grid-cols-3 gap-2 items-end">
+                    <div class="space-y-1">
+                      <label class="text-[8px] uppercase tracking-widest text-[#8A817C] font-bold">Size Name</label>
+                      <input 
+                        type="text" 
+                        [(ngModel)]="newSizeName" 
+                        placeholder="E.g. S, M, EU 37" 
+                        class="w-full px-3 py-2 bg-white border border-[#2A2522]/10 rounded-xl text-xs focus:outline-none focus:border-[#B84F7D] transition-colors" 
+                      />
+                    </div>
+                    <div class="space-y-1">
+                      <label class="text-[8px] uppercase tracking-widest text-[#8A817C] font-bold">Target Audience</label>
+                      <select 
+                        [(ngModel)]="newSizeAudience" 
+                        class="w-full px-3 py-2 bg-white border border-[#2A2522]/10 rounded-xl text-xs focus:outline-none focus:border-[#B84F7D] transition-colors"
+                      >
+                        <option value="Both">Both</option>
+                        <option value="Women">Women</option>
+                        <option value="Kids">Kids</option>
+                      </select>
+                    </div>
+                    <div class="space-y-1">
+                      <label class="text-[8px] uppercase tracking-widest text-[#8A817C] font-bold">Sort Order</label>
+                      <input 
+                        type="number" 
+                        [(ngModel)]="newSizeSortOrder" 
+                        class="w-full px-3 py-2 bg-white border border-[#2A2522]/10 rounded-xl text-xs focus:outline-none focus:border-[#B84F7D] transition-colors" 
+                      />
+                    </div>
+                  </div>
+                  <div class="flex gap-2 pt-1">
+                    <button 
+                      (click)="saveSize()" 
+                      class="flex-1 py-2 bg-[#2A2522] hover:bg-[#B84F7D] text-[#FBF9F6] text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all"
+                    >
+                      {{ editingSizeId() ? 'Save Size' : '+ Register Size' }}
+                    </button>
+                    <button 
+                      *ngIf="editingSizeId()"
+                      (click)="cancelEditSize()" 
+                      class="px-4 py-2 border border-[#2A2522]/15 text-[#8A817C] hover:bg-[#2A2522]/5 text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </main> <!-- Closes admin-main -->
     </div> <!-- Closes admin-canvas -->
 
@@ -1851,6 +2093,8 @@ export class AdminOrdersBoardComponent implements OnInit, OnDestroy {
   public authService = inject(AuthService);
   private alertService = inject(AlertService);
   public notificationService = inject(NotificationService);
+  private mediaService = inject(MediaService);
+  private catalogService = inject(CatalogService);
   private permissionsSubscription?: Subscription;
   resolveImageUrl = resolveImageUrl;
 
@@ -1993,6 +2237,22 @@ export class AdminOrdersBoardComponent implements OnInit, OnDestroy {
   bulkFillAge = '';
   bulkFillColors = '';
   bulkFillSizes = '';
+
+  // Dynamic Attributes & Multi-Image Bulk States
+  activeBulkImageRow = signal<BulkProductRow | null>(null);
+  availableColors = signal<any[]>([]);
+  availableSizes = signal<any[]>([]);
+
+  // Colors Attribute Form State
+  newColorName = signal<string>('');
+  newColorHex = signal<string>('#FFFFFF');
+  editingColorId = signal<string | null>(null);
+
+  // Sizes Attribute Form State
+  newSizeName = signal<string>('');
+  newSizeAudience = signal<string>('Both');
+  newSizeSortOrder = signal<number>(0);
+  editingSizeId = signal<string | null>(null);
 
   // Shipping Matrix Ledger States
   governorates = signal<ShippingGovernorate[]>([]);
@@ -2266,6 +2526,8 @@ export class AdminOrdersBoardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initBulkRows();
+    this.loadColors();
+    this.loadSizes();
 
     this.permissionsSubscription = this.authService.userPermissions$.subscribe(perms => {
       if (perms && perms.length > 0) {
@@ -2639,7 +2901,8 @@ export class AdminOrdersBoardComponent implements OnInit, OnDestroy {
       colors: '',
       age: '',
       description: '',
-      imageUrl: ''
+      imageUrl: '',
+      imageUrls: []
     };
   }
 
@@ -2651,6 +2914,53 @@ export class AdminOrdersBoardComponent implements OnInit, OnDestroy {
     this.bulkRows.update(rows => rows.filter((_, i) => i !== index));
     if (this.bulkRows().length === 0) {
       this.initBulkRows();
+    }
+  }
+
+  openBulkRowImagesModal(row: BulkProductRow): void {
+    this.activeBulkImageRow.set(row);
+  }
+
+  closeBulkRowImagesModal(): void {
+    this.activeBulkImageRow.set(null);
+  }
+
+  uploadBulkRowImage(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    const row = this.activeBulkImageRow();
+    if (file && row) {
+      if (!row.imageUrls) {
+        row.imageUrls = [];
+      }
+      if (row.imageUrls.length >= 10) return;
+
+      this.mediaService.upload(file).subscribe({
+        next: (res) => {
+          if (res.isSuccess && res.url) {
+            row.imageUrls!.push(res.url);
+            if (!row.imageUrl) {
+              row.imageUrl = res.url;
+            }
+            // Trigger reactivity
+            this.activeBulkImageRow.set({ ...row });
+          }
+        }
+      });
+    }
+  }
+
+  removeBulkRowImage(index: number): void {
+    const row = this.activeBulkImageRow();
+    if (row && row.imageUrls) {
+      row.imageUrls.splice(index, 1);
+      if (row.imageUrls.length > 0) {
+        row.imageUrl = row.imageUrls[0];
+      } else {
+        row.imageUrl = '';
+      }
+      // Trigger reactivity
+      this.activeBulkImageRow.set({ ...row });
     }
   }
 
@@ -2750,7 +3060,8 @@ export class AdminOrdersBoardComponent implements OnInit, OnDestroy {
         sizes: sizesArr,
         shippingSize: row.shippingSize,
         isVisible: true,
-        imageUrl: row.imageUrl.trim() || null,
+        imageUrl: row.imageUrls && row.imageUrls.length > 0 ? row.imageUrls[0] : (row.imageUrl ? row.imageUrl.trim() : null),
+        imageUrls: row.imageUrls && row.imageUrls.length > 0 ? row.imageUrls : (row.imageUrl && row.imageUrl.trim() ? [row.imageUrl.trim()] : []),
         age: row.mainCategory === 'Women' ? null : (row.age.trim() || null),
         subCategories: subCatsArr
       };
@@ -2773,6 +3084,225 @@ export class AdminOrdersBoardComponent implements OnInit, OnDestroy {
         this.bulkIsError.set(true);
       }
     });
+  }
+
+  loadColors(): void {
+    this.catalogService.getColors().subscribe({
+      next: (res: any) => {
+        if (res.isSuccess && res.data) {
+          this.availableColors.set(res.data);
+        }
+      }
+    });
+  }
+
+  loadSizes(): void {
+    this.catalogService.getSizes().subscribe({
+      next: (res: any) => {
+        if (res.isSuccess && res.data) {
+          this.availableSizes.set(res.data);
+        }
+      }
+    });
+  }
+
+  saveColor(): void {
+    const name = this.newColorName().trim();
+    const hex = this.newColorHex().trim();
+    if (!name || !hex) {
+      this.alertService.showAlert({
+        title: 'Error',
+        message: 'Color name and hex code are required.',
+        type: 'error',
+        confirmText: 'OK'
+      });
+      return;
+    }
+
+    const editId = this.editingColorId();
+    if (editId) {
+      this.catalogService.updateColor(editId, { name, hexCode: hex }).subscribe({
+        next: (res: any) => {
+          if (res.isSuccess) {
+            this.alertService.showAlert({
+              title: 'Success',
+              message: 'Color updated successfully.',
+              type: 'success',
+              confirmText: 'OK'
+            });
+            this.cancelEditColor();
+            this.loadColors();
+          } else {
+            this.alertService.showAlert({
+              title: 'Error',
+              message: res.message || 'Failed to update color.',
+              type: 'error',
+              confirmText: 'OK'
+            });
+          }
+        }
+      });
+    } else {
+      this.catalogService.createColor({ name, hexCode: hex }).subscribe({
+        next: (res: any) => {
+          if (res.isSuccess) {
+            this.alertService.showAlert({
+              title: 'Success',
+              message: 'Color created successfully.',
+              type: 'success',
+              confirmText: 'OK'
+            });
+            this.cancelEditColor();
+            this.loadColors();
+          } else {
+            this.alertService.showAlert({
+              title: 'Error',
+              message: res.message || 'Failed to create color.',
+              type: 'error',
+              confirmText: 'OK'
+            });
+          }
+        }
+      });
+    }
+  }
+
+  deleteColor(id: string): void {
+    if (confirm('Are you sure you want to delete this color?')) {
+      this.catalogService.deleteColor(id).subscribe({
+        next: (res: any) => {
+          if (res.isSuccess) {
+            this.alertService.showAlert({
+              title: 'Success',
+              message: 'Color deleted successfully.',
+              type: 'success',
+              confirmText: 'OK'
+            });
+            this.loadColors();
+          } else {
+            this.alertService.showAlert({
+              title: 'Error',
+              message: res.message || 'Failed to delete color.',
+              type: 'error',
+              confirmText: 'OK'
+            });
+          }
+        }
+      });
+    }
+  }
+
+  startEditColor(color: any): void {
+    this.editingColorId.set(color.id);
+    this.newColorName.set(color.name);
+    this.newColorHex.set(color.hexCode);
+  }
+
+  cancelEditColor(): void {
+    this.editingColorId.set(null);
+    this.newColorName.set('');
+    this.newColorHex.set('#FFFFFF');
+  }
+
+  saveSize(): void {
+    const name = this.newSizeName().trim();
+    const audience = this.newSizeAudience();
+    const order = this.newSizeSortOrder();
+    if (!name) {
+      this.alertService.showAlert({
+        title: 'Error',
+        message: 'Size name is required.',
+        type: 'error',
+        confirmText: 'OK'
+      });
+      return;
+    }
+
+    const editId = this.editingSizeId();
+    if (editId) {
+      this.catalogService.updateSize(editId, { name, targetAudience: audience, sortOrder: order }).subscribe({
+        next: (res: any) => {
+          if (res.isSuccess) {
+            this.alertService.showAlert({
+              title: 'Success',
+              message: 'Size updated successfully.',
+              type: 'success',
+              confirmText: 'OK'
+            });
+            this.cancelEditSize();
+            this.loadSizes();
+          } else {
+            this.alertService.showAlert({
+              title: 'Error',
+              message: res.message || 'Failed to update size.',
+              type: 'error',
+              confirmText: 'OK'
+            });
+          }
+        }
+      });
+    } else {
+      this.catalogService.createSize({ name, targetAudience: audience, sortOrder: order }).subscribe({
+        next: (res: any) => {
+          if (res.isSuccess) {
+            this.alertService.showAlert({
+              title: 'Success',
+              message: 'Size created successfully.',
+              type: 'success',
+              confirmText: 'OK'
+            });
+            this.cancelEditSize();
+            this.loadSizes();
+          } else {
+            this.alertService.showAlert({
+              title: 'Error',
+              message: res.message || 'Failed to create size.',
+              type: 'error',
+              confirmText: 'OK'
+            });
+          }
+        }
+      });
+    }
+  }
+
+  deleteSize(id: string): void {
+    if (confirm('Are you sure you want to delete this size?')) {
+      this.catalogService.deleteSize(id).subscribe({
+        next: (res: any) => {
+          if (res.isSuccess) {
+            this.alertService.showAlert({
+              title: 'Success',
+              message: 'Size deleted successfully.',
+              type: 'success',
+              confirmText: 'OK'
+            });
+            this.loadSizes();
+          } else {
+            this.alertService.showAlert({
+              title: 'Error',
+              message: res.message || 'Failed to delete size.',
+              type: 'error',
+              confirmText: 'OK'
+            });
+          }
+        }
+      });
+    }
+  }
+
+  startEditSize(size: any): void {
+    this.editingSizeId.set(size.id);
+    this.newSizeName.set(size.name);
+    this.newSizeAudience.set(size.targetAudience);
+    this.newSizeSortOrder.set(size.sortOrder);
+  }
+
+  cancelEditSize(): void {
+    this.editingSizeId.set(null);
+    this.newSizeName.set('');
+    this.newSizeAudience.set('Both');
+    this.newSizeSortOrder.set(0);
   }
 
   loadBrands(): void {

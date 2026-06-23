@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { CatalogService, ProductDto, Brand } from '../../core/services/catalog.service';
 import { AuthService } from '../../services/auth.service';
 import { AlertService } from '../../services/alert.service';
+import { MediaService } from '../../services/media.service';
 import { CartService } from '../../core/services/cart.service';
 import { gsap } from 'gsap';
 import { lastValueFrom } from 'rxjs';
@@ -132,14 +133,14 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
             <div *ngIf="activeDropdown() === 'colors'" class="dropdown-overlay dropdown-right p-4 min-w-[280px]" (click)="$event.stopPropagation()">
               <div class="flex flex-wrap gap-2.5">
                 <button 
-                  *ngFor="let color of availableColors"
-                  (click)="toggleColor(color)"
-                  [ngStyle]="{'background-color': getColorHex(color)}"
-                  [title]="color"
-                  [class.active]="selectedColors.includes(color)"
+                  *ngFor="let color of availableColors()"
+                  (click)="toggleColor(color.name)"
+                  [ngStyle]="{'background-color': color.hexCode}"
+                  [title]="color.name"
+                  [class.active]="selectedColors.includes(color.name)"
                   class="color-swatch-circle"
                 >
-                  <span class="inner-dot" *ngIf="color === 'White'"></span>
+                  <span class="inner-dot" *ngIf="color.name === 'White'"></span>
                 </button>
               </div>
             </div>
@@ -866,14 +867,43 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
               </select>
             </div>
 
-            <!-- Form Row: Primary Image Upload -->
-            <div class="space-y-2">
-              <label class="text-[8px] uppercase tracking-widest font-bold text-[#6B5E57] block">Primary Image *</label>
-              <app-image-uploader 
-                [imageUrl]="formImageUrl()" 
-                (uploaded)="formImageUrl.set($event)"
-                label="Choose Image File"
-              ></app-image-uploader>
+            <!-- Form Row: Multiple Images Upload (Max 10) -->
+            <div class="space-y-2 pt-1">
+              <div class="flex justify-between items-center">
+                <label class="text-[8px] uppercase tracking-widest font-bold text-[#6B5E57]">Product Images * (Up to 10)</label>
+                <span class="text-[9px] text-[#8A817C] font-mono font-bold">{{ formImageUrls().length }}/10</span>
+              </div>
+              
+              <!-- Thumbnail strip with delete button -->
+              <div class="flex flex-wrap gap-2.5 items-center">
+                <div 
+                  *ngFor="let imgUrl of formImageUrls(); let i = index" 
+                  class="relative w-14 h-14 rounded-lg border border-[#2A2522]/10 bg-white overflow-hidden flex items-center justify-center group/img shadow-sm animate-fade-in"
+                >
+                  <img [src]="resolveImageUrl(imgUrl)" class="w-full h-full object-cover" />
+                  <div *ngIf="i === 0" class="absolute bottom-0 left-0 right-0 bg-[#2A2522]/80 text-[6px] text-white text-center py-0.5 font-bold uppercase tracking-wider">
+                    Primary
+                  </div>
+                  <!-- Delete Swatch Button -->
+                  <button 
+                    type="button"
+                    (click)="removeFormImage(i)" 
+                    class="absolute top-0.5 right-0.5 w-3.5 h-3.5 bg-red-650 hover:bg-red-700 text-white rounded-full flex items-center justify-center text-[7px] font-bold shadow-md opacity-0 group-hover/img:opacity-100 transition-opacity"
+                  >
+                    ✕
+                  </button>
+                </div>
+
+                <!-- Add Image Box -->
+                <label 
+                  *ngIf="formImageUrls().length < 10"
+                  class="w-14 h-14 rounded-lg border-2 border-dashed border-[#2A2522]/15 hover:border-[#E07A5F] bg-[#FBF9F6] flex flex-col items-center justify-center text-[#8A817C] hover:text-[#E07A5F] cursor-pointer select-none transition-all"
+                >
+                  <span class="text-sm font-bold leading-none">+</span>
+                  <span class="text-[6px] font-bold uppercase tracking-widest mt-0.5">Upload</span>
+                  <input type="file" accept="image/*" class="hidden" (change)="uploadFormImage($event)" />
+                </label>
+              </div>
             </div>
 
             <!-- Form Row: Colors & Sizes -->
@@ -906,15 +936,15 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                   class="absolute left-0 right-0 mt-1 bg-white border border-[#2A2522]/15 rounded-xl shadow-lg z-50 max-h-48 overflow-y-auto p-2 custom-scrollbar grid grid-cols-1 gap-1"
                 >
                   <button 
-                    *ngFor="let color of availableColors"
+                    *ngFor="let color of availableColors()"
                     type="button"
-                    (click)="toggleFormColor(color)"
-                    [ngClass]="{'bg-[#2A2522]/5 border-[#B84F7D]/20': isFormColorSelected(color)}"
+                    (click)="toggleFormColor(color.name)"
+                    [ngClass]="{'bg-[#2A2522]/5 border-[#B84F7D]/20': isFormColorSelected(color.name)}"
                     class="flex items-center gap-2 px-2 py-1.5 border border-transparent rounded-lg text-left text-xs text-[#2A2522] hover:bg-[#2A2522]/5 transition-all w-full"
                   >
-                    <span class="w-3.5 h-3.5 rounded-full border border-black/10 flex-shrink-0" [style.background-color]="getColorHex(color)"></span>
-                    <span class="font-medium flex-1 truncate text-[11px]">{{ color }}</span>
-                    <span *ngIf="isFormColorSelected(color)" class="text-[#B84F7D] font-bold text-[10px]">✓</span>
+                    <span class="w-3.5 h-3.5 rounded-full border border-black/10 flex-shrink-0" [style.background-color]="color.hexCode"></span>
+                    <span class="font-medium flex-1 truncate text-[11px]">{{ color.name }}</span>
+                    <span *ngIf="isFormColorSelected(color.name)" class="text-[#B84F7D] font-bold text-[10px]">✓</span>
                   </button>
                 </div>
               </div>
@@ -1229,6 +1259,7 @@ export class ProductsCatalogComponent implements OnInit, AfterViewInit, OnDestro
   private catalogService = inject(CatalogService);
   public authService = inject(AuthService);
   private alertService = inject(AlertService);
+  private mediaService = inject(MediaService);
   private route = inject(ActivatedRoute);
   private cartService = inject(CartService);
   private platformId = inject(PLATFORM_ID);
@@ -1552,48 +1583,85 @@ export class ProductsCatalogComponent implements OnInit, AfterViewInit, OnDestro
   selectedSubCategoryTarget = signal<string>('All');
   selectedAge = signal<string>('All');
 
-  // Metadata limits for facets
-  readonly availableColors = ['Tan', 'Black', 'Gold', 'Silver', 'Champagne', 'Emerald', 'Oatmeal', 'Charcoal', 'Blush', 'Ivory', 'Taupe', 'Sage', 'Blue', 'White'];
-  readonly availableSizes = ['One Size', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '28', '29', '30', '31', '37', '38', '39', '40', '41'];
+  // Metadata limits for facets (initialized with static fallback, updated dynamically from DB)
+  availableColors = signal<any[]>([
+    { name: 'Tan', hexCode: '#C49E7A' },
+    { name: 'Black', hexCode: '#1F1B1A' },
+    { name: 'Gold', hexCode: '#D4AF37' },
+    { name: 'Silver', hexCode: '#B0B5BC' },
+    { name: 'Champagne', hexCode: '#F1E5D7' },
+    { name: 'Emerald', hexCode: '#3B7A57' },
+    { name: 'Oatmeal', hexCode: '#E3DFD5' },
+    { name: 'Charcoal', hexCode: '#434A54' },
+    { name: 'Blush', hexCode: '#ECC8BF' },
+    { name: 'Ivory', hexCode: '#FDFBF7' },
+    { name: 'Taupe', hexCode: '#8C857B' },
+    { name: 'Sage', hexCode: '#9EB0A2' },
+    { name: 'Blue', hexCode: '#7F9BB0' },
+    { name: 'White', hexCode: '#FFFFFF' }
+  ]);
+
+  availableSizes = signal<any[]>([
+    { name: 'One Size', targetAudience: 'Both', sortOrder: 0 },
+    { name: 'XS', targetAudience: 'Women', sortOrder: 1 },
+    { name: 'S', targetAudience: 'Women', sortOrder: 2 },
+    { name: 'M', targetAudience: 'Women', sortOrder: 3 },
+    { name: 'L', targetAudience: 'Women', sortOrder: 4 },
+    { name: 'XL', targetAudience: 'Women', sortOrder: 5 },
+    { name: 'XXL', targetAudience: 'Women', sortOrder: 6 },
+    { name: '37', targetAudience: 'Women', sortOrder: 7 },
+    { name: '38', targetAudience: 'Women', sortOrder: 8 },
+    { name: '39', targetAudience: 'Women', sortOrder: 9 },
+    { name: '40', targetAudience: 'Women', sortOrder: 10 },
+    { name: '41', targetAudience: 'Women', sortOrder: 11 },
+    { name: '3-6 Months (62-68cm)', targetAudience: 'Kids', sortOrder: 12 },
+    { name: '6-9 Months (68-74cm)', targetAudience: 'Kids', sortOrder: 13 },
+    { name: '9-12 Months (74-80cm)', targetAudience: 'Kids', sortOrder: 14 },
+    { name: '12-18 Months (80-86cm)', targetAudience: 'Kids', sortOrder: 15 },
+    { name: '1.5-2 Years (86-92cm)', targetAudience: 'Kids', sortOrder: 16 },
+    { name: '2-3 Years (92-98cm)', targetAudience: 'Kids', sortOrder: 17 },
+    { name: '3-4 Years (98-104cm)', targetAudience: 'Kids', sortOrder: 18 },
+    { name: '4-5 Years (104-110cm)', targetAudience: 'Kids', sortOrder: 19 },
+    { name: '5-6 Years (110-116cm)', targetAudience: 'Kids', sortOrder: 20 },
+    { name: '6-7 Years (116-122cm)', targetAudience: 'Kids', sortOrder: 21 },
+    { name: 'EU 19', targetAudience: 'Kids', sortOrder: 22 },
+    { name: 'EU 20.5', targetAudience: 'Kids', sortOrder: 23 },
+    { name: 'EU 21.5', targetAudience: 'Kids', sortOrder: 24 },
+    { name: 'EU 23', targetAudience: 'Kids', sortOrder: 25 },
+    { name: 'EU 24', targetAudience: 'Kids', sortOrder: 26 },
+    { name: 'EU 25.5', targetAudience: 'Kids', sortOrder: 27 },
+    { name: 'EU 26.5', targetAudience: 'Kids', sortOrder: 28 },
+    { name: 'EU 28', targetAudience: 'Kids', sortOrder: 29 },
+    { name: 'EU 29', targetAudience: 'Kids', sortOrder: 30 },
+    { name: 'EU 30.5', targetAudience: 'Kids', sortOrder: 31 },
+    { name: 'EU 32', targetAudience: 'Kids', sortOrder: 32 },
+    { name: 'EU 33', targetAudience: 'Kids', sortOrder: 33 },
+    { name: 'EU 34.5', targetAudience: 'Kids', sortOrder: 34 },
+    { name: 'EU 35.5', targetAudience: 'Kids', sortOrder: 35 }
+  ]);
 
   activeAvailableSizes = computed(() => {
     const target = this.targetAudience();
-    const womenSizes = ['One Size', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '37', '38', '39', '40', '41'];
-    const kidsSizes = [
-      '3-6 Months (62-68cm)', '6-9 Months (68-74cm)', '9-12 Months (74-80cm)', '12-18 Months (80-86cm)', 
-      '1.5-2 Years (86-92cm)', '2-3 Years (92-98cm)', '3-4 Years (98-104cm)', '4-5 Years (104-110cm)', 
-      '5-6 Years (110-116cm)', '6-7 Years (116-122cm)', 
-      'EU 19', 'EU 20.5', 'EU 21.5', 'EU 23', 'EU 24', 
-      'EU 25.5', 'EU 26.5', 'EU 28', 'EU 29', 'EU 30.5', 
-      'EU 32', 'EU 33', 'EU 34.5', 'EU 35.5'
-    ];
+    const all = this.availableSizes();
     if (target === 'Women') {
-      return womenSizes;
+      return all.filter(s => s.targetAudience === 'Women' || s.targetAudience === 'Both').map(s => s.name);
     } else if (target === 'Kids') {
-      return kidsSizes;
+      return all.filter(s => s.targetAudience === 'Kids' || s.targetAudience === 'Both').map(s => s.name);
     } else {
-      return [...womenSizes, ...kidsSizes];
+      return all.map(s => s.name);
     }
   });
 
+  colorHexMap = computed(() => {
+    const map: Record<string, string> = {};
+    this.availableColors().forEach(c => {
+      map[c.name.toLowerCase()] = c.hexCode;
+    });
+    return map;
+  });
+
   getColorHex(color: string): string {
-    const mapping: Record<string, string> = {
-      'Tan': '#C49E7A',
-      'Black': '#1F1B1A',
-      'Gold': '#D4AF37',
-      'Silver': '#B0B5BC',
-      'Champagne': '#F1E5D7',
-      'Emerald': '#3B7A57',
-      'Oatmeal': '#E3DFD5',
-      'Charcoal': '#434A54',
-      'Blush': '#ECC8BF',
-      'Ivory': '#FDFBF7',
-      'Taupe': '#8C857B',
-      'Sage': '#9EB0A2',
-      'Blue': '#7F9BB0',
-      'White': '#FFFFFF'
-    };
-    return mapping[color] || '#CCCCCC';
+    return this.colorHexMap()[color.toLowerCase()] || '#CCCCCC';
   }
 
   isFormColorSelected(color: string): boolean {
@@ -1615,16 +1683,14 @@ export class ProductsCatalogComponent implements OnInit, AfterViewInit, OnDestro
 
   getFormAvailableSizes(): string[] {
     const mainCat = this.formMainCategory();
-    const womenSizes = ['One Size', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '37', '38', '39', '40', '41'];
-    const kidsSizes = [
-      '3-6 Months (62-68cm)', '6-9 Months (68-74cm)', '9-12 Months (74-80cm)', '12-18 Months (80-86cm)', 
-      '1.5-2 Years (86-92cm)', '2-3 Years (92-98cm)', '3-4 Years (98-104cm)', '4-5 Years (104-110cm)', 
-      '5-6 Years (110-116cm)', '6-7 Years (116-122cm)', 
-      'EU 19', 'EU 20.5', 'EU 21.5', 'EU 23', 'EU 24', 
-      'EU 25.5', 'EU 26.5', 'EU 28', 'EU 29', 'EU 30.5', 
-      'EU 32', 'EU 33', 'EU 34.5', 'EU 35.5'
-    ];
-    return mainCat === 'Women' ? womenSizes : kidsSizes;
+    const all = this.availableSizes();
+    if (mainCat === 'Women') {
+      return all.filter(s => s.targetAudience === 'Women' || s.targetAudience === 'Both').map(s => s.name);
+    } else if (mainCat === 'Kids') {
+      return all.filter(s => s.targetAudience === 'Kids' || s.targetAudience === 'Both').map(s => s.name);
+    } else {
+      return all.map(s => s.name);
+    }
   }
 
   isFormSizeSelected(size: string): boolean {
@@ -1644,6 +1710,35 @@ export class ProductsCatalogComponent implements OnInit, AfterViewInit, OnDestro
       current.push(size);
     }
     this.formSizes.set(current.join(', '));
+  }
+
+  uploadFormImage(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (file && this.formImageUrls().length < 10) {
+      this.mediaService.upload(file).subscribe({
+        next: (res) => {
+          if (res.isSuccess && res.url) {
+            this.formImageUrls.update(urls => [...urls, res.url]);
+            if (!this.formImageUrl()) {
+              this.formImageUrl.set(res.url);
+            }
+          }
+        }
+      });
+    }
+  }
+
+  removeFormImage(index: number): void {
+    this.formImageUrls.update(urls => {
+      const updated = urls.filter((_, i) => i !== index);
+      if (updated.length > 0) {
+        this.formImageUrl.set(updated[0]);
+      } else {
+        this.formImageUrl.set('');
+      }
+      return updated;
+    });
   }
 
   activeCategoryTitle = computed(() => {
@@ -1784,6 +1879,7 @@ export class ProductsCatalogComponent implements OnInit, AfterViewInit, OnDestro
   formSelectedSubCategories = signal<string[]>([]);
   formAge = signal<string>('');
   formImageUrl = signal<string>('');
+  formImageUrls = signal<string[]>([]);
   formColors = signal<string>('');
   isFormColorDropdownOpen = signal<boolean>(false);
   isFormSizeDropdownOpen = signal<boolean>(false);
@@ -1930,6 +2026,23 @@ export class ProductsCatalogComponent implements OnInit, AfterViewInit, OnDestro
       next: (res) => {
         if (res.isSuccess && res.data) {
           this.brands.set(res.data);
+        }
+      }
+    });
+
+    // Fetch dynamic colors and sizes from DB
+    this.catalogService.getColors().subscribe({
+      next: (res) => {
+        if (res.isSuccess && res.data) {
+          this.availableColors.set(res.data);
+        }
+      }
+    });
+
+    this.catalogService.getSizes().subscribe({
+      next: (res) => {
+        if (res.isSuccess && res.data) {
+          this.availableSizes.set(res.data);
         }
       }
     });
@@ -2198,6 +2311,7 @@ export class ProductsCatalogComponent implements OnInit, AfterViewInit, OnDestro
       this.formSelectedSubCategories.set(subCats);
       this.formAge.set(product.age || '');
       this.formImageUrl.set(product.imageUrl || '');
+      this.formImageUrls.set(product.imageUrls ? product.imageUrls.map(i => i.url) : []);
       this.formColors.set(product.colors ? product.colors.join(', ') : '');
       this.formSizes.set(product.sizes ? product.sizes.join(', ') : '');
       this.formShippingSize.set(product.shippingSize || 'Small');
@@ -2220,6 +2334,7 @@ export class ProductsCatalogComponent implements OnInit, AfterViewInit, OnDestro
       this.formSelectedSubCategories.set([]);
       this.formAge.set('');
       this.formImageUrl.set('');
+      this.formImageUrls.set([]);
       this.formColors.set('');
       this.formSizes.set('');
       this.formShippingSize.set('Small');
@@ -2284,11 +2399,11 @@ export class ProductsCatalogComponent implements OnInit, AfterViewInit, OnDestro
     const mainCat = this.formMainCategory();
     const colorsArr = this.formColors() ? this.formColors().split(',').map(s => s.trim()).filter(s => s.length > 0) : [];
     const sizesArr = this.formSizes() ? this.formSizes().split(',').map(s => s.trim()).filter(s => s.length > 0) : [];
-
-    this.formSubmitting.set(true);
-
     const editId = this.editingProductId();
     const ageVal = mainCat === 'Women' ? null : (this.formAge() || null);
+    const finalUrls = this.formImageUrls().length > 0 ? this.formImageUrls() : (this.formImageUrl() ? [this.formImageUrl()] : []);
+
+    this.formSubmitting.set(true);
 
     if (editId) {
       const categoryIds = this.formSelectedSubCategories().map(cat => this.getCategoryGuid(cat, mainCat)).filter(id => id.length > 0);
@@ -2303,7 +2418,13 @@ export class ProductsCatalogComponent implements OnInit, AfterViewInit, OnDestro
         isVisible: this.formIsVisible(),
         categoryId: primaryCategoryGuid,
         shippingSize: this.formShippingSize(),
-        imageUrl: this.formImageUrl(),
+        imageUrl: finalUrls.length > 0 ? finalUrls[0] : '',
+        imageUrls: finalUrls.map((url, idx) => ({
+          id: '00000000-0000-0000-0000-000000000000',
+          url: url,
+          sortOrder: idx,
+          altText: this.formTitle()
+        })),
         age: ageVal,
         categoryIds: categoryIds,
         colors: colorsArr,
@@ -2314,7 +2435,7 @@ export class ProductsCatalogComponent implements OnInit, AfterViewInit, OnDestro
         brandId: this.formBrandId() || null,
         collectionType: this.formCollectionType() || null
       };
- 
+  
       this.catalogService.updateProduct(editId, updateData).subscribe({
         next: (res) => {
           this.formSubmitting.set(false);
@@ -2344,7 +2465,8 @@ export class ProductsCatalogComponent implements OnInit, AfterViewInit, OnDestro
         sizes: sizesArr,
         shippingSize: this.formShippingSize(),
         isVisible: this.formIsVisible(),
-        imageUrl: this.formImageUrl(),
+        imageUrl: finalUrls.length > 0 ? finalUrls[0] : '',
+        imageUrls: finalUrls,
         age: ageVal,
         subCategories: this.formSelectedSubCategories(),
         overrideStandardShipping: this.formOverrideShipping(),
@@ -2353,7 +2475,7 @@ export class ProductsCatalogComponent implements OnInit, AfterViewInit, OnDestro
         brandId: this.formBrandId() || null,
         collectionType: this.formCollectionType() || null
       };
-
+ 
       this.catalogService.bulkAddProducts([createData]).subscribe({
         next: (res) => {
           this.formSubmitting.set(false);
