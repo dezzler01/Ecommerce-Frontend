@@ -16,7 +16,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
       <div class="max-w-4xl mx-auto w-full">
         <!-- Header -->
         <div class="mb-10">
-          <span class="tracking-widest font-mono text-[10px] uppercase font-semibold text-[#E07A5F] block mb-2">Fulfillment Matrix</span>
+          <span class="tracking-widest font-mono text-[10px] uppercase font-semibold text-[#E07A5F] block mb-2">Fulfillment Console</span>
           <h2 class="text-3xl font-extralight text-[#2A2522] tracking-[0.05em] uppercase">Shopping Bag &amp; Checkout</h2>
         </div>
 

@@ -201,7 +201,7 @@ export class ProductsCatalogDetailComponent implements OnInit, AfterViewInit {
       next: (res) => {
         this.submittingReview.set(false);
         if (res.isSuccess && res.data) {
-          this.reviewSuccess.set('Appraisal recorded in backend matrix.');
+          this.reviewSuccess.set('Appraisal recorded successfully.');
           this.newComment.set('');
           this.newRating.set(5);
           this.loadProductReviews(p.id);

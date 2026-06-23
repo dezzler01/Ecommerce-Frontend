@@ -81,7 +81,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
               [class.active]="activeDropdown() === 'collections'"
               class="filter-trigger-btn"
             >
-              <span class="group-num">[01]</span> Collections: <span class="active-val">{{ activeMatrixTag() }}</span>
+              <span class="group-num">[01]</span> Collections: <span class="active-val">{{ activeConsoleTag() }}</span>
               <span class="arrow-icon">▼</span>
             </button>
             <div *ngIf="activeDropdown() === 'collections'" class="dropdown-overlay">
@@ -89,7 +89,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                 <button 
                   *ngFor="let tag of ['All', 'Latest', 'Bestsellers', 'Featured', 'On Sale']"
                   (click)="setCollectionTag(tag); activeDropdown.set(null)"
-                  [class.active]="activeMatrixTag() === tag"
+                  [class.active]="activeConsoleTag() === tag"
                   class="dropdown-menu-item"
                 >
                   {{ tag }}
@@ -156,16 +156,37 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
               <span class="group-num">[04]</span> Sizes <span class="active-val" *ngIf="selectedSizes.length > 0">({{ selectedSizes.length }})</span>
               <span class="arrow-icon">▼</span>
             </button>
-            <div *ngIf="activeDropdown() === 'sizes'" class="dropdown-overlay dropdown-right p-4 min-w-[320px] max-w-[400px]" (click)="$event.stopPropagation()">
-              <div class="flex flex-wrap gap-2">
-                <button 
-                  *ngFor="let size of activeAvailableSizes()"
-                  (click)="toggleSize(size)"
-                  [class.active]="selectedSizes.includes(size)"
-                  class="size-filter-btn"
-                >
-                  {{ size }}
-                </button>
+            <div *ngIf="activeDropdown() === 'sizes'" class="dropdown-overlay dropdown-right p-4 min-w-[320px] max-w-[400px] space-y-4" (click)="$event.stopPropagation()">
+              <!-- Women's Sizes Section -->
+              <div *ngIf="targetAudience() === 'All' || targetAudience() === 'Women'" class="space-y-2">
+                <div class="text-[9px] uppercase tracking-widest font-bold text-[#B84F7D] border-b border-[#2A2522]/5 pb-1">Women's Sizes</div>
+                <div class="flex flex-wrap gap-2">
+                  <button 
+                    *ngFor="let size of getSizesForAudience('Women')"
+                    (click)="toggleSize(size)"
+                    [class.active]="selectedSizes.includes(size)"
+                    class="size-filter-btn"
+                  >
+                    {{ size }}
+                  </button>
+                </div>
+                <div *ngIf="getSizesForAudience('Women').length === 0" class="text-[10px] text-[#8A817C] italic">No women's sizes available.</div>
+              </div>
+
+              <!-- Children's Sizes Section -->
+              <div *ngIf="targetAudience() === 'All' || targetAudience() === 'Kids'" class="space-y-2">
+                <div class="text-[9px] uppercase tracking-widest font-bold text-[#B84F7D] border-b border-[#2A2522]/5 pb-1">Children's Sizes</div>
+                <div class="flex flex-wrap gap-2">
+                  <button 
+                    *ngFor="let size of getSizesForAudience('Kids')"
+                    (click)="toggleSize(size)"
+                    [class.active]="selectedSizes.includes(size)"
+                    class="size-filter-btn"
+                  >
+                    {{ size }}
+                  </button>
+                </div>
+                <div *ngIf="getSizesForAudience('Kids').length === 0" class="text-[10px] text-[#8A817C] italic">No children's sizes available.</div>
               </div>
             </div>
           </div>
@@ -254,7 +275,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
           <div class="loader-bar-container">
             <div class="loader-bar-fill-indeterminate"></div>
           </div>
-          <div class="loader-status">Synchronizing Specimen Matrix...</div>
+          <div class="loader-status">Synchronizing Specimen Catalog...</div>
         </div>
 
         <div *ngIf="!loading() && filteredProducts().length === 0" class="text-center py-24 border border-dashed border-[#2A2522]/10 rounded-2xl bg-white/10">
@@ -512,7 +533,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
               {{ validationError() }}
             </div>
 
-            <!-- Variant Matrix Selector -->
+            <!-- Variant Selector -->
             <div class="space-y-4">
               <!-- Colors Selector -->
               <div class="space-y-2" *ngIf="colors().length > 0">
@@ -972,18 +993,43 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                 <div 
                   *ngIf="isFormSizeDropdownOpen()" 
                   (click)="$event.stopPropagation()"
-                  class="absolute left-0 right-0 mt-1 bg-white border border-[#2A2522]/15 rounded-xl shadow-lg z-50 max-h-48 overflow-y-auto p-2 custom-scrollbar grid grid-cols-1 gap-1"
+                  class="absolute left-0 right-0 mt-1 bg-white border border-[#2A2522]/15 rounded-xl shadow-lg z-50 max-h-48 overflow-y-auto p-2 custom-scrollbar space-y-3"
                 >
-                  <button 
-                    *ngFor="let size of getFormAvailableSizes()"
-                    type="button"
-                    (click)="toggleFormSize(size)"
-                    [ngClass]="{'bg-[#2A2522]/5 border-[#B84F7D]/20': isFormSizeSelected(size)}"
-                    class="flex items-center justify-between px-2.5 py-1.5 border border-transparent rounded-lg text-left text-xs text-[#2A2522] hover:bg-[#2A2522]/5 transition-all w-full"
-                  >
-                    <span class="font-medium truncate text-[11px] font-mono uppercase">{{ size }}</span>
-                    <span *ngIf="isFormSizeSelected(size)" class="text-[#B84F7D] font-bold text-[10px]">✓</span>
-                  </button>
+                  <!-- Women's sizes section (shown if mainCategory is Women) -->
+                  <div *ngIf="formMainCategory() === 'Women'" class="space-y-1">
+                    <div class="text-[8px] uppercase tracking-widest font-bold text-[#B84F7D] px-2 py-0.5 border-b border-[#2A2522]/5">Women's Sizes</div>
+                    <div class="grid grid-cols-1 gap-1">
+                      <button 
+                        *ngFor="let size of getSizesForAudience('Women')"
+                        type="button"
+                        (click)="toggleFormSize(size)"
+                        [ngClass]="{'bg-[#2A2522]/5 border-[#B84F7D]/20': isFormSizeSelected(size)}"
+                        class="flex items-center justify-between px-2.5 py-1.5 border border-transparent rounded-lg text-left text-xs text-[#2A2522] hover:bg-[#2A2522]/5 transition-all w-full"
+                      >
+                        <span class="font-medium truncate text-[11px] font-mono uppercase">{{ size }}</span>
+                        <span *ngIf="isFormSizeSelected(size)" class="text-[#B84F7D] font-bold text-[10px]">✓</span>
+                      </button>
+                    </div>
+                    <div *ngIf="getSizesForAudience('Women').length === 0" class="text-[10px] text-[#8A817C] italic px-2">No women's sizes available.</div>
+                  </div>
+
+                  <!-- Children's sizes section (shown if mainCategory is Kids) -->
+                  <div *ngIf="formMainCategory() === 'Kids'" class="space-y-1">
+                    <div class="text-[8px] uppercase tracking-widest font-bold text-[#B84F7D] px-2 py-0.5 border-b border-[#2A2522]/5">Children's Sizes</div>
+                    <div class="grid grid-cols-1 gap-1">
+                      <button 
+                        *ngFor="let size of getSizesForAudience('Kids')"
+                        type="button"
+                        (click)="toggleFormSize(size)"
+                        [ngClass]="{'bg-[#2A2522]/5 border-[#B84F7D]/20': isFormSizeSelected(size)}"
+                        class="flex items-center justify-between px-2.5 py-1.5 border border-transparent rounded-lg text-left text-xs text-[#2A2522] hover:bg-[#2A2522]/5 transition-all w-full"
+                      >
+                        <span class="font-medium truncate text-[11px] font-mono uppercase">{{ size }}</span>
+                        <span *ngIf="isFormSizeSelected(size)" class="text-[#B84F7D] font-bold text-[10px]">✓</span>
+                      </button>
+                    </div>
+                    <div *ngIf="getSizesForAudience('Kids').length === 0" class="text-[10px] text-[#8A817C] italic px-2">No children's sizes available.</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1536,7 +1582,7 @@ export class ProductsCatalogComponent implements OnInit, AfterViewInit, OnDestro
     return this.searchQuery !== '' || 
            this.selectedColors.length > 0 || 
            this.selectedSizes.length > 0 || 
-           this.activeMatrixTag() !== 'All' ||
+           this.activeConsoleTag() !== 'All' ||
            this.selectedSubCategory() !== 'All' ||
            this.selectedAge() !== 'All';
   }
@@ -1651,6 +1697,12 @@ export class ProductsCatalogComponent implements OnInit, AfterViewInit, OnDestro
       return all.map(s => s.name);
     }
   });
+
+  getSizesForAudience(audience: string): string[] {
+    return this.availableSizes()
+      .filter(s => s.targetAudience === audience || s.targetAudience === 'Both')
+      .map(s => s.name);
+  }
 
   colorHexMap = computed(() => {
     const map: Record<string, string> = {};
@@ -1769,6 +1821,7 @@ export class ProductsCatalogComponent implements OnInit, AfterViewInit, OnDestro
       { name: 'girls', displayName: 'Girls', img: '/products/infant_dress.png', target: 'Kids' },
       { name: 'unisex collection', displayName: 'Unisex', img: '/products/baby_clogs.png', target: 'Kids' },
       { name: 'baby needs', displayName: 'Baby Needs', img: '/products/baby_bib.png', target: 'Kids' },
+      { name: 'shoes', displayName: 'Shoes', img: '/products/sneaker.png', target: 'Kids' },
       { name: 'accessors', displayName: 'Accessories', img: '/products/diaper_bag.png', target: 'Kids' }
     ];
 
@@ -1803,6 +1856,11 @@ export class ProductsCatalogComponent implements OnInit, AfterViewInit, OnDestro
         }
         // Special mapping: if target is Kids and subCat is 'shoes', filter kids products that are shoes!
         if (subCatTarget.toLowerCase() === 'kids' && subCat.toLowerCase() === 'shoes') {
+          if (p.categories && p.categories.length > 0) {
+            if (p.categories.some(c => c.name.toLowerCase() === 'shoes')) {
+              return true;
+            }
+          }
           const titleLower = p.title.toLowerCase();
           return titleLower.includes('sneaker') || titleLower.includes('shoe') || titleLower.includes('clog') || titleLower.includes('heel');
         }
@@ -1899,18 +1957,19 @@ export class ProductsCatalogComponent implements OnInit, AfterViewInit, OnDestro
     'fashion': '11111111-1111-1111-1111-111111111111',
     'pajama': '22222222-2222-2222-2222-222222222222',
     'bags': '33333333-3333-3333-3333-333333333333',
-    'shoes': '44444444-4444-4444-4444-444444444444',
+    'shoes_Women': '44444444-4444-4444-4444-444444444444',
     'accessors_Women': '55555555-5555-5555-5555-555555555555',
     'kids boys': '66666666-6666-6666-6666-666666666666',
     'girls': '77777777-7777-7777-7777-777777777777',
     'unisex collection': '88888888-8888-8888-8888-888888888888',
     'baby needs': '99999999-9999-9999-9999-999999999999',
-    'accessors_Kids': 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'
+    'accessors_Kids': 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+    'shoes_Kids': 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb'
   };
 
   getCategoryGuid(name: string, mainCategory: string): string {
-    if (name === 'accessors') {
-      return this.subCategoryGuidMap[`accessors_${mainCategory}`] || '';
+    if (name === 'accessors' || name === 'shoes') {
+      return this.subCategoryGuidMap[`${name}_${mainCategory}`] || '';
     }
     return this.subCategoryGuidMap[name] || '';
   }
@@ -1920,7 +1979,7 @@ export class ProductsCatalogComponent implements OnInit, AfterViewInit, OnDestro
     if (main === 'Women') {
       return ['fashion', 'pajama', 'bags', 'shoes', 'accessors'];
     }
-    return ['kids boys', 'girls', 'unisex collection', 'baby needs', 'accessors'];
+    return ['kids boys', 'girls', 'unisex collection', 'baby needs', 'shoes', 'accessors'];
   });
 
   colors = computed(() => {
@@ -2083,7 +2142,7 @@ export class ProductsCatalogComponent implements OnInit, AfterViewInit, OnDestro
     });
   }
 
-  activeMatrixTag = signal<string>('All');
+  activeConsoleTag = signal<string>('All');
   currentPage = signal<number>(1);
   pageSize = 20;
   loadingMore = signal<boolean>(false);
@@ -2091,7 +2150,7 @@ export class ProductsCatalogComponent implements OnInit, AfterViewInit, OnDestro
   totalProducts = signal<number>(0);
 
   setCollectionTag(tag: string): void {
-    this.activeMatrixTag.set(tag);
+    this.activeConsoleTag.set(tag);
     this.currentPage.set(1);
     this.loadProducts(false);
   }
@@ -2101,7 +2160,7 @@ export class ProductsCatalogComponent implements OnInit, AfterViewInit, OnDestro
       this.currentPage.set(1);
       this.loading.set(true);
     }
-    const tag = this.activeMatrixTag();
+    const tag = this.activeConsoleTag();
     const collectionType = tag === 'All' ? undefined : tag;
     const brandId = this.selectedBrandId() || undefined;
     

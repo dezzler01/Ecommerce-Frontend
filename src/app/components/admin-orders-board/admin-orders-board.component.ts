@@ -144,7 +144,7 @@ import { MediaService } from '../../services/media.service';
           📊 Bulk Product Import
         </button>
 
-        <!-- Shipping Matrix Ledger Tab Button -->
+        <!-- Shipping Console Ledger Tab Button -->
         <button 
           *ngIf="authService.hasPermission('Shipping:Read')"
           (click)="currentTab.set('shipping'); loadShippingData()"
@@ -152,7 +152,7 @@ import { MediaService } from '../../services/media.service';
           class="sidebar-btn"
         >
           <span class="indicator-line"></span>
-          🚚 Shipping Matrix Ledger
+          🚚 Shipping Console Ledger
         </button>
 
         <!-- Brands Directory Tab Button -->
@@ -199,7 +199,7 @@ import { MediaService } from '../../services/media.service';
           🔑 Access Control Ledger
         </button>
 
-        <!-- Notifications Matrix Tab Button -->
+        <!-- Notifications Console Tab Button -->
         <button 
           *ngIf="authService.hasPermission('Orders:Read')"
           (click)="currentTab.set('notifications'); loadSubscriptions()"
@@ -207,7 +207,7 @@ import { MediaService } from '../../services/media.service';
           class="sidebar-btn"
         >
           <span class="indicator-line"></span>
-          🔔 Notifications Matrix
+          🔔 Notifications Console
         </button>
       </aside>
 
@@ -217,7 +217,7 @@ import { MediaService } from '../../services/media.service';
           <div>
             <span class="font-lexend tracking-widest text-[10px] uppercase font-semibold text-[#B84F7D] block mb-2">Management Console</span>
             <div class="flex items-center gap-3">
-              <h2 class="title-header text-3xl font-light text-[#2A2522] tracking-[0.05em] uppercase">Store Admin Matrix</h2>
+              <h2 class="title-header text-3xl font-light text-[#2A2522] tracking-[0.05em] uppercase">Store Admin Console</h2>
               <button 
                 *ngIf="authService.hasPermission('Orders:Read')"
                 (click)="handleBellClick()"
@@ -756,7 +756,7 @@ import { MediaService } from '../../services/media.service';
                 + Add Empty Row
               </button>
               <button (click)="clearBulkRows()" class="px-4 py-2 border border-red-200 text-red-600 hover:bg-red-50 text-xs font-bold uppercase tracking-widest rounded-xl transition-all">
-                Clear Matrix
+                Clear Console
               </button>
             </div>
             
@@ -819,10 +819,10 @@ import { MediaService } from '../../services/media.service';
           </div>
         </div>
 
-        <!-- TAB 4: SHIPPING MATRIX LEDGER -->
+        <!-- TAB 4: SHIPPING CONSOLE LEDGER -->
         <div *ngIf="currentTab() === 'shipping'" class="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-fade-in text-[#2A2522]">
           
-          <!-- Left 2 Columns: Governorate matrix rates ledger -->
+          <!-- Left 2 Columns: Governorate rates ledger -->
           <div class="lg:col-span-2 space-y-6">
             <div class="frosted-card p-6 rounded-2xl space-y-4">
               <div class="border-b border-[#2A2522]/10 pb-4 flex justify-between items-center">
@@ -832,7 +832,7 @@ import { MediaService } from '../../services/media.service';
                 </div>
                 <div class="flex gap-2">
                   <button (click)="loadShippingData()" class="px-3.5 py-1.5 border border-[#2A2522]/10 hover:bg-[#2A2522]/5 text-[#2A2522] text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all">
-                    ↻ Refresh Matrix
+                    ↻ Refresh Console
                   </button>
                 </div>
               </div>
@@ -1113,7 +1113,7 @@ import { MediaService } from '../../services/media.service';
           <!-- Base Layout: Dual Columns -->
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             
-            <!-- Left Column: Geographic Traffic Matrix -->
+            <!-- Left Column: Geographic Traffic Console -->
             <div class="frosted-card p-6 rounded-2xl space-y-6">
               <div>
                 <h3 class="title-header text-base font-light text-[#2A2522]">Geographic Traffic Radar</h3>
@@ -1212,7 +1212,7 @@ import { MediaService } from '../../services/media.service';
         <div *ngIf="currentTab() === 'roles'" class="space-y-8 animate-fade-in text-[#2A2522]">
           <div class="border-b border-[#2A2522]/10 pb-4">
             <h3 class="title-header text-lg font-light text-[#2A2522]">Access Control Ledger</h3>
-            <span class="text-[9px] uppercase tracking-widest text-[#8A817C] font-lexend">Configure permission matrix across system roles & administrative authorities</span>
+            <span class="text-[9px] uppercase tracking-widest text-[#8A817C] font-lexend">Configure permission mapping across system roles & administrative authorities</span>
           </div>
 
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -1266,7 +1266,7 @@ import { MediaService } from '../../services/media.service';
               </div>
             </div>
 
-            <!-- Right Column: Permissions Matrix Checklist -->
+            <!-- Right Column: Permissions Console Checklist -->
             <div class="lg:col-span-2 space-y-6">
               <div class="frosted-card p-6 rounded-2xl space-y-6">
                 <div class="border-b border-[#2A2522]/5 pb-3 flex justify-between items-center">
@@ -1281,7 +1281,7 @@ import { MediaService } from '../../services/media.service';
                     (click)="savePermissions()" 
                     class="px-5 py-2.5 bg-[#B84F7D] hover:bg-[#2A2522] text-white text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all shadow-sm disabled:opacity-50"
                   >
-                    {{ savingPermissions() ? 'Saving Changes...' : 'Save Matrix Changes' }}
+                    {{ savingPermissions() ? 'Saving Changes...' : 'Save Console Changes' }}
                   </button>
                 </div>
 
@@ -1392,10 +1392,10 @@ import { MediaService } from '../../services/media.service';
           </div>
         </div>
 
-        <!-- Notifications Matrix Tab Content -->
+        <!-- Notifications Console Tab Content -->
         <div *ngIf="currentTab() === 'notifications'" class="space-y-6 animate-fade-in text-[#2A2522]">
           <div class="border-b border-[#2A2522]/10 pb-4">
-            <h3 class="title-header text-lg font-light text-[#2A2522] tracking-[0.05em] uppercase">Notification Routing Matrix</h3>
+            <h3 class="title-header text-lg font-light text-[#2A2522] tracking-[0.05em] uppercase">Notification Routing Console</h3>
             <p class="text-[9px] uppercase tracking-widest text-[#8A817C] font-lexend mt-2 leading-relaxed">
               Designate which personnel and staff members receive real-time alerts when new orders are placed.
             </p>
@@ -1411,7 +1411,7 @@ import { MediaService } from '../../services/media.service';
                 (click)="loadSubscriptions()"
                 class="px-4 py-2 border border-[#2A2522]/10 hover:bg-[#2A2522]/5 text-[#2A2522] text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all"
               >
-                Refresh Matrix
+                Refresh Console
               </button>
             </div>
 
@@ -1470,7 +1470,7 @@ import { MediaService } from '../../services/media.service';
         <!-- TAB 9: INVENTORY ATTRIBUTES LEDGER (Colors & Sizes) -->
         <div *ngIf="currentTab() === 'attributes'" class="space-y-8 animate-fade-in text-[#2A2522]">
           <div class="border-b border-[#2A2522]/10 pb-4">
-            <h3 class="title-header text-lg font-light text-[#2A2522]">Inventory Attributes Matrix</h3>
+            <h3 class="title-header text-lg font-light text-[#2A2522]">Inventory Attributes Console</h3>
             <span class="text-[9px] uppercase tracking-widest text-[#8A817C] font-lexend">Manage dynamic product colors and size choices across all categories</span>
           </div>
 
@@ -1525,12 +1525,14 @@ import { MediaService } from '../../services/media.service';
                       <div class="flex items-center gap-2">
                         <input 
                           type="color" 
-                          [(ngModel)]="newColorHex" 
+                          [ngModel]="newColorHex()" 
+                          (ngModelChange)="onColorHexChange($event)"
                           class="w-8 h-8 rounded-lg cursor-pointer border border-[#2A2522]/10 p-0 flex-shrink-0"
                         />
                         <input 
                           type="text" 
-                          [(ngModel)]="newColorHex" 
+                          [ngModel]="newColorHex()" 
+                          (ngModelChange)="onColorHexChange($event)"
                           placeholder="#FFFFFF" 
                           class="w-full px-2 py-1.5 bg-white border border-[#2A2522]/10 rounded-lg text-[10px] font-mono uppercase text-center focus:outline-none" 
                         />
@@ -1556,7 +1558,7 @@ import { MediaService } from '../../services/media.service';
               </div>
             </div>
 
-            <!-- Right Panel: Sizes Matrix -->
+            <!-- Right Panel: Sizes Console -->
             <div class="space-y-6">
               <div class="frosted-card p-6 rounded-2xl space-y-6">
                 <div class="flex justify-between items-center border-b border-[#2A2522]/5 pb-3">
@@ -2254,7 +2256,7 @@ export class AdminOrdersBoardComponent implements OnInit, OnDestroy {
   newSizeSortOrder = signal<number>(0);
   editingSizeId = signal<string | null>(null);
 
-  // Shipping Matrix Ledger States
+  // Shipping Console Ledger States
   governorates = signal<ShippingGovernorate[]>([]);
   comboRules = signal<ShippingComboRule[]>([]);
   loadingShipping = signal<boolean>(false);
@@ -2350,7 +2352,7 @@ export class AdminOrdersBoardComponent implements OnInit, OnDestroy {
   featuresList = [
     { key: 'Products', label: 'Products Management' },
     { key: 'Orders', label: 'Orders Management' },
-    { key: 'Shipping', label: 'Shipping Matrix & Rates' },
+    { key: 'Shipping', label: 'Shipping Console & Rates' },
     { key: 'Analytics', label: 'Analytics & Traffic Ledger' },
     { key: 'PromoCodes', label: 'Promo Codes Engine' },
     { key: 'Roles', label: 'Access Control Ledger (Roles)' }
@@ -2397,7 +2399,7 @@ export class AdminOrdersBoardComponent implements OnInit, OnDestroy {
         }
       },
       error: (err) => {
-        this.shippingMessage.set(err?.error?.message || 'Error loading governorate matrices.');
+        this.shippingMessage.set(err?.error?.message || 'Error loading governorate rates.');
         this.shippingIsError.set(true);
       }
     });
@@ -2409,7 +2411,7 @@ export class AdminOrdersBoardComponent implements OnInit, OnDestroy {
         }
       },
       error: () => {
-        // fail silently for combo rules, matrix is primary
+        // fail silently for combo rules, console is primary
       },
       complete: () => {
         this.loadingShipping.set(false);
@@ -3100,10 +3102,83 @@ export class AdminOrdersBoardComponent implements OnInit, OnDestroy {
     this.catalogService.getSizes().subscribe({
       next: (res: any) => {
         if (res.isSuccess && res.data) {
-          this.availableSizes.set(res.data);
+          const sorted = [...res.data].sort((a, b) => {
+            const audienceOrder: Record<string, number> = { 'Women': 1, 'Kids': 2, 'Both': 3 };
+            const audA = audienceOrder[a.targetAudience] || 4;
+            const audB = audienceOrder[b.targetAudience] || 4;
+            if (audA !== audB) return audA - audB;
+            return a.sortOrder - b.sortOrder;
+          });
+          this.availableSizes.set(sorted);
         }
       }
     });
+  }
+
+  resolveColorName(hex: string): string {
+    if (!hex) return '';
+    let h = hex.trim().replace('#', '');
+    if (h.length === 3) {
+      h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+    }
+    if (h.length !== 6) return '';
+    const r = parseInt(h.substring(0, 2), 16);
+    const g = parseInt(h.substring(2, 4), 16);
+    const b = parseInt(h.substring(4, 6), 16);
+
+    const baseColors = [
+      { name: 'Tan', r: 196, g: 158, b: 122 },
+      { name: 'Black', r: 31, g: 27, b: 26 },
+      { name: 'Gold', r: 212, g: 175, b: 55 },
+      { name: 'Silver', r: 176, g: 181, b: 188 },
+      { name: 'Champagne', r: 241, g: 229, b: 215 },
+      { name: 'Emerald', r: 59, g: 122, b: 87 },
+      { name: 'Oatmeal', r: 227, g: 223, b: 213 },
+      { name: 'Charcoal', r: 67, g: 74, b: 84 },
+      { name: 'Blush', r: 236, g: 200, b: 191 },
+      { name: 'Ivory', r: 253, g: 251, b: 247 },
+      { name: 'Taupe', r: 140, g: 133, b: 123 },
+      { name: 'Sage', r: 158, g: 176, b: 162 },
+      { name: 'Blue', r: 127, g: 155, b: 176 },
+      { name: 'White', r: 255, g: 255, b: 255 },
+      { name: 'Red', r: 255, g: 0, b: 0 },
+      { name: 'Green', r: 0, g: 128, b: 0 },
+      { name: 'Yellow', r: 255, g: 255, b: 0 },
+      { name: 'Pink', r: 255, g: 192, b: 203 },
+      { name: 'Purple', r: 128, g: 0, b: 128 },
+      { name: 'Orange', r: 255, g: 165, b: 0 },
+      { name: 'Brown', r: 165, g: 42, b: 42 },
+      { name: 'Navy', r: 0, g: 0, b: 128 },
+      { name: 'Teal', r: 0, g: 128, b: 128 },
+      { name: 'Olive', r: 128, g: 128, b: 0 },
+      { name: 'Maroon', r: 128, g: 0, b: 0 },
+      { name: 'Lime', r: 0, g: 255, b: 0 }
+    ];
+
+    let minDistance = Infinity;
+    let closestColorName = '';
+
+    for (const color of baseColors) {
+      const distance = Math.sqrt(
+        Math.pow(r - color.r, 2) +
+        Math.pow(g - color.g, 2) +
+        Math.pow(b - color.b, 2)
+      );
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestColorName = color.name;
+      }
+    }
+
+    return closestColorName;
+  }
+
+  onColorHexChange(hex: string): void {
+    this.newColorHex.set(hex);
+    const resolvedName = this.resolveColorName(hex);
+    if (resolvedName) {
+      this.newColorName.set(resolvedName);
+    }
   }
 
   saveColor(): void {
@@ -3553,8 +3628,8 @@ export class AdminOrdersBoardComponent implements OnInit, OnDestroy {
             this.authService.updateLocalPermissions(this.selectedRolePermissions());
           }
           this.alertService.showAlert({
-            title: 'Matrix Updated',
-            message: 'Access matrix changes saved successfully. Your session permissions have been updated.',
+            title: 'Console Updated',
+            message: 'Access console changes saved successfully. Your session permissions have been updated.',
             type: 'success'
           });
           this.loadRoles();

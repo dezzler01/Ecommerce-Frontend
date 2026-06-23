@@ -55,7 +55,7 @@ const TOTAL_FRAMES_PER_VIDEO = 48;
       <div class="loader-bar-container">
         <div class="loader-bar-fill-determinate" [style.width.%]="loadingProgress"></div>
       </div>
-      <div class="loader-status">Loading matrix: {{ loadingProgress }}%</div>
+      <div class="loader-status">Loading lookbook: {{ loadingProgress }}%</div>
     </div>
 
     <!-- Background canvas -->

@@ -1031,8 +1031,8 @@
 .lookbook-item:nth-child(n+13) { opacity: 1; animation: none; }
 
 
-/* ─── Matrix Tab Anchors (kept for compatibility) ─── */
-.matrix-tab-anchor {
+/* ─── Console Tab Anchors (kept for compatibility) ─── */
+.console-tab-anchor {
   position: relative;
   background: transparent;
   border: none;
@@ -1046,15 +1046,15 @@
   transition: color 0.3s ease;
 }
 
-.matrix-tab-anchor:hover {
+.console-tab-anchor:hover {
   color: var(--text-charcoal, #2A2522);
 }
 
-.matrix-tab-anchor.active {
+.console-tab-anchor.active {
   color: var(--text-charcoal, #2A2522);
 }
 
-.matrix-tab-anchor::after {
+.console-tab-anchor::after {
   content: '';
   position: absolute;
   bottom: -2.5px;
@@ -1067,7 +1067,7 @@
   transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.4s ease;
 }
 
-.matrix-tab-anchor.active::after {
+.console-tab-anchor.active::after {
   background-color: var(--brand-accent, #E07A5F);
   transform: scaleX(1);
 }
