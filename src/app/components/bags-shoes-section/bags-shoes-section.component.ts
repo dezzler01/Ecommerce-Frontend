@@ -19,49 +19,32 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
     >
       <div class="max-w-6xl mx-auto w-full relative z-10">
         
-        <!-- Wide Expansive Banner Panel with Glassmorphism & Foreground Image -->
-        <div class="relative w-full rounded-[2.5rem] editorial-glass-card shadow-2xl overflow-hidden min-h-[300px] flex flex-col md:flex-row items-center justify-between p-8 md:p-12 pointer-events-auto select-none group">
+        <!-- Wide Expansive Banner Panel with full-bleed background -->
+        <div 
+          class="bb-strip shadow-2xl" 
+          style="background-image: url('/products/little_one_collection.jpg');"
+        >
+          <div class="bb-strip-overlay"></div>
           
-          <!-- Foreground transparent product image on the right -->
-          <img 
-            src="products/little_one_collection.png" 
-            alt="Little One Onesie Flat-lay" 
-            class="absolute right-[5%] md:right-[15%] bottom-0 h-[100%] md:h-[110%] object-contain transition-transform duration-[1.2s] group-hover:scale-105 z-0 mix-blend-multiply contrast-[1.03] brightness-[1.01]"
-          />
-          
-          <!-- Soft light mask for content area -->
-          <div class="absolute inset-0 bg-gradient-to-r from-white/30 via-transparent to-transparent z-10 pointer-events-none"></div>
-
-          <!-- Banner Left: Text & CTA on top of image -->
-          <div class="relative flex flex-col items-start text-left space-y-6 max-w-xs md:max-w-md z-20">
-            <span class="tracking-[0.18em] font-mono text-[10px] md:text-xs uppercase font-bold text-[#C4633A]">
-              LITTLE ONE
-            </span>
-            <h2 class="font-serif-luxury text-4xl md:text-5xl lg:text-6xl tracking-tight text-[#2E2118] uppercase leading-[0.95]">
-              Tiny Styles, <br/>
-              Big Comfort
-            </h2>
-            <p class="font-sans text-xs md:text-sm text-[#8C7B6B] font-light">
-              Soft. Safe. Adorable.
-            </p>
-            <div class="pt-4">
-              <a 
-                [routerLink]="['/products']" 
-                [queryParams]="{ target: 'Kids', subcategory: 'baby needs' }" 
-                class="text-[9px] font-mono tracking-widest text-[#2E2118] hover:text-[#C4633A] uppercase font-bold flex items-center gap-2 border-b border-[#2E2118] pb-1 hover:border-[#C4633A] transition-colors"
-              >
-                <span>EXPLORE COLLECTION</span>
-                <span>→</span>
-              </a>
-            </div>
+          <div class="bb-strip-content">
+            <span class="bb-label">Little One</span>
+            <h2 class="bb-h2 bb-serif">Tiny Styles,<br>Big Comfort</h2>
+            <p class="bb-tagline">Soft. Safe. Adorable.</p>
+            <a 
+              [routerLink]="['/products']" 
+              [queryParams]="{ target: 'Kids', subcategory: 'baby needs' }"
+              class="bb-link"
+            >
+              <span>Explore Collection</span>
+              <span>→</span>
+            </a>
           </div>
 
-          <!-- Banner Right: Floating Badge on top of image -->
-          <div class="relative w-[120px] md:w-[130px] h-[120px] md:h-[130px] rounded-3xl border border-white/40 bg-white/60 backdrop-blur-md flex flex-col items-center justify-center p-4 z-20 shadow-md">
-            <span class="text-[8px] font-mono text-[#8C7B6B] uppercase tracking-wider mb-1">UP TO</span>
-            <span class="text-3xl font-serif-luxury font-bold text-[#C4633A] leading-none">30%</span>
-            <span class="text-[8px] font-mono text-[#8C7B6B] uppercase tracking-wider mt-1">OFF</span>
-            <span class="text-[#C4633A] text-[10px] mt-2">♡</span>
+          <div class="bb-disc-badge">
+            <span class="bb-disc-up">Up to</span>
+            <span class="bb-disc-pct">30%</span>
+            <span class="bb-disc-off">Off</span>
+            <span class="text-[11px] text-[#C4633A] mt-0.5 block">♡</span>
           </div>
 
         </div>
@@ -74,6 +57,62 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
       display: block;
       width: 100%;
     }
+    .bb-strip {
+      position: relative; width: 100%; min-height: 280px; overflow: hidden;
+      background-size: cover;
+      background-position: center;
+      display: flex; align-items: center;
+      border-radius: 2.5rem;
+      border: 0.5px solid #E8DDD0;
+    }
+    .bb-strip-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, rgba(250,246,240,0.96) 0%, rgba(250,246,240,0.7) 45%, rgba(250,246,240,0.1) 100%);
+      z-index: 1;
+    }
+    @media (max-width: 768px) {
+      .bb-strip-overlay {
+        background: linear-gradient(to bottom, rgba(250,246,240,0.95) 0%, rgba(250,246,240,0.85) 100%);
+      }
+    }
+    .bb-strip-content { position: relative; z-index: 2; padding: 48px 52px; }
+    @media (max-width: 768px) {
+      .bb-strip-content {
+        padding: 32px 24px;
+      }
+    }
+    .bb-label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #C4633A; font-weight: 500; margin-bottom: 8px; display: block; }
+    .bb-serif { font-family: 'Playfair Display', 'Cormorant Garamond', serif; }
+    .bb-h2 { font-size: 32px; font-weight: 600; line-height: 1.15; margin-bottom: 8px; color: #2E2118; }
+    @media (max-width: 768px) {
+      .bb-h2 {
+        font-size: 24px;
+      }
+    }
+    .bb-tagline { font-size: 12px; color: #8C7B6B; margin-bottom: 16px; font-weight: 300; }
+    .bb-link { font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; color: #C4633A; font-weight: 600; cursor: pointer; border: none; background: none; font-family: 'Inter',sans-serif; padding: 0; display: inline-flex; align-items: center; gap: 4px; text-decoration: none; border-bottom: 1px solid transparent; transition: all 0.3s; }
+    .bb-link:hover { border-bottom-color: #C4633A; }
+    
+    .bb-disc-badge {
+      position: absolute; right: 52px; top: 50%; transform: translateY(-50%); z-index: 3;
+      background: rgba(250,246,240,0.9); border: 0.5px solid #E8DDD0; border-radius: 20px;
+      padding: 16px 20px; text-align: center; min-width: 90px;
+      box-shadow: 0 10px 30px rgba(150,110,80,0.08);
+    }
+    @media (max-width: 768px) {
+      .bb-disc-badge {
+        position: relative;
+        right: auto;
+        top: auto;
+        transform: none;
+        margin-left: 24px;
+        margin-bottom: 24px;
+        display: inline-block;
+      }
+    }
+    .bb-disc-up { font-size: 8px; text-transform: uppercase; letter-spacing: 0.1em; color: #8C7B6B; display: block; margin-bottom: 2px; }
+    .bb-disc-pct { font-size: 28px; font-weight: 600; color: #C4633A; font-family: 'Playfair Display', 'Cormorant Garamond', serif; line-height: 1; }
+    .bb-disc-off { font-size: 8px; text-transform: uppercase; letter-spacing: 0.1em; color: #8C7B6B; display: block; margin-top: 2px; }
   `]
 })
 export class BagsShoesSectionComponent implements OnInit {

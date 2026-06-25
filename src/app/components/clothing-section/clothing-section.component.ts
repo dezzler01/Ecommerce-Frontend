@@ -17,82 +17,53 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
       id="clothing"
       class="relative w-full py-6 px-6 md:px-12 lg:px-24 z-10 overflow-hidden bg-transparent"
     >
-      <div class="max-w-6xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
+      <div class="max-w-6xl mx-auto w-full relative z-10">
         
-        <!-- Left Pane: Women Collection -->
-        <div class="relative w-full rounded-[2.5rem] editorial-glass-card shadow-2xl p-8 flex items-center pointer-events-auto select-none overflow-hidden min-h-[300px] group">
+        <!-- Two-column grid -->
+        <div class="bb-grid">
           
-          <!-- Foreground transparent product image on the right -->
-          <img 
-            src="products/women_collection.png" 
-            alt="Women Handbag and Perfume" 
-            class="absolute right-[2%] bottom-4 h-[85%] object-contain transition-transform duration-[1.2s] group-hover:scale-105 z-0 mix-blend-multiply contrast-[1.03] brightness-[1.01]"
-          />
-          
-          <!-- Soft light mask for text area -->
-          <div class="absolute inset-0 bg-gradient-to-r from-white/30 via-transparent to-transparent z-10 pointer-events-none"></div>
-
-          <!-- Content Left -->
-          <div class="relative flex flex-col items-start text-left space-y-4 max-w-[60%] z-20">
-            <span class="tracking-[0.18em] font-mono text-[10px] uppercase font-bold text-[#C4633A]">
-              WOMEN
-            </span>
-            <h3 class="font-serif-luxury text-2xl md:text-3xl tracking-tight text-[#2E2118] uppercase leading-[0.95]">
-              Effortless <br/>
-              Everyday Looks
-            </h3>
-            <p class="font-sans text-[11px] text-[#8C7B6B] font-light">
-              Timeless pieces for modern moms.
-            </p>
-            <div class="pt-2">
+          <!-- Left Pane: Women Collection -->
+          <div 
+            class="bb-cell shadow-2xl" 
+            style="background-image: url('/products/women_collection.jpg');"
+          >
+            <div class="bb-cell-overlay"></div>
+            <div class="bb-cell-content">
+              <span class="bb-cell-label">Women</span>
+              <h3 class="bb-h3 bb-serif" style="font-style: italic;">Effortless<br>Everyday Looks</h3>
+              <p class="bb-cell-sub">Timeless pieces for modern moms.</p>
               <a 
                 [routerLink]="['/products']" 
                 [queryParams]="{ target: 'Women' }" 
-                class="text-[9px] font-mono tracking-widest text-[#2E2118] hover:text-[#C4633A] uppercase font-bold flex items-center gap-2 border-b border-[#2E2118] pb-1 hover:border-[#C4633A] transition-colors"
+                class="bb-cell-link"
               >
-                <span>SHOP WOMEN</span>
+                <span>Shop Women</span>
                 <span>→</span>
               </a>
             </div>
           </div>
-        </div>
 
-        <!-- Right Pane: Newborn Care -->
-        <div class="relative w-full rounded-[2.5rem] editorial-glass-card shadow-2xl p-8 flex items-center pointer-events-auto select-none overflow-hidden min-h-[300px] group">
-          
-          <!-- Foreground transparent product image on the right -->
-          <img 
-            src="products/newborn_care_collection.png" 
-            alt="Newborn Care Bottles and Towels" 
-            class="absolute right-[2%] bottom-4 h-[85%] object-contain transition-transform duration-[1.2s] group-hover:scale-105 z-0 mix-blend-multiply contrast-[1.03] brightness-[1.01]"
-          />
-
-          <!-- Soft light mask for text area -->
-          <div class="absolute inset-0 bg-gradient-to-r from-white/30 via-transparent to-transparent z-10 pointer-events-none"></div>
-
-          <!-- Content Left -->
-          <div class="relative flex flex-col items-start text-left space-y-4 max-w-[60%] z-20">
-            <span class="tracking-[0.18em] font-mono text-[10px] uppercase font-bold text-[#C4633A]">
-              NEWBORN CARE
-            </span>
-            <h3 class="font-serif-luxury text-2xl md:text-3xl tracking-tight text-[#2E2118] uppercase leading-[0.95]">
-              Gentle Care, <br/>
-              Pure Love
-            </h3>
-            <p class="font-sans text-[11px] text-[#8C7B6B] font-light">
-              Everything for their safest start.
-            </p>
-            <div class="pt-2">
+          <!-- Right Pane: Newborn Care -->
+          <div 
+            class="bb-cell shadow-2xl" 
+            style="background-image: url('/products/newborn_care_collection.jpg');"
+          >
+            <div class="bb-cell-overlay"></div>
+            <div class="bb-cell-content">
+              <span class="bb-cell-label">Newborn Care</span>
+              <h3 class="bb-h3 bb-serif" style="font-weight: 600;">Gentle Care,<br>Pure Love</h3>
+              <p class="bb-cell-sub">Everything for their safest start.</p>
               <a 
                 [routerLink]="['/products']" 
                 [queryParams]="{ target: 'Kids', subcategory: 'baby needs' }" 
-                class="text-[9px] font-mono tracking-widest text-[#2E2118] hover:text-[#C4633A] uppercase font-bold flex items-center gap-2 border-b border-[#2E2118] pb-1 hover:border-[#C4633A] transition-colors"
+                class="bb-cell-link"
               >
-                <span>SHOP NEWBORN</span>
+                <span>Shop Newborn</span>
                 <span>→</span>
               </a>
             </div>
           </div>
+
         </div>
 
       </div>
@@ -103,6 +74,35 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
       display: block;
       width: 100%;
     }
+    .bb-grid { 
+      display: grid; 
+      grid-template-columns: 1fr 1fr; 
+      gap: 24px; 
+    }
+    @media (max-width: 768px) {
+      .bb-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .bb-cell {
+      position: relative; min-height: 320px; overflow: hidden;
+      display: flex; align-items: flex-end;
+      border-radius: 2.5rem;
+      border: 0.5px solid #E8DDD0;
+      background-size: cover;
+      background-position: center;
+    }
+    .bb-cell-overlay {
+      position: absolute; inset: 0; z-index: 2;
+      background: linear-gradient(to top, rgba(46,33,24,0.75) 0%, rgba(46,33,24,0.2) 50%, rgba(46,33,24,0.02) 100%);
+    }
+    .bb-cell-content { position: relative; z-index: 3; padding: 28px 36px; width: 100%; }
+    .bb-cell-label { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: #FAF6F0; opacity: 0.85; font-weight: 500; display: block; margin-bottom: 6px; }
+    .bb-serif { font-family: 'Playfair Display', 'Cormorant Garamond', serif; }
+    .bb-h3 { font-size: 24px; font-weight: 400; line-height: 1.25; margin-bottom: 6px; color: #FAF6F0; }
+    .bb-cell-sub { font-size: 11px; color: rgba(250,246,240,0.8); margin-bottom: 14px; line-height: 1.5; font-weight: 300; }
+    .bb-cell-link { font-size: 9px; text-transform: uppercase; letter-spacing: 0.14em; color: #FFF; font-weight: 600; cursor: pointer; border: none; background: none; font-family: 'Inter',sans-serif; padding: 0; display: inline-flex; align-items: center; gap: 4px; text-decoration: none; border-bottom: 1px solid transparent; transition: all 0.3s; }
+    .bb-cell-link:hover { border-bottom-color: #FFF; }
   `]
 })
 export class ClothingSectionComponent implements OnInit {
