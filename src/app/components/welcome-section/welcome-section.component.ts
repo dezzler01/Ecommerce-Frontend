@@ -14,23 +14,25 @@ import { gsap } from 'gsap';
   imports: [CommonModule, RouterModule],
   template: `
     <section
-      class="relative min-h-[92vh] w-full flex items-center px-6 md:px-12 lg:px-24 py-32 overflow-hidden bg-transparent"
+      class="relative min-h-screen w-full flex items-center px-6 md:px-12 lg:px-24 py-32 overflow-hidden bg-[#F8F1EA]"
     >
-      <!-- Background Blobs (Champagne/Ivory themed blur blobs) -->
-      <div class="blob-container">
-        <div class="blob-1" style="background: radial-gradient(circle, rgba(216,184,156,0.35) 0%, rgba(243,232,221,0.05) 70%);"></div>
-        <div class="blob-2" style="background: radial-gradient(circle, rgba(201,138,88,0.2) 0%, rgba(248,241,234,0.05) 70%);"></div>
-        <div class="blob-3" style="background: radial-gradient(circle, rgba(232,209,191,0.3) 0%, rgba(243,232,221,0.05) 70%);"></div>
-      </div>
+      <!-- Full-bleed background image -->
+      <img 
+        src="products/hero_cover.jpg" 
+        alt="Essentials for Every Moment" 
+        class="absolute inset-0 w-full h-full object-cover object-[center_right] md:object-[68%_center] lg:object-right z-0 select-none pointer-events-none"
+      />
 
-      <div class="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-16 items-center relative z-10">
-        
-        <!-- Left Side: Editorial Content (5 cols) -->
-        <div class="lg:col-span-5 flex flex-col items-start text-left space-y-8 select-none">
+      <!-- Soft Gradient Mask for text legibility over the image -->
+      <div class="absolute inset-0 bg-gradient-to-r from-[#F8F1EA]/95 via-[#F8F1EA]/50 to-transparent z-10 pointer-events-none"></div>
+
+      <div class="max-w-6xl mx-auto w-full relative z-20">
+        <!-- Left Side: Editorial Content -->
+        <div class="flex flex-col items-start text-left space-y-8 select-none max-w-xl">
           <span class="tracking-[0.25em] font-mono text-[10px] md:text-xs uppercase font-bold text-[#C98A58] block">
             CURATED FOR YOU &amp; YOUR LITTLE ONE
           </span>
-          <h1 class="font-serif-luxury text-5xl md:text-6xl lg:text-7xl tracking-tight text-[#2A1F1A] uppercase leading-[0.95] max-w-xl">
+          <h1 class="font-serif-luxury text-5xl md:text-6xl lg:text-7xl tracking-tight text-[#2A1F1A] uppercase leading-[0.95]">
             Essentials <br/>
             <span class="font-light italic text-[#77685D]">for Every</span> <br/>
             Moment
@@ -57,28 +59,15 @@ import { gsap } from 'gsap';
             </a>
           </div>
         </div>
+      </div>
 
-        <!-- Right Side: Full-bleed Premium Still-life Scene (7 cols) -->
-        <div class="lg:col-span-7 flex justify-center items-center relative h-[400px] md:h-[500px] w-full">
-          <!-- Large glowing champagne sphere behind -->
-          <div class="absolute w-[320px] md:w-[450px] h-[320px] md:h-[450px] rounded-full bg-gradient-to-tr from-[#E8D1BF]/40 to-[#D8B89C]/30 blur-[2px] shadow-inner select-none pointer-events-none z-0"></div>
-          
-          <!-- Floating Pearl Accessory -->
-          <div class="absolute top-[25%] left-[5%] w-6 h-6 rounded-full bg-gradient-to-br from-white via-[#E8D1BF] to-[#D8B89C] shadow-lg blur-[0.5px] z-20 animate-pulse pointer-events-none"></div>
+      <!-- Floating Pearl Accessory -->
+      <div class="welcome-pearl absolute top-[25%] right-[38%] w-6 h-6 rounded-full bg-gradient-to-br from-white via-[#E8D1BF] to-[#D8B89C] shadow-lg blur-[0.5px] z-20 pointer-events-none hidden md:block"></div>
 
-          <!-- Floating "NEW ARRIVALS" Badge -->
-          <div class="absolute top-[15%] right-[5%] z-20 w-24 h-24 rounded-full bg-[#F3E8DD]/90 backdrop-blur-sm border border-[#E7D8CB] flex flex-col items-center justify-center text-center shadow-xl p-3 select-none pointer-events-none">
-            <span class="text-[8px] font-mono tracking-widest text-[#77685D] uppercase font-bold leading-tight">NEW ARRIVALS</span>
-            <span class="text-[#C98A58] text-[11px] mt-1">♡</span>
-          </div>
-
-          <!-- Pediatric still-life art group (GSAP floating target) -->
-          <div class="hero-artwork-group relative w-full h-full flex items-center justify-center z-10 pointer-events-none select-none">
-            <!-- Full bleed generated still-life composition -->
-            <img src="products/hero_cover.png" alt="Bespoke Pedestal Still-life" class="w-full h-full object-contain filter drop-shadow-[0_15px_30px_rgba(42,31,26,0.1)] rounded-[2.5rem]" />
-          </div>
-        </div>
-
+      <!-- Floating "NEW ARRIVALS" Badge -->
+      <div class="welcome-new-arrivals absolute top-[18%] right-[10%] z-20 w-24 h-24 rounded-full bg-[#F3E8DD]/90 backdrop-blur-sm border border-[#E7D8CB] flex flex-col items-center justify-center text-center shadow-xl p-3 select-none pointer-events-none hidden lg:flex">
+        <span class="text-[8px] font-mono tracking-widest text-[#77685D] uppercase font-bold leading-tight">NEW ARRIVALS</span>
+        <span class="text-[#C98A58] text-[11px] mt-1">♡</span>
       </div>
 
       <!-- High-Conversion Scroll Anchor -->
@@ -106,11 +95,21 @@ export class WelcomeSectionComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     if (isPlatformBrowser(this.platformId)) {
-      gsap.fromTo('.hero-artwork-group',
-        { y: -10 },
+      gsap.fromTo('.welcome-new-arrivals',
+        { y: -8 },
         {
-          y: 10,
-          duration: 8,
+          y: 8,
+          duration: 6,
+          repeat: -1,
+          yoyo: true,
+          ease: 'sine.inOut'
+        }
+      );
+      gsap.fromTo('.welcome-pearl',
+        { y: -12 },
+        {
+          y: 12,
+          duration: 7,
           repeat: -1,
           yoyo: true,
           ease: 'sine.inOut'

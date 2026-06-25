@@ -15,15 +15,24 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
   template: `
     <section
       id="little-one"
-      class="relative w-full py-20 px-6 md:px-12 lg:px-24 z-10 overflow-hidden bg-transparent"
+      class="relative w-full py-16 px-6 md:px-12 lg:px-24 z-10 overflow-hidden bg-transparent"
     >
       <div class="max-w-6xl mx-auto w-full relative z-10">
         
-        <!-- Wide Expansive Banner Panel -->
-        <div class="relative w-full rounded-[2.5rem] bg-[#F3E8DD]/20 border border-[#E7D8CB] shadow-2xl shadow-black/[0.02] p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8 pointer-events-auto select-none overflow-hidden">
+        <!-- Wide Expansive Banner Panel with Full-Bleed Image Background -->
+        <div class="relative w-full rounded-[2.5rem] border border-[#E7D8CB] shadow-2xl overflow-hidden min-h-[320px] flex flex-col md:flex-row items-center justify-between p-8 md:p-12 pointer-events-auto select-none group">
+          <!-- Full-bleed background image -->
+          <img 
+            src="products/little_one_collection.jpg" 
+            alt="Little One Onesie Flat-lay" 
+            class="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.2s] group-hover:scale-105 z-0"
+          />
           
-          <!-- Banner Left: Text & CTA -->
-          <div class="flex flex-col items-start text-left space-y-6 max-w-sm md:max-w-md z-10">
+          <!-- Soft Gradient Mask for text legibility over the image -->
+          <div class="absolute inset-0 bg-gradient-to-r from-[#F8F1EA]/95 via-[#F8F1EA]/40 to-transparent z-10 pointer-events-none"></div>
+
+          <!-- Banner Left: Text & CTA on top of image -->
+          <div class="relative flex flex-col items-start text-left space-y-6 max-w-xs md:max-w-md z-20">
             <span class="tracking-[0.25em] font-mono text-[10px] md:text-xs uppercase font-bold text-[#C98A58]">
               LITTLE ONE
             </span>
@@ -46,17 +55,8 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
             </div>
           </div>
 
-          <!-- Banner Center: Product Image (onesie) -->
-          <div class="relative flex-1 flex justify-center items-center h-[220px] md:h-[280px] z-10 w-full">
-            <img 
-              src="products/little_one_collection.png" 
-              alt="Little One Onesie Flat-lay" 
-              class="h-full object-contain transition-transform duration-[1.2s] hover:scale-105"
-            />
-          </div>
-
-          <!-- Banner Right: Floating Badge -->
-          <div class="w-[120px] md:w-[140px] h-[120px] md:h-[140px] rounded-3xl border border-[#E7D8CB] bg-[#F8F1EA] flex flex-col items-center justify-center p-4 z-10 shadow-md">
+          <!-- Banner Right: Floating Badge on top of image -->
+          <div class="relative w-[120px] md:w-[140px] h-[120px] md:h-[140px] rounded-3xl border border-[#E7D8CB] bg-[#F8F1EA]/90 backdrop-blur-sm flex flex-col items-center justify-center p-4 z-20 shadow-md">
             <span class="text-[8px] font-mono text-[#77685D] uppercase tracking-wider mb-1">UP TO</span>
             <span class="text-3xl font-serif-luxury font-bold text-[#C98A58] leading-none">30%</span>
             <span class="text-[8px] font-mono text-[#77685D] uppercase tracking-wider mt-1">OFF</span>
