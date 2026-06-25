@@ -14,21 +14,12 @@ import { gsap } from 'gsap';
   imports: [CommonModule, RouterModule],
   template: `
     <section
-      class="relative min-h-screen w-full flex items-center px-6 md:px-12 lg:px-24 py-32 overflow-hidden bg-[#F8F1EA]"
+      class="relative min-h-[85vh] w-full flex items-center px-6 md:px-12 lg:px-24 py-16 overflow-hidden bg-transparent"
     >
-      <!-- Full-bleed background image -->
-      <img 
-        src="products/hero_cover.jpg" 
-        alt="Essentials for Every Moment" 
-        class="absolute inset-0 w-full h-full object-cover object-[center_right] md:object-[68%_center] lg:object-right z-0 select-none pointer-events-none"
-      />
-
-      <!-- Soft Gradient Mask for text legibility over the image -->
-      <div class="absolute inset-0 bg-gradient-to-r from-[#F8F1EA]/95 via-[#F8F1EA]/50 to-transparent z-10 pointer-events-none"></div>
-
-      <div class="max-w-6xl mx-auto w-full relative z-20">
+      <div class="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
+        
         <!-- Left Side: Editorial Content -->
-        <div class="flex flex-col items-start text-left space-y-8 select-none max-w-xl">
+        <div class="lg:col-span-5 flex flex-col items-start text-left space-y-6 select-none z-20">
           <span class="tracking-[0.25em] font-mono text-[10px] md:text-xs uppercase font-bold text-[#C98A58] block">
             CURATED FOR YOU &amp; YOUR LITTLE ONE
           </span>
@@ -59,24 +50,68 @@ import { gsap } from 'gsap';
             </a>
           </div>
         </div>
+
+        <!-- Right Side: Layered Still-life Composition -->
+        <div class="lg:col-span-7 flex justify-center items-center relative h-[380px] md:h-[480px] w-full z-10">
+          
+          <!-- Floating Pearl Accessory -->
+          <div class="welcome-pearl absolute top-[15%] left-[5%] w-6 h-6 rounded-full bg-gradient-to-br from-white via-[#E8D1BF] to-[#D8B89C] shadow-lg blur-[0.5px] z-20 pointer-events-none hidden md:block"></div>
+
+          <!-- Floating "NEW ARRIVALS" Badge -->
+          <div class="welcome-new-arrivals absolute top-[8%] right-[5%] z-20 w-24 h-24 rounded-full bg-[#F3E8DD]/90 backdrop-blur-sm border border-[#E7D8CB] flex flex-col items-center justify-center text-center shadow-xl p-3 select-none pointer-events-none hidden lg:flex">
+            <span class="text-[8px] font-mono tracking-widest text-[#77685D] uppercase font-bold leading-tight">NEW ARRIVALS</span>
+            <span class="text-[#C98A58] text-[11px] mt-1">♡</span>
+          </div>
+
+          <!-- Pediatric still-life art group -->
+          <div class="hero-artwork-group relative w-full h-full pointer-events-none select-none">
+            <!-- Folded Cashmere Baby Blanket -->
+            <img 
+              src="products/baby_blanket.png" 
+              alt="Cashmere Baby Blanket" 
+              class="absolute bottom-[2%] left-[10%] w-[50%] z-10 filter drop-shadow-[0_8px_16px_rgba(42,31,26,0.05)]" 
+            />
+
+            <!-- Quilted Diaper Bag -->
+            <img 
+              src="products/diaper_bag.png" 
+              alt="Quilted Diaper Bag" 
+              class="absolute bottom-[18%] right-[5%] w-[68%] z-10 filter drop-shadow-[0_15px_30px_rgba(42,31,26,0.08)] pointer-events-auto transition-transform duration-500 hover:scale-[1.03]" 
+            />
+
+            <!-- Plush Bunny Toy -->
+            <img 
+              src="products/plush_bunny.png" 
+              alt="Plush Bunny Toy" 
+              class="absolute bottom-[10%] left-[18%] w-[33%] z-20 filter drop-shadow-[0_10px_20px_rgba(42,31,26,0.08)] pointer-events-auto transition-transform duration-500 hover:scale-[1.05]" 
+            />
+
+            <!-- Elegant Baby Bottle -->
+            <img 
+              src="products/baby_bottle.png" 
+              alt="Baby Bottle" 
+              class="absolute bottom-[6%] left-[45%] w-[16%] z-30 filter drop-shadow-[0_8px_16px_rgba(42,31,26,0.06)] pointer-events-auto transition-transform duration-500 hover:scale-[1.08]" 
+            />
+
+            <!-- Baby Clogs/Booties -->
+            <img 
+              src="products/baby_clogs.png" 
+              alt="Newborn Baby Shoes" 
+              class="absolute bottom-[4%] right-[22%] w-[24%] z-30 filter drop-shadow-[0_8px_16px_rgba(42,31,26,0.06)] pointer-events-auto transition-transform duration-500 hover:scale-[1.08]" 
+            />
+          </div>
+
+        </div>
+
       </div>
 
-      <!-- Floating Pearl Accessory -->
-      <div class="welcome-pearl absolute top-[25%] right-[38%] w-6 h-6 rounded-full bg-gradient-to-br from-white via-[#E8D1BF] to-[#D8B89C] shadow-lg blur-[0.5px] z-20 pointer-events-none hidden md:block"></div>
-
-      <!-- Floating "NEW ARRIVALS" Badge -->
-      <div class="welcome-new-arrivals absolute top-[18%] right-[10%] z-20 w-24 h-24 rounded-full bg-[#F3E8DD]/90 backdrop-blur-sm border border-[#E7D8CB] flex flex-col items-center justify-center text-center shadow-xl p-3 select-none pointer-events-none hidden lg:flex">
-        <span class="text-[8px] font-mono tracking-widest text-[#77685D] uppercase font-bold leading-tight">NEW ARRIVALS</span>
-        <span class="text-[#C98A58] text-[11px] mt-1">♡</span>
-      </div>
-
-      <!-- High-Conversion Scroll Anchor -->
+      <!-- Scroll Anchor -->
       <div
         (click)="scrollToCategories()"
-        class="welcome-scroll-indicator absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-10 cursor-pointer pointer-events-auto animate-bounce"
+        class="welcome-scroll-indicator absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10 cursor-pointer pointer-events-auto animate-bounce"
       >
         <span class="text-[8px] font-mono tracking-[0.25em] uppercase text-[#77685D]">Scroll to Shop</span>
-        <div class="h-6 w-[1px] bg-gradient-to-b from-[#77685D] to-transparent"></div>
+        <div class="h-4 w-[1px] bg-gradient-to-b from-[#77685D] to-transparent"></div>
       </div>
     </section>
   `,
@@ -95,25 +130,32 @@ export class WelcomeSectionComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     if (isPlatformBrowser(this.platformId)) {
+      // Float badge and pearl
       gsap.fromTo('.welcome-new-arrivals',
-        { y: -8 },
-        {
-          y: 8,
-          duration: 6,
-          repeat: -1,
-          yoyo: true,
-          ease: 'sine.inOut'
-        }
+        { y: -6 },
+        { y: 6, duration: 5, repeat: -1, yoyo: true, ease: 'sine.inOut' }
       );
       gsap.fromTo('.welcome-pearl',
-        { y: -12 },
-        {
-          y: 12,
-          duration: 7,
-          repeat: -1,
-          yoyo: true,
-          ease: 'sine.inOut'
-        }
+        { y: -10 },
+        { y: 10, duration: 6, repeat: -1, yoyo: true, ease: 'sine.inOut' }
+      );
+
+      // Gentle layered float of products
+      gsap.fromTo('.hero-artwork-group img:nth-child(2)',
+        { y: -4 },
+        { y: 4, duration: 7, repeat: -1, yoyo: true, ease: 'sine.inOut' }
+      );
+      gsap.fromTo('.hero-artwork-group img:nth-child(3)',
+        { y: -8 },
+        { y: 8, duration: 6, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: 0.5 }
+      );
+      gsap.fromTo('.hero-artwork-group img:nth-child(4)',
+        { y: -6 },
+        { y: 6, duration: 5, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: 0.2 }
+      );
+      gsap.fromTo('.hero-artwork-group img:nth-child(5)',
+        { y: -5 },
+        { y: 5, duration: 6.5, repeat: -1, yoyo: true, ease: 'sine.inOut', delay: 0.7 }
       );
     }
   }

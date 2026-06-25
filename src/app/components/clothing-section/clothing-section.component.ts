@@ -15,24 +15,25 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
   template: `
     <section
       id="clothing"
-      class="relative w-full py-12 px-6 md:px-12 lg:px-24 z-10 overflow-hidden bg-transparent"
+      class="relative w-full py-6 px-6 md:px-12 lg:px-24 z-10 overflow-hidden bg-transparent"
     >
       <div class="max-w-6xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
         
         <!-- Left Pane: Women Collection -->
-        <div class="relative w-full rounded-[2.5rem] border border-[#E7D8CB] shadow-2xl p-8 flex items-center pointer-events-auto select-none overflow-hidden min-h-[300px] group">
-          <!-- Full-bleed background image -->
+        <div class="relative w-full rounded-[2.5rem] editorial-glass-card shadow-2xl p-8 flex items-center pointer-events-auto select-none overflow-hidden min-h-[300px] group">
+          
+          <!-- Foreground transparent product image on the right -->
           <img 
-            src="products/women_collection.jpg" 
+            src="products/women_collection.png" 
             alt="Women Handbag and Perfume" 
-            class="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.2s] group-hover:scale-105 z-0"
+            class="absolute right-[2%] bottom-4 h-[85%] object-contain transition-transform duration-[1.2s] group-hover:scale-105 z-0"
           />
           
-          <!-- Soft Gradient Mask for text legibility over the image -->
-          <div class="absolute inset-0 bg-gradient-to-r from-[#F8F1EA]/95 via-[#F8F1EA]/50 to-transparent z-10 pointer-events-none"></div>
+          <!-- Soft light mask for text area -->
+          <div class="absolute inset-0 bg-gradient-to-r from-white/30 via-transparent to-transparent z-10 pointer-events-none"></div>
 
           <!-- Content Left -->
-          <div class="relative flex flex-col items-start text-left space-y-4 max-w-[65%] z-20">
+          <div class="relative flex flex-col items-start text-left space-y-4 max-w-[60%] z-20">
             <span class="tracking-[0.25em] font-mono text-[9px] uppercase font-bold text-[#C98A58]">
               WOMEN
             </span>
@@ -57,19 +58,20 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
         </div>
 
         <!-- Right Pane: Newborn Care -->
-        <div class="relative w-full rounded-[2.5rem] border border-[#E7D8CB] shadow-2xl p-8 flex items-center pointer-events-auto select-none overflow-hidden min-h-[300px] group">
-          <!-- Full-bleed background image -->
+        <div class="relative w-full rounded-[2.5rem] editorial-glass-card shadow-2xl p-8 flex items-center pointer-events-auto select-none overflow-hidden min-h-[300px] group">
+          
+          <!-- Foreground transparent product image on the right -->
           <img 
-            src="products/newborn_care_collection.jpg" 
+            src="products/newborn_care_collection.png" 
             alt="Newborn Care Bottles and Towels" 
-            class="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.2s] group-hover:scale-105 z-0"
+            class="absolute right-[2%] bottom-4 h-[85%] object-contain transition-transform duration-[1.2s] group-hover:scale-105 z-0"
           />
 
-          <!-- Soft Gradient Mask for text legibility over the image -->
-          <div class="absolute inset-0 bg-gradient-to-r from-[#F8F1EA]/95 via-[#F8F1EA]/50 to-transparent z-10 pointer-events-none"></div>
+          <!-- Soft light mask for text area -->
+          <div class="absolute inset-0 bg-gradient-to-r from-white/30 via-transparent to-transparent z-10 pointer-events-none"></div>
 
           <!-- Content Left -->
-          <div class="relative flex flex-col items-start text-left space-y-4 max-w-[65%] z-20">
+          <div class="relative flex flex-col items-start text-left space-y-4 max-w-[60%] z-20">
             <span class="tracking-[0.25em] font-mono text-[9px] uppercase font-bold text-[#C98A58]">
               NEWBORN CARE
             </span>

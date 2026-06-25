@@ -24,10 +24,10 @@ gsap.registerPlugin(ScrollTrigger);
     KidsShoesSectionComponent
   ],
   template: `
-    <!-- Natural scrolling container -->
-    <div class="relative w-full overflow-x-hidden flex flex-col bg-[#F8F1EA] text-[#2A1F1A]">
+    <!-- Natural scrolling container with unified background canvas -->
+    <div class="relative w-full overflow-x-hidden flex flex-col text-[#2A1F1A] storefront-unified-canvas">
       <!-- Global subtle vignette backdrop overlay -->
-      <div class="absolute inset-0 pointer-events-none z-10 bg-gradient-to-b from-[#2A1F1A]/5 via-transparent to-[#2A1F1A]/10 mix-blend-multiply opacity-25"></div>
+      <div class="absolute inset-0 pointer-events-none z-10 bg-gradient-to-b from-[#2A1F1A]/3 via-transparent to-[#2A1F1A]/8 mix-blend-multiply opacity-20"></div>
 
       <!-- Sections rendered in vertical order -->
       <app-welcome-section class="w-full animate-fade-in"></app-welcome-section>
