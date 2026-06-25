@@ -70,9 +70,16 @@ import { NotificationService, AppNotification } from '../../services/notificatio
 
         <!-- Right Flex Zone: Minimalist Floating Layout -->
         <div class="flex items-center gap-6 select-none">
+          <!-- Search Icon -->
+          <a [routerLink]="['/products']" class="text-[#2A1F1A] hover:text-[#C98A58] transition-colors relative flex items-center justify-center h-8 w-8 rounded-full hover:bg-[#C98A58]/10 transition-all select-none pointer-events-auto">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.602 10.602z" />
+            </svg>
+          </a>
+
           <!-- Cart Wrapper with hover dropdown -->
-          <div class="relative group py-1 flex items-center justify-center">
-            <a [routerLink]="['/cart']" [ngClass]="linkClass('/cart')" class="transition-colors relative flex items-center justify-center h-8 w-8 rounded-full hover:bg-[#E07A5F]/10 transition-all select-none">
+          <div class="relative group py-1 flex items-center justify-center pointer-events-auto">
+            <a [routerLink]="['/cart']" class="text-[#2A1F1A] hover:text-[#C98A58] transition-colors relative flex items-center justify-center h-8 w-8 rounded-full hover:bg-[#C98A58]/10 transition-all select-none">
               <span class="relative flex items-center justify-center">
                 <!-- Shopping Cart Trolley SVG Icon -->
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -80,33 +87,33 @@ import { NotificationService, AppNotification } from '../../services/notificatio
                 </svg>
                 <span *ngIf="cartCount() > 0" 
                       [ngClass]="{ 'badge-pop': animateBadge() }"
-                      class="absolute -top-2 -right-2 neon-badge text-[7px] font-bold h-3.5 w-3.5 rounded-full flex items-center justify-center border border-white/10 z-20 transition-transform duration-300">
+                      class="absolute -top-2 -right-2 bg-[#C98A58] text-white text-[7px] font-bold h-3.5 w-3.5 rounded-full flex items-center justify-center border border-[#F8F1EA] z-20 transition-transform duration-300">
                   {{ cartCount() }}
                 </span>
               </span>
             </a>
 
             <!-- Mini-Cart Dropdown -->
-            <div class="absolute right-0 top-full mt-2 w-72 bg-[#0A0A0F]/85 backdrop-blur-md border border-white/10 rounded-xl p-4 shadow-2xl opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 z-50 text-left">
-              <span class="text-[8px] font-mono tracking-widest text-[#E07A5F] uppercase font-bold block mb-3 border-b border-white/5 pb-2">Bag Preview ({{ cartCount() }})</span>
+            <div class="absolute right-0 top-full mt-2 w-72 bg-[#F8F1EA]/95 backdrop-blur-md border border-[#E7D8CB] rounded-xl p-4 shadow-2xl opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 z-50 text-left">
+              <span class="text-[8px] font-mono tracking-widest text-[#C98A58] uppercase font-bold block mb-3 border-b border-[#E7D8CB] pb-2">Bag Preview ({{ cartCount() }})</span>
               
-              <div *ngIf="cartItems().length === 0" class="py-6 text-center text-[10px] text-white/40 font-light">
+              <div *ngIf="cartItems().length === 0" class="py-6 text-center text-[10px] text-[#77685D] font-light">
                 Your shopping bag is empty.
               </div>
 
               <div *ngIf="cartItems().length > 0" class="space-y-3 mb-4 max-h-[220px] overflow-y-auto pr-1">
-                <div *ngFor="let item of latestItems()" class="flex items-center gap-3 pb-3 border-b border-white/5 last:border-b-0 last:pb-0">
-                  <div class="w-10 h-10 rounded-lg bg-white/5 overflow-hidden flex-shrink-0 border border-white/5">
+                <div *ngFor="let item of latestItems()" class="flex items-center gap-3 pb-3 border-b border-[#E7D8CB] last:border-b-0 last:pb-0">
+                  <div class="w-10 h-10 rounded-lg bg-white overflow-hidden flex-shrink-0 border border-[#E7D8CB]">
                     <img *ngIf="item.imageUrl" [src]="resolveImageUrl(item.imageUrl)" [alt]="item.productName" class="w-full h-full object-cover"/>
-                    <div *ngIf="!item.imageUrl" class="w-full h-full flex items-center justify-center text-[7px] text-white/30 uppercase tracking-widest font-semibold bg-white/5">No img</div>
+                    <div *ngIf="!item.imageUrl" class="w-full h-full flex items-center justify-center text-[7px] text-[#77685D] uppercase tracking-widest font-semibold bg-white/5">No img</div>
                   </div>
                   <div class="flex-1 min-w-0">
-                    <h5 class="text-[10px] text-white/95 uppercase tracking-wide font-normal truncate">{{ item.productName }}</h5>
-                    <div class="flex gap-1.5 text-[8px] text-white/40 font-mono mt-0.5" *ngIf="item.size || item.color">
+                    <h5 class="text-[10px] text-[#2A1F1A] uppercase tracking-wide font-normal truncate">{{ item.productName }}</h5>
+                    <div class="flex gap-1.5 text-[8px] text-[#77685D] font-mono mt-0.5" *ngIf="item.size || item.color">
                       <span *ngIf="item.size">S: {{ item.size }}</span>
                       <span *ngIf="item.color">C: {{ item.color }}</span>
                     </div>
-                    <div class="flex justify-between items-center text-[9px] font-mono text-white/50 mt-0.5">
+                    <div class="flex justify-between items-center text-[9px] font-mono text-[#77685D] mt-0.5">
                       <span>Qty: {{ item.quantity }}</span>
                       <span>{{ item.unitPrice | currency:'EGP ' }}</span>
                     </div>
@@ -114,14 +121,14 @@ import { NotificationService, AppNotification } from '../../services/notificatio
                 </div>
               </div>
 
-              <div class="border-t border-white/5 pt-3 flex justify-between items-center">
+              <div class="border-t border-[#E7D8CB] pt-3 flex justify-between items-center">
                 <div class="flex flex-col">
-                  <span class="text-[8px] text-white/40 uppercase tracking-wider font-semibold">Subtotal</span>
-                  <span class="text-[11px] font-mono text-white/95 font-bold">{{ subtotal() | currency:'EGP ' }}</span>
+                  <span class="text-[8px] text-[#77685D] uppercase tracking-wider font-semibold">Subtotal</span>
+                  <span class="text-[11px] font-mono text-[#2A1F1A] font-bold">{{ subtotal() | currency:'EGP ' }}</span>
                 </div>
                 <a 
                   [routerLink]="['/cart']" 
-                  class="px-4 py-2 bg-[#E07A5F] hover:bg-[#F38E75] text-[#1A1816] text-[9px] font-extrabold uppercase tracking-widest rounded-lg transition-all shadow-[0_0_8px_rgba(224,122,95,0.3)]"
+                  class="px-4 py-2 bg-[#C98A58] hover:bg-[#2A1F1A] text-white text-[9px] font-extrabold uppercase tracking-widest rounded-lg transition-all shadow-[0_0_8px_rgba(201,138,88,0.3)]"
                 >
                   Checkout
                 </a>
@@ -130,16 +137,15 @@ import { NotificationService, AppNotification } from '../../services/notificatio
           </div>
           
 
-          <span [ngClass]="showScrolledState ? 'bg-[#4A4340]/25' : 'bg-[#FBF9F6]/40'" class="hidden sm:block h-3.5 w-[1px] transition-colors"></span>
+          <span class="hidden sm:block h-3.5 w-[1px] bg-[#E7D8CB]"></span>
           
           <ng-container *ngIf="authService.currentUser() as user; else guestNav">
             <!-- Premium Notification Bell with Dropdown -->
-            <div class="relative notification-bell-wrapper py-1 mr-3 flex items-center">
+            <div class="relative notification-bell-wrapper py-1 mr-3 flex items-center pointer-events-auto">
               <!-- Bell Trigger -->
               <button 
                 (click)="toggleNotificationsDropdown($event)"
-                class="relative p-1.5 rounded-full hover:bg-white/10 transition-colors focus:outline-none flex items-center justify-center"
-                [ngClass]="showScrolledState ? 'text-[#4A4340] hover:bg-black/5' : 'text-[#FBF9F6]/90 hover:bg-white/10'"
+                class="relative p-1.5 rounded-full hover:bg-[#C98A58]/10 text-[#2A1F1A] hover:text-[#C98A58] transition-colors focus:outline-none flex items-center justify-center"
                 aria-label="Notifications"
               >
                 <!-- Bell SVG Icon -->
@@ -150,7 +156,7 @@ import { NotificationService, AppNotification } from '../../services/notificatio
                 <!-- Unread count badge -->
                 <span 
                   *ngIf="notificationService.unreadCount() > 0"
-                  class="absolute top-0 right-0 min-w-[13px] h-[13px] bg-[#E07A5F] text-[#FBF9F6] text-[7.5px] font-black rounded-full flex items-center justify-center px-0.5 shadow-sm border border-[#FBF9F6]/20 animate-pulse"
+                  class="absolute top-0 right-0 min-w-[13px] h-[13px] bg-[#C98A58] text-white text-[7.5px] font-black rounded-full flex items-center justify-center px-0.5 border border-white/20 animate-pulse"
                 >
                   {{ notificationService.unreadCount() }}
                 </span>
@@ -159,20 +165,20 @@ import { NotificationService, AppNotification } from '../../services/notificatio
               <!-- Notifications Dropdown Panel -->
               <div 
                 *ngIf="isNotificationsDropdownOpen()" 
-                class="absolute right-0 top-full mt-2 w-72 bg-[#1A1816]/95 border border-white/10 rounded-2xl shadow-2xl p-4 backdrop-blur-xl z-50 text-left"
+                class="absolute right-0 top-full mt-2 w-72 bg-[#F8F1EA]/95 border border-[#E7D8CB] rounded-2xl shadow-2xl p-4 backdrop-blur-xl z-50 text-left"
                 (click)="$event.stopPropagation()"
               >
-                <div class="flex justify-between items-center border-b border-white/10 pb-2.5 mb-2.5">
+                <div class="flex justify-between items-center border-b border-[#E7D8CB] pb-2.5 mb-2.5">
                   <div class="flex items-center gap-1.5">
-                    <span class="text-[9px] font-mono tracking-widest text-[#E07A5F] uppercase font-bold">Alert Ledger</span>
-                    <span *ngIf="notificationService.unreadCount() > 0" class="text-[7px] bg-[#E07A5F]/20 text-[#E07A5F] px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider font-mono">
+                    <span class="text-[9px] font-mono tracking-widest text-[#C98A58] uppercase font-bold">Alert Ledger</span>
+                    <span *ngIf="notificationService.unreadCount() > 0" class="text-[7px] bg-[#C98A58]/20 text-[#C98A58] px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider font-mono">
                       {{ notificationService.unreadCount() }} New
                     </span>
                   </div>
                   <button 
                     *ngIf="notificationService.notifications().length > 0"
                     (click)="markAllAsRead()"
-                    class="text-[7.5px] font-mono uppercase tracking-widest text-[#8A817C] hover:text-[#E07A5F] transition-colors"
+                    class="text-[7.5px] font-mono uppercase tracking-widest text-[#77685D] hover:text-[#C98A58] transition-colors"
                   >
                     Clear All
                   </button>
@@ -182,26 +188,26 @@ import { NotificationService, AppNotification } from '../../services/notificatio
                 <div class="max-h-[220px] overflow-y-auto custom-scrollbar space-y-2 mb-1 pr-1">
                   <!-- Empty State -->
                   <div *ngIf="notificationService.notifications().length === 0" class="py-8 text-center">
-                    <span class="text-[8px] uppercase tracking-widest text-white/30 font-medium block">Canvas is peaceful</span>
-                    <span class="text-[6.5px] uppercase tracking-widest text-white/20 mt-1 block">No notifications recorded</span>
+                    <span class="text-[8px] uppercase tracking-widest text-[#77685D] font-medium block">Canvas is peaceful</span>
+                    <span class="text-[6.5px] uppercase tracking-widest text-[#77685D]/60 mt-1 block">No notifications recorded</span>
                   </div>
 
                   <!-- Notification Item -->
                   <div 
                     *ngFor="let note of notificationService.notifications()" 
                     (click)="markAsRead(note)"
-                    [ngClass]="note.isRead ? 'opacity-55 hover:opacity-85' : 'bg-white/5 border-l-2 border-[#E07A5F] pl-2.5'"
-                    class="p-2.5 rounded-lg border border-white/5 bg-white/[0.01] hover:bg-white/[0.04] transition-all cursor-pointer relative group/item"
+                    [ngClass]="note.isRead ? 'opacity-55 hover:opacity-85' : 'bg-[#C98A58]/5 border-l-2 border-[#C98A58] pl-2.5'"
+                    class="p-2.5 rounded-lg border border-[#E7D8CB] bg-white/[0.01] hover:bg-[#C98A58]/5 transition-all cursor-pointer relative group/item"
                   >
                     <div class="flex justify-between items-start gap-1">
-                      <span class="text-[8.5px] font-bold text-white/95 uppercase tracking-wide truncate max-w-[80%]">{{ note.title }}</span>
-                      <span class="text-[6px] text-white/40 font-mono tracking-tighter">{{ formatTimeAgo(note.createdAt) }}</span>
+                      <span class="text-[8.5px] font-bold text-[#2A1F1A] uppercase tracking-wide truncate max-w-[80%]">{{ note.title }}</span>
+                      <span class="text-[6px] text-[#77685D] font-mono tracking-tighter">{{ formatTimeAgo(note.createdAt) }}</span>
                     </div>
-                    <p class="text-[8px] text-white/60 mt-1 font-normal leading-relaxed break-words">{{ note.message }}</p>
+                    <p class="text-[8px] text-[#77685D] mt-1 font-normal leading-relaxed break-words">{{ note.message }}</p>
                     
                     <!-- Quick action context link -->
                     <div *ngIf="note.relatedEntityId" class="mt-1.5 flex justify-end">
-                      <span class="text-[6.5px] font-mono text-[#E07A5F] uppercase tracking-widest group-hover/item:underline">
+                      <span class="text-[6.5px] font-mono text-[#C98A58] uppercase tracking-widest group-hover/item:underline">
                         Reference Details →
                       </span>
                     </div>
@@ -211,36 +217,33 @@ import { NotificationService, AppNotification } from '../../services/notificatio
             </div>
 
             <!-- Small vertical divider -->
-            <span [ngClass]="showScrolledState ? 'bg-[#4A4340]/15' : 'bg-[#FBF9F6]/20'" class="hidden sm:block h-3.5 w-[1px] mr-3"></span>
+            <span class="hidden sm:block h-3.5 w-[1px] bg-[#E7D8CB] mr-3"></span>
 
             <!-- Advanced Profile Pill with Hover Dropdown -->
-            <div class="relative profile-badge-wrapper py-1">
+            <div class="relative profile-badge-wrapper py-1 pointer-events-auto">
               <!-- Pill Trigger -->
-              <div 
-                [ngClass]="showScrolledState ? 'profile-pill-scrolled' : ''"
-                class="profile-pill-container"
-              >
+              <div class="profile-pill-container profile-pill-scrolled">
                 <!-- Initial Avatar Circle -->
-                <div class="h-5.5 w-5.5 rounded-full bg-gradient-to-tr from-[#E07A5F] to-[#B84F7D] flex items-center justify-center text-[9px] font-black text-white uppercase shadow-sm group-hover/profile:scale-105 transition-all duration-300">
+                <div class="h-5.5 w-5.5 rounded-full bg-gradient-to-tr from-[#C98A58] to-[#D8B89C] flex items-center justify-center text-[9px] font-black text-white uppercase shadow-sm group-hover/profile:scale-105 transition-all duration-300">
                   {{ getUserInitials(user.username) }}
                 </div>
                 <!-- Username -->
-                <span [ngClass]="showScrolledState ? 'text-[#4A4340]' : 'text-[#FBF9F6]/90'" class="hidden sm:inline font-bold tracking-[0.05em] text-[9.5px] transition-colors duration-300">
+                <span class="hidden sm:inline font-bold tracking-[0.05em] text-[9.5px] text-[#2A1F1A] transition-colors duration-300">
                   {{ user.username }}
                 </span>
                 <!-- Caret Down Icon -->
-                <svg [ngClass]="showScrolledState ? 'text-[#4A4340]/60' : 'text-[#FBF9F6]/60'" class="hidden sm:block w-2.5 h-2.5 transition-transform duration-300 dropdown-arrow" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg class="hidden sm:block w-2.5 h-2.5 text-[#2A1F1A]/60 transition-transform duration-300 dropdown-arrow" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                 </svg>
               </div>
 
               <!-- Advanced Dropdown Panel -->
-              <div class="profile-dropdown-panel">
+              <div class="profile-dropdown-panel bg-[#F8F1EA] border border-[#E7D8CB] text-[#2A1F1A]">
                 <!-- User Header -->
-                <div class="border-b border-white/10 pb-2.5 mb-2.5">
-                  <span class="text-[8px] font-mono tracking-widest text-[#E07A5F] uppercase font-bold block mb-1">Authenticated User</span>
-                  <div class="text-[10px] text-white/95 font-semibold truncate">{{ user.username }}</div>
-                  <div class="text-[7.5px] text-white/45 font-mono mt-0.5 tracking-widest uppercase bg-white/5 px-2 py-0.5 rounded-sm inline-block">
+                <div class="border-b border-[#E7D8CB] pb-2.5 mb-2.5">
+                  <span class="text-[8px] font-mono tracking-widest text-[#C98A58] uppercase font-bold block mb-1">Authenticated User</span>
+                  <div class="text-[10px] text-[#2A1F1A] font-semibold truncate">{{ user.username }}</div>
+                  <div class="text-[7.5px] text-[#77685D] font-mono mt-0.5 tracking-widest uppercase bg-[#C98A58]/10 px-2 py-0.5 rounded-sm inline-block">
                     {{ user.role || 'Patron' }}
                   </div>
                 </div>
@@ -250,7 +253,7 @@ import { NotificationService, AppNotification } from '../../services/notificatio
                   <a 
                     *ngIf="showAdminLink()"
                     [routerLink]="['/admin/dashboard']"
-                    class="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-white/70 hover:text-white hover:bg-white/5 text-[9px] uppercase tracking-wider font-semibold transition-all text-left cursor-pointer"
+                    class="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-[#2A1F1A]/70 hover:text-[#2A1F1A] hover:bg-[#C98A58]/10 text-[9px] uppercase tracking-wider font-semibold transition-all text-left cursor-pointer"
                   >
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25a2.25 2.25 0 0 1-2.25 2.25h-2.25A2.25 2.25 0 0 1 13.5 8.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z" />
@@ -259,7 +262,7 @@ import { NotificationService, AppNotification } from '../../services/notificatio
                   </a>
                   <button 
                     (click)="openSettingsModal()" 
-                    class="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-white/70 hover:text-white hover:bg-white/5 text-[9px] uppercase tracking-wider font-semibold transition-all text-left"
+                    class="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-[#2A1F1A]/70 hover:text-[#2A1F1A] hover:bg-[#C98A58]/10 text-[9px] uppercase tracking-wider font-semibold transition-all text-left"
                   >
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -270,7 +273,7 @@ import { NotificationService, AppNotification } from '../../services/notificatio
 
                   <button 
                     (click)="authService.logout()" 
-                    class="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-red-400 hover:text-red-300 hover:bg-red-500/10 text-[9px] uppercase tracking-wider font-semibold transition-all text-left"
+                    class="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-red-600 hover:bg-red-500/10 text-[9px] uppercase tracking-wider font-semibold transition-all text-left"
                   >
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
@@ -285,10 +288,12 @@ import { NotificationService, AppNotification } from '../../services/notificatio
           <ng-template #guestNav>
             <button 
               (click)="authService.showLoginModal.set(true)" 
-              [ngClass]="showScrolledState ? 'nav-link-scrolled' : 'nav-link-transparent'" 
-              class="hidden sm:block font-extrabold uppercase tracking-[0.2em] text-[9px] transition-colors"
+              class="hidden sm:flex items-center justify-center h-8 w-8 rounded-full hover:bg-[#C98A58]/10 text-[#2A1F1A] hover:text-[#C98A58] transition-colors focus:outline-none pointer-events-auto"
+              aria-label="Account"
             >
-              Sign In
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+              </svg>
             </button>
           </ng-template>
 
@@ -804,7 +809,7 @@ export class NavbarComponent implements AfterViewInit {
   }
 
   get showScrolledState(): boolean {
-    return this.scrolled();
+    return true;
   }
   
   @HostListener('window:scroll', [])
@@ -816,20 +821,11 @@ export class NavbarComponent implements AfterViewInit {
 
   linkClass(routePath: string, targetParam?: string): string {
     const isActive = this.isLinkActive(routePath, targetParam);
-    if (this.showScrolledState) {
-      return isActive ? 'nav-link-active-scrolled' : 'nav-link-scrolled';
-    } else {
-      return isActive ? 'nav-link-active-transparent' : 'nav-link-transparent';
-    }
+    return isActive ? 'nav-link-active-scrolled' : 'nav-link-scrolled';
   }
 
   get headerClass(): string {
-    // If scrolled, use a translucent blurred backdrop matching our luxury champagne background.
-    // If at the top, the header has a subtle top-down dark vignette to guarantee text legibility over any lifestyle banner.
-    if (this.showScrolledState) {
-      return 'fixed top-0 left-0 right-0 z-40 bg-[#FDFBF9]/60 backdrop-blur-md py-3.5 px-6 md:px-12 transition-all duration-300';
-    }
-    return 'fixed top-0 left-0 right-0 z-40 header-vignette py-3.5 px-6 md:px-12 transition-all duration-300';
+    return 'fixed top-0 left-0 right-0 z-40 bg-[#F8F1EA]/80 backdrop-blur-md h-[90px] flex items-center px-6 md:px-12 transition-all duration-300 border-b border-[#E7D8CB]';
   }
 
   isLinkActive(routePath: string, targetParam?: string): boolean {

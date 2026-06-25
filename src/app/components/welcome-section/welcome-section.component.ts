@@ -2,13 +2,10 @@ import {
   Component, 
   Inject, 
   PLATFORM_ID,
-  OnInit,
-  inject
+  AfterViewInit
 } from '@angular/core';
 import { CommonModule, isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { ProductService, ProductDto } from '../../services/product.service';
-import { resolveImageUrl } from '../../core/utils/image-resolver';
 import { gsap } from 'gsap';
 
 @Component({
@@ -17,104 +14,80 @@ import { gsap } from 'gsap';
   imports: [CommonModule, RouterModule],
   template: `
     <section
-      class="relative flex min-h-screen w-full flex-col justify-center py-28 px-6 md:px-12 lg:px-24 select-none overflow-hidden bg-transparent"
+      class="relative min-h-[92vh] w-full flex items-center px-6 md:px-12 lg:px-24 py-32 overflow-hidden bg-transparent"
     >
-      <!-- High-Performance Animated 3D-Feeling Glassmorphic Blob Background -->
+      <!-- Background Blobs (Champagne/Ivory themed blur blobs) -->
       <div class="blob-container">
-        <div class="blob-1"></div>
-        <div class="blob-2"></div>
-        <div class="blob-3"></div>
+        <div class="blob-1" style="background: radial-gradient(circle, rgba(216,184,156,0.35) 0%, rgba(243,232,221,0.05) 70%);"></div>
+        <div class="blob-2" style="background: radial-gradient(circle, rgba(201,138,88,0.2) 0%, rgba(248,241,234,0.05) 70%);"></div>
+        <div class="blob-3" style="background: radial-gradient(circle, rgba(232,209,191,0.3) 0%, rgba(243,232,221,0.05) 70%);"></div>
       </div>
 
-      <div class="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10 my-auto">
-        <!-- Left Side: Editorial Typography & Copy (6 cols) -->
-        <div class="lg:col-span-6 flex flex-col items-start text-left space-y-6">
-          <span class="tracking-[0.3em] font-mono text-[10px] md:text-xs uppercase font-bold text-[#E07A5F] block">
-            PLAYTIME MEETS MODERN STREETWEAR
+      <div class="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-16 items-center relative z-10">
+        
+        <!-- Left Side: Editorial Content (5 cols) -->
+        <div class="lg:col-span-5 flex flex-col items-start text-left space-y-8 select-none">
+          <span class="tracking-[0.25em] font-mono text-[10px] md:text-xs uppercase font-bold text-[#C98A58] block">
+            CURATED FOR YOU &amp; YOUR LITTLE ONE
           </span>
-          <h1 class="font-sans font-black text-4xl md:text-6xl lg:text-7xl tracking-tight text-[#2A2522] uppercase leading-[1.05] select-none">
-            Gear Up The <br/>
-            <span class="text-[#E07A5F]">Little Legends</span>
+          <h1 class="font-serif-luxury text-5xl md:text-6xl lg:text-7xl tracking-tight text-[#2A1F1A] uppercase leading-[0.95] max-w-xl">
+            Essentials <br/>
+            <span class="font-light italic text-[#77685D]">for Every</span> <br/>
+            Moment
           </h1>
-          <div class="w-16 h-[4px] bg-[#E07A5F] rounded-full my-1"></div>
-          <p class="font-sans text-xs md:text-sm text-[#6B5E57] font-normal leading-relaxed max-w-md select-none">
-            High-contrast sneakers, organic romper suits, and premium baby gear. Designed with a playful storefront aesthetic for active kids in motion.
+          <div class="w-16 h-[1.5px] bg-[#C98A58] my-1"></div>
+          <p class="font-sans text-sm md:text-base text-[#77685D] font-light leading-relaxed max-w-md">
+            From mom to baby — everything you need, all in one place.
           </p>
-          <div class="flex flex-wrap gap-4 pt-4 pointer-events-auto">
+          <div class="flex flex-wrap gap-4 pt-2 pointer-events-auto w-full">
+            <a 
+              [routerLink]="['/products']" 
+              [queryParams]="{ target: 'All' }" 
+              class="px-8 py-4 bg-[#C98A58] hover:bg-[#2A1F1A] text-white text-[10px] font-bold tracking-[0.2em] uppercase rounded-[12px] transition-all duration-300 shadow-lg shadow-[#C98A58]/10 hover:shadow-[#2A1F1A]/10 text-center flex items-center justify-center gap-2"
+            >
+              <span>Shop Collections</span>
+              <span class="text-xs">→</span>
+            </a>
             <a 
               [routerLink]="['/products']" 
               [queryParams]="{ target: 'Kids' }" 
-              class="relative overflow-hidden px-8 py-4 bg-[#2A2522] hover:bg-[#E07A5F] text-[#FBF9F6] text-[10px] font-bold tracking-[0.2em] uppercase rounded-2xl transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg shadow-black/10 group cursor-pointer"
+              class="px-8 py-4 bg-transparent border border-[#D8B89C] hover:border-[#C98A58] text-[#2A1F1A] hover:text-[#C98A58] text-[10px] font-bold tracking-[0.2em] uppercase rounded-[12px] transition-all duration-300 text-center flex items-center justify-center"
             >
-              <span class="relative z-10">Shop Kids Collection ⚡</span>
-              <span class="absolute inset-0 bg-[#E07A5F] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-0"></span>
+              Shop Little One
             </a>
-            <button 
-              (click)="scrollToCategories()" 
-              class="relative overflow-hidden px-8 py-4 bg-white border border-[#2A2522]/10 hover:border-[#E07A5F] text-[#2A2522] hover:text-[#E07A5F] text-[10px] font-bold tracking-[0.2em] uppercase rounded-2xl transition-all duration-300 transform hover:-translate-y-0.5 shadow-md shadow-black/5 group cursor-pointer"
-            >
-              <span class="relative z-10">Explore Catalog</span>
-            </button>
           </div>
         </div>
 
-        <!-- Right Side: Playful Floating Products (6 cols) -->
-        <div class="lg:col-span-6 grid grid-cols-2 gap-6 relative select-none">
-          <!-- Sneaker Floating Card -->
-          <div *ngIf="sneakerProduct" class="hero-float-1 flex flex-col space-y-3 p-4 bg-white/70 backdrop-blur-md rounded-3xl border border-white/40 shadow-xl max-w-[240px] mx-auto pointer-events-auto">
-            <div class="relative w-full aspect-square rounded-2xl overflow-hidden bg-[#F7F5F0]">
-              <img 
-                [src]="resolveImageUrl(sneakerProduct.imageUrl)" 
-                [alt]="sneakerProduct.title" 
-                class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-              />
-              <div class="absolute top-2 right-2">
-                <span class="px-2 py-0.5 text-[8px] font-mono font-bold bg-[#E07A5F] text-white rounded-full uppercase tracking-wider">NEW</span>
-              </div>
-            </div>
-            <div class="flex flex-col text-left space-y-1">
-              <h4 class="text-[10px] font-bold text-[#2A2522] tracking-wide truncate">{{ sneakerProduct.title }}</h4>
-              <div class="flex justify-between items-center">
-                <span class="text-[10px] font-mono font-bold text-[#E07A5F]">{{ sneakerProduct.price | currency:'EGP ' }}</span>
-                <a [routerLink]="['/products', sneakerProduct.id]" class="px-3 py-1 bg-[#2A2522] hover:bg-[#E07A5F] text-white text-[8px] font-bold rounded-lg transition-all">
-                  Shop ⚡
-                </a>
-              </div>
-            </div>
+        <!-- Right Side: Full-bleed Premium Still-life Scene (7 cols) -->
+        <div class="lg:col-span-7 flex justify-center items-center relative h-[400px] md:h-[500px] w-full">
+          <!-- Large glowing champagne sphere behind -->
+          <div class="absolute w-[320px] md:w-[450px] h-[320px] md:h-[450px] rounded-full bg-gradient-to-tr from-[#E8D1BF]/40 to-[#D8B89C]/30 blur-[2px] shadow-inner select-none pointer-events-none z-0"></div>
+          
+          <!-- Floating Pearl Accessory -->
+          <div class="absolute top-[25%] left-[5%] w-6 h-6 rounded-full bg-gradient-to-br from-white via-[#E8D1BF] to-[#D8B89C] shadow-lg blur-[0.5px] z-20 animate-pulse pointer-events-none"></div>
+
+          <!-- Floating "NEW ARRIVALS" Badge -->
+          <div class="absolute top-[15%] right-[5%] z-20 w-24 h-24 rounded-full bg-[#F3E8DD]/90 backdrop-blur-sm border border-[#E7D8CB] flex flex-col items-center justify-center text-center shadow-xl p-3 select-none pointer-events-none">
+            <span class="text-[8px] font-mono tracking-widest text-[#77685D] uppercase font-bold leading-tight">NEW ARRIVALS</span>
+            <span class="text-[#C98A58] text-[11px] mt-1">♡</span>
           </div>
 
-          <!-- Romper Floating Card -->
-          <div *ngIf="romperProduct" class="hero-float-2 flex flex-col space-y-3 p-4 bg-white/70 backdrop-blur-md rounded-3xl border border-white/40 shadow-xl max-w-[240px] mx-auto pt-12 pointer-events-auto">
-            <div class="relative w-full aspect-square rounded-2xl overflow-hidden bg-[#F7F5F0]">
-              <img 
-                [src]="resolveImageUrl(romperProduct.imageUrl)" 
-                [alt]="romperProduct.title" 
-                class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-              />
-              <div class="absolute top-2 right-2">
-                <span class="px-2 py-0.5 text-[8px] font-mono font-bold bg-[#B4F0D2] text-[#1D3E2F] rounded-full uppercase tracking-wider">Organic</span>
-              </div>
-            </div>
-            <div class="flex flex-col text-left space-y-1">
-              <h4 class="text-[10px] font-bold text-[#2A2522] tracking-wide truncate">{{ romperProduct.title }}</h4>
-              <div class="flex justify-between items-center">
-                <span class="text-[10px] font-mono font-bold text-[#E07A5F]">{{ romperProduct.price | currency:'EGP ' }}</span>
-                <a [routerLink]="['/products', romperProduct.id]" class="px-3 py-1 bg-[#2A2522] hover:bg-[#E07A5F] text-white text-[8px] font-bold rounded-lg transition-all">
-                  Shop ⚡
-                </a>
-              </div>
-            </div>
+          <!-- Pediatric still-life art group (GSAP floating target) -->
+          <div class="hero-artwork-group relative w-full h-full flex items-center justify-center z-10 pointer-events-none select-none">
+            <!-- Full bleed generated still-life composition -->
+            <img src="products/hero_cover.png" alt="Bespoke Pedestal Still-life" class="w-full h-full object-contain filter drop-shadow-[0_15px_30px_rgba(42,31,26,0.1)] rounded-[2.5rem]" />
           </div>
         </div>
+
       </div>
 
-      <!-- High-Conversion Subtle Scroll Anchor -->
+      <!-- High-Conversion Scroll Anchor -->
       <div
         (click)="scrollToCategories()"
-        class="welcome-scroll-indicator flex flex-col items-center gap-3 z-10 mt-12 cursor-pointer pointer-events-auto animate-bounce"
+        class="welcome-scroll-indicator absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-10 cursor-pointer pointer-events-auto animate-bounce"
       >
-        <span class="text-[8px] font-mono tracking-[0.25em] uppercase text-[#8A817C]">Scroll to Shop</span>
-        <div class="h-8 w-[1px] bg-gradient-to-b from-[#8A817C] to-transparent"></div>
+        <span class="text-[8px] font-mono tracking-[0.25em] uppercase text-[#77685D]">Scroll to Shop</span>
+        <div class="h-6 w-[1px] bg-gradient-to-b from-[#77685D] to-transparent"></div>
       </div>
     </section>
   `,
@@ -125,58 +98,30 @@ import { gsap } from 'gsap';
     }
   `]
 })
-export class WelcomeSectionComponent implements OnInit {
-  sneakerProduct?: ProductDto;
-  romperProduct?: ProductDto;
-  resolveImageUrl = resolveImageUrl;
-
-  private productService = inject(ProductService);
-
+export class WelcomeSectionComponent implements AfterViewInit {
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     @Inject(DOCUMENT) private document: any
   ) {}
 
-  ngOnInit(): void {
-    this.productService.getProducts({ pageSize: 100 }).subscribe(res => {
-      if (res.isSuccess && res.data && res.data.items) {
-        this.sneakerProduct = res.data.items.find(p => 
-          p.mainCategory?.toLowerCase() === 'kids' && 
-          p.subCategory?.toLowerCase() === 'shoes'
-        );
-        this.romperProduct = res.data.items.find(p => 
-          p.mainCategory?.toLowerCase() === 'kids' && 
-          p.title.toLowerCase().includes('romper')
-        );
-      }
-    });
-
+  ngAfterViewInit(): void {
     if (isPlatformBrowser(this.platformId)) {
-      setTimeout(() => {
-        gsap.to('.hero-float-1', {
-          y: -15,
-          rotation: 8,
-          duration: 3,
+      gsap.fromTo('.hero-artwork-group',
+        { y: -10 },
+        {
+          y: 10,
+          duration: 8,
           repeat: -1,
           yoyo: true,
-          ease: 'power1.inOut'
-        });
-        gsap.to('.hero-float-2', {
-          y: 15,
-          rotation: -6,
-          duration: 3.5,
-          repeat: -1,
-          yoyo: true,
-          ease: 'power1.inOut',
-          delay: 0.5
-        });
-      }, 200);
+          ease: 'sine.inOut'
+        }
+      );
     }
   }
 
   scrollToCategories(): void {
     if (isPlatformBrowser(this.platformId)) {
-      const el = this.document.getElementById('kids-shoes');
+      const el = this.document.getElementById('little-one');
       if (el) {
         el.scrollIntoView({ behavior: 'smooth' });
       }

@@ -5,7 +5,6 @@ import { WelcomeSectionComponent } from '../welcome-section/welcome-section.comp
 import { BagsShoesSectionComponent } from '../bags-shoes-section/bags-shoes-section.component';
 import { ClothingSectionComponent } from '../clothing-section/clothing-section.component';
 import { KidsShoesSectionComponent } from '../kids-shoes-section/kids-shoes-section.component';
-import { MothersChildrenSectionComponent } from '../mothers-children-section/mothers-children-section.component';
 import { CatalogService, Brand } from '../../core/services/catalog.service';
 import { AlertService } from '../../services/alert.service';
 import { gsap } from 'gsap';
@@ -22,25 +21,22 @@ gsap.registerPlugin(ScrollTrigger);
     WelcomeSectionComponent,
     BagsShoesSectionComponent,
     ClothingSectionComponent,
-    KidsShoesSectionComponent,
-    MothersChildrenSectionComponent
+    KidsShoesSectionComponent
   ],
   template: `
     <!-- Natural scrolling container -->
-    <div class="relative w-full overflow-x-hidden flex flex-col bg-[#FAF6F0] text-[#2A2522]">
+    <div class="relative w-full overflow-x-hidden flex flex-col bg-[#F8F1EA] text-[#2A1F1A]">
       <!-- Global subtle vignette backdrop overlay -->
-      <div class="absolute inset-0 pointer-events-none z-10 bg-gradient-to-b from-[#161412]/5 via-transparent to-[#161412]/10 mix-blend-multiply opacity-50"></div>
+      <div class="absolute inset-0 pointer-events-none z-10 bg-gradient-to-b from-[#2A1F1A]/5 via-transparent to-[#2A1F1A]/10 mix-blend-multiply opacity-25"></div>
 
-      <!-- Sections rendered in vertical order (Kids-First Boutique Pivot) -->
+      <!-- Sections rendered in vertical order -->
       <app-welcome-section class="w-full animate-fade-in"></app-welcome-section>
-      
-      <app-kids-shoes-section class="w-full opacity-0"></app-kids-shoes-section>
-      
-      <app-mothers-children-section class="w-full opacity-0"></app-mothers-children-section>
       
       <app-bags-shoes-section class="w-full opacity-0"></app-bags-shoes-section>
       
       <app-clothing-section class="w-full opacity-0"></app-clothing-section>
+      
+      <app-kids-shoes-section class="w-full opacity-0"></app-kids-shoes-section>
     </div>
   `
 })
@@ -78,10 +74,9 @@ export class StorefrontLandingComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     if (isPlatformBrowser(this.platformId)) {
       const sections = [
-        'app-kids-shoes-section',
-        'app-mothers-children-section',
         'app-bags-shoes-section',
-        'app-clothing-section'
+        'app-clothing-section',
+        'app-kids-shoes-section'
       ];
       
       sections.forEach(secSelector => {
@@ -95,27 +90,27 @@ export class StorefrontLandingComponent implements OnInit, AfterViewInit {
             toggleActions: 'play none none none'
           }
         });
-      });
 
-      // Bind GSAP ScrollTrigger to all .editorial-float elements for parallax translation
-      setTimeout(() => {
-        const floatElements = document.querySelectorAll('.editorial-float');
-        floatElements.forEach((el) => {
-          gsap.fromTo(el,
-            { y: 35 },
-            {
-              y: -35,
-              ease: 'none',
-              scrollTrigger: {
-                trigger: el,
-                start: 'top bottom',
-                end: 'bottom top',
-                scrub: 1.5
-              }
+        // Register ScrollTrigger fade-up transitions on the panels
+        gsap.fromTo(`${secSelector} .max-w-6xl`, 
+          { 
+            y: 40, 
+            opacity: 0 
+          },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 1,
+            stagger: 0.15,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: secSelector,
+              start: 'top 75%',
+              toggleActions: 'play none none none'
             }
-          );
-        });
-      }, 100);
+          }
+        );
+      });
     }
   }
 
