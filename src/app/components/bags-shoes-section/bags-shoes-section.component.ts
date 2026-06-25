@@ -1,10 +1,12 @@
 import { 
   Component, 
-  OnInit 
+  OnInit,
+  inject
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ProductService, ProductDto } from '../../services/product.service';
+import { resolveImageUrl } from '../../core/utils/image-resolver';
 
 @Component({
   selector: 'app-bags-shoes-section',
@@ -15,127 +17,103 @@ import { ProductService, ProductDto } from '../../services/product.service';
       id="women"
       class="relative w-full min-h-screen flex flex-col justify-center py-28 px-6 md:px-12 lg:px-24 z-10 overflow-hidden bg-transparent"
     >
-      <!-- Subtly shaded backdrop overlay -->
-      <div class="absolute inset-0 bg-gradient-to-r from-[#FAF6F0]/80 via-[#FAF6F0]/20 to-transparent pointer-events-none"></div>
-
-      <div class="max-w-6xl mx-auto w-full relative z-10 flex flex-col space-y-12">
-        <!-- Top Section Header -->
-        <div class="text-left">
-          <span class="tracking-[0.25em] font-mono text-[10px] md:text-xs uppercase font-bold text-[#E07A5F] block mb-1">
-            DEPARTMENT / ACCESSORIES &amp; FOOTWEAR
+      <!-- Spacious Editorial Layout Grid -->
+      <div class="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10 my-auto">
+        
+        <!-- Left Side: Editorial Typography & Copy (5 cols) -->
+        <div class="lg:col-span-5 flex flex-col items-start text-left space-y-6">
+          <span class="tracking-[0.25em] font-mono text-[10px] md:text-xs uppercase font-bold text-[#E07A5F] block">
+            COLLECTION / BAGS &amp; FOOTWEAR
           </span>
-          <h2 class="text-3xl md:text-5xl font-extralight text-[#2A2522] tracking-wider uppercase leading-tight">
-            The Art of Leather <span class="font-light italic text-[#8A817C]">&amp;</span> Curvature
+          <h2 class="font-serif-luxury text-4xl md:text-5xl lg:text-6xl tracking-tight text-[#2A2522] uppercase leading-tight select-none">
+            The Art of Leather <br/>
+            <span class="font-light italic text-[#8A817C]">&amp;</span> Curvature
           </h2>
-          <div class="w-24 h-[1px] bg-[#E07A5F] mt-4"></div>
+          <div class="w-16 h-[1.5px] bg-[#E07A5F] my-2"></div>
+          <p class="font-sans text-xs md:text-sm text-[#6B5E57] font-light leading-relaxed max-w-md select-none">
+            Exquisite silhouettes handcrafted from Italian full-grain leather, combining organic curves with rigid structures. Precision engineering meets high fashion.
+          </p>
+          <div class="pt-4 pointer-events-auto">
+            <a 
+              [routerLink]="['/products']" 
+              [queryParams]="{ target: 'Women', subcategory: 'bags' }" 
+              class="relative overflow-hidden px-8 py-4 bg-[#2A2522] hover:bg-[#E07A5F] text-[#FBF9F6] text-[10px] font-bold tracking-[0.2em] uppercase rounded-xl transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg shadow-black/10 group cursor-pointer"
+            >
+              <span class="relative z-10">Explore Collection</span>
+              <span class="absolute inset-0 bg-[#E07A5F] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-0"></span>
+            </a>
+          </div>
         </div>
 
-        <!-- Content Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          
-          <!-- Left Column: Staggered Image Showcase Composition (7 cols) -->
-          <div class="lg:col-span-7 grid grid-cols-2 gap-6 relative">
-            <!-- Handbag Showcase Card -->
-            <div class="flex flex-col space-y-4 transform hover:-translate-y-2 transition-transform duration-500">
-              <div class="relative w-full aspect-[4/5] rounded-3xl overflow-hidden border border-[#2A2522]/5 shadow-xl shadow-black/10 group">
-                <img 
-                  src="/products/handbag.png" 
-                  alt="Luxury Handbag" 
-                  class="w-full h-full object-cover transition-transform duration-[1.2s] group-hover:scale-105"
-                />
-              </div>
-              <span class="text-[9px] font-mono tracking-widest text-[#8A817C] uppercase text-left font-bold">
-                [01] SCULPTED SHOULDER BAG
-              </span>
-            </div>
+        <!-- Right Side: Staggered Asymmetric Image Showcase (7 cols) -->
+        <div class="lg:col-span-7 grid grid-cols-2 gap-8 items-start relative select-none">
+          <!-- Background Radial Glow under items to remove flat white look -->
+          <div class="absolute inset-0 bg-[radial-gradient(circle,rgba(224,122,95,0.08)_0%,transparent_75%)] pointer-events-none"></div>
 
-            <!-- Stiletto Heels Showcase Card (Offset downwards) -->
-            <div class="flex flex-col space-y-4 pt-12 transform hover:-translate-y-2 transition-transform duration-500">
-              <div class="relative w-full aspect-[4/5] rounded-3xl overflow-hidden border border-[#2A2522]/5 shadow-xl shadow-black/10 group">
-                <img 
-                  src="/products/heels.png" 
-                  alt="Designer Heels" 
-                  class="w-full h-full object-cover transition-transform duration-[1.2s] group-hover:scale-105"
-                />
-              </div>
-              <span class="text-[9px] font-mono tracking-widest text-[#8A817C] uppercase text-left font-bold">
-                [02] LEATHER STRAP HEELS
-              </span>
-            </div>
-          </div>
-
-          <!-- Right Column: Editorial Glassmorphism Details Box (5 cols) -->
-          <div class="lg:col-span-5 flex flex-col">
-            <div class="backdrop-blur-xl bg-[#110F0E]/85 p-8 md:p-10 rounded-3xl shadow-2xl border border-white/10 text-left space-y-8">
-              <!-- Department Label -->
-              <span class="tracking-widest font-mono text-[9px] uppercase font-bold text-[#E07A5F] block border-b border-white/5 pb-3">
-                COLLECTION HIGHLIGHTS
-              </span>
-
-              <!-- Product 1 Details -->
-              <div class="space-y-3">
-                <div class="flex justify-between items-baseline gap-2">
-                  <h3 class="text-lg md:text-xl font-light text-white tracking-wide uppercase">
-                    {{ bagProduct?.title || 'Sculpted Leather Handbag' }}
-                  </h3>
-                  <span class="text-xs font-mono text-[#E07A5F] font-bold">
-                    \${{ bagProduct?.price || '320' }}
-                  </span>
-                </div>
-                <p class="text-[11px] text-white/60 font-light leading-relaxed tracking-wide">
-                  {{ bagProduct?.description || 'Exquisite silhouettes handcrafted from Italian full-grain leather. Designed for organic structures and meticulous attention to detail.' }}
-                </p>
-              </div>
-
-              <!-- Thin Divider -->
-              <div class="h-[1px] bg-white/5"></div>
-
-              <!-- Product 2 Details -->
-              <div class="space-y-3">
-                <div class="flex justify-between items-baseline gap-2">
-                  <h3 class="text-lg md:text-xl font-light text-white tracking-wide uppercase">
-                    {{ heelProduct?.title || 'Stiletto Heels' }}
-                  </h3>
-                  <span class="text-xs font-mono text-[#E07A5F] font-bold">
-                    \${{ heelProduct?.price || '280' }}
-                  </span>
-                </div>
-                <p class="text-[11px] text-white/60 font-light leading-relaxed tracking-wide">
-                  {{ heelProduct?.description || 'Precision engineering meets high fashion. Designed to catch light with beautiful curvature and elegant straps.' }}
-                </p>
-              </div>
-
-              <!-- Explore CTA Button -->
-              <div class="pt-4 flex">
-                <a 
-                  [routerLink]="['/products']" 
-                  [queryParams]="{ target: 'Women', subcategory: 'bags' }" 
-                  class="relative overflow-hidden px-8 py-3.5 bg-[#E07A5F] hover:bg-[#FBF9F6] text-[#FBF9F6] hover:text-[#2A2522] text-[10px] font-bold tracking-[0.2em] uppercase rounded-xl transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg shadow-black/25 group pointer-events-auto w-full text-center"
-                >
-                  <span class="relative z-10 transition-colors duration-300 group-hover:text-[#2A2522]">Explore Collection</span>
-                  <span class="absolute inset-0 bg-[#FBF9F6] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-0"></span>
+          <!-- Product 1: Handbag -->
+          <div *ngIf="bagProduct" class="editorial-float flex flex-col space-y-4 pt-16 relative z-10">
+            <div class="relative w-full aspect-[4/5] rounded-[2rem] overflow-hidden border border-[#2A2522]/5 shadow-2xl shadow-black/10 group pointer-events-auto">
+              <img 
+                [src]="resolveImageUrl(bagProduct.imageUrl)" 
+                [alt]="bagProduct.title" 
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <!-- Glassmorphic Reveal Overlay -->
+              <div class="absolute inset-0 bg-[#110F0E]/40 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-center items-center p-6 text-center z-20">
+                <span class="text-[9px] font-mono tracking-widest text-[#E07A5F] uppercase font-bold mb-2">Ref. 01 / BAGS</span>
+                <h4 class="text-sm font-light text-white uppercase tracking-wide mb-1">{{ bagProduct.title }}</h4>
+                <span class="text-xs font-mono text-white/90 font-bold mb-4">{{ bagProduct.price | currency:'EGP ' }}</span>
+                <a [routerLink]="['/products', bagProduct.id]" class="px-5 py-2.5 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 text-white text-[9px] font-bold uppercase tracking-widest rounded-xl transition-all">
+                  [ Quick Shop ]
                 </a>
               </div>
             </div>
+            <span class="text-[9px] font-mono tracking-widest text-[#8A817C] uppercase text-center font-bold">
+              [01] {{ bagProduct.title }}
+            </span>
+          </div>
+
+          <!-- Product 2: Stiletto Heels -->
+          <div *ngIf="heelProduct" class="editorial-float flex flex-col space-y-4 relative z-10">
+            <div class="relative w-full aspect-[4/5] rounded-[2rem] overflow-hidden border border-[#2A2522]/5 shadow-2xl shadow-black/10 group pointer-events-auto">
+              <img 
+                [src]="resolveImageUrl(heelProduct.imageUrl)" 
+                [alt]="heelProduct.title" 
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <!-- Glassmorphic Reveal Overlay -->
+              <div class="absolute inset-0 bg-[#110F0E]/40 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-center items-center p-6 text-center z-20">
+                <span class="text-[9px] font-mono tracking-widest text-[#E07A5F] uppercase font-bold mb-2">Ref. 02 / SHOES</span>
+                <h4 class="text-sm font-light text-white uppercase tracking-wide mb-1">{{ heelProduct.title }}</h4>
+                <span class="text-xs font-mono text-white/90 font-bold mb-4">{{ heelProduct.price | currency:'EGP ' }}</span>
+                <a [routerLink]="['/products', heelProduct.id]" class="px-5 py-2.5 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 text-white text-[9px] font-bold uppercase tracking-widest rounded-xl transition-all">
+                  [ Quick Shop ]
+                </a>
+              </div>
+            </div>
+            <span class="text-[9px] font-mono tracking-widest text-[#8A817C] uppercase text-center font-bold">
+              [02] {{ heelProduct.title }}
+            </span>
           </div>
 
         </div>
+
       </div>
     </section>
   `,
   styles: [`
     :host {
       display: block;
+      width: 100%;
     }
   `]
 })
 export class BagsShoesSectionComponent implements OnInit {
   bagProduct?: ProductDto;
   heelProduct?: ProductDto;
+  resolveImageUrl = resolveImageUrl;
 
-  constructor(
-    private productService: ProductService
-  ) {}
+  private productService = inject(ProductService);
 
   ngOnInit(): void {
     this.productService.getProducts({ pageSize: 100 }).subscribe(res => {

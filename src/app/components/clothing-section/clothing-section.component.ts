@@ -4,8 +4,9 @@ import {
   inject
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
-import { ProductService } from '../../services/product.service';
+import { RouterModule } from '@angular/router';
+import { ProductService, ProductDto } from '../../services/product.service';
+import { resolveImageUrl } from '../../core/utils/image-resolver';
 
 @Component({
   selector: 'app-clothing-section',
@@ -16,155 +17,84 @@ import { ProductService } from '../../services/product.service';
       id="clothing"
       class="relative w-full min-h-screen flex flex-col justify-center py-28 px-6 md:px-12 lg:px-24 z-10 overflow-hidden bg-transparent"
     >
-      <!-- Subtly shaded backdrop overlay -->
-      <div class="absolute inset-0 bg-gradient-to-l from-[#FAF6F0]/80 via-[#FAF6F0]/20 to-transparent pointer-events-none"></div>
-
-      <div class="max-w-6xl mx-auto w-full relative z-10 flex flex-col space-y-12">
+      <!-- Spacious Editorial Layout Grid -->
+      <div class="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10 my-auto">
         
-        <!-- Header -->
-        <div class="text-right lg:text-left">
-          <span class="tracking-[0.25em] font-mono text-[10px] md:text-xs uppercase font-bold text-[#E07A5F] block mb-1">
-            DEPARTMENT / WOMEN'S PREMIUM APPAREL
+        <!-- Left Side: Editorial Typography & Copy (5 cols) -->
+        <div class="lg:col-span-5 flex flex-col items-start text-left space-y-6">
+          <span class="tracking-[0.25em] font-mono text-[10px] md:text-xs uppercase font-bold text-[#E07A5F] block">
+            COLLECTION / PREMIUM APPAREL
           </span>
-          <h2 class="text-3xl md:text-5xl font-extralight text-[#2A2522] tracking-wider uppercase leading-tight">
-            The Autumn <span class="font-light italic text-[#8A817C]">Silhouettes</span>
+          <h2 class="font-serif-luxury text-4xl md:text-5xl lg:text-6xl tracking-tight text-[#2A2522] uppercase leading-tight select-none">
+            Autumn <br/>
+            <span class="font-light italic text-[#8A817C]">Silhouettes</span>
           </h2>
-          <div class="w-24 h-[1px] bg-[#E07A5F] mt-4 ml-auto lg:ml-0"></div>
-        </div>
-
-        <!-- Three-Column Editorial Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          
-          <!-- Column 1: Copy & Call-To-Action (4 cols) -->
-          <div class="lg:col-span-4 text-left space-y-6">
-            <p class="text-xs md:text-sm text-[#5A504B] font-light leading-relaxed tracking-wide">
-              Sculpted fabrics and flowing textures designed to embrace movement. Our silk organza gowns and asymmetric knitwear are meticulously tailored for the modern woman who demands sophistication.
-            </p>
-            <div class="pointer-events-auto">
-              <button 
-                (click)="exploreApparel()"
-                class="relative overflow-hidden px-8 py-3.5 bg-[#2A2522] hover:bg-[#E07A5F] text-[#FBF9F6] text-xs font-bold tracking-[0.2em] uppercase rounded-xl transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg shadow-black/10 group cursor-pointer"
-              >
-                <span class="relative z-10 transition-colors duration-300">Explore Apparel</span>
-                <span class="absolute inset-0 bg-[#E07A5F] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-0"></span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Column 2: Interactive Product Ledger List (3 cols) -->
-          <div class="lg:col-span-3 flex flex-col gap-6 text-left pointer-events-auto">
-            <div
-              *ngFor="let card of cards"
-              (click)="viewProduct(card.id)"
-              class="group cursor-pointer transition-all duration-300 hover:translate-x-2"
+          <div class="w-16 h-[1.5px] bg-[#E07A5F] my-2"></div>
+          <p class="font-sans text-xs md:text-sm text-[#6B5E57] font-light leading-relaxed max-w-md select-none">
+            Fluid satin and delicate silk layers designed to drape effortlessly. Pieces that move with grace, celebrating form and premium texture.
+          </p>
+          <div class="pt-4 pointer-events-auto">
+            <a 
+              [routerLink]="['/products']" 
+              [queryParams]="{ target: 'Women', subcategory: 'fashion' }" 
+              class="relative overflow-hidden px-8 py-4 bg-[#2A2522] hover:bg-[#E07A5F] text-[#FBF9F6] text-[10px] font-bold tracking-[0.2em] uppercase rounded-xl transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg shadow-black/10 group cursor-pointer"
             >
-              <span class="text-[9px] font-mono tracking-widest text-[#E07A5F] uppercase block mb-1 font-bold">
-                {{ card.cat }}
-              </span>
-              <div class="flex justify-between items-baseline gap-2">
-                <h3 class="text-xs md:text-sm font-light text-[#2A2522] tracking-wide uppercase group-hover:text-[#E07A5F] transition-colors">
-                  {{ card.title }}
-                </h3>
-                <span class="text-xs font-mono text-[#8A817C] font-bold">
-                  {{ card.price }}
-                </span>
-              </div>
-              <div class="relative w-full h-[1px] bg-[#2A2522]/10 mt-3 overflow-hidden">
-                <div class="absolute inset-0 bg-[#E07A5F] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
-              </div>
-            </div>
+              <span class="relative z-10">Explore Apparel</span>
+              <span class="absolute inset-0 bg-[#E07A5F] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-0"></span>
+            </a>
           </div>
-
-          <!-- Column 3: Tall Editorial Product Frame (5 cols) -->
-          <div class="lg:col-span-5 flex justify-center">
-            <div class="relative w-full max-w-sm aspect-[4/5] rounded-[2rem] overflow-hidden border border-[#2A2522]/5 shadow-2xl shadow-[#2A2522]/10 group">
-              <!-- Vignette shading -->
-              <div class="absolute inset-0 bg-gradient-to-t from-[#161412]/20 via-transparent to-transparent z-[1]"></div>
-              
-              <img 
-                src="/products/dress.png" 
-                alt="Autumn Dress Showcase" 
-                class="w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-105"
-              />
-            </div>
-          </div>
-
         </div>
+
+        <!-- Right Side: Single Editorial Hero Product Showcase (7 cols) -->
+        <div class="lg:col-span-7 flex justify-center lg:justify-end relative select-none">
+          <!-- Background Radial Glow -->
+          <div class="absolute inset-0 bg-[radial-gradient(circle,rgba(224,122,95,0.08)_0%,transparent_75%)] pointer-events-none"></div>
+
+          <!-- Product: Flowing Satin Slip -->
+          <div *ngIf="dressProduct" class="editorial-float flex flex-col space-y-4 relative z-10 max-w-md w-full">
+            <div class="relative w-full aspect-[4/5] rounded-[2rem] overflow-hidden border border-[#2A2522]/5 shadow-2xl shadow-black/10 group pointer-events-auto">
+              <img 
+                [src]="resolveImageUrl(dressProduct.imageUrl)" 
+                [alt]="dressProduct.title" 
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <!-- Glassmorphic Reveal Overlay -->
+              <div class="absolute inset-0 bg-[#110F0E]/40 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-center items-center p-6 text-center z-20">
+                <span class="text-[9px] font-mono tracking-widest text-[#E07A5F] uppercase font-bold mb-2">Ref. 03 / APPAREL</span>
+                <h4 class="text-sm font-light text-white uppercase tracking-wide mb-1">{{ dressProduct.title }}</h4>
+                <span class="text-xs font-mono text-white/90 font-bold mb-4">{{ dressProduct.price | currency:'EGP ' }}</span>
+                <a [routerLink]="['/products', dressProduct.id]" class="px-5 py-2.5 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 text-white text-[9px] font-bold uppercase tracking-widest rounded-xl transition-all">
+                  [ Quick Shop ]
+                </a>
+              </div>
+            </div>
+            <span class="text-[9px] font-mono tracking-widest text-[#8A817C] uppercase text-center font-bold">
+              [03] {{ dressProduct.title }}
+            </span>
+          </div>
+        </div>
+
       </div>
     </section>
   `,
   styles: [`
     :host {
       display: block;
+      width: 100%;
     }
   `]
 })
 export class ClothingSectionComponent implements OnInit {
-  categories = ["Prêt-à-Porter", "Evening Gowns", "Silk Slips", "Linen Sets"];
-  cards: { id: string; title: string; price: string; cat: string }[] = [];
-  
-  private router = inject(Router);
+  dressProduct?: ProductDto;
+  resolveImageUrl = resolveImageUrl;
+
   private productService = inject(ProductService);
-
-  exploreApparel() {
-    this.router.navigate(['/products'], { queryParams: { target: 'Women', subcategory: 'fashion' } });
-  }
-
-  viewProduct(id: string) {
-    if (id) {
-      this.router.navigate(['/products', id]);
-    }
-  }
 
   ngOnInit(): void {
     this.productService.getProducts({ pageSize: 100 }).subscribe(res => {
       if (res.isSuccess && res.data && res.data.items) {
-        const clothes = res.data.items.filter(p => p.subCategory?.toLowerCase() === 'fashion');
-        if (clothes.length > 0) {
-          this.cards = clothes.map(p => {
-            let categoryName = 'Apparel';
-            if (p.title.includes('Satin Slip')) categoryName = 'Silk Slips';
-            else if (p.title.includes('Knit Dress')) categoryName = 'Prêt-à-Porter';
-            else if (p.title.includes('Organza Gown')) categoryName = 'Evening Gowns';
-            
-            return {
-              id: p.id,
-              title: p.title,
-              price: `$${p.price.toLocaleString()}`,
-              cat: categoryName
-            };
-          });
-        } else {
-          this.resetToMock();
-        }
-      } else {
-        this.resetToMock();
+        this.dressProduct = res.data.items.find(p => p.subCategory?.toLowerCase() === 'fashion' && p.title.toLowerCase().includes('slip'));
       }
-    }, () => {
-      this.resetToMock();
     });
-  }
-
-  private resetToMock(): void {
-    this.cards = [
-      {
-        id: '',
-        title: "Flowing Satin Slip",
-        price: "$340",
-        cat: "Silk Slips",
-      },
-      {
-        id: '',
-        title: "Asymmetric Knit Dress",
-        price: "$480",
-        cat: "Prêt-à-Porter",
-      },
-      {
-        id: '',
-        title: "Silk Organza Gown",
-        price: "$1,200",
-        cat: "Evening Gowns",
-      },
-    ];
   }
 }
