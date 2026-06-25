@@ -5,17 +5,17 @@
 @tailwind utilities;
 
 :root {
-  --bg-luxury-beige: #F8F1EA;
-  --bg-frosted-warm: rgba(248, 241, 234, 0.82);
-  --text-charcoal: #2A1F1A;
-  --text-muted-umber: #77685D;
-  --brand-accent: #C98A58;
-  --border-delicate: #E7D8CB;
+  --bg-luxury-beige: #FAF6F0;
+  --bg-frosted-warm: rgba(250, 246, 240, 0.82);
+  --text-charcoal: #2E2118;
+  --text-muted-umber: #8C7B6B;
+  --brand-accent: #C4633A;
+  --border-delicate: #E8DDD0;
 }
 
 body, .global-canvas-base, .admin-canvas {
   background-image: none !important;
-  background-color: #F8F1EA !important;
+  background-color: #FAF6F0 !important;
 }
 
 body {

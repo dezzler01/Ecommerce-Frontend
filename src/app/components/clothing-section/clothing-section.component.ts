@@ -26,7 +26,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
           <img 
             src="products/women_collection.png" 
             alt="Women Handbag and Perfume" 
-            class="absolute right-[2%] bottom-4 h-[85%] object-contain transition-transform duration-[1.2s] group-hover:scale-105 z-0"
+            class="absolute right-[2%] bottom-4 h-[85%] object-contain transition-transform duration-[1.2s] group-hover:scale-105 z-0 mix-blend-multiply contrast-[1.03] brightness-[1.01]"
           />
           
           <!-- Soft light mask for text area -->
@@ -34,21 +34,21 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
 
           <!-- Content Left -->
           <div class="relative flex flex-col items-start text-left space-y-4 max-w-[60%] z-20">
-            <span class="tracking-[0.25em] font-mono text-[9px] uppercase font-bold text-[#C98A58]">
+            <span class="tracking-[0.18em] font-mono text-[10px] uppercase font-bold text-[#C4633A]">
               WOMEN
             </span>
-            <h3 class="font-serif-luxury text-2xl md:text-3xl tracking-tight text-[#2A1F1A] uppercase leading-[0.95]">
+            <h3 class="font-serif-luxury text-2xl md:text-3xl tracking-tight text-[#2E2118] uppercase leading-[0.95]">
               Effortless <br/>
               Everyday Looks
             </h3>
-            <p class="font-sans text-[11px] text-[#77685D] font-light">
+            <p class="font-sans text-[11px] text-[#8C7B6B] font-light">
               Timeless pieces for modern moms.
             </p>
             <div class="pt-2">
               <a 
                 [routerLink]="['/products']" 
                 [queryParams]="{ target: 'Women' }" 
-                class="text-[9px] font-mono tracking-widest text-[#2A1F1A] hover:text-[#C98A58] uppercase font-bold flex items-center gap-2 border-b border-[#2A1F1A] pb-1 hover:border-[#C98A58] transition-colors"
+                class="text-[9px] font-mono tracking-widest text-[#2E2118] hover:text-[#C4633A] uppercase font-bold flex items-center gap-2 border-b border-[#2E2118] pb-1 hover:border-[#C4633A] transition-colors"
               >
                 <span>SHOP WOMEN</span>
                 <span>→</span>
@@ -64,7 +64,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
           <img 
             src="products/newborn_care_collection.png" 
             alt="Newborn Care Bottles and Towels" 
-            class="absolute right-[2%] bottom-4 h-[85%] object-contain transition-transform duration-[1.2s] group-hover:scale-105 z-0"
+            class="absolute right-[2%] bottom-4 h-[85%] object-contain transition-transform duration-[1.2s] group-hover:scale-105 z-0 mix-blend-multiply contrast-[1.03] brightness-[1.01]"
           />
 
           <!-- Soft light mask for text area -->
@@ -72,21 +72,21 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
 
           <!-- Content Left -->
           <div class="relative flex flex-col items-start text-left space-y-4 max-w-[60%] z-20">
-            <span class="tracking-[0.25em] font-mono text-[9px] uppercase font-bold text-[#C98A58]">
+            <span class="tracking-[0.18em] font-mono text-[10px] uppercase font-bold text-[#C4633A]">
               NEWBORN CARE
             </span>
-            <h3 class="font-serif-luxury text-2xl md:text-3xl tracking-tight text-[#2A1F1A] uppercase leading-[0.95]">
+            <h3 class="font-serif-luxury text-2xl md:text-3xl tracking-tight text-[#2E2118] uppercase leading-[0.95]">
               Gentle Care, <br/>
               Pure Love
             </h3>
-            <p class="font-sans text-[11px] text-[#77685D] font-light">
+            <p class="font-sans text-[11px] text-[#8C7B6B] font-light">
               Everything for their safest start.
             </p>
             <div class="pt-2">
               <a 
                 [routerLink]="['/products']" 
                 [queryParams]="{ target: 'Kids', subcategory: 'baby needs' }" 
-                class="text-[9px] font-mono tracking-widest text-[#2A1F1A] hover:text-[#C98A58] uppercase font-bold flex items-center gap-2 border-b border-[#2A1F1A] pb-1 hover:border-[#C98A58] transition-colors"
+                class="text-[9px] font-mono tracking-widest text-[#2E2118] hover:text-[#C4633A] uppercase font-bold flex items-center gap-2 border-b border-[#2E2118] pb-1 hover:border-[#C4633A] transition-colors"
               >
                 <span>SHOP NEWBORN</span>
                 <span>→</span>

@@ -26,7 +26,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
           <img 
             src="products/little_one_collection.png" 
             alt="Little One Onesie Flat-lay" 
-            class="absolute right-[5%] md:right-[15%] bottom-0 h-[100%] md:h-[110%] object-contain transition-transform duration-[1.2s] group-hover:scale-105 z-0"
+            class="absolute right-[5%] md:right-[15%] bottom-0 h-[100%] md:h-[110%] object-contain transition-transform duration-[1.2s] group-hover:scale-105 z-0 mix-blend-multiply contrast-[1.03] brightness-[1.01]"
           />
           
           <!-- Soft light mask for content area -->
@@ -34,21 +34,21 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
 
           <!-- Banner Left: Text & CTA on top of image -->
           <div class="relative flex flex-col items-start text-left space-y-6 max-w-xs md:max-w-md z-20">
-            <span class="tracking-[0.25em] font-mono text-[10px] md:text-xs uppercase font-bold text-[#C98A58]">
+            <span class="tracking-[0.18em] font-mono text-[10px] md:text-xs uppercase font-bold text-[#C4633A]">
               LITTLE ONE
             </span>
-            <h2 class="font-serif-luxury text-4xl md:text-5xl lg:text-6xl tracking-tight text-[#2A1F1A] uppercase leading-[0.95]">
+            <h2 class="font-serif-luxury text-4xl md:text-5xl lg:text-6xl tracking-tight text-[#2E2118] uppercase leading-[0.95]">
               Tiny Styles, <br/>
               Big Comfort
             </h2>
-            <p class="font-sans text-xs md:text-sm text-[#77685D] font-light">
+            <p class="font-sans text-xs md:text-sm text-[#8C7B6B] font-light">
               Soft. Safe. Adorable.
             </p>
             <div class="pt-4">
               <a 
                 [routerLink]="['/products']" 
                 [queryParams]="{ target: 'Kids', subcategory: 'baby needs' }" 
-                class="text-[9px] font-mono tracking-widest text-[#2A1F1A] hover:text-[#C98A58] uppercase font-bold flex items-center gap-2 border-b border-[#2A1F1A] pb-1 hover:border-[#C98A58] transition-colors"
+                class="text-[9px] font-mono tracking-widest text-[#2E2118] hover:text-[#C4633A] uppercase font-bold flex items-center gap-2 border-b border-[#2E2118] pb-1 hover:border-[#C4633A] transition-colors"
               >
                 <span>EXPLORE COLLECTION</span>
                 <span>→</span>
@@ -58,10 +58,10 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
 
           <!-- Banner Right: Floating Badge on top of image -->
           <div class="relative w-[120px] md:w-[130px] h-[120px] md:h-[130px] rounded-3xl border border-white/40 bg-white/60 backdrop-blur-md flex flex-col items-center justify-center p-4 z-20 shadow-md">
-            <span class="text-[8px] font-mono text-[#77685D] uppercase tracking-wider mb-1">UP TO</span>
-            <span class="text-3xl font-serif-luxury font-bold text-[#C98A58] leading-none">30%</span>
-            <span class="text-[8px] font-mono text-[#77685D] uppercase tracking-wider mt-1">OFF</span>
-            <span class="text-[#C98A58] text-[10px] mt-2">♡</span>
+            <span class="text-[8px] font-mono text-[#8C7B6B] uppercase tracking-wider mb-1">UP TO</span>
+            <span class="text-3xl font-serif-luxury font-bold text-[#C4633A] leading-none">30%</span>
+            <span class="text-[8px] font-mono text-[#8C7B6B] uppercase tracking-wider mt-1">OFF</span>
+            <span class="text-[#C4633A] text-[10px] mt-2">♡</span>
           </div>
 
         </div>
