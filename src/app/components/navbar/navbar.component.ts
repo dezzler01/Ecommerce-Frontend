@@ -804,7 +804,7 @@ export class NavbarComponent implements AfterViewInit {
   }
 
   get showScrolledState(): boolean {
-    return this.scrolled() && !this.isHomePage;
+    return this.scrolled();
   }
   
   @HostListener('window:scroll', [])
