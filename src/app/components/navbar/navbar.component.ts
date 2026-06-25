@@ -7,6 +7,8 @@ import { CartService } from '../../core/services/cart.service';
 import { gsap } from 'gsap';
 import { resolveImageUrl } from '../../core/utils/image-resolver';
 import { NotificationService, AppNotification } from '../../services/notification.service';
+import { ProductService, ProductDto } from '../../services/product.service';
+
 
 @Component({
   selector: 'app-navbar',
@@ -70,12 +72,16 @@ import { NotificationService, AppNotification } from '../../services/notificatio
 
         <!-- Right Flex Zone: Minimalist Floating Layout -->
         <div class="flex items-center gap-6 select-none">
-          <!-- Search Icon -->
-          <a [routerLink]="['/products']" class="text-[#2A1F1A] hover:text-[#C98A58] transition-colors relative flex items-center justify-center h-8 w-8 rounded-full hover:bg-[#C98A58]/10 transition-all select-none pointer-events-auto">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <!-- Search Icon (Triggers Advanced Overlay) -->
+          <button 
+            (click)="toggleSearchOverlay(true)" 
+            class="text-[#2A1F1A] hover:text-[#C98A58] transition-colors relative flex items-center justify-center h-8 w-8 rounded-full hover:bg-[#C98A58]/10 transition-all select-none pointer-events-auto focus:outline-none"
+            aria-label="Search Collection"
+          >
+            <svg class="w-4 h-4 transition-transform duration-300 hover:scale-110" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.602 10.602z" />
             </svg>
-          </a>
+          </button>
 
           <!-- Cart Wrapper with hover dropdown -->
           <div class="relative group py-1 flex items-center justify-center pointer-events-auto">
@@ -548,6 +554,107 @@ import { NotificationService, AppNotification } from '../../services/notificatio
         </form>
       </div>
     </div>
+
+    <!-- Advanced Search Fullscreen Glassmorphic Overlay -->
+    <div 
+      *ngIf="showSearchOverlay()" 
+      class="fixed inset-0 z-[100] flex flex-col bg-[#1A1816]/75 backdrop-blur-2xl p-6 md:p-20 text-left animate-fade-in pointer-events-auto"
+    >
+      <div class="max-w-4xl mx-auto w-full flex flex-col h-full relative">
+        <!-- Close Button -->
+        <button 
+          (click)="toggleSearchOverlay(false)" 
+          class="absolute top-0 right-0 text-white/50 hover:text-white text-2xl transition-colors focus:outline-none"
+          aria-label="Close Search"
+        >
+          ✕
+        </button>
+        
+        <!-- Search Input Area -->
+        <div class="mt-12 md:mt-24 border-b border-white/10 pb-6 relative">
+          <input 
+            id="navbar-search-input"
+            type="text" 
+            [ngModel]="searchQuery()"
+            (ngModelChange)="onSearchInput($event)"
+            placeholder="What are you looking for?" 
+            class="w-full text-2xl md:text-5xl font-light font-serif-luxury text-white bg-transparent outline-none placeholder:text-white/20 tracking-wide border-none focus:ring-0"
+            autocomplete="off"
+          />
+          <span class="absolute right-0 bottom-6 text-white/40 text-[10px] font-mono tracking-widest hidden sm:inline">ESC TO CLOSE</span>
+        </div>
+
+        <!-- Interactive Content Area -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mt-12 overflow-y-auto max-h-[60vh] pr-2 custom-scrollbar">
+          <!-- Left Column: Quick Suggestions / Trends -->
+          <div class="md:col-span-1 space-y-6">
+            <div>
+              <span class="text-[8px] font-mono tracking-[0.25em] text-[#C98A58] uppercase font-black block mb-4">Trending Curations</span>
+              <div class="flex flex-wrap gap-2">
+                <button (click)="onSearchInput('Diaper Bag')" class="px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-white/80 hover:text-white text-[9px] uppercase tracking-widest transition-all border border-white/5 font-semibold">Diaper Bag</button>
+                <button (click)="onSearchInput('Bunny')" class="px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-white/80 hover:text-white text-[9px] uppercase tracking-widest transition-all border border-white/5 font-semibold">Bunny</button>
+                <button (click)="onSearchInput('Shoes')" class="px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-white/80 hover:text-white text-[9px] uppercase tracking-widest transition-all border border-white/5 font-semibold">Baby Shoes</button>
+                <button (click)="onSearchInput('Dress')" class="px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-white/80 hover:text-white text-[9px] uppercase tracking-widest transition-all border border-white/5 font-semibold">Dresses</button>
+              </div>
+            </div>
+            
+            <div class="pt-4 border-t border-white/5">
+              <span class="text-[8px] font-mono tracking-[0.25em] text-[#C98A58] uppercase font-black block mb-3">Hotkeys</span>
+              <p class="text-[9px] text-white/50 leading-relaxed font-light">Press <kbd class="px-1.5 py-0.5 rounded bg-white/10 text-white font-mono text-[8px]">Ctrl</kbd> + <kbd class="px-1.5 py-0.5 rounded bg-white/10 text-white font-mono text-[8px]">K</kbd> anywhere to query.</p>
+            </div>
+          </div>
+
+          <!-- Right Column: Search Results list -->
+          <div class="md:col-span-2 space-y-6">
+            <span class="text-[8px] font-mono tracking-[0.25em] text-[#C98A58] uppercase font-black block">
+              {{ searching() ? 'Searching Ledger...' : (searchResults().length > 0 ? 'Discovered Matches (' + searchResults().length + ')' : 'Search Ledger') }}
+            </span>
+
+            <!-- Loading state spinner -->
+            <div *ngIf="searching()" class="py-12 flex justify-center">
+              <span class="animate-spin rounded-full h-8 w-8 border-b-2 border-[#C98A58]"></span>
+            </div>
+
+            <!-- Empty results state -->
+            <div *ngIf="!searching() && searchQuery().length >= 2 && searchResults().length === 0" class="py-8 text-white/40 font-light text-xs">
+              No items matched your query. Try searching for something else.
+            </div>
+
+            <!-- Default Prompt -->
+            <div *ngIf="!searching() && searchQuery().length < 2" class="py-8 text-white/30 font-light text-xs">
+              Begin typing to query our premium collection.
+            </div>
+
+            <!-- Search Results list -->
+            <div *ngIf="!searching() && searchResults().length > 0" class="space-y-4">
+              <div 
+                *ngFor="let item of searchResults()" 
+                [routerLink]="['/products', item.id]"
+                (click)="toggleSearchOverlay(false)"
+                class="flex items-center gap-4 p-3 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/5 transition-all cursor-pointer group"
+              >
+                <!-- Product Image -->
+                <div class="w-12 h-12 rounded-xl bg-white overflow-hidden flex-shrink-0">
+                  <img 
+                    *ngIf="item.imageUrl" 
+                    [src]="resolveImageUrl(item.imageUrl)" 
+                    [alt]="item.title" 
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+                <!-- Product text metadata -->
+                <div class="flex-1 min-w-0">
+                  <h5 class="text-xs font-semibold text-white truncate uppercase tracking-wider">{{ item.title }}</h5>
+                  <p class="text-[9px] text-[#C98A58] mt-1 font-mono">{{ item.price | currency:'EGP ' }}</p>
+                </div>
+                <!-- Action Arrow -->
+                <span class="text-white/30 group-hover:text-white group-hover:translate-x-1 transition-all text-xs">→</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   `,
   styles: [`
     @keyframes badgePop {
@@ -726,9 +833,57 @@ export class NavbarComponent implements AfterViewInit {
   private platformId = inject(PLATFORM_ID);
   private cartService = inject(CartService);
   notificationService = inject(NotificationService);
+  private productService = inject(ProductService);
   resolveImageUrl = resolveImageUrl;
 
   isNotificationsDropdownOpen = signal<boolean>(false);
+  showSearchOverlay = signal<boolean>(false);
+  searchQuery = signal<string>('');
+  searchResults = signal<ProductDto[]>([]);
+  searching = signal<boolean>(false);
+
+  toggleSearchOverlay(open: boolean) {
+    this.showSearchOverlay.set(open);
+    if (open) {
+      this.searchQuery.set('');
+      this.searchResults.set([]);
+      setTimeout(() => {
+        const inputEl = document.getElementById('navbar-search-input');
+        if (inputEl) inputEl.focus();
+      }, 120);
+    }
+  }
+
+  onSearchInput(query: string) {
+    this.searchQuery.set(query);
+    if (query.trim().length >= 2) {
+      this.searching.set(true);
+      this.productService.getProducts({ textTerm: query, pageSize: 5 }).subscribe({
+        next: (res) => {
+          this.searching.set(false);
+          if (res.isSuccess && res.data) {
+            this.searchResults.set(res.data.items || []);
+          }
+        },
+        error: () => {
+          this.searching.set(false);
+        }
+      });
+    } else {
+      this.searchResults.set([]);
+    }
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  handleSearchHotkeys(event: KeyboardEvent): void {
+    if ((event.ctrlKey || event.metaKey) && event.key === 'k') {
+      event.preventDefault();
+      this.toggleSearchOverlay(true);
+    }
+    if (event.key === 'Escape') {
+      this.toggleSearchOverlay(false);
+    }
+  }
 
   toggleNotificationsDropdown(event: Event) {
     event.stopPropagation();
@@ -825,7 +980,8 @@ export class NavbarComponent implements AfterViewInit {
   }
 
   get headerClass(): string {
-    return 'fixed top-0 left-0 right-0 z-40 bg-[#F8F1EA]/80 backdrop-blur-md h-[90px] flex items-center px-6 md:px-12 transition-all duration-300 border-b border-[#E7D8CB]';
+    const scrollClass = this.scrolled() ? ' scrolled' : '';
+    return 'fixed top-0 left-0 right-0 z-40 navbar-luxury-glass' + scrollClass + ' flex items-center px-6 md:px-12 transition-all duration-300';
   }
 
   isLinkActive(routePath: string, targetParam?: string): boolean {

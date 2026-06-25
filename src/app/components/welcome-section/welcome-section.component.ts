@@ -18,16 +18,10 @@ import { gsap } from 'gsap';
     >
       <div class="max-w-6xl mx-auto w-full relative z-10">
         <!-- Hero card layout from fullbleed HTML -->
-        <div class="bb-hero shadow-2xl bg-[#F8F1EA]">
-          <div class="bb-hero-overlay"></div>
-          
-          <!-- Background Abstract Underlays inside the hero card -->
-          <div class="absolute right-0 top-0 bottom-0 w-[55%] h-full z-0 overflow-hidden pointer-events-none hidden md:block">
-            <!-- Glowing translucent peach/champagne sphere decoration -->
-            <div class="absolute right-[10%] top-[10%] w-[180px] h-[180px] rounded-full bg-gradient-to-tr from-[#F4A261]/25 to-[#E76F51]/10 filter blur-xl opacity-75"></div>
-            <!-- Underlaid abstract luxury texture matching the silk background -->
-            <div class="absolute right-0 bottom-0 w-full h-[85%] bg-[url('/products/editorial_page_bg_canvas.jpg')] bg-[position:bottom_right] bg-no-repeat bg-[size:160%_auto] opacity-50 mix-blend-multiply"></div>
-          </div>
+        <!-- Hero layout merged transparently with main page background -->
+        <div class="bb-hero">
+          <!-- Abstract backdrop decorations behind products -->
+          <div class="bb-hero-abstract-bg"></div>
           
           <!-- Floating "NEW ARRIVALS" Badge -->
           <div class="bb-hero-badge welcome-new-arrivals select-none pointer-events-none">
@@ -36,8 +30,8 @@ import { gsap } from 'gsap';
             <span class="text-[11px] text-[#C4633A] mt-0.5">♡</span>
           </div>
 
-          <!-- Left content card over layout -->
-          <div class="bb-hero-content select-none">
+          <!-- Hero Left Column Text -->
+          <div class="bb-hero-content z-10">
             <span class="bb-label">Curated for you &amp; your little one</span>
             <h1 class="bb-h1 bb-serif">Essentials for<br>Every Moment</h1>
             <p class="bb-sub">From mom to baby — everything you need, all in one place.</p>
@@ -45,7 +39,7 @@ import { gsap } from 'gsap';
               <a 
                 [routerLink]="['/products']" 
                 [queryParams]="{ target: 'All' }" 
-                class="bb-btn-solid text-center flex items-center justify-center gap-2 pointer-events-auto"
+                class="bb-btn-solid text-center flex items-center justify-center gap-2"
               >
                 <span>Shop Collections</span>
                 <span class="text-xs">→</span>
@@ -53,24 +47,21 @@ import { gsap } from 'gsap';
               <a 
                 [routerLink]="['/products']" 
                 [queryParams]="{ target: 'Kids' }" 
-                class="bb-btn-outline text-center flex items-center justify-center pointer-events-auto"
+                class="bb-btn-outline text-center flex items-center justify-center"
               >
                 Shop Little One
               </a>
             </div>
           </div>
 
-          <!-- Right isolated products layer container -->
-          <div class="absolute right-[5%] bottom-[5%] w-[45%] h-[90%] z-10 flex items-center justify-center pointer-events-none hidden md:flex">
-            <div class="welcome-hero-cluster w-full h-full flex items-center justify-center">
-              <img 
-                src="/products/hero_products_isolated.webp" 
-                alt="Luxury maternity &amp; baby collection" 
-                class="max-w-full max-h-full object-contain filter drop-shadow-[0_20px_45px_rgba(42,33,24,0.16)]"
-              />
-            </div>
+          <!-- Hero Right Column Transparent Isolated Products Cluster -->
+          <div class="bb-hero-products-wrapper select-none pointer-events-none">
+            <img 
+              src="/products/hero_products_isolated.webp" 
+              alt="Isolated Baby Essentials" 
+              class="hero-floating-products h-full w-full object-contain"
+            />
           </div>
-
         </div>
       </div>
 
@@ -90,28 +81,37 @@ import { gsap } from 'gsap';
       width: 100%;
     }
     .bb-hero {
-      position: relative; width: 100%; min-height: 480px;
-      overflow: hidden; display: flex; align-items: center;
-      border-radius: 2.5rem;
-      border: 0.5px solid #E8DDD0;
+      position: relative; 
+      width: 100%; 
+      min-height: 480px;
+      overflow: hidden; 
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items: center;
     }
     @media (max-width: 768px) {
       .bb-hero {
-        min-height: 380px;
-        background-image: url('/products/hero_products_isolated.webp');
-        background-size: contain;
-        background-position: bottom right;
-        background-repeat: no-repeat;
+        grid-template-columns: 1fr;
+        min-height: auto;
+        padding-bottom: 24px;
       }
     }
-    .bb-hero-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(to right, #F8F1EA 35%, rgba(248,241,234,0.85) 55%, rgba(248,241,234,0.1) 100%);
+    .bb-hero-abstract-bg {
+      position: absolute; 
+      top: 0; 
+      right: 0; 
+      bottom: 0; 
+      width: 50%;
+      background: radial-gradient(circle at 70% 50%, rgba(244, 162, 97, 0.15) 0%, rgba(184, 79, 125, 0.05) 50%, transparent 100%);
       z-index: 1;
+      pointer-events: none;
     }
     @media (max-width: 768px) {
-      .bb-hero-overlay {
-        background: linear-gradient(to bottom, rgba(248,241,234,0.98) 25%, rgba(248,241,234,0.88) 70%, rgba(248,241,234,0.3) 100%);
+      .bb-hero-abstract-bg {
+        width: 100%;
+        height: 50%;
+        bottom: 0;
+        top: auto;
       }
     }
     .bb-hero-badge {
@@ -124,11 +124,35 @@ import { gsap } from 'gsap';
       border: 0.5px solid #C8A882;
       box-shadow: 0 10px 30px rgba(150,110,80,0.08);
     }
-    .bb-hero-content { position: relative; z-index: 2; padding: 48px 52px; max-width: 50%; }
+    .bb-hero-content { position: relative; z-index: 2; padding: 48px 52px; }
     @media (max-width: 768px) {
       .bb-hero-content {
-        max-width: 100%;
         padding: 36px 24px;
+      }
+    }
+    .bb-hero-products-wrapper {
+      position: relative;
+      height: 100%;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+      z-index: 2;
+    }
+    @media (max-width: 768px) {
+      .bb-hero-products-wrapper {
+        height: 280px;
+        padding: 16px;
+      }
+    }
+    .hero-floating-products {
+      max-height: 380px;
+      filter: drop-shadow(0 20px 35px rgba(42, 33, 24, 0.12));
+    }
+    @media (max-width: 768px) {
+      .hero-floating-products {
+        max-height: 250px;
       }
     }
     .bb-label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #C4633A; font-weight: 500; margin-bottom: 8px; display: block; }
@@ -159,9 +183,9 @@ export class WelcomeSectionComponent implements AfterViewInit {
         { y: -6 },
         { y: 6, duration: 5, repeat: -1, yoyo: true, ease: 'sine.inOut' }
       );
-
-      // Re-attach floating script to transparent product cluster wrapper
-      gsap.fromTo('.welcome-hero-cluster',
+      
+      // Floating animation for the isolated products cluster
+      gsap.fromTo('.hero-floating-products',
         { y: -10 },
         { y: 10, duration: 8, repeat: -1, yoyo: true, ease: 'sine.inOut' }
       );
