@@ -31,16 +31,16 @@ gsap.registerPlugin(ScrollTrigger);
       <!-- Global subtle vignette backdrop overlay -->
       <div class="absolute inset-0 pointer-events-none z-10 bg-gradient-to-b from-[#161412]/5 via-transparent to-[#161412]/10 mix-blend-multiply opacity-50"></div>
 
-      <!-- Sections rendered in vertical order -->
+      <!-- Sections rendered in vertical order (Kids-First Boutique Pivot) -->
       <app-welcome-section class="w-full animate-fade-in"></app-welcome-section>
-      
-      <app-bags-shoes-section class="w-full opacity-0"></app-bags-shoes-section>
-      
-      <app-clothing-section class="w-full opacity-0"></app-clothing-section>
       
       <app-kids-shoes-section class="w-full opacity-0"></app-kids-shoes-section>
       
       <app-mothers-children-section class="w-full opacity-0"></app-mothers-children-section>
+      
+      <app-bags-shoes-section class="w-full opacity-0"></app-bags-shoes-section>
+      
+      <app-clothing-section class="w-full opacity-0"></app-clothing-section>
     </div>
   `
 })
@@ -78,10 +78,10 @@ export class StorefrontLandingComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     if (isPlatformBrowser(this.platformId)) {
       const sections = [
-        'app-bags-shoes-section',
-        'app-clothing-section',
         'app-kids-shoes-section',
-        'app-mothers-children-section'
+        'app-mothers-children-section',
+        'app-bags-shoes-section',
+        'app-clothing-section'
       ];
       
       sections.forEach(secSelector => {

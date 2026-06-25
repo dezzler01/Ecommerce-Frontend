@@ -52,19 +52,19 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
 
           <!-- Product 1: Handbag -->
           <div *ngIf="bagProduct" class="editorial-float flex flex-col space-y-4 pt-16 relative z-10">
-            <div class="relative w-full aspect-[4/5] rounded-[2rem] overflow-hidden border border-[#2A2522]/5 shadow-2xl shadow-black/10 group pointer-events-auto">
+            <div class="relative w-full aspect-[4/5] rounded-[3rem] overflow-hidden border border-[#2A2522]/5 shadow-2xl shadow-black/10 group pointer-events-auto">
               <img 
                 [src]="resolveImageUrl(bagProduct.imageUrl)" 
                 [alt]="bagProduct.title" 
                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
-              <!-- Glassmorphic Reveal Overlay -->
-              <div class="absolute inset-0 bg-[#110F0E]/40 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-center items-center p-6 text-center z-20">
-                <span class="text-[9px] font-mono tracking-widest text-[#E07A5F] uppercase font-bold mb-2">Ref. 01 / BAGS</span>
-                <h4 class="text-sm font-light text-white uppercase tracking-wide mb-1">{{ bagProduct.title }}</h4>
-                <span class="text-xs font-mono text-white/90 font-bold mb-4">{{ bagProduct.price | currency:'EGP ' }}</span>
-                <a [routerLink]="['/products', bagProduct.id]" class="px-5 py-2.5 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 text-white text-[9px] font-bold uppercase tracking-widest rounded-xl transition-all">
-                  [ Quick Shop ]
+              <!-- Colorful Quick-Shop Reveal Overlay -->
+              <div class="absolute inset-0 bg-[#E07A5F]/20 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-center items-center p-6 text-center z-20">
+                <span class="px-3 py-1 text-[8px] font-mono font-bold bg-white text-[#E07A5F] rounded-full uppercase tracking-wider mb-2 shadow-sm">Ref. 01 / BAGS</span>
+                <h4 class="text-sm font-bold text-white uppercase tracking-wide mb-1 drop-shadow-md text-center">{{ bagProduct.title }}</h4>
+                <span class="text-xs font-mono text-white font-bold mb-4 drop-shadow-sm">{{ bagProduct.price | currency:'EGP ' }}</span>
+                <a [routerLink]="['/products', bagProduct.id]" class="px-5 py-2.5 bg-white text-[#2A2522] hover:bg-[#2A2522] hover:text-white text-[9px] font-black uppercase tracking-widest rounded-full transition-all shadow-lg transform hover:scale-105 active:scale-95">
+                  [ Quick Shop ⚡ ]
                 </a>
               </div>
             </div>
@@ -75,19 +75,19 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
 
           <!-- Product 2: Stiletto Heels -->
           <div *ngIf="heelProduct" class="editorial-float flex flex-col space-y-4 relative z-10">
-            <div class="relative w-full aspect-[4/5] rounded-[2rem] overflow-hidden border border-[#2A2522]/5 shadow-2xl shadow-black/10 group pointer-events-auto">
+            <div class="relative w-full aspect-[4/5] rounded-[3rem] overflow-hidden border border-[#2A2522]/5 shadow-2xl shadow-black/10 group pointer-events-auto">
               <img 
                 [src]="resolveImageUrl(heelProduct.imageUrl)" 
                 [alt]="heelProduct.title" 
                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
-              <!-- Glassmorphic Reveal Overlay -->
-              <div class="absolute inset-0 bg-[#110F0E]/40 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-center items-center p-6 text-center z-20">
-                <span class="text-[9px] font-mono tracking-widest text-[#E07A5F] uppercase font-bold mb-2">Ref. 02 / SHOES</span>
-                <h4 class="text-sm font-light text-white uppercase tracking-wide mb-1">{{ heelProduct.title }}</h4>
-                <span class="text-xs font-mono text-white/90 font-bold mb-4">{{ heelProduct.price | currency:'EGP ' }}</span>
-                <a [routerLink]="['/products', heelProduct.id]" class="px-5 py-2.5 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 text-white text-[9px] font-bold uppercase tracking-widest rounded-xl transition-all">
-                  [ Quick Shop ]
+              <!-- Colorful Quick-Shop Reveal Overlay -->
+              <div class="absolute inset-0 bg-[#E07A5F]/20 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-center items-center p-6 text-center z-20">
+                <span class="px-3 py-1 text-[8px] font-mono font-bold bg-white text-[#E07A5F] rounded-full uppercase tracking-wider mb-2 shadow-sm">Ref. 02 / SHOES</span>
+                <h4 class="text-sm font-bold text-white uppercase tracking-wide mb-1 drop-shadow-md text-center">{{ heelProduct.title }}</h4>
+                <span class="text-xs font-mono text-white font-bold mb-4 drop-shadow-sm">{{ heelProduct.price | currency:'EGP ' }}</span>
+                <a [routerLink]="['/products', heelProduct.id]" class="px-5 py-2.5 bg-white text-[#2A2522] hover:bg-[#2A2522] hover:text-white text-[9px] font-black uppercase tracking-widest rounded-full transition-all shadow-lg transform hover:scale-105 active:scale-95">
+                  [ Quick Shop ⚡ ]
                 </a>
               </div>
             </div>
