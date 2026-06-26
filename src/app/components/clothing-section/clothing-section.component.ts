@@ -17,18 +17,20 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
       id="clothing"
       class="relative w-full py-6 px-6 md:px-12 lg:px-24 z-10 overflow-hidden bg-transparent"
     >
-      <div class="max-w-6xl mx-auto w-full relative z-10">
+      <div class="w-full section-container relative z-10">
         
         <!-- Two-column grid -->
         <div class="bb-grid">
           
           <!-- Left Pane: Women Collection -->
-          <div 
-            class="bb-cell shadow-2xl" 
-            style="background-image: url('/products/women_collection.jpg');"
-          >
-            <div class="bb-cell-overlay"></div>
-            <div class="bb-cell-content">
+          <div class="bb-cell shadow-2xl overflow-hidden group">
+            <!-- Background Image Wrapper for Zoom -->
+            <div 
+              class="bb-cell-bg absolute inset-0 z-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-105" 
+              style="background-image: url('/products/women_collection_perfect.jpg');"
+            ></div>
+            <div class="bb-cell-overlay z-10"></div>
+            <div class="bb-cell-content z-20">
               <span class="bb-cell-label">Women</span>
               <h3 class="bb-h3 bb-serif" style="font-style: italic;">Effortless<br>Everyday Looks</h3>
               <p class="bb-cell-sub">Timeless pieces for modern moms.</p>
@@ -44,12 +46,14 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
           </div>
 
           <!-- Right Pane: Newborn Care -->
-          <div 
-            class="bb-cell shadow-2xl" 
-            style="background-image: url('/products/newborn_care_collection.jpg');"
-          >
-            <div class="bb-cell-overlay"></div>
-            <div class="bb-cell-content">
+          <div class="bb-cell shadow-2xl overflow-hidden group">
+            <!-- Background Image Wrapper for Zoom -->
+            <div 
+              class="bb-cell-bg absolute inset-0 z-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-105" 
+              style="background-image: url('/products/newborn_care_collection_perfect.png');"
+            ></div>
+            <div class="bb-cell-overlay z-10"></div>
+            <div class="bb-cell-content z-20">
               <span class="bb-cell-label">Newborn Care</span>
               <h3 class="bb-h3 bb-serif" style="font-weight: 600;">Gentle Care,<br>Pure Love</h3>
               <p class="bb-cell-sub">Everything for their safest start.</p>
@@ -89,6 +93,13 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
       display: flex; align-items: flex-end;
       border-radius: 2.5rem;
       border: 0.5px solid #E8DDD0;
+    }
+    .bb-cell-bg {
+      position: absolute;
+      top: -15%;
+      bottom: -15%;
+      left: 0;
+      right: 0;
       background-size: cover;
       background-position: center;
     }

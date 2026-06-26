@@ -16,7 +16,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
     <section
       class="w-full bg-[#FAF6F0] border-t border-[#E8DDD0] py-6 flex items-center justify-center z-10 overflow-hidden select-none"
     >
-      <div class="max-w-6xl mx-auto w-full px-6 md:px-12">
+      <div class="w-full px-6 md:px-12">
         <div class="bb-trust">
           
           <!-- Item 1: Fast & Reliable Delivery -->

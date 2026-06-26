@@ -16,7 +16,7 @@ import { ProductService, ProductDto } from '../../services/product.service';
   imports: [CommonModule, RouterModule, FormsModule],
   template: `
     <header [ngClass]="headerClass">
-      <div class="max-w-6xl mx-auto w-full flex justify-between items-center">
+      <div class="w-full flex justify-between items-center">
         <!-- Left/Center Zone: Logo & Core Catalog Links -->
         <div class="flex items-center gap-10">
           <!-- Logo -->

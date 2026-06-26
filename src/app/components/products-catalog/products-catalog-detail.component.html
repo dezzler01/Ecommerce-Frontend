@@ -35,7 +35,7 @@
   </div>
 
   <!-- Error State -->
-  <div *ngIf="!loading() && error()" class="max-w-6xl mx-auto w-full flex flex-col justify-center items-center py-32 text-center">
+  <div *ngIf="!loading() && error()" class="w-full flex flex-col justify-center items-center py-32 text-center">
     <div class="p-6 bg-red-50 border border-red-200 rounded-2xl max-w-md">
       <span class="text-xs font-mono uppercase tracking-widest text-red-500 font-bold block mb-2">Refusal Code</span>
       <p class="text-sm text-[#2A2522] leading-relaxed font-light mb-6">{{ error() }}</p>
@@ -46,7 +46,7 @@
   </div>
 
   <!-- Main Details Page -->
-  <div *ngIf="!loading() && !error() && product()" class="max-w-6xl mx-auto w-full">
+  <div *ngIf="!loading() && !error() && product()" class="w-full">
     <!-- Breadcrumbs / Navigation Back -->
     <div class="mb-8">
       <a routerLink="/products" class="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#6B5E57] hover:text-[#E07A5F] transition-colors cursor-pointer">

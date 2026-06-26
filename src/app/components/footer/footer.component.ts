@@ -12,7 +12,7 @@ import { AlertService } from '../../services/alert.service';
   template: `
     <footer class="relative z-20 w-full pt-16 pb-10 px-6 md:px-12 border-t border-[#E07A5F]/15 bg-[#12100E] text-[#FAF6F0]/65 pointer-events-auto overflow-hidden">
       <div class="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-[#F4A261] via-[#E07A5F] to-[#B84F7D] opacity-40"></div>
-      <div class="max-w-6xl mx-auto flex flex-col gap-12">
+      <div class="w-full flex flex-col gap-12">
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 text-[9px] tracking-[0.2em] uppercase font-light text-left">
           <div class="lg:col-span-2 pr-0 lg:pr-8 flex flex-col justify-start">
@@ -63,10 +63,10 @@ import { AlertService } from '../../services/alert.service';
           </div>
         </div>
 
-        <div class="flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] tracking-[0.2em] text-[#FAF6F0]/50 font-light border-t border-white/5 pt-8">
-          <div class="flex flex-col sm:flex-row items-center gap-6">
+        <div class="flex flex-col items-center justify-center gap-6 text-[10px] tracking-[0.2em] text-[#FAF6F0]/50 font-light border-t border-white/5 pt-8 w-full text-center">
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
             <div>© {{ currentYear }} picks&amp;more. All Rights Reserved.</div>
-            <ul class="flex items-center gap-4 lowercase tracking-wider text-[11px]">
+            <ul class="flex items-center justify-center gap-4 lowercase tracking-wider text-[11px]">
               <li>
                 <a href="https://instagram.com" target="_blank" class="hover:text-[#E07A5F] transition-all flex items-center gap-1.5 group">
                   <svg class="w-3.5 h-3.5 fill-current group-hover:scale-110 transition-transform duration-300" viewBox="0 0 24 24">
@@ -93,7 +93,7 @@ import { AlertService } from '../../services/alert.service';
               </li>
             </ul>
           </div>
-          <div class="flex flex-wrap justify-center md:justify-end gap-x-6 gap-y-2 uppercase text-[8px] tracking-widest font-mono">
+          <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 uppercase text-[8px] tracking-widest font-mono">
             <a href="#" (click)="openStatic($event,'Privacy Policy')"  class="hover:text-[#E07A5F] transition-colors">Privacy Policy</a>
             <a href="#" (click)="openStatic($event,'Terms of Service')" class="hover:text-[#E07A5F] transition-colors">Terms of Service</a>
             <a href="#" (click)="openStatic($event,'Cookie Policy')"    class="hover:text-[#E07A5F] transition-colors">Cookies</a>
@@ -220,11 +220,52 @@ export class FooterComponent {
 
   openStatic(event: Event, pageName: string) {
     event.preventDefault();
-    this.alertService.showAlert({
+    
+    const pageData: Record<string, { title: string, message: string }> = {
+      'Our Story': {
+        title: 'Our Story',
+        message: 'At Picks & More, we curate timeless luxury apparel, premium footwear, and elegant accessories for women, infants, and children. Born with a passion for heritage craftsmanship and modern comfort, we bridge the gap between classic elegance and everyday wearability. Every piece in our boutique is meticulously selected for its quality, safety, and aesthetic appeal to ensure a premium lifestyle experience.'
+      },
+      'Shipping & Returns': {
+        title: 'Shipping & Returns Policy',
+        message: 'We provide fast, tracked shipping across all governorates of Egypt (including Cairo, Giza, Alexandria, Delta, and Upper Egypt) within 2 to 5 business days. We offer a hassle-free 14-day return and exchange policy for all items in their original, unworn condition with tags attached. Simply contact our support team to schedule a courier pickup for your exchange or refund.'
+      },
+      'Size Guide': {
+        title: 'Luxury Size Guide',
+        message: 'Our boutique collections fit true to standard European and international sizes. Women\'s apparel is detailed in standard sizes (S, M, L, XL), while our infant and kids\' ranges are organized by age category (Newborn, 3M, 6M, 12M, 2T, 4T, 6T, 8T, 10T). For footwear, please refer to the EU sizing chart on individual product pages.'
+      },
+      'Sustainability': {
+        title: 'Conscious Luxury',
+        message: 'We are deeply committed to conscious fashion. Our garments are sourced from sustainable partners who utilize 100% organic cotton, non-toxic organic dyes, and recycled fibers that are gentle on baby skin and kind to our planet. We also package our products in fully recyclable and biodegradable materials.'
+      },
+      'Careers': {
+        title: 'Join Our Team',
+        message: 'Grow your career with Picks & More. We are always looking for passionate talent, fashion buyers, digital marketing leaders, and logistics enthusiasts who value perfection and luxury service. Join us in shaping the future of premium curated fashion in Egypt. Send your CV and portfolio to careers@picksandmore.com.'
+      },
+      'Privacy Policy': {
+        title: 'Privacy Policy',
+        message: 'Your privacy is our utmost priority. We secure all personal credentials, transaction records, and shipping addresses with industry-grade SSL encryption. We do not sell, trade, or distribute your private information to third parties. We use cookies solely to personalize your catalog browsing experience and protect checkout security.'
+      },
+      'Terms of Service': {
+        title: 'Terms of Service',
+        message: 'By using the Picks & More storefront, you agree to our terms of commerce. All prices are listed in Egyptian Pounds (EGP). We reserve the right to modify collections, update valuations, and cancel orders in cases of unexpected inventory discrepancies. Cash on delivery and secure online payments are fully supported.'
+      },
+      'Cookie Policy': {
+        title: 'Cookie Policy',
+        message: 'Our website uses essential cookies to track your luxury shopping bag, save your authenticated profile state, and analyze anonymous traffic metrics for storefront speed optimization. By continuing to browse our collections, you agree to our clean cookie policy.'
+      }
+    };
+
+    const selectedPage = pageData[pageName] || {
       title: pageName,
-      message: `The ${pageName} page is currently under development. Our luxury curation team is finalizing this brand experience to ensure perfection. Please check back shortly.`,
+      message: `The ${pageName} page is currently being updated. Please check back shortly.`
+    };
+
+    this.alertService.showAlert({
+      title: selectedPage.title,
+      message: selectedPage.message,
       type: 'info',
-      confirmText: 'Understood'
+      confirmText: 'Close'
     });
   }
 

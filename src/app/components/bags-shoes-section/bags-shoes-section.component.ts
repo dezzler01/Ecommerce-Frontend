@@ -17,16 +17,17 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
       id="little-one"
       class="relative w-full py-6 px-6 md:px-12 lg:px-24 z-10 overflow-hidden bg-transparent"
     >
-      <div class="max-w-6xl mx-auto w-full relative z-10">
+      <div class="w-full section-container relative z-10">
         
         <!-- Wide Expansive Banner Panel with full-bleed background -->
-        <div 
-          class="bb-strip shadow-2xl" 
-          style="background-image: url('/products/little_one_collection.jpg');"
-        >
-          <div class="bb-strip-overlay"></div>
+        <div class="bb-strip shadow-2xl overflow-hidden group">
+          <!-- Parallax & Hover Zoom background image -->
+          <div 
+            class="bb-strip-bg absolute inset-0 z-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-105" 
+            style="background-image: url('/products/little_one_collection_perfect.jpg');"
+          ></div>
           
-          <div class="bb-strip-content">
+          <div class="bb-strip-content z-20">
             <span class="bb-label">Little One</span>
             <h2 class="bb-h2 bb-serif">Tiny Styles,<br>Big Comfort</h2>
             <p class="bb-tagline">Soft. Safe. Adorable.</p>
@@ -40,7 +41,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
             </a>
           </div>
 
-          <div class="bb-disc-badge">
+          <div class="bb-disc-badge z-20">
             <span class="bb-disc-up">Up to</span>
             <span class="bb-disc-pct">30%</span>
             <span class="bb-disc-off">Off</span>
@@ -59,21 +60,18 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
     }
     .bb-strip {
       position: relative; width: 100%; min-height: 280px; overflow: hidden;
-      background-size: cover;
-      background-position: center;
       display: flex; align-items: center;
       border-radius: 2.5rem;
       border: 0.5px solid #E8DDD0;
     }
-    .bb-strip-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(to right, rgba(250,246,240,0.96) 0%, rgba(250,246,240,0.7) 45%, rgba(250,246,240,0.1) 100%);
-      z-index: 1;
-    }
-    @media (max-width: 768px) {
-      .bb-strip-overlay {
-        background: linear-gradient(to bottom, rgba(250,246,240,0.95) 0%, rgba(250,246,240,0.85) 100%);
-      }
+    .bb-strip-bg {
+      position: absolute;
+      top: -15%;
+      bottom: -15%;
+      left: 0;
+      right: 0;
+      background-size: cover;
+      background-position: center;
     }
     .bb-strip-content { position: relative; z-index: 2; padding: 48px 52px; }
     @media (max-width: 768px) {

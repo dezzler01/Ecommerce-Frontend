@@ -18,7 +18,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
       class="relative w-full min-h-screen flex flex-col justify-center py-28 px-6 md:px-12 lg:px-24 z-10 overflow-hidden bg-transparent"
     >
       <!-- Spacious Editorial Layout Grid -->
-      <div class="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10 my-auto">
+      <div class="w-full section-container grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10 my-auto">
         
         <!-- Left Side: Editorial Typography & Copy (5 cols) -->
         <div class="lg:col-span-5 flex flex-col items-start text-left space-y-6">
