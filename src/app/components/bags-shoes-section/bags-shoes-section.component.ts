@@ -24,7 +24,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
           <!-- Parallax & Hover Zoom background image -->
           <div 
             class="bb-strip-bg absolute inset-0 z-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-105" 
-            style="background-image: url('/products/little_one_collection_perfect.jpg');"
+            style="background-image: url('/products/little_one_collection_perfect.png');"
           ></div>
           
           <div class="bb-strip-content z-20">

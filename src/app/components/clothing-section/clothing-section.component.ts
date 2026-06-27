@@ -27,7 +27,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
             <!-- Background Image Wrapper for Zoom -->
             <div 
               class="bb-cell-bg absolute inset-0 z-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-105" 
-              style="background-image: url('/products/women_collection_perfect.jpg');"
+              style="background-image: url('/products/women_collection_perfect.png');"
             ></div>
             <div class="bb-cell-overlay z-10"></div>
             <div class="bb-cell-content z-20">
