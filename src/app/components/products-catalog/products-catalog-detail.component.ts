@@ -38,6 +38,25 @@ export class ProductsCatalogDetailComponent implements OnInit, AfterViewInit {
   zoomX = signal<string>('50%');
   zoomY = signal<string>('50%');
   zoomActive = signal<boolean>(false);
+  isFullscreenOpen = signal<boolean>(false);
+  activeAccordion = signal<string>('materials');
+
+  starPercentages = computed(() => {
+    const list = this.reviews();
+    const counts = [0, 0, 0, 0, 0];
+    if (list.length === 0) {
+      return [5, 4, 3, 2, 1].map(stars => ({ stars, count: 0, pct: 0 }));
+    }
+    list.forEach(r => {
+      const ratingVal = Math.min(Math.max(1, Math.round(r.rating)), 5);
+      counts[ratingVal - 1]++;
+    });
+    return [5, 4, 3, 2, 1].map(stars => {
+      const count = counts[stars - 1];
+      const pct = Math.round((count / list.length) * 100);
+      return { stars, count, pct };
+    });
+  });
 
   // Gallery signals
   activeImageIndex = signal<number>(0);
@@ -403,5 +422,59 @@ export class ProductsCatalogDetailComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.addedToCart.set(false);
     }, 3000);
+  }
+
+  buyNow(): void {
+    this.validationError.set('');
+    const p = this.product();
+    if (!p || p.stockQuantity === 0) return;
+
+    // Validate variants
+    if (this.colors().length > 0 && !this.selectedColor()) {
+      this.validationError.set('Please select an option for Color.');
+      return;
+    }
+
+    if (this.sizes().length > 0 && !this.selectedSize()) {
+      this.validationError.set('Please select an option for Size.');
+      return;
+    }
+
+    // Add to Cart
+    this.cartService.addItem(p, this.selectedQuantity(), this.selectedSize() || undefined, this.selectedColor() || undefined);
+
+    // Redirect to checkout/cart
+    this.router.navigate(['/cart']);
+  }
+
+  toggleAccordion(tab: string): void {
+    this.activeAccordion.update(curr => curr === tab ? '' : tab);
+  }
+
+  toggleFullscreen(): void {
+    this.isFullscreenOpen.update(v => !v);
+  }
+
+  private touchStartX = 0;
+  
+  onTouchStart(event: TouchEvent): void {
+    this.touchStartX = event.touches[0].clientX;
+  }
+  
+  onTouchEnd(event: TouchEvent): void {
+    const touchEndX = event.changedTouches[0].clientX;
+    const diff = this.touchStartX - touchEndX;
+    const images = this.product()?.imageUrls || [];
+    if (images.length <= 1) return;
+    
+    if (diff > 50) {
+      // Swipe left -> Next image
+      const nextIndex = (this.activeImageIndex() + 1) % images.length;
+      this.selectImage(nextIndex);
+    } else if (diff < -50) {
+      // Swipe right -> Prev image
+      const prevIndex = (this.activeImageIndex() - 1 + images.length) % images.length;
+      this.selectImage(prevIndex);
+    }
   }
 }

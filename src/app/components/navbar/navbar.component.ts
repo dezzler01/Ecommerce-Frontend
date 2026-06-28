@@ -9,6 +9,7 @@ import { gsap } from 'gsap';
 import { resolveImageUrl } from '../../core/utils/image-resolver';
 import { NotificationService, AppNotification } from '../../services/notification.service';
 import { ProductService, ProductDto } from '../../services/product.service';
+import { WishlistCompareService } from '../../core/services/wishlist-compare.service';
 
 
 @Component({
@@ -121,6 +122,66 @@ import { ProductService, ProductDto } from '../../services/product.service';
               <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.602 10.602z" />
             </svg>
           </button>
+ 
+          <!-- Wishlist Heart Wrapper with hover dropdown -->
+          <div class="relative group py-1 flex items-center justify-center pointer-events-auto">
+            <button 
+              [routerLink]="['/products']" 
+              [queryParams]="{ filterFavorites: true }"
+              class="text-[#2A1F1A] hover:text-[#C98A58] transition-colors relative flex items-center justify-center h-9 w-9 rounded-full hover:bg-[#C98A58]/10 transition-all select-none focus:outline-none"
+              aria-label="Favorites"
+            >
+              <span class="relative flex items-center justify-center">
+                <svg class="w-[22px] h-[22px] transition-transform duration-300 hover:scale-110" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                </svg>
+                <span *ngIf="wishlistCount() > 0" 
+                      class="absolute -top-2 -right-2 bg-[#E07A5F] text-white text-[7px] font-bold h-3.5 w-3.5 rounded-full flex items-center justify-center border border-[#F8F1EA] z-20">
+                  {{ wishlistCount() }}
+                </span>
+              </span>
+            </button>
+
+            <!-- Mini-Wishlist Dropdown -->
+            <div class="absolute right-0 top-full mt-2 w-72 bg-[#F8F1EA]/95 backdrop-blur-md border border-[#E7D8CB] rounded-xl p-4 shadow-2xl opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 z-50 text-left">
+              <span class="text-[8px] font-mono tracking-widest text-[#C98A58] uppercase font-bold block mb-3 border-b border-[#E7D8CB] pb-2">Favorites ({{ wishlistCount() }})</span>
+              
+              <div *ngIf="wishlistItems().length === 0" class="py-6 text-center text-[10px] text-[#77685D] font-light">
+                No items in your favorites list.
+              </div>
+
+              <div *ngIf="wishlistItems().length > 0" class="space-y-3 mb-4 max-h-[220px] overflow-y-auto pr-1">
+                <div *ngFor="let item of wishlistItems()" class="flex items-center gap-3 pb-3 border-b border-[#E7D8CB] last:border-b-0 last:pb-0">
+                  <a [routerLink]="['/products', item.id]" class="w-10 h-10 rounded-lg bg-white overflow-hidden flex-shrink-0 border border-[#E7D8CB] cursor-pointer">
+                    <img *ngIf="item.imageUrl" [src]="resolveImageUrl(item.imageUrl)" [alt]="item.title" class="w-full h-full object-cover"/>
+                    <div *ngIf="!item.imageUrl" class="w-full h-full flex items-center justify-center text-[7px] text-[#77685D] uppercase tracking-widest font-semibold bg-white/5">No img</div>
+                  </a>
+                  <div class="flex-1 min-w-0">
+                    <a [routerLink]="['/products', item.id]" class="text-[10px] text-[#2A1F1A] uppercase tracking-wide font-normal truncate hover:text-[#C98A58] block cursor-pointer">{{ item.title }}</a>
+                    <span class="text-[9px] font-mono text-[#C98A58] block mt-0.5">{{ item.price | currency:'EGP ' }}</span>
+                  </div>
+                  <button 
+                    (click)="removeWishlistItem(item)" 
+                    class="text-[#77685D] hover:text-[#2A1F1A] p-1.5 transition-colors focus:outline-none"
+                    title="Remove from favorites"
+                  >
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <a 
+                *ngIf="wishlistItems().length > 0"
+                [routerLink]="['/products']" 
+                [queryParams]="{ filterFavorites: true }"
+                class="w-full py-2 bg-[#2A1F1A] hover:bg-[#C98A58] text-[#F8F1EA] text-[9px] font-bold uppercase tracking-widest rounded-lg transition-all text-center block"
+              >
+                Browse All Favorites
+              </a>
+            </div>
+          </div>
 
           <!-- Cart Wrapper with hover dropdown -->
           <div class="relative group py-1 flex items-center justify-center pointer-events-auto">
@@ -412,6 +473,12 @@ import { ProductService, ProductDto } from '../../services/product.service';
           <span>My Bag ({{ cartCount() }})</span>
           <span class="w-4 h-4 rounded-full bg-[#FF0055] text-[7.5px] font-bold text-white flex items-center justify-center border border-white/10" *ngIf="cartCount() > 0">
             {{ cartCount() }}
+          </span>
+        </a>
+        <a [routerLink]="['/products']" [queryParams]="{ filterFavorites: true }" (click)="isMobileMenuOpen.set(false)" class="transition-colors py-1 block flex items-center justify-between text-[#2A2522]">
+          <span>Favorites ({{ wishlistCount() }})</span>
+          <span class="w-4 h-4 rounded-full bg-[#E07A5F] text-[7.5px] font-bold text-white flex items-center justify-center border border-white/10" *ngIf="wishlistCount() > 0">
+            {{ wishlistCount() }}
           </span>
         </a>
       </nav>
@@ -1244,7 +1311,15 @@ export class NavbarComponent implements AfterViewInit {
   notificationService = inject(NotificationService);
   private productService = inject(ProductService);
   private http = inject(HttpClient);
+  wishlistCompareService = inject(WishlistCompareService);
   resolveImageUrl = resolveImageUrl;
+
+  wishlistCount = computed(() => this.wishlistCompareService.favorites().length);
+  wishlistItems = computed(() => this.wishlistCompareService.favorites());
+
+  removeWishlistItem(item: ProductDto) {
+    this.wishlistCompareService.toggleFavorite(item);
+  }
 
   isNotificationsDropdownOpen = signal<boolean>(false);
   showSearchOverlay = signal<boolean>(false);

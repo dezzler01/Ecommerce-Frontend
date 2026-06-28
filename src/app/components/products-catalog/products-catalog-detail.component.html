@@ -48,54 +48,76 @@
   <!-- Main Details Page -->
   <div *ngIf="!loading() && !error() && product()" class="w-full">
     <!-- Breadcrumbs / Navigation Back -->
-    <div class="mb-8">
-      <a routerLink="/products" class="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#6B5E57] hover:text-[#E07A5F] transition-colors cursor-pointer">
-        ← Back to Catalog
-      </a>
+    <div class="mb-6">
+      <div class="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-[#7A6C64]">
+        <a routerLink="/" class="hover:text-[#D58E6A] transition-colors">Home</a>
+        <span>/</span>
+        <a routerLink="/products" class="hover:text-[#D58E6A] transition-colors">Catalog</a>
+        <span>/</span>
+        <a [routerLink]="['/products']" [queryParams]="{ target: product()?.mainCategory }" class="hover:text-[#D58E6A] transition-colors">{{ product()?.mainCategory }}</a>
+        <span>/</span>
+        <span class="text-[#2C211C] font-semibold truncate max-w-[200px]">{{ product()?.title }}</span>
+      </div>
     </div>
 
-    <!-- Main Container -->
-    <div class="glass-container relative">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-        <!-- Left Column: Gallery -->
-        <div class="flex flex-col gap-4">
-          <!-- Main Image Box with Mouse Pan Zoom Lens -->
-          <div 
-            class="w-full aspect-[4/5] rounded-2xl overflow-hidden bg-[#2A2522]/5 border border-[#2A2522]/5 relative group cursor-crosshair"
-            (mousemove)="onMouseMove($event)"
-          >
-            <img 
-              *ngIf="activeImageUrl()" 
-              #mainImage
-              [src]="activeImageUrl()" 
-              [alt]="product()?.title" 
-              class="w-full h-full object-cover transition-all duration-300 ease-out origin-center"
-              [ngStyle]="{
-                'transform': zoomActive() ? 'scale(2.4)' : 'scale(1)',
-                'transform-origin': zoomActive() ? (zoomX() + ' ' + zoomY()) : 'center'
-              }"
-              (mouseenter)="zoomImage(true)"
-              (mouseleave)="zoomImage(false)"
-            />
-            
-            <!-- Fallback image -->
-            <div *ngIf="!activeImageUrl()" class="w-full h-full flex flex-col items-center justify-center text-[#6B5E57]/40 gap-3 bg-[#FBF9F6]">
-              <svg class="w-12 h-12 text-[#E07A5F]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
-              </svg>
-              <span class="text-[10px] uppercase tracking-widest font-mono text-[#E07A5F] font-bold">Exclusive Specimen</span>
-            </div>
+    <!-- Main Editorial Display: Gallery + Purchase Panel -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+      
+      <!-- Left Zone: Apple/Zara Style Gallery (Occupies 7 cols on LG) -->
+      <div class="lg:col-span-7 flex flex-col gap-6">
+        <!-- Main Image Card -->
+        <div 
+          class="w-full aspect-[4/5] rounded-3xl overflow-hidden bg-[#FAF6F1] border border-[#7A6C64]/10 relative group cursor-zoom-in"
+          (mousemove)="onMouseMove($event)"
+          (touchstart)="onTouchStart($event)"
+          (touchend)="onTouchEnd($event)"
+        >
+          <img 
+            *ngIf="activeImageUrl()" 
+            #mainImage
+            [src]="activeImageUrl()" 
+            [alt]="product()?.title" 
+            class="w-full h-full object-cover transition-all duration-300 ease-out origin-center"
+            [ngStyle]="{
+              'transform': zoomActive() ? 'scale(2.4)' : 'scale(1)',
+              'transform-origin': zoomActive() ? (zoomX() + ' ' + zoomY()) : 'center'
+            }"
+            (mouseenter)="zoomImage(true)"
+            (mouseleave)="zoomImage(false)"
+            (click)="toggleFullscreen()"
+          />
+          
+          <!-- Fallback image -->
+          <div *ngIf="!activeImageUrl()" class="w-full h-full flex flex-col items-center justify-center text-[#7A6C64]/40 gap-3 bg-[#FFFDFC]">
+            <svg class="w-12 h-12 text-[#D58E6A]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+            </svg>
+            <span class="text-[9px] uppercase tracking-widest font-mono text-[#D58E6A] font-bold">Exclusive Specimen</span>
+          </div>
 
-            <!-- Category Tag -->
-            <span class="absolute top-4 left-4 z-20 bg-white/95 border border-[#2A2522]/5 text-[#2A2522]/80 text-[8.5px] uppercase tracking-widest font-mono px-3 py-1 rounded-lg">
-              {{ getProductCategoriesList(product()) }}
-            </span>
+          <!-- Category Glass Badge -->
+          <span class="absolute top-5 left-5 z-20 bg-[#FFFDFC]/90 backdrop-blur-sm border border-[#7A6C64]/10 text-[#2C211C] text-[8px] uppercase tracking-widest font-mono px-3.5 py-1.5 rounded-full shadow-sm">
+            {{ product()?.subCategory || product()?.mainCategory }}
+          </span>
 
-            <!-- Zoom lens toggle icon -->
+          <!-- Floating Interactive Actions -->
+          <div class="absolute bottom-5 right-5 z-20 flex gap-2">
+            <!-- Fullscreen Button -->
             <button 
-              (click)="toggleZoom()"
-              [ngClass]="zoomActive() ? 'bg-[#E07A5F] text-white border-[#E07A5F]' : 'bg-[#FAF6F0]/90 text-[#2A2522] border-[#2A2522]/10'"
-              class="absolute bottom-4 right-4 z-20 flex items-center gap-1.5 px-3 py-1.5 border rounded-xl text-[9px] uppercase tracking-widest font-black transition-all shadow-md pointer-events-auto hover:scale-105 active:scale-95"
+              (click)="toggleFullscreen(); $event.stopPropagation()"
+              class="bg-[#FFFDFC]/95 text-[#2C211C] border border-[#7A6C64]/10 p-2.5 rounded-full shadow-md hover:scale-105 active:scale-95 transition-all focus:outline-none"
+              title="View Fullscreen"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75v4.5m0-4.5h-4.5m4.5 0L15 9m5.25 11.25v-4.5m0 4.5h-4.5m4.5 0l-6-6" />
+              </svg>
+            </button>
+
+            <!-- Inspect Magnifier Button -->
+            <button 
+              (click)="toggleZoom(); $event.stopPropagation()"
+              [ngClass]="zoomActive() ? 'bg-[#5B3A29] text-[#FFFDFC] border-[#5B3A29]' : 'bg-[#FFFDFC]/95 text-[#2C211C] border-[#7A6C64]/15'"
+              class="flex items-center gap-1.5 px-4 py-2 border rounded-full text-[9px] uppercase tracking-widest font-bold transition-all shadow-md hover:scale-105 active:scale-95 focus:outline-none"
             >
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.637 10.637zM10.5 7.5v6m3-3h-6" />
@@ -103,78 +125,87 @@
               <span>{{ zoomActive() ? 'Active Lens' : 'Inspect Material' }}</span>
             </button>
           </div>
-
-          <!-- Thumbnail Navigation Strip -->
-          <div *ngIf="product()?.imageUrls && product()!.imageUrls.length > 1" class="thumbnail-strip custom-scrollbar">
-            <button 
-              *ngFor="let img of product()?.imageUrls; let i = index"
-              (click)="selectImage(i)"
-              [class.active]="activeImageIndex() === i"
-              class="thumbnail-btn"
-            >
-              <img [src]="resolveImageUrl(img.url)" [alt]="img.altText || 'Product image ' + (i + 1)" />
-            </button>
-          </div>
         </div>
 
-        <!-- Right Column: Info & Action Configurator -->
-        <div class="flex flex-col justify-between space-y-6">
-          <div>
-            <span class="tracking-widest font-mono text-[9px] uppercase font-bold text-[#E07A5F] block mb-2">
-              Curated Specimen Profile
+        <!-- Horizontal Thumbnail Strip -->
+        <div *ngIf="product()?.imageUrls && product()!.imageUrls.length > 1" class="flex gap-3 overflow-x-auto pb-2 custom-scrollbar">
+          <button 
+            *ngFor="let img of product()?.imageUrls; let i = index"
+            (click)="selectImage(i)"
+            [class.active-thumb]="activeImageIndex() === i"
+            class="w-16 h-20 rounded-xl overflow-hidden bg-[#FAF6F1] border transition-all flex-shrink-0"
+          >
+            <img [src]="resolveImageUrl(img.url)" [alt]="img.altText || 'Thumbnail ' + (i + 1)" class="w-full h-full object-cover" />
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Zone: Sticky Purchase Panel (Occupies 5 cols on LG) -->
+      <div class="lg:col-span-5 lg:sticky lg:top-28 purchase-panel-sticky">
+        <div class="bg-[#FFFDFC] border border-[#7A6C64]/10 rounded-3xl p-8 space-y-6 shadow-sm">
+          
+          <!-- Title & Stars -->
+          <div class="space-y-2">
+            <span class="tracking-widest font-mono text-[8px] uppercase font-bold text-[#D58E6A] block">
+              {{ product()?.brandName || 'Curated Curation' }}
             </span>
-            <h1 class="text-3xl font-serif-luxury font-light text-[#2A2522] tracking-wider uppercase mb-4">
+            <h1 class="text-2xl font-serif-luxury font-medium text-[#2C211C] tracking-wide uppercase leading-tight">
               {{ product()?.title }}
             </h1>
             
-            <div class="flex flex-wrap gap-2 mb-6">
-              <span class="text-[9px] bg-[#E07A5F]/10 border border-[#E07A5F]/20 text-[#E07A5F] px-2.5 py-0.5 rounded uppercase font-bold tracking-widest" *ngFor="let cat of product()?.categories">
-                {{ cat.name }}
-              </span>
-              <span class="text-[9px] bg-[#2A2522]/5 border border-[#2A2522]/10 text-[#6B5E57] px-2.5 py-0.5 rounded uppercase font-semibold tracking-widest" *ngIf="product()?.age">
-                Age: {{ product()?.age }}
-              </span>
-            </div>
-
-            <div class="flex items-center gap-6 mb-6">
-              <span class="text-2xl font-mono text-[#E07A5F] font-bold">
-                {{ product()?.price | currency:'EGP ' }}
-              </span>
-              
-              <!-- Refined Stock Indicators -->
-              <div>
-                <span *ngIf="product()?.stockQuantity === 0" class="text-[9px] bg-red-50 border border-red-200 text-red-500 px-3 py-1.5 rounded-lg uppercase font-bold tracking-widest">
-                  Sold Out
-                </span>
-                <span *ngIf="product() && product()!.stockQuantity > 0 && product()!.stockQuantity <= 5" class="text-[9px] bg-amber-50 border border-amber-200 text-amber-600 px-3 py-1.5 rounded-lg uppercase font-bold tracking-widest animate-pulse">
-                  🔥 Only {{ product()?.stockQuantity }} left in stock!
-                </span>
-                <span *ngIf="product() && product()!.stockQuantity > 5" class="text-[9px] bg-emerald-50 border border-emerald-200 text-emerald-600 px-3 py-1.5 rounded-lg uppercase font-bold tracking-widest">
-                  ✓ {{ product()?.stockQuantity }} units available in stock
-                </span>
+            <div class="flex items-center gap-3 pt-1">
+              <div class="flex items-center gap-0.5">
+                <svg *ngFor="let s of getStars(evaluationScore())" class="w-3.5 h-3.5 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
+                <svg *ngFor="let s of getEmptyStars(evaluationScore())" class="w-3.5 h-3.5 text-[#7A6C64]/20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 20 20">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
               </div>
+              <a href="#reviews-anchor" class="text-[10px] font-medium text-[#7A6C64] hover:text-[#D58E6A] underline transition-colors">
+                {{ reviews().length }} Client Appraisals
+              </a>
+            </div>
+          </div>
+
+          <!-- Price & Stock Status -->
+          <div class="flex items-baseline justify-between border-y border-[#7A6C64]/10 py-4">
+            <span class="text-2xl font-mono text-[#5B3A29] font-bold">
+              {{ product()?.price | currency:'EGP ' }}
+            </span>
+
+            <div>
+              <span *ngIf="product()?.stockQuantity === 0" class="text-[8px] bg-red-50 border border-red-200 text-red-500 px-3 py-1 rounded-full uppercase font-bold tracking-widest">
+                Sold Out
+              </span>
+              <span *ngIf="product() && product()!.stockQuantity > 0 && product()!.stockQuantity <= 5" class="text-[8px] bg-amber-50 border border-amber-200 text-amber-700 px-3 py-1 rounded-full uppercase font-bold tracking-widest animate-pulse">
+                🔥 Only {{ product()?.stockQuantity }} remaining
+              </span>
+              <span *ngIf="product() && product()!.stockQuantity > 5" class="text-[8px] bg-emerald-50 border border-emerald-200 text-emerald-700 px-3 py-1 rounded-full uppercase font-bold tracking-widest">
+                ✓ Available
+              </span>
             </div>
           </div>
 
           <!-- Validation Warning -->
-          <div *ngIf="validationError()" class="p-3 bg-red-50 border border-red-200 text-red-500 text-xs rounded-xl">
+          <div *ngIf="validationError()" class="p-3 bg-red-50 border border-red-200 text-red-600 text-xs rounded-xl">
             {{ validationError() }}
           </div>
 
-          <!-- Selection Console -->
-          <div class="space-y-6">
+          <!-- Configurator Console -->
+          <div class="space-y-5">
             <!-- Colors Selector -->
-            <div class="space-y-2.5" *ngIf="colors().length > 0">
-              <label class="text-[9px] uppercase tracking-widest font-bold text-[#E07A5F] block">Select Color *</label>
+            <div class="space-y-2" *ngIf="colors().length > 0">
+              <div class="flex justify-between items-baseline">
+                <label class="text-[9px] uppercase tracking-widest font-bold text-[#7A6C64]">Color</label>
+                <span class="text-[9px] text-[#2C211C] font-semibold">{{ selectedColor() || 'Select Option' }}</span>
+              </div>
               <div class="flex flex-wrap gap-2">
                 <button 
                   *ngFor="let color of colors()"
                   (click)="selectColor(color)"
-                  [ngClass]="{
-                    'active-pill': selectedColor() === color,
-                    'inactive-pill': selectedColor() !== color
-                  }"
-                  class="px-4 py-2 text-[10px] uppercase tracking-widest font-bold border rounded-lg transition-all"
+                  [ngClass]="selectedColor() === color ? 'border-[#5B3A29] bg-[#5B3A29] text-[#FFFDFC]' : 'border-[#7A6C64]/20 bg-transparent text-[#2C211C] hover:border-[#5B3A29]/50'"
+                  class="px-4 py-2 text-[10px] uppercase tracking-widest font-bold border rounded-lg transition-all focus:outline-none"
                 >
                   {{ color }}
                 </button>
@@ -182,17 +213,17 @@
             </div>
 
             <!-- Sizes Selector -->
-            <div class="space-y-2.5" *ngIf="sizes().length > 0">
-              <label class="text-[9px] uppercase tracking-widest font-bold text-[#E07A5F] block">Select Size *</label>
+            <div class="space-y-2" *ngIf="sizes().length > 0">
+              <div class="flex justify-between items-baseline">
+                <label class="text-[9px] uppercase tracking-widest font-bold text-[#7A6C64]">Size</label>
+                <span class="text-[9px] text-[#2C211C] font-semibold">{{ selectedSize() || 'Select Option' }}</span>
+              </div>
               <div class="flex flex-wrap gap-2">
                 <button 
                   *ngFor="let size of sizes()"
                   (click)="selectSize(size)"
-                  [ngClass]="{
-                    'active-pill': selectedSize() === size,
-                    'inactive-pill': selectedSize() !== size
-                  }"
-                  class="px-4 py-2 text-[10px] uppercase tracking-widest font-bold border rounded-lg transition-all"
+                  [ngClass]="selectedSize() === size ? 'border-[#5B3A29] bg-[#5B3A29] text-[#FFFDFC]' : 'border-[#7A6C64]/20 bg-transparent text-[#2C211C] hover:border-[#5B3A29]/50'"
+                  class="px-4 py-2 text-[10px] uppercase tracking-widest font-bold border rounded-lg transition-all focus:outline-none"
                 >
                   {{ size }}
                 </button>
@@ -200,189 +231,369 @@
             </div>
 
             <!-- Quantity Selector -->
-            <div class="space-y-2.5" *ngIf="product() && product()!.stockQuantity > 0">
-              <label class="text-[9px] uppercase tracking-widest font-bold text-[#E07A5F] block">Purchase Quantity</label>
-              <div class="flex items-center gap-4">
-                <div class="flex items-center border border-[#2A2522]/10 bg-[#2A2522]/5 rounded-lg overflow-hidden quantity-wrapper">
-                  <button 
-                    type="button"
-                    (click)="decrementQuantity()"
-                    [disabled]="selectedQuantity() <= 1"
-                    class="px-4 py-2 text-[#2A2522]/60 hover:text-[#2A2522] hover:bg-[#2A2522]/5 disabled:opacity-30 disabled:hover:bg-transparent transition-all text-xs font-mono select-none"
-                  >
-                    －
-                  </button>
-                  <span class="px-6 py-2 text-[11px] font-mono font-bold text-[#2A2522] select-none">
-                    {{ selectedQuantity() }}
-                  </span>
-                  <button 
-                    type="button"
-                    (click)="incrementQuantity()"
-                    [disabled]="selectedQuantity() >= product()!.stockQuantity"
-                    class="px-4 py-2 text-[#2A2522]/60 hover:text-[#2A2522] hover:bg-[#2A2522]/5 disabled:opacity-30 disabled:hover:bg-transparent transition-all text-xs font-mono select-none"
-                  >
-                    ＋
-                  </button>
-                </div>
-                <span class="text-[9px] font-mono text-[#6B5E57] uppercase tracking-widest">
-                  Live Stock: {{ product()?.stockQuantity }} pieces
+            <div class="space-y-2" *ngIf="product() && product()!.stockQuantity > 0">
+              <label class="text-[9px] uppercase tracking-widest font-bold text-[#7A6C64] block">Quantity</label>
+              <div class="flex items-center border border-[#7A6C64]/10 bg-[#FAF6F1] rounded-xl overflow-hidden w-fit">
+                <button 
+                  type="button"
+                  (click)="decrementQuantity()"
+                  [disabled]="selectedQuantity() <= 1"
+                  class="px-4 py-2.5 text-[#2C211C]/60 hover:text-[#2C211C] hover:bg-[#7A6C64]/5 disabled:opacity-30 transition-all text-xs font-mono focus:outline-none"
+                >
+                  －
+                </button>
+                <span class="px-6 py-2.5 text-[11px] font-mono font-bold text-[#2C211C] select-none">
+                  {{ selectedQuantity() }}
                 </span>
+                <button 
+                  type="button"
+                  (click)="incrementQuantity()"
+                  [disabled]="selectedQuantity() >= product()!.stockQuantity"
+                  class="px-4 py-2.5 text-[#2C211C]/60 hover:text-[#2C211C] hover:bg-[#7A6C64]/5 disabled:opacity-30 transition-all text-xs font-mono focus:outline-none"
+                >
+                  ＋
+                </button>
               </div>
             </div>
           </div>
 
-          <!-- Action Buttons Row (Add to Cart, Wishlist, Compare) -->
-          <div class="pt-6 border-t border-[#2A2522]/10 flex gap-3">
+          <!-- Primary Actions (Add to Bag, Buy Now) -->
+          <div class="space-y-3 pt-4 border-t border-[#7A6C64]/10">
+            <div class="flex gap-3">
+              <!-- Add to Bag -->
+              <button 
+                [disabled]="product()?.stockQuantity === 0"
+                (click)="acquireProduct()"
+                class="flex-1 py-4 bg-[#5B3A29] hover:bg-[#704936] text-[#FFFDFC] text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all shadow-sm focus:outline-none disabled:opacity-40 hover:scale-[1.01] active:scale-[0.99]"
+              >
+                Add to Bag
+              </button>
+
+              <!-- Wishlist Heart Button -->
+              <button 
+                (click)="toggleFavorite()"
+                [ngClass]="isFavorite() ? 'bg-red-50 border-red-200 text-red-500 hover:bg-red-100/50' : 'bg-[#FAF6F1] border-[#7A6C64]/15 text-[#2C211C] hover:bg-[#7A6C64]/5'"
+                class="px-4 border rounded-xl flex items-center justify-center transition-all hover:scale-105 active:scale-95 focus:outline-none"
+                title="Add to Favorites"
+              >
+                <svg class="w-4 h-4" [attr.fill]="isFavorite() ? 'currentColor' : 'none'" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                </svg>
+              </button>
+
+              <!-- Compare Scale Button -->
+              <button 
+                (click)="toggleCompare()"
+                [ngClass]="isInCompare() ? 'bg-[#D58E6A]/10 border-[#D58E6A]/20 text-[#D58E6A] hover:bg-[#D58E6A]/20' : 'bg-[#FAF6F1] border-[#7A6C64]/15 text-[#2C211C] hover:bg-[#7A6C64]/5'"
+                class="px-4 border rounded-xl flex items-center justify-center transition-all hover:scale-105 active:scale-95 focus:outline-none"
+                title="Compare Products"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0-17.25a3.75 3.75 0 113.75 3.75 3.75 0 01-3.75-3.75zm0 17.25a3.75 3.75 0 113.75-3.75 3.75 0 01-3.75 3.75M3 7.5h18" />
+                </svg>
+              </button>
+            </div>
+
+            <!-- Buy Now -->
             <button 
               [disabled]="product()?.stockQuantity === 0"
-              (click)="acquireProduct()"
-              class="flex-1 py-4 text-[#FBF9F6] text-xs font-bold uppercase tracking-[0.2em] rounded-xl transition-all flex justify-center items-center gap-2 neon-btn disabled:opacity-50"
+              (click)="buyNow()"
+              class="w-full py-4 border border-[#5B3A29] hover:bg-[#5B3A29]/5 text-[#5B3A29] text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all focus:outline-none disabled:opacity-40 hover:scale-[1.01] active:scale-[0.99]"
             >
-              {{ product()?.stockQuantity === 0 ? 'OUT OF STOCK' : 'Acquire Piece' }}
+              Buy Now
             </button>
 
-            <!-- Wishlist/Favorite Heart Icon Button -->
-            <button 
-              (click)="toggleFavorite()"
-              [ngClass]="isFavorite() ? 'bg-red-50 border-red-200 text-red-500 hover:bg-red-100/50' : 'bg-[#2A2522]/5 border-[#2A2522]/10 text-[#2A2522] hover:bg-[#2A2522]/10'"
-              class="px-4 border rounded-xl flex items-center justify-center transition-all hover:scale-105 active:scale-95"
-              title="Add to Favorites"
-            >
-              <svg class="w-4 h-4" [attr.fill]="isFavorite() ? 'currentColor' : 'none'" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-              </svg>
-            </button>
-
-            <!-- Compare Balance Scale Icon Button -->
-            <button 
-              (click)="toggleCompare()"
-              [ngClass]="isInCompare() ? 'bg-[#E07A5F]/10 border-[#E07A5F]/20 text-[#E07A5F] hover:bg-[#E07A5F]/20' : 'bg-[#2A2522]/5 border-[#2A2522]/10 text-[#2A2522] hover:bg-[#2A2522]/10'"
-              class="px-4 border rounded-xl flex items-center justify-center transition-all hover:scale-105 active:scale-95"
-              title="Compare Products"
-            >
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0-17.25a3.75 3.75 0 113.75 3.75 3.75 0 01-3.75-3.75zm0 17.25a3.75 3.75 0 113.75-3.75 3.75 0 01-3.75 3.75M3 7.5h18" />
-              </svg>
-            </button>
+            <div *ngIf="addedToCart()" class="p-3 bg-emerald-50 border border-emerald-200 text-emerald-600 text-[10px] font-bold uppercase tracking-wider text-center rounded-xl animate-fade-in">
+              ✓ Secured in Bag
+            </div>
           </div>
 
-          <div *ngIf="addedToCart()" class="p-3 bg-emerald-50 border border-emerald-200 text-emerald-600 text-[10px] font-bold uppercase tracking-wider text-center rounded-xl animate-fade-in">
-            ✓ Secured in Bag
+          <!-- Trust Badges Bar under CTA -->
+          <div class="grid grid-cols-2 gap-2.5 pt-4 border-t border-[#7A6C64]/10 text-[9px] text-[#7A6C64]">
+            <div class="flex items-center gap-1.5 font-medium">
+              <span class="text-[#D58E6A]">✓</span> Secure Checkout
+            </div>
+            <div class="flex items-center gap-1.5 font-medium">
+              <span class="text-[#D58E6A]">✓</span> Free Shipping
+            </div>
+            <div class="flex items-center gap-1.5 font-medium">
+              <span class="text-[#D58E6A]">✓</span> Easy Returns
+            </div>
+            <div class="flex items-center gap-1.5 font-medium">
+              <span class="text-[#D58E6A]">✓</span> Cash on Delivery
+            </div>
+          </div>
+
+          <!-- Quick Logistics Details -->
+          <div class="bg-[#FAF6F1] rounded-2xl p-4 space-y-2 text-[10px] text-[#2C211C] border border-[#7A6C64]/5">
+            <div class="flex items-center gap-2">
+              <span class="text-base">🚚</span>
+              <div>
+                <span class="font-bold">Free Delivery</span> Tomorrow
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-base">↩</span>
+              <div>
+                <span class="font-bold">30 Days</span> Easy Returns Window
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Highlights Segment -->
+    <div class="my-16 bg-[#FFFDFC] border border-[#7A6C64]/10 rounded-3xl p-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center shadow-sm">
+      <div class="space-y-1">
+        <span class="text-lg">🌿</span>
+        <h4 class="text-[10px] uppercase tracking-wider font-bold text-[#2C211C]">Premium Materials</h4>
+      </div>
+      <div class="space-y-1">
+        <span class="text-lg">🚚</span>
+        <h4 class="text-[10px] uppercase tracking-wider font-bold text-[#2C211C]">Fast Delivery</h4>
+      </div>
+      <div class="space-y-1">
+        <span class="text-lg">🛡</span>
+        <h4 class="text-[10px] uppercase tracking-wider font-bold text-[#2C211C]">Secure Payment</h4>
+      </div>
+      <div class="space-y-1">
+        <span class="text-lg">↩</span>
+        <h4 class="text-[10px] uppercase tracking-wider font-bold text-[#2C211C]">Easy Returns</h4>
+      </div>
+    </div>
+
+    <!-- Product Story Section -->
+    <div class="my-16 space-y-8 text-center max-w-4xl mx-auto">
+      <div class="space-y-2">
+        <span class="tracking-widest font-mono text-[9px] uppercase font-bold text-[#D58E6A]">The Curation Narrative</span>
+        <h2 class="text-3xl font-serif-luxury text-[#2C211C] uppercase font-light tracking-wide">Designed for Everyday Comfort</h2>
+      </div>
+      
+      <div class="aspect-[16/9] w-full rounded-3xl overflow-hidden bg-[#FAF6F1] border border-[#7A6C64]/10 relative group">
+        <img [src]="resolveImageUrl(product()?.imageUrl || '')" [alt]="product()?.title" class="w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-[#2C211C]/10 mix-blend-multiply"></div>
+      </div>
+
+      <p class="text-sm text-[#7A6C64] leading-relaxed font-light max-w-2xl mx-auto italic px-4">
+        "{{ product()?.description }}"
+      </p>
+    </div>
+
+    <!-- Feature Cards Section -->
+    <div class="my-16 space-y-6">
+      <h3 class="text-center text-xs font-bold uppercase tracking-widest text-[#D58E6A]">Key Specimen Credentials</h3>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div class="bg-[#FFFDFC] border border-[#7A6C64]/10 rounded-2xl p-6 text-center space-y-2.5 shadow-sm">
+          <span class="text-2xl block">🌿</span>
+          <h5 class="text-[11px] uppercase tracking-wider font-bold text-[#2C211C]">Organic Material</h5>
+          <p class="text-[10px] text-[#7A6C64] font-light leading-relaxed">Soft, natural fibers selected for delicate skin contact.</p>
+        </div>
+        <div class="bg-[#FFFDFC] border border-[#7A6C64]/10 rounded-2xl p-6 text-center space-y-2.5 shadow-sm">
+          <span class="text-2xl block">🚚</span>
+          <h5 class="text-[11px] uppercase tracking-wider font-bold text-[#2C211C]">Fast Logistics</h5>
+          <p class="text-[10px] text-[#7A6C64] font-light leading-relaxed">Swift dispatched shipping arriving within 1-2 days.</p>
+        </div>
+        <div class="bg-[#FFFDFC] border border-[#7A6C64]/10 rounded-2xl p-6 text-center space-y-2.5 shadow-sm">
+          <span class="text-2xl block">🛡</span>
+          <h5 class="text-[11px] uppercase tracking-wider font-bold text-[#2C211C]">Tested Quality</h5>
+          <p class="text-[10px] text-[#7A6C64] font-light leading-relaxed">Rigorous material testing ensuring long-lasting durability.</p>
+        </div>
+        <div class="bg-[#FFFDFC] border border-[#7A6C64]/10 rounded-2xl p-6 text-center space-y-2.5 shadow-sm">
+          <span class="text-2xl block">↩</span>
+          <h5 class="text-[11px] uppercase tracking-wider font-bold text-[#2C211C]">Secure Returns</h5>
+          <p class="text-[10px] text-[#7A6C64] font-light leading-relaxed">Worry-free returns window extending up to 30 days.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Specifications Accordion Section -->
+    <div class="my-16 max-w-2xl mx-auto space-y-3">
+      <h3 class="text-center text-xs font-bold uppercase tracking-widest text-[#D58E6A] mb-6">Technical Specifications</h3>
+      
+      <!-- Materials Accordion -->
+      <div class="border border-[#7A6C64]/10 rounded-2xl bg-[#FFFDFC] overflow-hidden transition-all shadow-sm">
+        <button 
+          (click)="toggleAccordion('materials')"
+          class="w-full px-6 py-4 flex justify-between items-center text-xs font-bold text-[#2C211C] uppercase tracking-widest focus:outline-none"
+        >
+          <span>Composition &amp; Materials</span>
+          <span class="text-sm">{{ activeAccordion() === 'materials' ? '▲' : '▼' }}</span>
+        </button>
+        <div 
+          [ngClass]="activeAccordion() === 'materials' ? 'max-h-[300px] border-t border-[#7A6C64]/10 p-6' : 'max-h-0'" 
+          class="overflow-hidden transition-all duration-300 bg-[#FAF6F1]/30"
+        >
+          <div class="flex flex-wrap gap-2">
+            <span *ngFor="let mat of product()?.materials" class="text-[10px] uppercase font-bold text-[#5B3A29] bg-[#D58E6A]/10 border border-[#D58E6A]/20 px-3 py-1 rounded-lg">
+              {{ mat }}
+            </span>
+            <span *ngIf="!product()?.materials || product()!.materials!.length === 0" class="text-xs text-[#7A6C64] italic">General cotton &amp; synthetic blend.</span>
           </div>
         </div>
       </div>
 
-      <!-- Bottom Layout Tabs/Sections -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 pt-12 border-t border-[#2A2522]/10 mt-12">
-        <!-- Specs & Profile -->
-        <div class="space-y-6">
+      <!-- Care Accordion -->
+      <div class="border border-[#7A6C64]/10 rounded-2xl bg-[#FFFDFC] overflow-hidden transition-all shadow-sm">
+        <button 
+          (click)="toggleAccordion('care')"
+          class="w-full px-6 py-4 flex justify-between items-center text-xs font-bold text-[#2C211C] uppercase tracking-widest focus:outline-none"
+        >
+          <span>Care Instructions</span>
+          <span class="text-sm">{{ activeAccordion() === 'care' ? '▲' : '▼' }}</span>
+        </button>
+        <div 
+          [ngClass]="activeAccordion() === 'care' ? 'max-h-[300px] border-t border-[#7A6C64]/10 p-6' : 'max-h-0'" 
+          class="overflow-hidden transition-all duration-300 bg-[#FAF6F1]/30"
+        >
+          <p class="text-xs text-[#7A6C64] leading-relaxed font-light">
+            Machine wash inside out in cold water on a delicate cycle. Do not bleach. Dry flat or tumble dry on low settings. Cool iron if necessary.
+          </p>
+        </div>
+      </div>
+
+      <!-- Dimensions Accordion -->
+      <div class="border border-[#7A6C64]/10 rounded-2xl bg-[#FFFDFC] overflow-hidden transition-all shadow-sm">
+        <button 
+          (click)="toggleAccordion('dimensions')"
+          class="w-full px-6 py-4 flex justify-between items-center text-xs font-bold text-[#2C211C] uppercase tracking-widest focus:outline-none"
+        >
+          <span>Dimensions &amp; Sizing Specs</span>
+          <span class="text-sm">{{ activeAccordion() === 'dimensions' ? '▲' : '▼' }}</span>
+        </button>
+        <div 
+          [ngClass]="activeAccordion() === 'dimensions' ? 'max-h-[300px] border-t border-[#7A6C64]/10 p-6' : 'max-h-0'" 
+          class="overflow-hidden transition-all duration-300 bg-[#FAF6F1]/30"
+        >
+          <div class="space-y-2 text-xs text-[#7A6C64] font-light">
+            <div class="flex justify-between border-b border-[#7A6C64]/5 pb-1">
+              <span>Standard Sizing Package</span>
+              <span class="font-bold text-[#2C211C]">{{ product()?.shippingSize || 'Standard' }}</span>
+            </div>
+            <div class="flex justify-between">
+              <span>Specimen Age Target</span>
+              <span class="font-bold text-[#2C211C]">{{ product()?.age || 'General / All Ages' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shipping Accordion -->
+      <div class="border border-[#7A6C64]/10 rounded-2xl bg-[#FFFDFC] overflow-hidden transition-all shadow-sm">
+        <button 
+          (click)="toggleAccordion('shipping')"
+          class="w-full px-6 py-4 flex justify-between items-center text-xs font-bold text-[#2C211C] uppercase tracking-widest focus:outline-none"
+        >
+          <span>Shipping &amp; Logistics</span>
+          <span class="text-sm">{{ activeAccordion() === 'shipping' ? '▲' : '▼' }}</span>
+        </button>
+        <div 
+          [ngClass]="activeAccordion() === 'shipping' ? 'max-h-[300px] border-t border-[#7A6C64]/10 p-6' : 'max-h-0'" 
+          class="overflow-hidden transition-all duration-300 bg-[#FAF6F1]/30"
+        >
+          <p class="text-xs text-[#7A6C64] leading-relaxed font-light">
+            Orders placed before 2:00 PM are dispatched same-day. Courier delivery takes 1-2 business days across major cities in Egypt. Free shipping is automatically applied on orders above EGP 2000.
+          </p>
+        </div>
+      </div>
+
+      <!-- Returns Accordion -->
+      <div class="border border-[#7A6C64]/10 rounded-2xl bg-[#FFFDFC] overflow-hidden transition-all shadow-sm">
+        <button 
+          (click)="toggleAccordion('returns')"
+          class="w-full px-6 py-4 flex justify-between items-center text-xs font-bold text-[#2C211C] uppercase tracking-widest focus:outline-none"
+        >
+          <span>Returns &amp; Exchanges Policy</span>
+          <span class="text-sm">{{ activeAccordion() === 'returns' ? '▲' : '▼' }}</span>
+        </button>
+        <div 
+          [ngClass]="activeAccordion() === 'returns' ? 'max-h-[300px] border-t border-[#7A6C64]/10 p-6' : 'max-h-0'" 
+          class="overflow-hidden transition-all duration-300 bg-[#FAF6F1]/30"
+        >
+          <p class="text-xs text-[#7A6C64] leading-relaxed font-light">
+            We offer full refunds and exchanges within 30 days of delivery, provided items are unworn, in original tags, and in their pristine original box. Contact support or use the customer panel to trigger returns.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Client Appraisals / Reviews Section -->
+    <div id="reviews-anchor" class="my-16 border-t border-[#7A6C64]/15 pt-16">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        
+        <!-- Left Side: Summary Breakdown (4 cols on LG) -->
+        <div class="lg:col-span-4 space-y-6">
           <div class="space-y-2">
-            <h4 class="text-[10px] uppercase tracking-widest font-bold text-[#E07A5F]">Asset Profile</h4>
-            <p class="text-xs text-[#6B5E57] leading-relaxed font-light">
-              {{ product()?.description }}
-            </p>
+            <span class="tracking-widest font-mono text-[9px] uppercase font-bold text-[#D58E6A]">Performance Score</span>
+            <h3 class="text-3xl font-serif-luxury text-[#2C211C] uppercase font-light tracking-wide">Client Appraisals</h3>
           </div>
 
-          <!-- Materials & Seasonality -->
-          <div class="grid grid-cols-2 gap-6 pt-4">
-            <div class="space-y-2" *ngIf="product()?.materials && product()!.materials!.length > 0">
-              <h4 class="text-[10px] uppercase tracking-widest font-bold text-[#E07A5F]">Composition</h4>
-              <div class="flex flex-wrap gap-1.5">
-                <span 
-                  *ngFor="let mat of product()?.materials"
-                  class="text-[9px] font-medium uppercase tracking-wider text-[#2A2522] border border-[#2A2522]/10 bg-[#2A2522]/5 px-2.5 py-1 rounded-lg hover:border-[#E07A5F]/40 transition-colors"
-                >
-                  {{ mat }}
-                </span>
-              </div>
+          <!-- Average Score Block -->
+          <div class="bg-[#FFFDFC] border border-[#7A6C64]/10 rounded-3xl p-6 text-center space-y-3 shadow-sm">
+            <div class="text-4xl font-mono font-bold text-[#5B3A29]">{{ evaluationScore() | number:'1.1-1' }}</div>
+            
+            <div class="flex justify-center items-center gap-0.5">
+              <svg *ngFor="let s of getStars(evaluationScore())" class="w-4.5 h-4.5 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+              </svg>
+              <svg *ngFor="let s of getEmptyStars(evaluationScore())" class="w-4.5 h-4.5 text-[#7A6C64]/20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 20 20">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+              </svg>
             </div>
 
-            <div class="space-y-2" *ngIf="product()?.seasonTags && product()!.seasonTags!.length > 0">
-              <h4 class="text-[10px] uppercase tracking-widest font-bold text-[#E07A5F]">Seasonality</h4>
-              <div class="flex flex-wrap gap-1.5">
-                <span 
-                  *ngFor="let tag of product()?.seasonTags"
-                  class="text-[9px] font-medium uppercase tracking-wider text-[#E07A5F] bg-[#E07A5F]/10 px-2.5 py-1 rounded-lg"
-                >
-                  {{ tag }}
-                </span>
+            <p class="text-[10px] text-[#7A6C64] uppercase tracking-widest font-mono font-medium">Based on {{ reviews().length }} Verified Reviews</p>
+          </div>
+
+          <!-- Dynamic Stars Percentage Breakdown -->
+          <div class="space-y-2.5">
+            <div *ngFor="let row of starPercentages()" class="flex items-center gap-3 text-xs text-[#2C211C]">
+              <span class="w-10 text-right font-mono font-bold">{{ row.stars }} ★</span>
+              <div class="flex-1 h-2 bg-[#7A6C64]/10 rounded-full overflow-hidden">
+                <div class="h-full bg-[#5B3A29] rounded-full transition-all duration-500" [style.width]="row.pct + '%'"></div>
               </div>
+              <span class="w-12 text-left font-mono text-[#7A6C64]">{{ row.pct }}% ({{ row.count }})</span>
             </div>
           </div>
         </div>
 
-        <!-- Appraisals / Reviews -->
-        <div class="space-y-6">
-          <div class="flex justify-between items-center">
-            <h4 class="text-[10px] uppercase tracking-widest font-bold text-[#E07A5F]">Client Appraisals</h4>
-            <div class="flex items-center gap-0.5">
-              <svg 
-                *ngFor="let s of getStars(evaluationScore())" 
-                class="w-3.5 h-3.5 text-amber-400 drop-shadow-[0_0_3px_rgba(251,191,36,0.5)]" 
-                fill="currentColor" 
-                viewBox="0 0 20 20"
-              >
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-              </svg>
-              <svg 
-                *ngFor="let s of getEmptyStars(evaluationScore())" 
-                class="w-3.5 h-3.5 text-[#2A2522]/20" 
-                fill="none" 
-                stroke="currentColor" 
-                stroke-width="1.5" 
-                viewBox="0 0 20 20"
-              >
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-              </svg>
-              <span class="text-[9px] font-mono text-[#6B5E57] ml-2">({{ reviews().length }})</span>
-            </div>
+        <!-- Right Side: Reviews Ledger (8 cols on LG) -->
+        <div class="lg:col-span-8 space-y-6">
+          <div class="flex justify-between items-baseline border-b border-[#7A6C64]/10 pb-3">
+            <h4 class="text-[10px] uppercase tracking-widest font-bold text-[#2C211C]">Appraisals ledger</h4>
+            <span class="text-[10px] font-mono text-[#7A6C64]">{{ reviews().length }} Reviews Available</span>
           </div>
 
-          <div class="space-y-4 max-h-[300px] overflow-y-auto custom-scrollbar pr-2">
-            <div 
-              *ngFor="let r of reviews()" 
-              class="review-card"
-            >
-              <div class="flex justify-between items-baseline mb-1">
-                <span class="text-[10px] font-bold text-[#2A2522] tracking-wide">{{ r.reviewerName }}</span>
-                <span class="text-[8px] font-mono text-[#6B5E57]/60">{{ r.createdAt | date:'mediumDate' }}</span>
-              </div>
+          <div *ngIf="reviews().length === 0" class="p-8 border border-dashed border-[#7A6C64]/20 rounded-2xl text-center">
+            <p class="text-xs text-[#7A6C64] italic">No appraisals recorded for this piece yet. Share your experience below.</p>
+          </div>
 
-              <div class="flex items-center gap-0.5 mb-2">
-                <svg 
-                  *ngFor="let s of getStars(r.rating)" 
-                  class="w-3 h-3 text-amber-400 drop-shadow-[0_0_2px_rgba(251,191,36,0.4)]" 
-                  fill="currentColor" 
-                  viewBox="0 0 20 20"
-                >
+          <div *ngIf="reviews().length > 0" class="space-y-4 max-h-[450px] overflow-y-auto pr-2 custom-scrollbar">
+            <div *ngFor="let r of reviews()" class="bg-[#FFFDFC] border border-[#7A6C64]/10 rounded-2xl p-5 space-y-2.5 shadow-sm">
+              <div class="flex justify-between items-baseline">
+                <span class="text-[10px] font-bold text-[#2C211C] uppercase tracking-wide">{{ r.reviewerName }}</span>
+                <span class="text-[8px] font-mono text-[#7A6C64]/65">{{ r.createdAt | date:'mediumDate' }}</span>
+              </div>
+              <div class="flex gap-0.5">
+                <svg *ngFor="let s of getStars(r.rating)" class="w-3.5 h-3.5 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                 </svg>
-                <svg 
-                  *ngFor="let s of getEmptyStars(r.rating)" 
-                  class="w-3 h-3 text-[#2A2522]/10" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  stroke-width="1.5" 
-                  viewBox="0 0 20 20"
-                >
+                <svg *ngFor="let s of getEmptyStars(r.rating)" class="w-3.5 h-3.5 text-[#7A6C64]/20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 20 20">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                 </svg>
               </div>
-
-              <p class="text-[10px] text-[#6B5E57] leading-relaxed font-light">
-                {{ r.comment }}
-              </p>
+              <p class="text-[11px] text-[#7A6C64] leading-relaxed font-light">"{{ r.comment }}"</p>
             </div>
           </div>
 
-          <!-- Submit Review Form -->
-          <div class="p-5 bg-white/50 border border-[#2A2522]/5 rounded-2xl space-y-4 mt-6">
-            <h5 class="text-[9px] uppercase tracking-widest font-bold text-[#E07A5F]">Post Your Appraisal</h5>
+          <!-- Write review console -->
+          <div class="bg-[#FFFDFC] border border-[#7A6C64]/10 rounded-3xl p-6 space-y-4 shadow-sm">
+            <h5 class="text-[9px] uppercase tracking-widest font-bold text-[#5B3A29]">Submit Client Appraisal</h5>
             
             <div *ngIf="authService.currentUser() !== null; else loginPrompt">
               <div class="space-y-3">
                 <div class="flex items-center gap-2">
-                  <span class="text-[8px] uppercase tracking-widest font-mono text-[#6B5E57]">Rating:</span>
+                  <span class="text-[8px] uppercase tracking-widest font-mono text-[#7A6C64]">Score:</span>
                   <div class="flex gap-1">
                     <button 
                       *ngFor="let star of [1, 2, 3, 4, 5]" 
@@ -390,12 +601,7 @@
                       (click)="newRating.set(star)"
                       class="text-xs transition-transform hover:scale-125 focus:outline-none"
                     >
-                      <svg 
-                        class="w-4 h-4" 
-                        [ngClass]="star <= newRating() ? 'text-amber-400 drop-shadow-[0_0_3px_rgba(251,191,36,0.5)]' : 'text-[#2A2522]/20'" 
-                        fill="currentColor" 
-                        viewBox="0 0 20 20"
-                      >
+                      <svg class="w-4 h-4" [ngClass]="star <= newRating() ? 'text-amber-400' : 'text-[#7A6C64]/20'" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                       </svg>
                     </button>
@@ -404,22 +610,18 @@
 
                 <textarea 
                   [(ngModel)]="newComment"
-                  placeholder="Share your thoughts on the tailoring, fabric composition, and overall fit..." 
+                  placeholder="Share details on the materials quality, fit accuracy, and shipping duration..." 
                   rows="3"
-                  class="w-full p-3 bg-white border border-[#2A2522]/10 rounded-xl text-xs text-[#2A2522] placeholder-[#6B5E57]/40 focus:outline-none focus:border-[#E07A5F]/50 transition-colors"
+                  class="w-full p-4 bg-[#FAF6F1]/50 border border-[#7A6C64]/25 rounded-2xl text-xs text-[#2C211C] placeholder-[#7A6C64]/40 focus:outline-none focus:border-[#5B3A29] focus:bg-[#FFFDFC] transition-all"
                 ></textarea>
 
-                <div *ngIf="reviewError()" class="text-[9px] uppercase tracking-wider text-red-600 font-bold font-mono">
-                  ⚠ {{ reviewError() }}
-                </div>
-                <div *ngIf="reviewSuccess()" class="text-[9px] uppercase tracking-wider text-emerald-600 font-bold font-mono">
-                  ✓ {{ reviewSuccess() }}
-                </div>
+                <div *ngIf="reviewError()" class="text-[9px] uppercase tracking-wider text-red-600 font-bold font-mono">⚠ {{ reviewError() }}</div>
+                <div *ngIf="reviewSuccess()" class="text-[9px] uppercase tracking-wider text-emerald-600 font-bold font-mono">✓ {{ reviewSuccess() }}</div>
 
                 <button 
                   [disabled]="submittingReview()"
                   (click)="submitReview()"
-                  class="w-full py-2 bg-[#2A2522] hover:bg-[#E07A5F] disabled:opacity-50 text-white text-[9px] font-bold uppercase tracking-widest rounded-xl transition-all shadow-sm font-mono"
+                  class="w-full py-3 bg-[#5B3A29] hover:bg-[#704936] disabled:opacity-50 text-[#FFFDFC] text-[9px] font-bold uppercase tracking-widest rounded-xl transition-all shadow-sm focus:outline-none hover:scale-[1.01] active:scale-[0.99]"
                 >
                   {{ submittingReview() ? 'Transmitting...' : 'Submit Appraisal' }}
                 </button>
@@ -428,219 +630,232 @@
 
             <ng-template #loginPrompt>
               <div class="text-center py-4">
-                <p class="text-[10px] text-[#6B5E57] uppercase tracking-widest font-light mb-2">Authenticity required to leave reviews</p>
-                <p class="text-xs text-[#E07A5F] font-bold">Please log in to your account</p>
+                <p class="text-[10px] text-[#7A6C64] uppercase tracking-widest font-light mb-2">Authenticity required to leave reviews</p>
+                <p class="text-xs text-[#5B3A29] font-bold">Please log in to your account</p>
               </div>
             </ng-template>
           </div>
         </div>
-      </div>
 
-      <!-- Placed Orders Section -->
-      <div class="mt-12 pt-12 border-t border-[#2A2522]/10">
-        <h4 class="text-[10px] uppercase tracking-widest font-bold text-[#E07A5F] mb-6">Your Placed Orders</h4>
-        
-        <div *ngIf="loadingOrders()" class="flex justify-center items-center py-8">
-          <span class="animate-spin rounded-full h-6 w-6 border-b-2 border-[#E07A5F]"></span>
-        </div>
-
-        <div *ngIf="!loadingOrders() && myProductOrders().length === 0" class="p-6 border border-dashed border-[#2A2522]/10 rounded-xl text-center">
-          <p class="text-xs text-[#6B5E57]/60 tracking-wide">You haven't placed any orders for this piece yet.</p>
-        </div>
-
-        <div *ngIf="!loadingOrders() && myProductOrders().length > 0" class="overflow-x-auto custom-scrollbar">
-          <table class="orders-table">
-            <thead>
-              <tr>
-                <th>Order Number</th>
-                <th>Placed Date</th>
-                <th>Quantity Placed</th>
-                <th>Total Price</th>
-                <th>Order Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let order of myProductOrders()">
-                <td class="font-mono text-[#E07A5F] font-semibold">{{ order.orderNumber }}</td>
-                <td>{{ order.createdAt | date:'mediumDate' }}</td>
-                <td class="font-mono">{{ getProductQtyInOrder(order) }}</td>
-                <td class="font-mono text-[#2A2522] font-semibold">{{ order.totalPrice | currency:'EGP ' }}</td>
-                <td>
-                  <span class="status-badge" [ngClass]="{
-                    'status-pending': order.status === 'PendingVerification',
-                    'status-completed': order.status === 'Delivered',
-                    'status-shipping': order.status === 'ConfirmedPreparing' || order.status === 'OutForDelivery',
-                    'status-returned': order.status === 'ReturnedRejected'
-                  }">
-                    {{ order.status }}
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Similar Specimen Panel (Related Products) -->
-      <div *ngIf="similarProducts().length > 0" class="mt-16 border-t border-[#2A2522]/10 pt-12">
-        <span class="tracking-widest font-mono text-[9px] uppercase font-bold text-[#E07A5F] block mb-2 text-center">
-          Complementary Curation
-        </span>
-        <h3 class="text-2xl font-serif-luxury font-light text-[#2A2522] tracking-wider uppercase mb-8 text-center">
-          Related Specimen
-        </h3>
-
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-          <div 
-            *ngFor="let sim of similarProducts()" 
-            class="group cursor-pointer relative"
-            (click)="fetchProduct(sim.id)"
-          >
-            <!-- Image Card wrapper -->
-            <div class="aspect-[3/4] w-full rounded-2xl overflow-hidden bg-[#2A2522]/5 border border-[#2A2522]/5 relative mb-3">
-              <img 
-                [src]="resolveImageUrl(sim.imageUrl || '')" 
-                [alt]="sim.title" 
-                class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" 
-              />
-              <span 
-                *ngIf="sim.stockQuantity === 0" 
-                class="absolute top-3 left-3 bg-red-50 border border-red-200 text-red-500 text-[7px] uppercase tracking-widest font-bold px-2 py-0.5 rounded-sm"
-              >
-                Sold Out
-              </span>
-            </div>
-
-            <!-- Metadata -->
-            <div class="space-y-1">
-              <h4 class="text-[10px] text-[#2A2522] uppercase tracking-wider font-bold truncate group-hover:text-[#E07A5F] transition-colors">
-                {{ sim.title }}
-              </h4>
-              <span class="text-[9px] font-mono text-[#E07A5F] font-semibold block">
-                {{ sim.price | currency:'EGP ' }}
-              </span>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
 
-    <!-- Floating Compare Bar -->
-    <div 
-      *ngIf="wishlistCompareService.compareList().length > 0" 
-      class="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-[#FAF6F0]/95 backdrop-blur-md border border-[#2A2522]/15 px-6 py-4 rounded-3xl shadow-2xl flex items-center gap-6 animate-slide-up"
-    >
-      <div class="flex items-center gap-3">
-        <span class="text-[9px] uppercase tracking-widest font-black text-[#2A2522]">Compare Deck</span>
-        <span class="text-[8px] bg-[#E07A5F] text-white px-2 py-0.5 rounded-full font-bold">
-          {{ wishlistCompareService.compareList().length }} / 2
-        </span>
+    <!-- Placed Orders Section -->
+    <div class="my-16 border-t border-[#7A6C64]/15 pt-16">
+      <h4 class="text-[10px] uppercase tracking-widest font-bold text-[#2C211C] mb-6">Your Placed Orders</h4>
+      
+      <div *ngIf="loadingOrders()" class="flex justify-center items-center py-8">
+        <span class="animate-spin rounded-full h-6 w-6 border-b-2 border-[#5B3A29]"></span>
       </div>
 
-      <div class="flex gap-2">
-        <div 
-          *ngFor="let item of wishlistCompareService.compareList()" 
-          class="flex items-center gap-2 bg-[#2A2522]/5 px-2.5 py-1.5 rounded-xl border border-[#2A2522]/5"
-        >
-          <img [src]="resolveImageUrl(item.imageUrl || '')" class="w-6 h-6 object-cover rounded-lg" />
-          <span class="text-[9px] text-[#2A2522] max-w-[80px] truncate font-semibold">{{ item.title }}</span>
-          <button (click)="wishlistCompareService.removeFromCompare(item.id)" class="text-[#8A817C] hover:text-[#2A2522] text-[10px] font-bold ml-1">✕</button>
-        </div>
+      <div *ngIf="!loadingOrders() && myProductOrders().length === 0" class="p-6 border border-dashed border-[#7A6C64]/10 rounded-xl text-center">
+        <p class="text-xs text-[#7A6C64]/60 tracking-wide">You haven't placed any orders for this piece yet.</p>
       </div>
 
-      <div class="flex gap-2.5">
-        <button 
-          [disabled]="wishlistCompareService.compareList().length < 2"
-          (click)="showCompareModal.set(true)"
-          class="px-4 py-2 bg-[#E07A5F] hover:bg-[#D4633A] disabled:opacity-50 text-white text-[9px] font-bold uppercase tracking-widest rounded-xl transition-all"
-        >
-          Compare Now
-        </button>
-        <button 
-          (click)="wishlistCompareService.clearCompare()"
-          class="px-3 py-2 border border-[#2A2522]/10 hover:bg-[#2A2522]/5 text-[#2A2522] text-[9px] font-bold uppercase tracking-widest rounded-xl transition-all"
-        >
-          Clear
-        </button>
-      </div>
-    </div>
-
-    <!-- Side-by-Side Comparison Modal -->
-    <div 
-      *ngIf="showCompareModal()" 
-      class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#2A2522]/40 backdrop-blur-md transition-all duration-300"
-      (click)="showCompareModal.set(false)"
-    >
-      <div 
-        class="w-full max-w-3xl bg-[#FBF9F6]/95 border border-[#2A2522]/10 rounded-3xl p-6 shadow-2xl space-y-6 text-left relative"
-        (click)="$event.stopPropagation()"
-      >
-        <div class="flex justify-between items-center border-b border-[#2A2522]/5 pb-3">
-          <h3 class="text-xs font-black uppercase tracking-widest text-[#E07A5F]">Specimen Comparison Engine</h3>
-          <button (click)="showCompareModal.set(false)" class="text-[#8A817C] hover:text-[#2A2522] text-xs">✕</button>
-        </div>
-
-        <div class="grid grid-cols-2 gap-8">
-          <div 
-            *ngFor="let item of wishlistCompareService.compareList(); let idx = index" 
-            class="flex flex-col space-y-4 border-r border-[#2A2522]/5 pr-4 last:border-r-0 last:pr-0"
-          >
-            <div class="aspect-square rounded-2xl overflow-hidden bg-[#2A2522]/5 border border-[#2A2522]/5 relative">
-              <img [src]="resolveImageUrl(item.imageUrl || '')" [alt]="item.title" class="w-full h-full object-cover" />
-            </div>
-            
-            <div>
-              <span class="text-[8px] uppercase tracking-widest font-mono font-bold text-[#E07A5F] block mb-1">Specimen {{ idx + 1 }}</span>
-              <h4 class="text-lg font-serif-luxury font-light text-[#2A2522] uppercase truncate">{{ item.title }}</h4>
-              <span class="text-sm font-mono text-[#E07A5F] font-bold block mt-1">{{ item.price | currency:'EGP ' }}</span>
-            </div>
-
-            <div class="space-y-2.5 pt-3 border-t border-[#2A2522]/5 text-[10px]">
-              <div class="flex justify-between">
-                <span class="text-[#8A817C] uppercase tracking-wider font-semibold">Category</span>
-                <span class="text-[#2A2522] uppercase font-bold">{{ item.mainCategory }} / {{ item.subCategory }}</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="text-[#8A817C] uppercase tracking-wider font-semibold">Availability</span>
-                <span 
-                  class="font-bold uppercase tracking-widest text-[8px] px-2 py-0.5 rounded-sm"
-                  [ngClass]="item.stockQuantity > 0 ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-700'"
-                >
-                  {{ item.stockQuantity > 0 ? 'In Stock (' + item.stockQuantity + ')' : 'Sold Out' }}
+      <div *ngIf="!loadingOrders() && myProductOrders().length > 0" class="overflow-x-auto custom-scrollbar">
+        <table class="orders-table">
+          <thead>
+            <tr>
+              <th>Order Number</th>
+              <th>Placed Date</th>
+              <th>Quantity Placed</th>
+              <th>Total Price</th>
+              <th>Order Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let order of myProductOrders()">
+              <td class="font-mono text-[#5B3A29] font-semibold">{{ order.orderNumber }}</td>
+              <td>{{ order.createdAt | date:'mediumDate' }}</td>
+              <td class="font-mono">{{ getProductQtyInOrder(order) }}</td>
+              <td class="font-mono text-[#2C211C] font-semibold">{{ order.totalPrice | currency:'EGP ' }}</td>
+              <td>
+                <span class="status-badge" [ngClass]="{
+                  'status-pending': order.status === 'PendingVerification',
+                  'status-completed': order.status === 'Delivered',
+                  'status-shipping': order.status === 'ConfirmedPreparing' || order.status === 'OutForDelivery',
+                  'status-returned': order.status === 'ReturnedRejected'
+                }">
+                  {{ order.status }}
                 </span>
-              </div>
-              <div class="flex flex-col gap-1">
-                <span class="text-[#8A817C] uppercase tracking-wider font-semibold">Colors</span>
-                <div class="flex flex-wrap gap-1">
-                  <span *ngFor="let c of item.colors" class="text-[8px] bg-[#2A2522]/5 border border-[#2A2522]/5 px-2 py-0.5 rounded uppercase font-bold">{{ c }}</span>
-                  <span *ngIf="!item.colors || item.colors.length === 0" class="text-[#8A817C] italic">None</span>
-                </div>
-              </div>
-              <div class="flex flex-col gap-1">
-                <span class="text-[#8A817C] uppercase tracking-wider font-semibold">Sizes</span>
-                <div class="flex flex-wrap gap-1">
-                  <span *ngFor="let s of item.sizes" class="text-[8px] bg-[#2A2522]/5 border border-[#2A2522]/5 px-2 py-0.5 rounded uppercase font-bold">{{ s }}</span>
-                  <span *ngIf="!item.sizes || item.sizes.length === 0" class="text-[#8A817C] italic">None</span>
-                </div>
-              </div>
-              <div class="flex flex-col gap-1">
-                <span class="text-[#8A817C] uppercase tracking-wider font-semibold">Materials</span>
-                <div class="flex flex-wrap gap-1">
-                  <span *ngFor="let m of item.materials" class="text-[8px] bg-[#E07A5F]/10 text-[#E07A5F] px-2 py-0.5 rounded uppercase font-bold">{{ m }}</span>
-                  <span *ngIf="!item.materials || item.materials.length === 0" class="text-[#8A817C] italic">Unspecified</span>
-                </div>
-              </div>
-            </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-            <button 
-              (click)="showCompareModal.set(false); fetchProduct(item.id)"
-              class="w-full py-2.5 bg-[#2A2522] hover:bg-[#E07A5F] text-[#FBF9F6] text-[9px] font-bold uppercase tracking-widest rounded-xl transition-all"
+    <!-- Recommended Specimen Section -->
+    <div *ngIf="similarProducts().length > 0" class="my-16 border-t border-[#7A6C64]/15 pt-16">
+      <span class="tracking-widest font-mono text-[9px] uppercase font-bold text-[#D58E6A] block mb-2 text-center">
+        Complementary Curation
+      </span>
+      <h3 class="text-2xl font-serif-luxury font-light text-[#2C211C] tracking-wider uppercase mb-8 text-center">
+        Related Specimen
+      </h3>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div 
+          *ngFor="let sim of similarProducts()" 
+          class="group cursor-pointer relative"
+          (click)="fetchProduct(sim.id)"
+        >
+          <!-- Image Card -->
+          <div class="aspect-[3/4] w-full rounded-2xl overflow-hidden bg-[#FAF6F1] border border-[#7A6C64]/10 relative mb-3 overflow-hidden shadow-sm hover-card-transition">
+            <img 
+              [src]="resolveImageUrl(sim.imageUrl || '')" 
+              [alt]="sim.title" 
+              class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" 
+            />
+            <span 
+              *ngIf="sim.stockQuantity === 0" 
+              class="absolute top-3 left-3 bg-red-50 border border-red-200 text-red-500 text-[7px] uppercase tracking-widest font-bold px-2 py-0.5 rounded-sm"
             >
-              View Details Sheet
-            </button>
+              Sold Out
+            </span>
+          </div>
+
+          <!-- Metadata -->
+          <div class="space-y-1">
+            <h4 class="text-[10px] text-[#2C211C] uppercase tracking-wider font-bold truncate group-hover:text-[#D58E6A] transition-colors">
+              {{ sim.title }}
+            </h4>
+            <span class="text-[9px] font-mono text-[#D58E6A] font-semibold block">
+              {{ sim.price | currency:'EGP ' }}
+            </span>
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Floating Compare Bar -->
+  <div 
+    *ngIf="wishlistCompareService.compareList().length > 0" 
+    class="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-[#FFFDFC]/95 backdrop-blur-md border border-[#7A6C64]/15 px-6 py-4 rounded-3xl shadow-2xl flex items-center gap-6 animate-slide-up"
+  >
+    <div class="flex items-center gap-3">
+      <span class="text-[9px] uppercase tracking-widest font-black text-[#2C211C]">Compare Deck</span>
+      <span class="text-[8px] bg-[#D58E6A] text-[#FFFDFC] px-2 py-0.5 rounded-full font-bold">
+        {{ wishlistCompareService.compareList().length }} / 2
+      </span>
+    </div>
+
+    <div class="flex gap-2">
+      <div 
+        *ngFor="let item of wishlistCompareService.compareList()" 
+        class="flex items-center gap-2 bg-[#FAF6F1] px-2.5 py-1.5 rounded-xl border border-[#7A6C64]/10"
+      >
+        <img [src]="resolveImageUrl(item.imageUrl || '')" class="w-6 h-6 object-cover rounded-lg" />
+        <span class="text-[9px] text-[#2C211C] max-w-[80px] truncate font-semibold">{{ item.title }}</span>
+        <button (click)="wishlistCompareService.removeFromCompare(item.id)" class="text-[#7A6C64] hover:text-[#2C211C] text-[10px] font-bold ml-1">✕</button>
+      </div>
+    </div>
+
+    <div class="flex gap-2.5">
+      <button 
+        [disabled]="wishlistCompareService.compareList().length < 2"
+        (click)="showCompareModal.set(true)"
+        class="px-4 py-2 bg-[#5B3A29] hover:bg-[#704936] disabled:opacity-50 text-[#FFFDFC] text-[9px] font-bold uppercase tracking-widest rounded-xl transition-all"
+      >
+        Compare Now
+      </button>
+      <button 
+        (click)="wishlistCompareService.clearCompare()"
+        class="px-3 py-2 border border-[#7A6C64]/10 hover:bg-[#FAF6F1] text-[#2C211C] text-[9px] font-bold uppercase tracking-widest rounded-xl transition-all"
+      >
+        Clear
+      </button>
+    </div>
+  </div>
+
+  <!-- Side-by-Side Comparison Modal -->
+  <div 
+    *ngIf="showCompareModal()" 
+    class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#2C211C]/40 backdrop-blur-md transition-all duration-300"
+    (click)="showCompareModal.set(false)"
+  >
+    <div 
+      class="w-full max-w-3xl bg-[#FFFDFC]/95 border border-[#7A6C64]/15 rounded-3xl p-6 shadow-2xl space-y-6 text-left relative"
+      (click)="$event.stopPropagation()"
+    >
+      <div class="flex justify-between items-center border-b border-[#7A6C64]/10 pb-3">
+        <h3 class="text-xs font-black uppercase tracking-widest text-[#D58E6A]">Specimen Comparison Engine</h3>
+        <button (click)="showCompareModal.set(false)" class="text-[#7A6C64] hover:text-[#2C211C] text-xs">✕</button>
+      </div>
+
+      <div class="grid grid-cols-2 gap-8">
+        <div 
+          *ngFor="let item of wishlistCompareService.compareList(); let idx = index" 
+          class="flex flex-col space-y-4 border-r border-[#7A6C64]/10 pr-4 last:border-r-0 last:pr-0"
+        >
+          <div class="aspect-square rounded-2xl overflow-hidden bg-[#FAF6F1] border border-[#7A6C64]/10 relative">
+            <img [src]="resolveImageUrl(item.imageUrl || '')" [alt]="item.title" class="w-full h-full object-cover" />
+          </div>
+          
+          <div>
+            <span class="text-[8px] uppercase tracking-widest font-mono font-bold text-[#D58E6A] block mb-1">Specimen {{ idx + 1 }}</span>
+            <h4 class="text-lg font-serif-luxury font-light text-[#2C211C] uppercase truncate">{{ item.title }}</h4>
+            <span class="text-sm font-mono text-[#D58E6A] font-bold block mt-1">{{ item.price | currency:'EGP ' }}</span>
+          </div>
+
+          <div class="space-y-2.5 pt-3 border-t border-[#7A6C64]/10 text-[10px]">
+            <div class="flex justify-between">
+              <span class="text-[#7A6C64] uppercase tracking-wider font-semibold">Category</span>
+              <span class="text-[#2C211C] uppercase font-bold">{{ item.mainCategory }} / {{ item.subCategory }}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-[#7A6C64] uppercase tracking-wider font-semibold">Availability</span>
+              <span 
+                class="font-bold uppercase tracking-widest text-[8px] px-2 py-0.5 rounded-sm"
+                [ngClass]="item.stockQuantity > 0 ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-700'"
+              >
+                {{ item.stockQuantity > 0 ? 'In Stock (' + item.stockQuantity + ')' : 'Sold Out' }}
+              </span>
+            </div>
+            <div class="flex flex-col gap-1">
+              <span class="text-[#7A6C64] uppercase tracking-wider font-semibold">Colors</span>
+              <div class="flex flex-wrap gap-1">
+                <span *ngFor="let c of item.colors" class="text-[8px] bg-[#FAF6F1] border border-[#7A6C64]/10 px-2 py-0.5 rounded uppercase font-bold">{{ c }}</span>
+                <span *ngIf="!item.colors || item.colors.length === 0" class="text-[#7A6C64] italic">None</span>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1">
+              <span class="text-[#7A6C64] uppercase tracking-wider font-semibold">Sizes</span>
+              <div class="flex flex-wrap gap-1">
+                <span *ngFor="let s of item.sizes" class="text-[8px] bg-[#FAF6F1] border border-[#7A6C64]/10 px-2 py-0.5 rounded uppercase font-bold">{{ s }}</span>
+                <span *ngIf="!item.sizes || item.sizes.length === 0" class="text-[#7A6C64] italic">None</span>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1">
+              <span class="text-[#7A6C64] uppercase tracking-wider font-semibold">Materials</span>
+              <div class="flex flex-wrap gap-1">
+                <span *ngFor="let m of item.materials" class="text-[8px] bg-[#D58E6A]/10 text-[#D58E6A] px-2 py-0.5 rounded uppercase font-bold">{{ m }}</span>
+                <span *ngIf="!item.materials || item.materials.length === 0" class="text-[#7A6C64] italic">Unspecified</span>
+              </div>
+            </div>
+          </div>
+
+          <button 
+            (click)="showCompareModal.set(false); fetchProduct(item.id)"
+            class="w-full py-2.5 bg-[#5B3A29] hover:bg-[#704936] text-[#FFFDFC] text-[9px] font-bold uppercase tracking-widest rounded-xl transition-all"
+          >
+            View Details Sheet
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fullscreen Zoom Lightbox Modal -->
+  <div 
+    *ngIf="isFullscreenOpen()" 
+    class="fixed inset-0 z-50 flex items-center justify-center bg-[#2C211C]/95 backdrop-blur-md transition-all duration-300 p-6"
+    (click)="toggleFullscreen()"
+  >
+    <button class="absolute top-5 right-5 text-[#FFFDFC]/75 hover:text-[#FFFDFC] text-2xl focus:outline-none">✕</button>
+    <div class="max-w-4xl max-h-full overflow-hidden rounded-3xl" (click)="$event.stopPropagation()">
+      <img [src]="activeImageUrl()" [alt]="product()?.title" class="w-full h-full object-contain max-h-[85vh]" />
     </div>
   </div>
 </div>
