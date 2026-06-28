@@ -52,7 +52,7 @@ import { ProductService, ProductDto } from '../../services/product.service';
 
         <!-- Center Zone: Core Catalog Links -->
         <div class="hidden md:flex justify-center items-center">
-          <nav [ngClass]="scrolled() ? 'nav-scrolled-state' : 'nav-floating-dock'" class="flex gap-7.5 text-[10px] font-bold uppercase tracking-[0.18em] whitespace-nowrap items-center transition-all duration-300">
+          <nav [ngClass]="scrolled() ? 'nav-scrolled-state' : 'nav-floating-dock'" class="flex gap-8 text-[10px] font-bold uppercase tracking-[0.18em] whitespace-nowrap items-center transition-all duration-300">
             <a [routerLink]="['/']" [ngClass]="linkClass('/')" class="transition-colors relative group py-1">
               Home
               <span class="absolute bottom-0 left-0 w-full h-[1px] nav-line-gradient transition-transform duration-300 origin-left" [ngClass]="isLinkActive('/') ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'"></span>
