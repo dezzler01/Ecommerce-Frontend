@@ -211,7 +211,7 @@ import { ProductService, ProductDto } from '../../services/product.service';
               <!-- Notifications Dropdown Panel -->
               <div 
                 *ngIf="isNotificationsDropdownOpen()" 
-                class="absolute right-0 top-full mt-2 w-[340px] md:w-[380px] bg-[#F8F1EA]/98 border border-[#E7D8CB] rounded-2xl shadow-2xl p-4.5 backdrop-blur-xl z-50 text-left"
+                class="absolute right-0 top-full mt-2 w-[340px] md:w-[380px] bg-[#F8F1EA]/98 border border-[#E7D8CB] rounded-2xl shadow-2xl p-5 pb-6 backdrop-blur-xl z-50 text-left"
                 (click)="$event.stopPropagation()"
               >
                 <div class="flex justify-between items-center border-b border-[#E7D8CB] pb-2.5 mb-2.5">
@@ -231,7 +231,7 @@ import { ProductService, ProductDto } from '../../services/product.service';
                 </div>
 
                 <!-- Notifications List -->
-                <div class="max-h-[260px] overflow-y-auto custom-scrollbar space-y-2 mb-1 pr-1.5">
+                <div class="max-h-[260px] overflow-y-auto custom-scrollbar space-y-2 mb-1 pr-1.5 pb-4">
                   <!-- Empty State -->
                   <div *ngIf="notificationService.notifications().length === 0" class="py-10 text-center">
                     <span class="text-[9.5px] uppercase tracking-widest text-[#77685D] font-medium block">Canvas is peaceful</span>
