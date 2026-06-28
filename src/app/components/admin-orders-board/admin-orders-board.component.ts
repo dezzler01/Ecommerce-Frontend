@@ -769,7 +769,7 @@ import { MediaService } from '../../services/media.service';
                       >
                         📷 Images ({{ row.imageUrls?.length || 0 }})
                       </button>
-                      <img *ngIf="row.imageUrls && row.imageUrls.length > 0" [src]="resolveImageUrl(row.imageUrls?.[0] || '')" class="w-6 h-6 rounded object-cover border border-[#2A2522]/10" />
+                      <img *ngIf="row.imageUrls && row.imageUrls.length > 0" [src]="resolveImageUrl(row.imageUrls[0] || '')" class="w-6 h-6 rounded object-cover border border-[#2A2522]/10" />
                     </div>
                   </td>
 
