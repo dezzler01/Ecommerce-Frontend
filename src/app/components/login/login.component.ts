@@ -116,6 +116,21 @@ function passwordValidator(control: AbstractControl): ValidationErrors | null {
                 </span>
               </div>
 
+              <!-- Phone Number Field (Register Only) -->
+              <div *ngIf="isRegister()" class="space-y-1.5 animate-slide-down">
+                <label class="text-[10px] uppercase tracking-[0.2em] font-semibold text-[#8A817C] block">Phone Number</label>
+                <input 
+                  type="text" 
+                  formControlName="phoneNumber"
+                  placeholder="01001234567"
+                  class="w-full px-4 py-3 bg-[#FBF9F6]/50 border rounded-lg text-sm text-[#2A2522] placeholder-[#8A817C]/40 focus:outline-none focus:ring-2 focus:ring-[#E07A5F] focus:border-[#E07A5F] transition-all duration-300"
+                  [ngClass]="isFieldInvalid('phoneNumber') ? 'border-red-400' : 'border-[#2A2522]/10'"
+                />
+                <span *ngIf="isFieldInvalid('phoneNumber')" class="text-[10px] text-red-500 block mt-1">
+                  Valid phone number is required (10-15 digits).
+                </span>
+              </div>
+
               <!-- Email Field -->
               <div class="space-y-1.5">
                 <label class="text-[10px] uppercase tracking-[0.2em] font-semibold text-[#8A817C] block">Email Address</label>
@@ -237,6 +252,7 @@ export class LoginComponent implements AfterViewInit {
   // Form Group definitions
   authForm = this.fb.group({
     fullName: ['', []], // Clear validators initially as component starts in Login mode
+    phoneNumber: ['', []],
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, passwordValidator]]
   });
@@ -249,12 +265,16 @@ export class LoginComponent implements AfterViewInit {
     
     // Configure validation rules contextually based on mode
     const nameControl = this.authForm.get('fullName');
+    const phoneControl = this.authForm.get('phoneNumber');
     if (nextVal) {
       nameControl?.setValidators([Validators.required, Validators.minLength(3)]);
+      phoneControl?.setValidators([Validators.required, Validators.pattern(/^[0-9+]{10,15}$/)]);
     } else {
       nameControl?.clearValidators();
+      phoneControl?.clearValidators();
     }
     nameControl?.updateValueAndValidity();
+    phoneControl?.updateValueAndValidity();
   }
 
   closeModal() {
@@ -263,18 +283,21 @@ export class LoginComponent implements AfterViewInit {
     this.message.set('');
     this.authForm.reset();
     
-    // Clear name validators since we default back to login mode on close
+    // Clear validators since we default back to login mode on close
     const nameControl = this.authForm.get('fullName');
+    const phoneControl = this.authForm.get('phoneNumber');
     nameControl?.clearValidators();
+    phoneControl?.clearValidators();
     nameControl?.updateValueAndValidity();
+    phoneControl?.updateValueAndValidity();
   }
 
   isFieldInvalid(name: string): boolean {
     const control = this.authForm.get(name);
     if (!control) return false;
     
-    // Ignore validation for fullName in login mode
-    if (name === 'fullName' && !this.isRegister()) {
+    // Ignore validation for fullName and phoneNumber in login mode
+    if ((name === 'fullName' || name === 'phoneNumber') && !this.isRegister()) {
       return false;
     }
     
@@ -313,6 +336,8 @@ export class LoginComponent implements AfterViewInit {
     const password = this.authForm.get('password')?.value ?? '';
     const fullName = this.authForm.get('fullName')?.value ?? '';
 
+    const phoneNumber = this.authForm.get('phoneNumber')?.value ?? '';
+
     this.message.set('');
     this.loading.set(true);
 
@@ -321,7 +346,8 @@ export class LoginComponent implements AfterViewInit {
         fullName,
         email,
         password,
-        roleId: this.CUSTOMER_ROLE_ID
+        roleId: this.CUSTOMER_ROLE_ID,
+        phoneNumber
       };
 
       this.authService.register(payload).subscribe({

@@ -336,6 +336,39 @@ import { MediaService } from '../../services/media.service';
                 </button>
               </div>
             </div>
+
+            <!-- Payment Gateways Settings -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end border-t border-[#2A2522]/5 pt-4 mt-4">
+              <div class="flex flex-col gap-1.5">
+                <label class="text-[9px] uppercase tracking-widest font-semibold text-[#8A817C]">InstaPay Address</label>
+                <input 
+                  type="text" 
+                  [(ngModel)]="paymentInstaPayAddress" 
+                  class="px-3 py-2 bg-[#FBF9F6]/80 border border-[#2A2522]/5 rounded-xl text-xs text-[#2A2522] focus:outline-none focus:border-[#B84F7D]/50 transition-colors"
+                  placeholder="name@instapay"
+                />
+              </div>
+
+              <div class="flex flex-col gap-1.5">
+                <label class="text-[9px] uppercase tracking-widest font-semibold text-[#8A817C]">Vodafone Cash Number</label>
+                <input 
+                  type="text" 
+                  [(ngModel)]="paymentVodafoneCashNumber" 
+                  class="px-3 py-2 bg-[#FBF9F6]/80 border border-[#2A2522]/5 rounded-xl text-xs text-[#2A2522] focus:outline-none focus:border-[#B84F7D]/50 transition-colors"
+                  placeholder="01xxxxxxxxx"
+                />
+              </div>
+
+              <div class="flex gap-2">
+                <button 
+                  (click)="savePaymentSettings()" 
+                  [disabled]="savingPaymentSettings()"
+                  class="flex-1 px-4 py-2.5 bg-[#2A2522] hover:bg-[#B84F7D] text-[#FBF9F6] text-xs font-bold uppercase tracking-widest rounded-xl transition-all disabled:opacity-50"
+                >
+                  {{ savingPaymentSettings() ? 'Saving...' : 'Save Payment Config' }}
+                </button>
+              </div>
+            </div>
           </div>
 
           <!-- Filters Bar -->
@@ -2195,6 +2228,11 @@ export class AdminOrdersBoardComponent implements OnInit, OnDestroy {
   settingsMessage = signal<string>('');
   settingsIsError = signal<boolean>(false);
 
+  // Payment Settings State
+  paymentInstaPayAddress = 'picksandmore@instapay';
+  paymentVodafoneCashNumber = '01001234567';
+  savingPaymentSettings = signal<boolean>(false);
+
   // Filters State
   statusFilter = '';
   governorateFilter = '';
@@ -2574,6 +2612,7 @@ export class AdminOrdersBoardComponent implements OnInit, OnDestroy {
     this.settingsIsError.set(false);
     if (show) {
       this.loadShippingSettings();
+      this.loadPaymentSettings();
     }
   }
 
@@ -2584,6 +2623,47 @@ export class AdminOrdersBoardComponent implements OnInit, OnDestroy {
           this.settingsThreshold = res.data.freeShippingThreshold;
           this.settingsIsActive = res.data.isFreeShippingActive;
         }
+      }
+    });
+  }
+
+  loadPaymentSettings(): void {
+    this.http.get<any>('http://localhost:5153/api/admin/payment-settings').subscribe({
+      next: (res) => {
+        if (res.isSuccess && res.data) {
+          this.paymentInstaPayAddress = res.data.instaPayAddress;
+          this.paymentVodafoneCashNumber = res.data.vodafoneCashNumber;
+        }
+      }
+    });
+  }
+
+  savePaymentSettings(): void {
+    this.savingPaymentSettings.set(true);
+    this.settingsMessage.set('');
+    this.settingsIsError.set(false);
+    const token = localStorage.getItem('auth_token');
+
+    this.http.post<any>('http://localhost:5153/api/admin/payment-settings', {
+      instaPayAddress: this.paymentInstaPayAddress,
+      vodafoneCashNumber: this.paymentVodafoneCashNumber
+    }, {
+      headers: { Authorization: `Bearer ${token}` }
+    }).subscribe({
+      next: (res) => {
+        this.savingPaymentSettings.set(false);
+        if (res.isSuccess) {
+          this.settingsMessage.set('Payment settings updated successfully!');
+          setTimeout(() => this.showSettingsPanel.set(false), 1200);
+        } else {
+          this.settingsMessage.set(res.message || 'Failed to update payment settings.');
+          this.settingsIsError.set(true);
+        }
+      },
+      error: (err) => {
+        this.savingPaymentSettings.set(false);
+        this.settingsMessage.set(err?.error?.message || 'Error updating payment settings.');
+        this.settingsIsError.set(true);
       }
     });
   }

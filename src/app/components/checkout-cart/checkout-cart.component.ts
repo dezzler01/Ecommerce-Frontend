@@ -213,7 +213,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                 <!-- Payment Method -->
                 <div class="space-y-1.5 pt-2">
                   <label class="text-[9px] uppercase tracking-widest font-semibold text-[#8A817C] block">Payment Method</label>
-                  <div class="grid grid-cols-2 gap-3">
+                  <div class="grid grid-cols-3 gap-2">
                     <button 
                       type="button" 
                       (click)="form.paymentMethod = 'COD'"
@@ -221,29 +221,48 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                         'bg-[#2A2522] text-[#FBF9F6]': form.paymentMethod === 'COD',
                         'bg-[#FBF9F6] text-[#4A4340] border border-[#2A2522]/5': form.paymentMethod !== 'COD'
                       }"
-                      class="py-2 text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all"
+                      class="py-2 text-[9px] font-bold uppercase tracking-wider rounded-xl transition-all"
                     >
-                      Cash on Delivery
+                      COD
                     </button>
                     <button 
                       type="button" 
-                      (click)="form.paymentMethod = 'DigitalWallet'"
+                      (click)="form.paymentMethod = 'InstaPay'"
                       [ngClass]="{
-                        'bg-[#2A2522] text-[#FBF9F6]': form.paymentMethod === 'DigitalWallet',
-                        'bg-[#FBF9F6] text-[#4A4340] border border-[#2A2522]/5': form.paymentMethod !== 'DigitalWallet'
+                        'bg-[#2A2522] text-[#FBF9F6]': form.paymentMethod === 'InstaPay',
+                        'bg-[#FBF9F6] text-[#4A4340] border border-[#2A2522]/5': form.paymentMethod !== 'InstaPay'
                       }"
-                      class="py-2 text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all"
+                      class="py-2 text-[9px] font-bold uppercase tracking-wider rounded-xl transition-all"
                     >
-                      InstaPay / Wallet
+                      InstaPay
+                    </button>
+                    <button 
+                      type="button" 
+                      (click)="form.paymentMethod = 'VodafoneCash'"
+                      [ngClass]="{
+                        'bg-[#2A2522] text-[#FBF9F6]': form.paymentMethod === 'VodafoneCash',
+                        'bg-[#FBF9F6] text-[#4A4340] border border-[#2A2522]/5': form.paymentMethod !== 'VodafoneCash'
+                      }"
+                      class="py-2 text-[9px] font-bold uppercase tracking-wider rounded-xl transition-all"
+                    >
+                      Vodafone Cash
                     </button>
                   </div>
                 </div>
 
                 <!-- Digital Wallet Verification Fields -->
-                <div *ngIf="form.paymentMethod === 'DigitalWallet'" class="p-4 bg-[#E07A5F]/5 border border-[#E07A5F]/10 rounded-xl space-y-3">
+                <div *ngIf="form.paymentMethod === 'DigitalWallet' || form.paymentMethod === 'InstaPay' || form.paymentMethod === 'VodafoneCash'" class="p-4 bg-[#E07A5F]/5 border border-[#E07A5F]/10 rounded-xl space-y-3">
                   <span class="text-[8px] uppercase tracking-widest font-black text-[#E07A5F] block">Verification Portal</span>
                   <p class="text-[10px] text-[#8A817C] leading-normal font-light">
-                    Please transfer the total amount to InstaPay address <strong>picksandmore&#64;instapay</strong> or wallet number <strong>01001234567</strong>, then attach details below:
+                    <span *ngIf="form.paymentMethod === 'InstaPay'">
+                      Please transfer the total amount to InstaPay address <strong>{{ paymentSettings().instaPayAddress }}</strong>, then attach details below:
+                    </span>
+                    <span *ngIf="form.paymentMethod === 'VodafoneCash'">
+                      Please transfer the total amount to Vodafone Cash number <strong>{{ paymentSettings().vodafoneCashNumber }}</strong>, then attach details below:
+                    </span>
+                    <span *ngIf="form.paymentMethod === 'DigitalWallet'">
+                      Please transfer the total amount to InstaPay address <strong>{{ paymentSettings().instaPayAddress }}</strong> or Vodafone Cash number <strong>{{ paymentSettings().vodafoneCashNumber }}</strong>, then attach details below:
+                    </span>
                   </p>
                   
                   <div class="space-y-1">
@@ -315,6 +334,12 @@ export class CheckoutCartComponent implements OnInit {
   freeShippingThreshold = signal<number>(2000);
   isFreeShippingActive = signal<boolean>(true);
 
+  // Dynamic payment settings config
+  paymentSettings = signal<{ instaPayAddress: string; vodafoneCashNumber: string }>({
+    instaPayAddress: 'picksandmore@instapay',
+    vodafoneCashNumber: '01001234567'
+  });
+
   // Computed financial figures
   shippingCost = computed(() => {
     const threshold = this.freeShippingThreshold();
@@ -335,6 +360,23 @@ export class CheckoutCartComponent implements OnInit {
   ngOnInit(): void {
     this.populateFormFromContext();
     this.loadShippingSettings();
+    this.loadPaymentSettings();
+  }
+
+  loadPaymentSettings(): void {
+    this.http.get<any>('http://localhost:5153/api/Admin/payment-settings').subscribe({
+      next: (res) => {
+        if (res.isSuccess && res.data) {
+          this.paymentSettings.set({
+            instaPayAddress: res.data.instaPayAddress,
+            vodafoneCashNumber: res.data.vodafoneCashNumber
+          });
+        }
+      },
+      error: () => {
+        // Fallback to default signal settings
+      }
+    });
   }
 
   loadShippingSettings(): void {
@@ -457,12 +499,14 @@ export class CheckoutCartComponent implements OnInit {
       ? 'http://localhost:5153/api/orders/submit' 
       : 'http://localhost:5153/api/orders/guest-submit';
 
+    const isDigitalPayment = this.form.paymentMethod === 'DigitalWallet' || this.form.paymentMethod === 'InstaPay' || this.form.paymentMethod === 'VodafoneCash';
+
     // Build payload
     const payload: any = {
       customerName: this.form.customerName,
       paymentMethod: this.form.paymentMethod,
-      walletScreenshotUrl: this.form.paymentMethod === 'DigitalWallet' ? this.form.walletScreenshotUrl : null,
-      walletSenderPhoneNumberOrName: this.form.paymentMethod === 'DigitalWallet' ? this.form.walletSenderPhoneNumberOrName : null,
+      walletScreenshotUrl: isDigitalPayment ? this.form.walletScreenshotUrl : null,
+      walletSenderPhoneNumberOrName: isDigitalPayment ? this.form.walletSenderPhoneNumberOrName : null,
       promoCode: this.form.promoCode || null,
       items: itemsPayload
     };
