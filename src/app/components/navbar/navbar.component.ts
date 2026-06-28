@@ -44,7 +44,7 @@ import { ProductService, ProductDto } from '../../services/product.service';
                 <path d="M 40,88 C 110,65 230,78 350,70 C 470,62 520,78 560,88 C 575,92 570,102 555,108 C 510,128 390,122 280,128 C 170,134 90,118 45,108 C 30,105 30,92 40,88 Z" fill="url(#nav-watercolor-gradient)" />
               </g>
             </svg>
-            <span class="logo-text relative z-10 text-[18px] font-black tracking-[-0.03em] text-[#1A1816] uppercase select-none font-sans">
+            <span class="logo-text relative z-10 text-[15.5px] font-black tracking-[-0.03em] text-[#1A1816] uppercase select-none font-sans">
               Picks&amp;More
             </span>
           </div>
@@ -52,7 +52,7 @@ import { ProductService, ProductDto } from '../../services/product.service';
 
         <!-- Center Zone: Core Catalog Links -->
         <div class="hidden md:flex justify-center items-center">
-          <nav [ngClass]="scrolled() ? 'nav-scrolled-state' : 'nav-floating-dock'" class="flex gap-10 text-[12px] font-bold uppercase tracking-[0.2em] items-center transition-all duration-300">
+          <nav [ngClass]="scrolled() ? 'nav-scrolled-state' : 'nav-floating-dock'" class="flex gap-7.5 text-[10px] font-bold uppercase tracking-[0.18em] whitespace-nowrap items-center transition-all duration-300">
             <a [routerLink]="['/']" [ngClass]="linkClass('/')" class="transition-colors relative group py-1">
               Home
               <span class="absolute bottom-0 left-0 w-full h-[1px] nav-line-gradient transition-transform duration-300 origin-left" [ngClass]="isLinkActive('/') ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'"></span>
@@ -77,9 +77,8 @@ import { ProductService, ProductDto } from '../../services/product.service';
               </div>
             </div>
 
-            <!-- Men collection: Coming Soon -->
             <div class="relative py-1 flex items-center gap-1.5 cursor-not-allowed select-none group/men men-badge-group">
-              <span class="text-[12px] font-bold uppercase tracking-[0.2em] text-[#2A1F1A]/40 transition-colors duration-350 group-hover/men:text-[#2A1F1A]/60">Men</span>
+              <span class="text-[10px] font-bold uppercase tracking-[0.18em] text-[#2A1F1A]/40 transition-colors duration-350 group-hover/men:text-[#2A1F1A]/60">Men</span>
               <span class="premium-badge premium-badge-desktop badge-premium-entry">Coming Soon</span>
             </div>
 
