@@ -551,6 +551,7 @@ body.intro-running header {
   background-image: url('/products/editorial_page_bg_canvas.png');
   background-position: top center;
   background-repeat: no-repeat;
+  background-attachment: fixed;
   background-size: cover;
   background-color: #FAF6F0;
 }

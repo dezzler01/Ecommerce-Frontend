@@ -28,7 +28,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
           ></div>
           
           <!-- Elegant Light Gradient overlay to ensure text is perfectly visible against palm shadows -->
-          <div class="absolute inset-y-0 left-0 w-full sm:w-[80%] md:w-[55%] z-10 bg-gradient-to-r from-[#FAF6F0] via-[#FAF6F0]/90 to-[#FAF6F0]/0 pointer-events-none"></div>
+          <div class="absolute inset-y-0 left-0 w-full sm:w-[80%] md:w-[55%] z-10 bg-gradient-to-r from-[#FAF6F0]/45 via-[#FAF6F0]/20 to-[#FAF6F0]/0 pointer-events-none"></div>
           
           <div class="bb-strip-content z-20">
             <span class="bb-label">Collection / Men</span>
