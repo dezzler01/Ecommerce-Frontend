@@ -69,8 +69,24 @@
         <!-- Stacked Card Wrapper -->
         <div class="stacked-cards-container">
           <!-- Background cards (Stacked deck effect) -->
-          <div class="gallery-card-bg-1"></div>
-          <div class="gallery-card-bg-2"></div>
+          <div class="gallery-card-bg-1 overflow-hidden">
+            <img *ngIf="product()?.imageUrls && product()!.imageUrls.length > 1; else fallbackBg"
+                 [src]="resolveImageUrl(product()!.imageUrls[1].url)"
+                 class="w-full h-full object-cover opacity-60 filter blur-[0.3px]" />
+            <ng-template #fallbackBg>
+              <div class="w-full h-full bg-[#FAF6F1]"></div>
+            </ng-template>
+          </div>
+          <div class="gallery-card-bg-2 overflow-hidden">
+            <img *ngIf="product()?.imageUrls && product()!.imageUrls.length > 2; else fallbackBg2"
+                 [src]="resolveImageUrl(product()!.imageUrls[2].url)"
+                 class="w-full h-full object-cover opacity-45 filter blur-[0.3px]" />
+            <ng-template #fallbackBg2>
+              <img *ngIf="product()?.imageUrls && product()!.imageUrls.length > 0"
+                   [src]="resolveImageUrl(product()!.imageUrls[0].url)"
+                   class="w-full h-full object-cover opacity-40 filter blur-[0.3px]" />
+            </ng-template>
+          </div>
           
           <!-- Main Image Card -->
           <div 
@@ -317,34 +333,15 @@
           </div>
 
           <!-- Trust Badges Bar under CTA -->
-          <div class="grid grid-cols-2 gap-2.5 pt-4 border-t border-[#7A6C64]/10 text-[9px] text-[#7A6C64]">
+          <div class="flex flex-wrap justify-between gap-3 pt-4 border-t border-[#7A6C64]/10 text-[9px] text-[#7A6C64]">
             <div class="flex items-center gap-1.5 font-medium">
               <span class="text-[#D58E6A]">✓</span> Secure Checkout
-            </div>
-            <div class="flex items-center gap-1.5 font-medium">
-              <span class="text-[#D58E6A]">✓</span> معاينة قبل الدفع
             </div>
             <div class="flex items-center gap-1.5 font-medium">
               <span class="text-[#D58E6A]">✓</span> خامات ممتازة مضمونة
             </div>
             <div class="flex items-center gap-1.5 font-medium">
               <span class="text-[#D58E6A]">✓</span> Cash on Delivery
-            </div>
-          </div>
-
-          <!-- Quick Logistics Details -->
-          <div class="bg-[#FAF6F1] rounded-2xl p-4 space-y-2 text-[10px] text-[#2C211C] border border-[#7A6C64]/5">
-            <div class="flex items-center gap-2">
-              <span class="text-base">🚚</span>
-              <div>
-                شحن سريع لكافة المحافظات خلال <span class="font-bold">1 - 3 أيام</span>
-              </div>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="text-base">🔎</span>
-              <div>
-                يمكنك <span class="font-bold">فتح الشحنة ومعاينتها</span> للتأكد من المقاس والجودة قبل الدفع للمندوب
-              </div>
             </div>
           </div>
 
@@ -367,8 +364,8 @@
         <h4 class="text-[10px] uppercase tracking-wider font-bold text-[#2C211C]">Secure Payment</h4>
       </div>
       <div class="space-y-1">
-        <span class="text-lg">🔎</span>
-        <h4 class="text-[10px] uppercase tracking-wider font-bold text-[#2C211C]">معاينة قبل الاستلام</h4>
+        <span class="text-lg">✨</span>
+        <h4 class="text-[10px] uppercase tracking-wider font-bold text-[#2C211C]">Exclusive Design</h4>
       </div>
     </div>
 
@@ -409,9 +406,9 @@
           <p class="text-[10px] text-[#7A6C64] font-light leading-relaxed">Rigorous material testing ensuring long-lasting durability.</p>
         </div>
         <div class="bg-[#FFFDFC] border border-[#7A6C64]/10 rounded-2xl p-6 text-center space-y-2.5 shadow-sm">
-          <span class="text-2xl block">🔎</span>
-          <h5 class="text-[11px] uppercase tracking-wider font-bold text-[#2C211C]">معاينة واستلام</h5>
-          <p class="text-[10px] text-[#7A6C64] font-light leading-relaxed">يمكنك فحص القطعة بالكامل مع المندوب للتأكد من الجودة والمقاس قبل دفع قيمتها.</p>
+          <span class="text-2xl block">✨</span>
+          <h5 class="text-[11px] uppercase tracking-wider font-bold text-[#2C211C]">Exclusive Pieces</h5>
+          <p class="text-[10px] text-[#7A6C64] font-light leading-relaxed">تتمتع منتجاتنا بتصميمات حصرية وخامات فريدة مصممة خصيصاً لتناسب ذوقك الرفيع.</p>
         </div>
       </div>
     </div>
@@ -506,24 +503,7 @@
         </div>
       </div>
 
-      <!-- Returns Accordion -->
-      <div class="border border-[#7A6C64]/10 rounded-2xl bg-[#FFFDFC] overflow-hidden transition-all shadow-sm">
-        <button 
-          (click)="toggleAccordion('returns')"
-          class="w-full px-6 py-4 flex justify-between items-center text-xs font-bold text-[#2C211C] uppercase tracking-widest focus:outline-none"
-        >
-          <span>سياسة الفحص والمعاينة</span>
-          <span class="text-sm">{{ activeAccordion() === 'returns' ? '▲' : '▼' }}</span>
-        </button>
-        <div 
-          [ngClass]="activeAccordion() === 'returns' ? 'max-h-[300px] border-t border-[#7A6C64]/10 p-6' : 'max-h-0'" 
-          class="overflow-hidden transition-all duration-300 bg-[#FAF6F1]/30"
-        >
-          <p class="text-xs text-[#7A6C64] leading-relaxed font-light">
-            نحن نوفر لك أماناً تاماً عند التسوق؛ حيث يمكنك فتح الطرد ومعاينة المنتجات وقياسها في وجود مندوب الشحن قبل دفع أي مبلغ. في حال عدم ملائمة القياس أو وجود أي تحفظ على الجودة، يمكنك ببساطة إرجاع الشحنة فوراً مع المندوب ودفع مصاريف الشحن فقط.
-          </p>
-        </div>
-      </div>
+
     </div>
 
     <!-- Client Appraisals / Reviews Section -->

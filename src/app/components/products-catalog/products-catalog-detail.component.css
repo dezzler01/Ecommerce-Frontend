@@ -10,6 +10,10 @@
 }
 
 body, .min-h-screen {
+  background-image: url('/products/editorial_page_bg_canvas.png') !important;
+  background-position: top center !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
   background-color: var(--bg-luxury-beige) !important;
   color: var(--text-charcoal) !important;
   font-family: var(--font-sans) !important;
