@@ -643,5 +643,16 @@ body.intro-running header {
   z-index: 10;
 }
 
+/* ── Responsive Navbar Height Override ── */
+@media (max-width: 767px) {
+  .navbar-luxury-glass {
+    height: 68px;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+  .navbar-luxury-glass.scrolled {
+    height: 60px;
+  }
+}
 
 

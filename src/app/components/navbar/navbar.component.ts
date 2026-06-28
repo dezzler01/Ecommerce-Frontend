@@ -102,7 +102,7 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
         </div>
 
         <!-- Right Flex Zone: Minimalist Floating Layout -->
-        <div class="flex justify-end items-center gap-6 select-none md:ml-auto">
+        <div class="flex justify-end items-center gap-1.5 sm:gap-3 md:gap-6 select-none md:ml-auto">
           <!-- Search Icon (Triggers Advanced Overlay) -->
           <button 
             (click)="toggleSearchOverlay(true)" 
@@ -115,7 +115,7 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
           </button>
  
           <!-- Wishlist Heart Wrapper with hover dropdown -->
-          <div class="relative group py-1 flex items-center justify-center pointer-events-auto">
+          <div class="hidden sm:flex relative group py-1 items-center justify-center pointer-events-auto">
             <button 
               [routerLink]="['/products']" 
               [queryParams]="{ filterFavorites: true }"
@@ -234,11 +234,11 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
           </div>
           
 
-          <span class="hidden sm:block h-3.5 w-[1px] bg-[#E7D8CB]"></span>
+          <span class="hidden md:block h-3.5 w-[1px] bg-[#E7D8CB]"></span>
           
           <ng-container *ngIf="authService.currentUser() as user; else guestNav">
             <!-- Premium Notification Bell with Dropdown -->
-            <div class="relative notification-bell-wrapper py-1 mr-3 flex items-center pointer-events-auto">
+            <div class="hidden md:flex relative notification-bell-wrapper py-1 mr-3 items-center pointer-events-auto">
               <!-- Bell Trigger -->
               <button 
                 (click)="toggleNotificationsDropdown($event)"
@@ -314,10 +314,10 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
             </div>
 
             <!-- Small vertical divider -->
-            <span class="hidden sm:block h-3.5 w-[1px] bg-[#E7D8CB] mr-3"></span>
+            <span class="hidden md:block h-3.5 w-[1px] bg-[#E7D8CB] mr-3"></span>
 
             <!-- Advanced Profile Pill with Hover Dropdown -->
-            <div class="relative profile-badge-wrapper py-1 pointer-events-auto">
+            <div class="hidden md:block relative profile-badge-wrapper py-1 pointer-events-auto">
               <!-- Pill Trigger -->
               <div class="profile-pill-container profile-pill-scrolled">
                 <!-- Initial Avatar Circle -->
@@ -393,7 +393,7 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
           </ng-container>
           
           <ng-template #guestNav>
-            <div class="flex items-center gap-1">
+            <div class="hidden md:flex items-center gap-1">
               <button 
                 (click)="authService.showLoginModal.set(true)" 
                 class="hidden sm:flex items-center justify-center h-9 w-9 rounded-full hover:bg-[#C98A58]/10 text-[#2A1F1A] hover:text-[#C98A58] transition-colors focus:outline-none pointer-events-auto"
