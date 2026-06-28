@@ -35,6 +35,8 @@ gsap.registerPlugin(ScrollTrigger);
       <app-bags-shoes-section class="w-full"></app-bags-shoes-section>
       
       <app-clothing-section class="w-full"></app-clothing-section>
+      
+      <app-kids-shoes-section class="w-full"></app-kids-shoes-section>
 
       <!-- Trust Benefits Strip -->
       <section class="w-full bg-[#FAF6F0] border-t border-[#E8DDD0] py-12 flex items-center justify-center z-10 overflow-hidden select-none pointer-events-auto">
@@ -249,6 +251,54 @@ export class StorefrontLandingComponent implements OnInit, AfterViewInit {
       );
 
 
+
+      // 4. Kids Shoes Section Wide Strip Entrance & Parallax Background
+      gsap.fromTo('app-kids-shoes-section .bb-strip',
+        { y: 60, opacity: 0, scale: 0.97 },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 1.2,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: 'app-kids-shoes-section',
+            start: 'top 85%',
+            toggleActions: 'play none none none'
+          }
+        }
+      );
+
+      gsap.fromTo('app-kids-shoes-section .bb-strip-bg',
+        { yPercent: -12 },
+        {
+          yPercent: 12,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: 'app-kids-shoes-section',
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true
+          }
+        }
+      );
+
+      gsap.fromTo('app-kids-shoes-section .bb-disc-badge',
+        { scale: 0.3, opacity: 0, rotation: -12 },
+        {
+          scale: 1,
+          opacity: 1,
+          rotation: 0,
+          duration: 1.4,
+          ease: 'elastic.out(1, 0.75)',
+          delay: 0.25,
+          scrollTrigger: {
+            trigger: 'app-kids-shoes-section',
+            start: 'top 80%',
+            toggleActions: 'play none none none'
+          }
+        }
+      );
 
       // 5. Trust Items Staggered Reveal at the bottom
       gsap.fromTo('.bb-trust .bb-trust-item',

@@ -255,13 +255,13 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                   <span class="text-[8px] uppercase tracking-widest font-black text-[#E07A5F] block">Verification Portal</span>
                   <p class="text-[10px] text-[#8A817C] leading-normal font-light">
                     <span *ngIf="form.paymentMethod === 'InstaPay'">
-                      Please transfer the total amount to InstaPay address <strong>{{ paymentSettings().instaPayAddress }}</strong>, then attach details below:
+                      Please transfer the total amount to InstaPay address <strong>{{ paymentSettings().instaPayAddress }}</strong><span *ngIf="paymentSettings().instaPayPhone"> or mobile number <strong>{{ paymentSettings().instaPayPhone }}</strong></span>, then attach details below:
                     </span>
                     <span *ngIf="form.paymentMethod === 'VodafoneCash'">
                       Please transfer the total amount to Vodafone Cash number <strong>{{ paymentSettings().vodafoneCashNumber }}</strong>, then attach details below:
                     </span>
                     <span *ngIf="form.paymentMethod === 'DigitalWallet'">
-                      Please transfer the total amount to InstaPay address <strong>{{ paymentSettings().instaPayAddress }}</strong> or Vodafone Cash number <strong>{{ paymentSettings().vodafoneCashNumber }}</strong>, then attach details below:
+                      Please transfer the total amount to InstaPay address <strong>{{ paymentSettings().instaPayAddress }}</strong><span *ngIf="paymentSettings().instaPayPhone"> / mobile <strong>{{ paymentSettings().instaPayPhone }}</strong></span> or Vodafone Cash number <strong>{{ paymentSettings().vodafoneCashNumber }}</strong>, then attach details below:
                     </span>
                   </p>
                   
@@ -335,8 +335,9 @@ export class CheckoutCartComponent implements OnInit {
   isFreeShippingActive = signal<boolean>(true);
 
   // Dynamic payment settings config
-  paymentSettings = signal<{ instaPayAddress: string; vodafoneCashNumber: string }>({
+  paymentSettings = signal<{ instaPayAddress: string; instaPayPhone?: string; vodafoneCashNumber: string }>({
     instaPayAddress: 'picksandmore@instapay',
+    instaPayPhone: '',
     vodafoneCashNumber: '01001234567'
   });
 
@@ -369,6 +370,7 @@ export class CheckoutCartComponent implements OnInit {
         if (res.isSuccess && res.data) {
           this.paymentSettings.set({
             instaPayAddress: res.data.instaPayAddress,
+            instaPayPhone: res.data.instaPayPhone || '',
             vodafoneCashNumber: res.data.vodafoneCashNumber
           });
         }

@@ -336,7 +336,7 @@ import { MediaService } from '../../services/media.service';
           </div>
 
           <!-- Payment Gateways Settings -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end border-t border-[#2A2522]/5 pt-4 mt-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 items-end border-t border-[#2A2522]/5 pt-4 mt-4">
             <div class="flex flex-col gap-1.5">
               <label class="text-[9px] uppercase tracking-widest font-semibold text-[#8A817C]">InstaPay Address</label>
               <input 
@@ -344,6 +344,16 @@ import { MediaService } from '../../services/media.service';
                 [(ngModel)]="paymentInstaPayAddress" 
                 class="px-3 py-2 bg-[#FBF9F6]/80 border border-[#2A2522]/5 rounded-xl text-xs text-[#2A2522] focus:outline-none focus:border-[#B84F7D]/50 transition-colors"
                 placeholder="name@instapay"
+              />
+            </div>
+
+            <div class="flex flex-col gap-1.5">
+              <label class="text-[9px] uppercase tracking-widest font-semibold text-[#8A817C]">InstaPay Mobile Number</label>
+              <input 
+                type="text" 
+                [(ngModel)]="paymentInstaPayPhone" 
+                class="px-3 py-2 bg-[#FBF9F6]/80 border border-[#2A2522]/5 rounded-xl text-xs text-[#2A2522] focus:outline-none focus:border-[#B84F7D]/50 transition-colors"
+                placeholder="01xxxxxxxxx"
               />
             </div>
 
@@ -2231,6 +2241,7 @@ export class AdminOrdersBoardComponent implements OnInit, OnDestroy {
 
   // Payment Settings State
   paymentInstaPayAddress = 'picksandmore@instapay';
+  paymentInstaPayPhone = '';
   paymentVodafoneCashNumber = '01001234567';
   savingPaymentSettings = signal<boolean>(false);
 
@@ -2633,6 +2644,7 @@ export class AdminOrdersBoardComponent implements OnInit, OnDestroy {
       next: (res) => {
         if (res.isSuccess && res.data) {
           this.paymentInstaPayAddress = res.data.instaPayAddress;
+          this.paymentInstaPayPhone = res.data.instaPayPhone || '';
           this.paymentVodafoneCashNumber = res.data.vodafoneCashNumber;
         }
       }
@@ -2647,6 +2659,7 @@ export class AdminOrdersBoardComponent implements OnInit, OnDestroy {
 
     this.http.post<any>('http://localhost:5153/api/admin/payment-settings', {
       instaPayAddress: this.paymentInstaPayAddress,
+      instaPayPhone: this.paymentInstaPayPhone,
       vodafoneCashNumber: this.paymentVodafoneCashNumber
     }, {
       headers: { Authorization: `Bearer ${token}` }
