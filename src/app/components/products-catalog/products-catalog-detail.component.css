@@ -1,18 +1,90 @@
 :host {
-  --bg-luxury-beige: #FAF6F1;
+  --bg-luxury-beige: #FAF6F0;
   --bg-frosted-warm: rgba(255, 253, 252, 0.95);
-  --text-charcoal: #2C211C;
-  --text-muted-umber: #7A6C64;
-  --brand-accent: #D58E6A;
-  --border-delicate: rgba(122, 108, 100, 0.15);
-  --font-serif: 'Playfair Display', Georgia, serif;
-  --font-sans: 'Inter', sans-serif;
+  --text-charcoal: #2E2118;
+  --text-muted-umber: #8C7B6B;
+  --brand-accent: #C4633A;
+  --border-delicate: #E8DDD0;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', sans-serif;
 }
 
 body, .min-h-screen {
   background-color: var(--bg-luxury-beige) !important;
   color: var(--text-charcoal) !important;
   font-family: var(--font-sans) !important;
+}
+
+/* Stacked cards gallery layout */
+.stacked-cards-container {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.gallery-card-bg-1 {
+  position: absolute;
+  inset: 0;
+  background-color: #FFFDFC;
+  border: 1px solid var(--border-delicate);
+  border-radius: 2rem;
+  box-shadow: 0 10px 25px rgba(46, 33, 24, 0.04);
+  transform: rotate(3deg) scale(0.98);
+  z-index: 1;
+}
+
+.gallery-card-bg-2 {
+  position: absolute;
+  inset: 0;
+  background-color: #FFFDFC;
+  border: 1px solid var(--border-delicate);
+  border-radius: 2rem;
+  box-shadow: 0 10px 25px rgba(46, 33, 24, 0.04);
+  transform: rotate(-2deg) scale(0.99);
+  z-index: 2;
+}
+
+.gallery-card-main {
+  position: relative;
+  background-color: #FFFDFC;
+  border: 1px solid var(--border-delicate);
+  border-radius: 2rem;
+  box-shadow: 0 15px 35px rgba(46, 33, 24, 0.06);
+  z-index: 3;
+  overflow: hidden;
+}
+
+/* Map specific tailwind style colors to the site's brand colors */
+.bg-\[\#5B3A29\] {
+  background-color: var(--brand-accent) !important;
+}
+.bg-\[\#5B3A29\]:hover {
+  background-color: #A9502D !important;
+}
+.text-\[\#5B3A29\] {
+  color: var(--brand-accent) !important;
+}
+.border-\[\#5B3A29\] {
+  border-color: var(--brand-accent) !important;
+}
+.hover\:bg-\[\#5B3A29\]\/5:hover {
+  background-color: rgba(196, 99, 58, 0.05) !important;
+}
+.text-\[\#D58E6A\] {
+  color: var(--brand-accent) !important;
+}
+.bg-\[\#D58E6A\] {
+  background-color: var(--brand-accent) !important;
+}
+.bg-\[\#D58E6A\]\/10 {
+  background-color: rgba(196, 99, 58, 0.1) !important;
+}
+.border-\[\#D58E6A\]\/20 {
+  border-color: rgba(196, 99, 58, 0.2) !important;
+}
+.hover\:bg-\[\#D58E6A\]\/20:hover {
+  background-color: rgba(196, 99, 58, 0.2) !important;
 }
 
 .glass-container {

@@ -365,6 +365,9 @@ export class ProductsCatalogDetailComponent implements OnInit, AfterViewInit {
         this.wishlistCompareService.removeFromCompare(p.id);
       } else {
         this.wishlistCompareService.addToCompare(p);
+        if (this.wishlistCompareService.compareList().length === 2) {
+          this.showCompareModal.set(true);
+        }
       }
     }
   }
