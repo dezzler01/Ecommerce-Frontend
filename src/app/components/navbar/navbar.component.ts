@@ -342,17 +342,6 @@ import { ProductService, ProductDto } from '../../services/product.service';
           
           <ng-template #guestNav>
             <div class="flex items-center gap-1">
-              <!-- Guest Track Order Button -->
-              <button 
-                (click)="openTrackingModal()"
-                class="flex items-center justify-center h-9 w-9 rounded-full hover:bg-[#C98A58]/10 text-[#2A1F1A] hover:text-[#C98A58] transition-colors focus:outline-none pointer-events-auto"
-                aria-label="Track Order"
-                title="Track Order"
-              >
-                <svg class="w-[20px] h-[20px]" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.375c.621 0 1.125-.504 1.125-1.125V11.25M9 9h6.75M12 4.5v15m0-15a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3m0-15a3 3 0 0 0-3 3v9a3 3 0 0 0 3 3" />
-                </svg>
-              </button>
               <button 
                 (click)="authService.showLoginModal.set(true)" 
                 class="hidden sm:flex items-center justify-center h-9 w-9 rounded-full hover:bg-[#C98A58]/10 text-[#2A1F1A] hover:text-[#C98A58] transition-colors focus:outline-none pointer-events-auto"
@@ -471,12 +460,6 @@ import { ProductService, ProductDto } from '../../services/product.service';
         </ng-container>
         
         <ng-template #guestMobileNav>
-          <button 
-            (click)="openTrackingModal()" 
-            class="w-full py-2 mb-2 border border-[#2A2522]/10 hover:bg-[#2A2522]/5 text-[#2A2522] text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all"
-          >
-            Track Order
-          </button>
           <button 
             (click)="isMobileMenuOpen.set(false); authService.showLoginModal.set(true)" 
             class="w-full py-2.5 bg-[#2A2522] hover:bg-[#E07A5F] text-[#FBF9F6] text-[10px] font-bold uppercase tracking-[0.2em] rounded-xl transition-all"
