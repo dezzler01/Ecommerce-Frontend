@@ -79,16 +79,16 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
         padding: 32px 24px;
       }
     }
-    .bb-label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #C4633A; font-weight: 500; margin-bottom: 8px; display: block; }
+    .bb-label { font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase; color: #C4633A; font-weight: 500; margin-bottom: 8px; display: block; }
     .bb-serif { font-family: 'Playfair Display', 'Cormorant Garamond', serif; }
-    .bb-h2 { font-size: 32px; font-weight: 600; line-height: 1.15; margin-bottom: 8px; color: #2E2118; }
+    .bb-h2 { font-size: 42px; font-weight: 600; line-height: 1.15; margin-bottom: 8px; color: #2E2118; }
     @media (max-width: 768px) {
       .bb-h2 {
-        font-size: 24px;
+        font-size: 30px;
       }
     }
-    .bb-tagline { font-size: 12px; color: #8C7B6B; margin-bottom: 16px; font-weight: 300; }
-    .bb-link { font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; color: #C4633A; font-weight: 600; cursor: pointer; border: none; background: none; font-family: 'Inter',sans-serif; padding: 0; display: inline-flex; align-items: center; gap: 4px; text-decoration: none; border-bottom: 1px solid transparent; transition: all 0.3s; }
+    .bb-tagline { font-size: 16px; color: #8C7B6B; margin-bottom: 16px; font-weight: 300; }
+    .bb-link { font-size: 13px; text-transform: uppercase; letter-spacing: 0.14em; color: #C4633A; font-weight: 600; cursor: pointer; border: none; background: none; font-family: 'Inter',sans-serif; padding: 0; display: inline-flex; align-items: center; gap: 4px; text-decoration: none; border-bottom: 1px solid transparent; transition: all 0.3s; }
     .bb-link:hover { border-bottom-color: #C4633A; }
     
     .bb-disc-badge {
@@ -108,9 +108,9 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
         display: inline-block;
       }
     }
-    .bb-disc-up { font-size: 8px; text-transform: uppercase; letter-spacing: 0.1em; color: #8C7B6B; display: block; margin-bottom: 2px; }
-    .bb-disc-pct { font-size: 28px; font-weight: 600; color: #C4633A; font-family: 'Playfair Display', 'Cormorant Garamond', serif; line-height: 1; }
-    .bb-disc-off { font-size: 8px; text-transform: uppercase; letter-spacing: 0.1em; color: #8C7B6B; display: block; margin-top: 2px; }
+    .bb-disc-up { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: #8C7B6B; display: block; margin-bottom: 2px; }
+    .bb-disc-pct { font-size: 34px; font-weight: 600; color: #C4633A; font-family: 'Playfair Display', 'Cormorant Garamond', serif; line-height: 1; }
+    .bb-disc-off { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: #8C7B6B; display: block; margin-top: 2px; }
   `]
 })
 export class BagsShoesSectionComponent implements OnInit {

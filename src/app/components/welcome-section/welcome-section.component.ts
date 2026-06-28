@@ -83,19 +83,19 @@ import { RouterModule } from '@angular/router';
       max-width: 640px;
       margin: 0 auto;
     }
-    .bb-label { font-size: 10.5px; letter-spacing: 0.22em; text-transform: uppercase; color: #C4633A; font-weight: 600; margin-bottom: 16px; display: block; }
+    .bb-label { font-size: 14px; letter-spacing: 0.22em; text-transform: uppercase; color: #C4633A; font-weight: 600; margin-bottom: 16px; display: block; }
     .bb-serif { font-family: 'Playfair Display', 'Cormorant Garamond', serif; }
-    .bb-h1 { font-size: 54px; font-weight: 500; line-height: 1.12; margin-bottom: 18px; color: #2E2118; letter-spacing: -0.01em; }
+    .bb-h1 { font-size: 64px; font-weight: 500; line-height: 1.12; margin-bottom: 18px; color: #2E2118; letter-spacing: -0.01em; }
     @media (max-width: 768px) {
       .bb-h1 {
-        font-size: 34px;
+        font-size: 40px;
       }
     }
-    .bb-sub { font-size: 14.5px; color: #8C7B6B; line-height: 1.7; margin-bottom: 32px; max-width: 480px; font-weight: 300; }
+    .bb-sub { font-size: 18px; color: #8C7B6B; line-height: 1.7; margin-bottom: 32px; max-width: 480px; font-weight: 300; }
     .bb-btns { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
-    .bb-btn-solid { background: #C4633A; color: #fff; border: none; padding: 14px 28px; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; border-radius: 8px; cursor: pointer; font-family: 'Inter',sans-serif; font-weight: 500; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(196, 99, 58, 0.15); }
+    .bb-btn-solid { background: #C4633A; color: #fff; border: none; padding: 14px 28px; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; border-radius: 8px; cursor: pointer; font-family: 'Inter',sans-serif; font-weight: 500; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(196, 99, 58, 0.15); }
     .bb-btn-solid:hover { background: #2E2118; box-shadow: 0 4px 15px rgba(46, 33, 24, 0.2); }
-    .bb-btn-outline { background: rgba(255,255,255,0.7); color: #2E2118; border: 1px solid #E8DDD0; padding: 14px 28px; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; border-radius: 8px; cursor: pointer; font-family: 'Inter',sans-serif; font-weight: 500; transition: all 0.3s ease; }
+    .bb-btn-outline { background: rgba(255,255,255,0.7); color: #2E2118; border: 1px solid #E8DDD0; padding: 14px 28px; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; border-radius: 8px; cursor: pointer; font-family: 'Inter',sans-serif; font-weight: 500; transition: all 0.3s ease; }
     .bb-btn-outline:hover { border-color: #C4633A; color: #C4633A; background: rgba(255,255,255,0.9); }
   `]
 })

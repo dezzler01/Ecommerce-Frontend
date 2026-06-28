@@ -51,8 +51,8 @@ gsap.registerPlugin(ScrollTrigger);
                 </svg>
               </div>
               <div>
-                <p class="bb-trust-title font-bold text-[10.5px] text-[#2E2118] uppercase tracking-wide">Fast &amp; Reliable Delivery</p>
-                <p class="bb-trust-sub text-[9px] text-[#8C7B6B] font-light">Across Egypt</p>
+                <p class="bb-trust-title font-bold text-[13px] text-[#2E2118] uppercase tracking-wide">Fast &amp; Reliable Delivery</p>
+                <p class="bb-trust-sub text-[11px] text-[#8C7B6B] font-light">Across Egypt</p>
               </div>
             </div>
 
@@ -64,8 +64,8 @@ gsap.registerPlugin(ScrollTrigger);
                 </svg>
               </div>
               <div>
-                <p class="bb-trust-title font-bold text-[10.5px] text-[#2E2118] uppercase tracking-wide">Premium Quality</p>
-                <p class="bb-trust-sub text-[9px] text-[#8C7B6B] font-light">Curated with care</p>
+                <p class="bb-trust-title font-bold text-[13px] text-[#2E2118] uppercase tracking-wide">Premium Quality</p>
+                <p class="bb-trust-sub text-[11px] text-[#8C7B6B] font-light">Curated with care</p>
               </div>
             </div>
 
@@ -77,8 +77,8 @@ gsap.registerPlugin(ScrollTrigger);
                 </svg>
               </div>
               <div>
-                <p class="bb-trust-title font-bold text-[10.5px] text-[#2E2118] uppercase tracking-wide">Safe for Your Little One</p>
-                <p class="bb-trust-sub text-[9px] text-[#8C7B6B] font-light">Trusted &amp; tested</p>
+                <p class="bb-trust-title font-bold text-[13px] text-[#2E2118] uppercase tracking-wide">Safe for Your Little One</p>
+                <p class="bb-trust-sub text-[11px] text-[#8C7B6B] font-light">Trusted &amp; tested</p>
               </div>
             </div>
 
@@ -90,8 +90,8 @@ gsap.registerPlugin(ScrollTrigger);
                 </svg>
               </div>
               <div>
-                <p class="bb-trust-title font-bold text-[10.5px] text-[#2E2118] uppercase tracking-wide">Easy Returns</p>
-                <p class="bb-trust-sub text-[9px] text-[#8C7B6B] font-light">Hassle-free</p>
+                <p class="bb-trust-title font-bold text-[13px] text-[#2E2118] uppercase tracking-wide">Easy Returns</p>
+                <p class="bb-trust-sub text-[11px] text-[#8C7B6B] font-light">Hassle-free</p>
               </div>
             </div>
 

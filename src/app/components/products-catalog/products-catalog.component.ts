@@ -173,6 +173,22 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                 <div *ngIf="getSizesForAudience('Women').length === 0" class="text-[10px] text-[#8A817C] italic">No women's sizes available.</div>
               </div>
 
+              <!-- Men's Sizes Section -->
+              <div *ngIf="targetAudience() === 'All' || targetAudience() === 'Men'" class="space-y-2">
+                <div class="text-[9px] uppercase tracking-widest font-bold text-[#B84F7D] border-b border-[#2A2522]/5 pb-1">Men's Sizes</div>
+                <div class="flex flex-wrap gap-2">
+                  <button 
+                    *ngFor="let size of getSizesForAudience('Men')"
+                    (click)="toggleSize(size)"
+                    [class.active]="selectedSizes.includes(size)"
+                    class="size-filter-btn"
+                  >
+                    {{ size }}
+                  </button>
+                </div>
+                <div *ngIf="getSizesForAudience('Men').length === 0" class="text-[10px] text-[#8A817C] italic">No men's sizes available.</div>
+              </div>
+
               <!-- Children's Sizes Section -->
               <div *ngIf="targetAudience() === 'All' || targetAudience() === 'Kids'" class="space-y-2">
                 <div class="text-[9px] uppercase tracking-widest font-bold text-[#B84F7D] border-b border-[#2A2522]/5 pb-1">Children's Sizes</div>
@@ -192,7 +208,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
           </div>
  
           <!-- [05] Age Dropdown -->
-          <div class="filter-group-item relative" *ngIf="targetAudience() !== 'Women'">
+          <div class="filter-group-item relative" *ngIf="targetAudience() !== 'Women' && targetAudience() !== 'Men'">
             <button 
               (click)="activeDropdown.set(activeDropdown() === 'age' ? null : 'age'); $event.stopPropagation()"
               [class.active]="activeDropdown() === 'age'"
@@ -651,7 +667,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
             <p class="text-[10px] uppercase tracking-widest text-[#6B5E57] font-light text-center mb-2">
               Select the collection for your new product
             </p>
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-3 gap-4">
               <!-- Women Card -->
               <button 
                 type="button"
@@ -670,6 +686,28 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                   </span>
                   <span class="category-chooser-title">Women</span>
                   <span class="category-chooser-subtitle">Fashion · Pajama · Bags · Shoes</span>
+                  <span class="category-chooser-arrow">→</span>
+                </div>
+              </button>
+
+              <!-- Men Card -->
+              <button 
+                type="button"
+                (click)="selectCategoryAndProceed('Men')"
+                class="category-chooser-card group"
+              >
+                <div class="category-chooser-img-wrapper">
+                  <img src="/products/men_collection_perfect.png" alt="Men Collection" class="category-chooser-img" />
+                  <div class="category-chooser-img-overlay"></div>
+                </div>
+                <div class="category-chooser-info">
+                  <span class="category-chooser-icon">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                    </svg>
+                  </span>
+                  <span class="category-chooser-title">Men</span>
+                  <span class="category-chooser-subtitle">Apparel · Shoes · Accessories</span>
                   <span class="category-chooser-arrow">→</span>
                 </div>
               </button>
@@ -995,7 +1033,6 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                     (click)="$event.stopPropagation()"
                     class="absolute left-0 right-0 mt-1 bg-white border border-[#2A2522]/15 rounded-xl shadow-lg z-50 max-h-48 overflow-y-auto p-2 custom-scrollbar space-y-3"
                   >
-                    <!-- Women's sizes section (shown if mainCategory is Women) -->
                     <div *ngIf="formMainCategory() === 'Women'" class="space-y-1">
                       <div class="text-[8px] uppercase tracking-widest font-bold text-[#B84F7D] px-2 py-0.5 border-b border-[#2A2522]/5">Women's Sizes</div>
                       <div class="grid grid-cols-1 gap-1">
@@ -1011,6 +1048,24 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                         </button>
                       </div>
                       <div *ngIf="getFormSizesForAudience('Women').length === 0" class="text-[10px] text-[#8A817C] italic px-2">No women's sizes available.</div>
+                    </div>
+
+                    <!-- Men's sizes section (shown if mainCategory is Men) -->
+                    <div *ngIf="formMainCategory() === 'Men'" class="space-y-1">
+                      <div class="text-[8px] uppercase tracking-widest font-bold text-[#B84F7D] px-2 py-0.5 border-b border-[#2A2522]/5">Men's Sizes</div>
+                      <div class="grid grid-cols-1 gap-1">
+                        <button 
+                          *ngFor="let size of getFormSizesForAudience('Men')"
+                          type="button"
+                          (click)="toggleFormSize(size)"
+                          [ngClass]="{'bg-[#2A2522]/5 border-[#B84F7D]/20': isFormSizeSelected(size)}"
+                          class="flex items-center justify-between px-2.5 py-1.5 border border-transparent rounded-lg text-left text-xs text-[#2A2522] hover:bg-[#2A2522]/5 transition-all w-full"
+                        >
+                          <span class="font-medium truncate text-[11px] font-mono uppercase">{{ size }}</span>
+                          <span *ngIf="isFormSizeSelected(size)" class="text-[#B84F7D] font-bold text-[10px]">✓</span>
+                        </button>
+                      </div>
+                      <div *ngIf="getFormSizesForAudience('Men').length === 0" class="text-[10px] text-[#8A817C] italic px-2">No men's sizes available.</div>
                     </div>
 
                     <!-- Children's sizes section (shown if mainCategory is Kids) -->
@@ -1689,7 +1744,7 @@ export class ProductsCatalogComponent implements OnInit, AfterViewInit, OnDestro
   activeAvailableSizes = computed(() => {
     const target = this.targetAudience();
     const all = this.availableSizes();
-    if (target === 'Women') {
+    if (target === 'Women' || target === 'Men') {
       return all.filter(s => s.targetAudience === 'Women' || s.targetAudience === 'Both').map(s => s.name);
     } else if (target === 'Kids') {
       return all.filter(s => s.targetAudience === 'Kids' || s.targetAudience === 'Both').map(s => s.name);
@@ -1700,17 +1755,18 @@ export class ProductsCatalogComponent implements OnInit, AfterViewInit, OnDestro
 
   getSizesForAudience(audience: string): string[] {
     const subCat = this.selectedSubCategory().toLowerCase();
+    const effectiveAudience = audience === 'Men' ? 'Women' : audience;
     
     return this.availableSizes()
       .filter(s => {
-        if (s.targetAudience !== audience && s.targetAudience !== 'Both') {
+        if (s.targetAudience !== effectiveAudience && s.targetAudience !== 'Both') {
           return false;
         }
         
         if (subCat === 'shoes') {
-          return s.categoryType === (audience === 'Women' ? 'Women Shoes' : 'Kids Shoes') || s.categoryType === 'Universal';
+          return s.categoryType === (effectiveAudience === 'Women' ? 'Women Shoes' : 'Kids Shoes') || s.categoryType === 'Universal';
         } else if (subCat === 'fashion' || subCat === 'pajama' || subCat === 'kids boys' || subCat === 'girls' || subCat === 'unisex collection') {
-          return s.categoryType === (audience === 'Women' ? 'Women Clothing' : 'Kids Clothing') || s.categoryType === 'Universal';
+          return s.categoryType === (effectiveAudience === 'Women' ? 'Women Clothing' : 'Kids Clothing') || s.categoryType === 'Universal';
         }
         
         return true;
@@ -1722,17 +1778,18 @@ export class ProductsCatalogComponent implements OnInit, AfterViewInit, OnDestro
     const subCats = this.formSelectedSubCategories().map(s => s.toLowerCase());
     const isShoes = subCats.includes('shoes');
     const isApparel = subCats.some(s => s === 'fashion' || s === 'pajama' || s === 'kids boys' || s === 'girls' || s === 'unisex collection');
+    const effectiveAudience = audience === 'Men' ? 'Women' : audience;
 
     return this.availableSizes()
       .filter(s => {
-        if (s.targetAudience !== audience && s.targetAudience !== 'Both') {
+        if (s.targetAudience !== effectiveAudience && s.targetAudience !== 'Both') {
           return false;
         }
 
         if (isShoes) {
-          return s.categoryType === (audience === 'Women' ? 'Women Shoes' : 'Kids Shoes') || s.categoryType === 'Universal';
+          return s.categoryType === (effectiveAudience === 'Women' ? 'Women Shoes' : 'Kids Shoes') || s.categoryType === 'Universal';
         } else if (isApparel) {
-          return s.categoryType === (audience === 'Women' ? 'Women Clothing' : 'Kids Clothing') || s.categoryType === 'Universal';
+          return s.categoryType === (effectiveAudience === 'Women' ? 'Women Clothing' : 'Kids Clothing') || s.categoryType === 'Universal';
         }
 
         return true;
@@ -1772,7 +1829,7 @@ export class ProductsCatalogComponent implements OnInit, AfterViewInit, OnDestro
   getFormAvailableSizes(): string[] {
     const mainCat = this.formMainCategory();
     const all = this.availableSizes();
-    if (mainCat === 'Women') {
+    if (mainCat === 'Women' || mainCat === 'Men') {
       return all.filter(s => s.targetAudience === 'Women' || s.targetAudience === 'Both').map(s => s.name);
     } else if (mainCat === 'Kids') {
       return all.filter(s => s.targetAudience === 'Kids' || s.targetAudience === 'Both').map(s => s.name);
@@ -1832,6 +1889,7 @@ export class ProductsCatalogComponent implements OnInit, AfterViewInit, OnDestro
   activeCategoryTitle = computed(() => {
     const target = this.targetAudience();
     if (target === 'Women') return "WOMEN collection";
+    if (target === 'Men') return "MEN collection";
     if (target === 'Kids') return "Kids collection";
     return "ALL COLLECTIONS";
   });
@@ -1839,6 +1897,7 @@ export class ProductsCatalogComponent implements OnInit, AfterViewInit, OnDestro
   activeCategoryBannerUrl = computed(() => {
     const target = this.targetAudience();
     if (target === 'Women') return '/products/banner_women.png';
+    if (target === 'Men') return '/products/men_collection_perfect.png';
     if (target === 'Kids') return '/products/banner_kids.png';
     return '/products/banner_all.png';
   });
@@ -1852,6 +1911,11 @@ export class ProductsCatalogComponent implements OnInit, AfterViewInit, OnDestro
       { name: 'shoes', displayName: 'Shoes', img: '/products/heels.png', target: 'Women' },
       { name: 'accessors', displayName: 'Accessories', img: '/products/handbag_2.png', target: 'Women' }
     ];
+    const menCats = [
+      { name: 'fashion', displayName: 'Apparel', img: '/products/men_apparel_bubble.png', target: 'Men' },
+      { name: 'shoes', displayName: 'Shoes', img: '/products/men_shoes_bubble.png', target: 'Men' },
+      { name: 'accessors', displayName: 'Accessories', img: '/products/men_accessories_bubble.png', target: 'Men' }
+    ];
     const kidsCats = [
       { name: 'kids boys', displayName: 'Boys', img: '/products/sneaker.png', target: 'Kids' },
       { name: 'girls', displayName: 'Girls', img: '/products/infant_dress.png', target: 'Kids' },
@@ -1863,11 +1927,14 @@ export class ProductsCatalogComponent implements OnInit, AfterViewInit, OnDestro
 
     if (target === 'Women') {
       return womenCats;
+    } else if (target === 'Men') {
+      return menCats;
     } else if (target === 'Kids') {
       return kidsCats;
     } else {
       return [
         ...womenCats.map(c => ({ ...c, displayName: 'Women ' + c.displayName })),
+        ...menCats.map(c => ({ ...c, displayName: 'Men ' + c.displayName })),
         ...kidsCats.map(c => ({ ...c, displayName: 'Kids ' + c.displayName }))
       ];
     }
@@ -2000,7 +2067,9 @@ export class ProductsCatalogComponent implements OnInit, AfterViewInit, OnDestro
     'unisex collection': '88888888-8888-8888-8888-888888888888',
     'baby needs': '99999999-9999-9999-9999-999999999999',
     'accessors_Kids': 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
-    'shoes_Kids': 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb'
+    'shoes_Kids': 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb',
+    'accessors_Men': 'cccccccc-cccc-cccc-cccc-cccccccccccc',
+    'shoes_Men': 'dddddddd-dddd-dddd-dddd-dddddddddddd'
   };
 
   getCategoryGuid(name: string, mainCategory: string): string {
@@ -2014,6 +2083,8 @@ export class ProductsCatalogComponent implements OnInit, AfterViewInit, OnDestro
     const main = this.formMainCategory();
     if (main === 'Women') {
       return ['fashion', 'pajama', 'bags', 'shoes', 'accessors'];
+    } else if (main === 'Men') {
+      return ['fashion', 'shoes', 'accessors'];
     }
     return ['kids boys', 'girls', 'unisex collection', 'baby needs', 'shoes', 'accessors'];
   });
@@ -2151,7 +2222,7 @@ export class ProductsCatalogComponent implements OnInit, AfterViewInit, OnDestro
       this.selectedSubCategory.set(subCat);
       this.selectedSubCategoryTarget.set(subCat === 'All' ? 'All' : target);
 
-      if (target === 'Women') {
+      if (target === 'Women' || target === 'Men') {
         this.selectedAge.set('All');
       }
 

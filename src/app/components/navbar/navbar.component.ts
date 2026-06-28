@@ -16,10 +16,9 @@ import { ProductService, ProductDto } from '../../services/product.service';
   imports: [CommonModule, RouterModule, FormsModule],
   template: `
     <header [ngClass]="headerClass">
-      <div class="w-full flex justify-between items-center">
-        <!-- Left/Center Zone: Logo & Core Catalog Links -->
-        <div class="flex items-center gap-10">
-          <!-- Logo -->
+      <div class="w-full flex justify-between items-center md:grid md:grid-cols-3">
+        <!-- Left Zone: Logo -->
+        <div class="flex justify-start items-center">
           <div [routerLink]="['/']" class="logo-container relative h-9 w-32 flex items-center justify-center cursor-pointer select-none pointer-events-auto">
             <!-- Watercolor SVG Accent -->
             <svg class="logo-svg-animate absolute inset-0 w-full h-full" viewBox="0 0 600 180" preserveAspectRatio="none">
@@ -44,51 +43,91 @@ import { ProductService, ProductDto } from '../../services/product.service';
                 <path d="M 40,88 C 110,65 230,78 350,70 C 470,62 520,78 560,88 C 575,92 570,102 555,108 C 510,128 390,122 280,128 C 170,134 90,118 45,108 C 30,105 30,92 40,88 Z" fill="url(#nav-watercolor-gradient)" />
               </g>
             </svg>
-            <span class="logo-text relative z-10 text-[13px] font-black tracking-[-0.03em] text-[#1A1816] uppercase select-none font-sans">
+            <span class="logo-text relative z-10 text-[18px] font-black tracking-[-0.03em] text-[#1A1816] uppercase select-none font-sans">
               Picks&amp;More
             </span>
           </div>
+        </div>
 
-          <!-- Core Catalog Links -->
-          <nav [ngClass]="showScrolledState ? 'drop-shadow-[0_1px_2px_rgba(251,249,246,0.9)]' : 'drop-shadow-[0_1px_2px_rgba(26,24,22,0.45)]'" class="hidden md:flex gap-6 text-[9px] font-extrabold uppercase tracking-[0.2em] items-center transition-all">
+        <!-- Center Zone: Core Catalog Links -->
+        <div class="hidden md:flex justify-center items-center">
+          <nav [ngClass]="scrolled() ? 'nav-scrolled-state' : 'nav-floating-dock'" class="flex gap-10 text-[12px] font-bold uppercase tracking-[0.2em] items-center transition-all duration-300">
             <a [routerLink]="['/']" [ngClass]="linkClass('/')" class="transition-colors relative group py-1">
               Home
               <span class="absolute bottom-0 left-0 w-full h-[1px] nav-line-gradient transition-transform duration-300 origin-left" [ngClass]="isLinkActive('/') ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'"></span>
             </a>
-            <a [routerLink]="['/products']" [queryParams]="{ target: 'Women' }" [ngClass]="linkClass('/products', 'Women')" class="transition-colors relative group py-1">
-              WOMEN collection
-              <span class="absolute bottom-0 left-0 w-full h-[1px] nav-line-gradient transition-transform duration-300 origin-left" [ngClass]="isLinkActive('/products', 'Women') ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'"></span>
-            </a>
-            <a [routerLink]="['/products']" [queryParams]="{ target: 'Kids' }" [ngClass]="linkClass('/products', 'Kids')" class="transition-colors relative group py-1">
-              Kids collection
-              <span class="absolute bottom-0 left-0 w-full h-[1px] nav-line-gradient transition-transform duration-300 origin-left" [ngClass]="isLinkActive('/products', 'Kids') ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'"></span>
-            </a>
+
+            <!-- Women collection with hover dropdown -->
+            <div class="relative group py-1">
+              <a [routerLink]="['/products']" [queryParams]="{ target: 'Women' }" [ngClass]="linkClass('/products', 'Women')" class="transition-colors relative flex items-center gap-1">
+                <span>Women</span>
+                <svg class="w-2.5 h-2.5 opacity-60 group-hover:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                </svg>
+                <span class="absolute bottom-0 left-0 w-full h-[1px] nav-line-gradient transition-transform duration-300 origin-left" [ngClass]="isLinkActive('/products', 'Women') ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'"></span>
+              </a>
+              <!-- Subsections Panel -->
+              <div class="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-48 bg-[#FBF9F6]/95 backdrop-blur-md border border-[#E8DDD0] rounded-xl p-3 shadow-2xl opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 z-50 text-left normal-case dropdown-hover-bridge">
+                <div class="flex flex-col gap-2">
+                  <a [routerLink]="['/products']" [queryParams]="{ target: 'Women', subcategory: 'fashion' }" class="text-[10px] tracking-widest text-[#2A1F1A]/80 hover:text-[#C4633A] uppercase font-bold py-1.5 px-2.5 rounded-lg hover:bg-[#C4633A]/5 transition-all">Apparel</a>
+                  <a [routerLink]="['/products']" [queryParams]="{ target: 'Women', subcategory: 'shoes' }" class="text-[10px] tracking-widest text-[#2A1F1A]/80 hover:text-[#C4633A] uppercase font-bold py-1.5 px-2.5 rounded-lg hover:bg-[#C4633A]/5 transition-all">Shoes</a>
+                  <a [routerLink]="['/products']" [queryParams]="{ target: 'Women', subcategory: 'bags' }" class="text-[10px] tracking-widest text-[#2A1F1A]/80 hover:text-[#C4633A] uppercase font-bold py-1.5 px-2.5 rounded-lg hover:bg-[#C4633A]/5 transition-all">Bags &amp; Handbags</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Men collection: Coming Soon -->
+            <div class="relative py-1 flex items-center gap-1.5 cursor-not-allowed select-none">
+              <span class="text-[12px] font-bold uppercase tracking-[0.2em] text-[#2A1F1A]/40">Men</span>
+              <span class="text-[7.5px] uppercase tracking-wider font-extrabold px-1.5 py-0.5 bg-red-500 text-white rounded-md scale-[0.85] origin-left select-none animate-pulse">Coming Soon</span>
+            </div>
+
+            <!-- Kids collection with hover dropdown -->
+            <div class="relative group py-1">
+              <a [routerLink]="['/products']" [queryParams]="{ target: 'Kids' }" [ngClass]="linkClass('/products', 'Kids')" class="transition-colors relative flex items-center gap-1">
+                <span>Kids</span>
+                <svg class="w-2.5 h-2.5 opacity-60 group-hover:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                </svg>
+                <span class="absolute bottom-0 left-0 w-full h-[1px] nav-line-gradient transition-transform duration-300 origin-left" [ngClass]="isLinkActive('/products', 'Kids') ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'"></span>
+              </a>
+              <!-- Subsections Panel -->
+              <div class="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-48 bg-[#FBF9F6]/95 backdrop-blur-md border border-[#E8DDD0] rounded-xl p-3 shadow-2xl opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 z-50 text-left normal-case dropdown-hover-bridge">
+                <div class="flex flex-col gap-2">
+                  <a [routerLink]="['/products']" [queryParams]="{ target: 'Kids', subcategory: 'baby needs' }" class="text-[10px] tracking-widest text-[#2A1F1A]/80 hover:text-[#C4633A] uppercase font-bold py-1.5 px-2.5 rounded-lg hover:bg-[#C4633A]/5 transition-all">Baby Needs</a>
+                  <a [routerLink]="['/products']" [queryParams]="{ target: 'Kids', subcategory: 'girls' }" class="text-[10px] tracking-widest text-[#2A1F1A]/80 hover:text-[#C4633A] uppercase font-bold py-1.5 px-2.5 rounded-lg hover:bg-[#C4633A]/5 transition-all">Girls collection</a>
+                  <a [routerLink]="['/products']" [queryParams]="{ target: 'Kids', subcategory: 'kids boys' }" class="text-[10px] tracking-widest text-[#2A1F1A]/80 hover:text-[#C4633A] uppercase font-bold py-1.5 px-2.5 rounded-lg hover:bg-[#C4633A]/5 transition-all">Boys collection</a>
+                  <a [routerLink]="['/products']" [queryParams]="{ target: 'Kids', subcategory: 'shoes' }" class="text-[10px] tracking-widest text-[#2A1F1A]/80 hover:text-[#C4633A] uppercase font-bold py-1.5 px-2.5 rounded-lg hover:bg-[#C4633A]/5 transition-all">Shoes</a>
+                </div>
+              </div>
+            </div>
+
             <a [routerLink]="['/products']" [queryParams]="{ target: 'All' }" [ngClass]="linkClass('/products', 'All')" class="transition-colors relative group py-1">
-              ALL COLLECTIONS
+              All Collections
               <span class="absolute bottom-0 left-0 w-full h-[1px] bg-[#E07A5F] transition-transform duration-300 origin-left" [ngClass]="isLinkActive('/products', 'All') ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'"></span>
             </a>
           </nav>
         </div>
 
         <!-- Right Flex Zone: Minimalist Floating Layout -->
-        <div class="flex items-center gap-6 select-none">
+        <div class="flex justify-end items-center gap-6 select-none md:ml-auto">
           <!-- Search Icon (Triggers Advanced Overlay) -->
           <button 
             (click)="toggleSearchOverlay(true)" 
-            class="text-[#2A1F1A] hover:text-[#C98A58] transition-colors relative flex items-center justify-center h-8 w-8 rounded-full hover:bg-[#C98A58]/10 transition-all select-none pointer-events-auto focus:outline-none"
+            class="text-[#2A1F1A] hover:text-[#C98A58] transition-colors relative flex items-center justify-center h-9 w-9 rounded-full hover:bg-[#C98A58]/10 transition-all select-none pointer-events-auto focus:outline-none"
             aria-label="Search Collection"
           >
-            <svg class="w-4 h-4 transition-transform duration-300 hover:scale-110" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <svg class="w-[22px] h-[22px] transition-transform duration-300 hover:scale-110" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.602 10.602z" />
             </svg>
           </button>
 
           <!-- Cart Wrapper with hover dropdown -->
           <div class="relative group py-1 flex items-center justify-center pointer-events-auto">
-            <a [routerLink]="['/cart']" class="text-[#2A1F1A] hover:text-[#C98A58] transition-colors relative flex items-center justify-center h-8 w-8 rounded-full hover:bg-[#C98A58]/10 transition-all select-none">
+            <a [routerLink]="['/cart']" class="text-[#2A1F1A] hover:text-[#C98A58] transition-colors relative flex items-center justify-center h-9 w-9 rounded-full hover:bg-[#C98A58]/10 transition-all select-none">
               <span class="relative flex items-center justify-center">
                 <!-- Shopping Cart Trolley SVG Icon -->
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg class="w-[22px] h-[22px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
                 </svg>
                 <span *ngIf="cartCount() > 0" 
@@ -155,7 +194,7 @@ import { ProductService, ProductDto } from '../../services/product.service';
                 aria-label="Notifications"
               >
                 <!-- Bell SVG Icon -->
-                <svg class="w-4 h-4 transition-transform duration-300 hover:scale-105" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg class="w-[22px] h-[22px] transition-transform duration-300 hover:scale-105" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
                 </svg>
                 
@@ -294,10 +333,10 @@ import { ProductService, ProductDto } from '../../services/product.service';
           <ng-template #guestNav>
             <button 
               (click)="authService.showLoginModal.set(true)" 
-              class="hidden sm:flex items-center justify-center h-8 w-8 rounded-full hover:bg-[#C98A58]/10 text-[#2A1F1A] hover:text-[#C98A58] transition-colors focus:outline-none pointer-events-auto"
+              class="hidden sm:flex items-center justify-center h-9 w-9 rounded-full hover:bg-[#C98A58]/10 text-[#2A1F1A] hover:text-[#C98A58] transition-colors focus:outline-none pointer-events-auto"
               aria-label="Account"
             >
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <svg class="w-[22px] h-[22px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
               </svg>
             </button>
@@ -345,13 +384,17 @@ import { ProductService, ProductDto } from '../../services/product.service';
           Home
         </a>
         <a [routerLink]="['/products']" [queryParams]="{ target: 'Women' }" (click)="isMobileMenuOpen.set(false)" [ngClass]="isLinkActive('/products', 'Women') ? 'text-[#E07A5F]' : 'text-[#2A2522]'" class="transition-colors py-1 block">
-          WOMEN collection
+          Women
         </a>
+        <div class="py-1 block flex items-center justify-between text-[#2A2522]/40 cursor-not-allowed select-none">
+          <span>Men</span>
+          <span class="text-[7.5px] uppercase tracking-wider font-extrabold px-1.5 py-0.5 bg-red-500 text-white rounded-md scale-[0.85] origin-right select-none animate-pulse">Coming Soon</span>
+        </div>
         <a [routerLink]="['/products']" [queryParams]="{ target: 'Kids' }" (click)="isMobileMenuOpen.set(false)" [ngClass]="isLinkActive('/products', 'Kids') ? 'text-[#E07A5F]' : 'text-[#2A2522]'" class="transition-colors py-1 block">
-          Kids collection
+          Kids
         </a>
         <a [routerLink]="['/products']" [queryParams]="{ target: 'All' }" (click)="isMobileMenuOpen.set(false)" [ngClass]="isLinkActive('/products', 'All') ? 'text-[#E07A5F]' : 'text-[#2A2522]'" class="transition-colors py-1 block">
-          ALL COLLECTIONS
+          All Collections
         </a>
         <a [routerLink]="['/cart']" (click)="isMobileMenuOpen.set(false)" [ngClass]="isLinkActive('/cart') ? 'text-[#E07A5F]' : 'text-[#2A2522]'" class="transition-colors py-1 block flex items-center justify-between">
           <span>My Bag ({{ cartCount() }})</span>

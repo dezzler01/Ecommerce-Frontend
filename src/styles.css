@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -11,6 +11,8 @@
   --text-muted-umber: #8C7B6B;
   --brand-accent: #C4633A;
   --border-delicate: #E8DDD0;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', sans-serif;
 }
 
 body, .global-canvas-base, .admin-canvas {
@@ -22,7 +24,7 @@ body {
   color: var(--text-charcoal);
   overflow-x: hidden;
   margin: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans);
 }
 /* Global Form Input Transitions & Focus Enhancements */
 input, select, textarea {
@@ -38,13 +40,13 @@ input:focus, select:focus, textarea:focus {
 }
 
 .font-serif-luxury {
-  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-family: var(--font-serif);
   line-height: 0.95 !important;
   letter-spacing: -1px !important;
 }
 
 .font-sans-luxury {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans);
 }
 
 ::selection {
@@ -574,11 +576,35 @@ body.intro-running header {
 
 .navbar-luxury-glass.scrolled {
   height: 72px;
-  background: rgba(250, 246, 240, 0.82) !important;
+  background: rgba(250, 246, 240, 0.85) !important;
   backdrop-filter: blur(20px) !important;
   -webkit-backdrop-filter: blur(20px) !important;
-  border-bottom: 1px solid rgba(232, 221, 208, 0.6) !important;
-  box-shadow: 0 10px 30px -10px rgba(42, 37, 34, 0.04) !important;
+  border-bottom: 1px solid rgba(232, 221, 208, 0.65) !important;
+  box-shadow: 0 10px 30px -10px rgba(42, 37, 34, 0.05) !important;
+}
+
+/* Floating Glass Dock Navigation Menu (transparent state) */
+.nav-floating-dock {
+  background: rgba(250, 246, 240, 0.55) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  padding: 8px 28px !important;
+  border-radius: 9999px !important;
+  box-shadow: 
+    0 4px 20px -2px rgba(42, 31, 26, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Scrolled Nav State (blends with scrolled header background) */
+.nav-scrolled-state {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid transparent !important;
+  padding: 6px 4px !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
 }
 
 /* Premium Advanced Nav Link hover style - simple and clean */
@@ -586,7 +612,12 @@ body.intro-running header {
   position: relative;
   padding: 6px 4px !important;
   border-radius: 0;
+  color: var(--text-charcoal, #2E2118) !important;
   transition: color 0.3s ease !important;
+}
+
+.nav-link-scrolled:hover {
+  color: var(--brand-accent, #C4633A) !important;
 }
 
 .nav-link-active-scrolled {
@@ -594,6 +625,21 @@ body.intro-running header {
   padding: 6px 4px !important;
   border-radius: 0;
   color: var(--brand-accent, #C4633A) !important;
+}
+
+/* Invisible hover bridge to prevent premature dropdown close over margin gaps */
+.dropdown-hover-bridge {
+  position: absolute;
+}
+.dropdown-hover-bridge::before {
+  content: '';
+  position: absolute;
+  top: -16px;
+  left: 0;
+  right: 0;
+  height: 16px;
+  background: transparent;
+  z-index: 10;
 }
 
 

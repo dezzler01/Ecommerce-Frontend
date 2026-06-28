@@ -14,7 +14,7 @@ import { AlertService } from '../../services/alert.service';
       <div class="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-[#F4A261] via-[#E07A5F] to-[#B84F7D] opacity-40"></div>
       <div class="w-full flex flex-col gap-12">
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 text-[9px] tracking-[0.2em] uppercase font-light text-left">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 text-[11px] tracking-[0.2em] uppercase font-light text-left">
           <div class="lg:col-span-2 pr-0 lg:pr-8 flex flex-col justify-start">
             <div class="relative h-9 w-32 flex items-center justify-center cursor-pointer select-none mb-4">
               <svg class="absolute inset-0 w-full h-full" viewBox="0 0 600 180" preserveAspectRatio="none">
@@ -28,33 +28,34 @@ import { AlertService } from '../../services/alert.service';
                 </defs>
                 <path d="M 40,88 C 110,65 230,78 350,70 C 470,62 520,78 560,88 C 575,92 570,102 555,108 C 510,128 390,122 280,128 C 170,134 90,118 45,108 C 30,105 30,92 40,88 Z" fill="url(#footer-gradient-g)" />
               </svg>
-              <span class="relative z-10 text-[13px] font-black tracking-[-0.03em] text-[#FAF6F0] uppercase select-none font-sans">Picks&amp;More</span>
+              <span class="relative z-10 text-[18px] font-black tracking-[-0.03em] text-[#FAF6F0] uppercase select-none font-sans">Picks&amp;More</span>
             </div>
-            <p class="text-[10px] tracking-widest leading-relaxed lowercase text-[#FAF6F0]/50 normal-case mb-4 pr-4">
+            <p class="text-[12px] tracking-widest leading-relaxed lowercase text-[#FAF6F0]/50 normal-case mb-4 pr-4">
               Curating timeless luxury apparel, premium footwear, and elegant accessories for women, infants, and select children collections. Designed for modern living with heritage precision.
             </p>
           </div>
 
           <div>
-            <h4 class="font-bold text-[#FAF6F0] mb-5 tracking-[0.25em]">Collections</h4>
+            <h4 class="font-bold text-[#FAF6F0] mb-5 tracking-[0.25em] text-[13px]">Collections</h4>
             <ul class="flex flex-col gap-3">
               <li><a [routerLink]="['/products']" [queryParams]="{ target: 'Women', subcategory: 'bags' }"    class="hover:text-[#E07A5F] hover:translate-x-0.5 transition-all inline-block duration-300">Women's Accessories</a></li>
               <li><a [routerLink]="['/products']" [queryParams]="{ target: 'Women', subcategory: 'fashion' }" class="hover:text-[#E07A5F] hover:translate-x-0.5 transition-all inline-block duration-300">Premium Apparel</a></li>
+              <li><a [routerLink]="['/products']" [queryParams]="{ target: 'Men' }"                           class="hover:text-[#E07A5F] hover:translate-x-0.5 transition-all inline-block duration-300">Men's Tailored</a></li>
               <li><a [routerLink]="['/products']" [queryParams]="{ target: 'Kids',  subcategory: 'baby needs' }" class="hover:text-[#E07A5F] hover:translate-x-0.5 transition-all inline-block duration-300">Maternity Luxe</a></li>
             </ul>
           </div>
 
           <div>
-            <h4 class="font-bold text-[#FAF6F0] mb-5 tracking-[0.25em]">Assistance</h4>
+            <h4 class="font-bold text-[#FAF6F0] mb-5 tracking-[0.25em] text-[13px]">Assistance</h4>
             <ul class="flex flex-col gap-3">
-              <li><button (click)="openTrackOrderModal($event)" class="hover:text-[#E07A5F] hover:translate-x-0.5 transition-all text-left bg-transparent border-none p-0 outline-none uppercase tracking-[0.2em] font-light text-[9px] cursor-pointer duration-300">Track My Order</button></li>
+              <li><button (click)="openTrackOrderModal($event)" class="hover:text-[#E07A5F] hover:translate-x-0.5 transition-all text-left bg-transparent border-none p-0 outline-none uppercase tracking-[0.2em] font-light text-[11px] cursor-pointer duration-300">Track My Order</button></li>
               <li><a href="#" (click)="openStatic($event,'Shipping & Returns')" class="hover:text-[#E07A5F] hover:translate-x-0.5 transition-all inline-block duration-300">Shipping &amp; Returns</a></li>
               <li><a href="#" (click)="openStatic($event,'Size Guide')"          class="hover:text-[#E07A5F] hover:translate-x-0.5 transition-all inline-block duration-300">Size Guide</a></li>
             </ul>
           </div>
 
           <div>
-            <h4 class="font-bold text-[#FAF6F0] mb-5 tracking-[0.25em]">Corporate</h4>
+            <h4 class="font-bold text-[#FAF6F0] mb-5 tracking-[0.25em] text-[13px]">Corporate</h4>
             <ul class="flex flex-col gap-3">
               <li><a href="#" (click)="openStatic($event,'Our Story')"     class="hover:text-[#E07A5F] hover:translate-x-0.5 transition-all inline-block duration-300">Our Story</a></li>
               <li><a href="#" (click)="openStatic($event,'Sustainability')" class="hover:text-[#E07A5F] hover:translate-x-0.5 transition-all inline-block duration-300">Sustainability</a></li>
@@ -63,10 +64,10 @@ import { AlertService } from '../../services/alert.service';
           </div>
         </div>
 
-        <div class="flex flex-col items-center justify-center gap-6 text-[10px] tracking-[0.2em] text-[#FAF6F0]/50 font-light border-t border-white/5 pt-8 w-full text-center">
+        <div class="flex flex-col items-center justify-center gap-6 text-[12px] tracking-[0.2em] text-[#FAF6F0]/50 font-light border-t border-white/5 pt-8 w-full text-center">
           <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
             <div>© {{ currentYear }} picks&amp;more. All Rights Reserved.</div>
-            <ul class="flex items-center justify-center gap-4 lowercase tracking-wider text-[11px]">
+            <ul class="flex items-center justify-center gap-4 lowercase tracking-wider text-[12px]">
               <li>
                 <a href="https://instagram.com" target="_blank" class="hover:text-[#E07A5F] transition-all flex items-center gap-1.5 group">
                   <svg class="w-3.5 h-3.5 fill-current group-hover:scale-110 transition-transform duration-300" viewBox="0 0 24 24">
