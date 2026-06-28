@@ -201,10 +201,10 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
 
             <!-- Mini-Cart Dropdown -->
             <div class="absolute right-0 top-full mt-2 w-72 bg-[#F8F1EA]/95 backdrop-blur-md border border-[#E7D8CB] rounded-xl p-4 shadow-2xl opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 z-50 text-left">
-              <span class="text-[8px] font-mono tracking-widest text-[#C98A58] uppercase font-bold block mb-3 border-b border-[#E7D8CB] pb-2">Bag Preview ({{ cartCount() }})</span>
+              <span class="text-[8px] font-mono tracking-widest text-[#C98A58] uppercase font-bold block mb-3 border-b border-[#E7D8CB] pb-2">Cart Preview ({{ cartCount() }})</span>
               
               <div *ngIf="cartItems().length === 0" class="py-6 text-center text-[10px] text-[#77685D] font-light">
-                Your shopping bag is empty.
+                Your shopping cart is empty.
               </div>
 
               <div *ngIf="cartItems().length > 0" class="space-y-3 mb-4 max-h-[220px] overflow-y-auto pr-1">
@@ -470,7 +470,7 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
           All Collections
         </a>
         <a [routerLink]="['/cart']" (click)="isMobileMenuOpen.set(false)" [ngClass]="isLinkActive('/cart') ? 'text-[#E07A5F]' : 'text-[#2A2522]'" class="transition-colors py-1 block flex items-center justify-between">
-          <span>My Bag ({{ cartCount() }})</span>
+          <span>My Cart ({{ cartCount() }})</span>
           <span class="w-4 h-4 rounded-full bg-[#FF0055] text-[7.5px] font-bold text-white flex items-center justify-center border border-white/10" *ngIf="cartCount() > 0">
             {{ cartCount() }}
           </span>
