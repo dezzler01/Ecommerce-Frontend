@@ -78,9 +78,9 @@ import { ProductService, ProductDto } from '../../services/product.service';
             </div>
 
             <!-- Men collection: Coming Soon -->
-            <div class="relative py-1 flex items-center gap-1.5 cursor-not-allowed select-none">
-              <span class="text-[12px] font-bold uppercase tracking-[0.2em] text-[#2A1F1A]/40">Men</span>
-              <span class="text-[7.5px] uppercase tracking-wider font-extrabold px-1.5 py-0.5 bg-red-500 text-white rounded-md scale-[0.85] origin-left select-none animate-pulse">Coming Soon</span>
+            <div class="relative py-1 flex items-center gap-1.5 cursor-not-allowed select-none group/men men-badge-group">
+              <span class="text-[12px] font-bold uppercase tracking-[0.2em] text-[#2A1F1A]/40 transition-colors duration-350 group-hover/men:text-[#2A1F1A]/60">Men</span>
+              <span class="premium-badge premium-badge-desktop badge-premium-entry">Coming Soon</span>
             </div>
 
             <!-- Kids collection with hover dropdown -->
@@ -410,9 +410,9 @@ import { ProductService, ProductDto } from '../../services/product.service';
         <a [routerLink]="['/products']" [queryParams]="{ target: 'Women' }" (click)="isMobileMenuOpen.set(false)" [ngClass]="isLinkActive('/products', 'Women') ? 'text-[#E07A5F]' : 'text-[#2A2522]'" class="transition-colors py-1 block">
           Women
         </a>
-        <div class="py-1 block flex items-center justify-between text-[#2A2522]/40 cursor-not-allowed select-none">
-          <span>Men</span>
-          <span class="text-[7.5px] uppercase tracking-wider font-extrabold px-1.5 py-0.5 bg-red-500 text-white rounded-md scale-[0.85] origin-right select-none animate-pulse">Coming Soon</span>
+        <div class="py-1 block flex items-center justify-between text-[#2A2522]/40 cursor-not-allowed select-none group/men-mob men-badge-group-mob">
+          <span class="transition-colors duration-350 group-hover/men-mob:text-[#2A2522]/60">Men</span>
+          <span class="premium-badge premium-badge-mobile badge-premium-entry-mob">Coming Soon</span>
         </div>
         <a [routerLink]="['/products']" [queryParams]="{ target: 'Kids' }" (click)="isMobileMenuOpen.set(false)" [ngClass]="isLinkActive('/products', 'Kids') ? 'text-[#E07A5F]' : 'text-[#2A2522]'" class="transition-colors py-1 block">
           Kids
@@ -1166,6 +1166,68 @@ import { ProductService, ProductDto } from '../../services/product.service';
 
     .nav-line-gradient {
       background: linear-gradient(to right, #F4A261, #E76F51, #F38E75, #B84F7D) !important;
+    }
+
+    /* Premium COMING SOON Badge styles */
+    .premium-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5px 4.5px;
+      font-size: 5.5px;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #FFFFFF;
+      background: linear-gradient(135deg, #D44444 0%, #C4633A 100%);
+      border-radius: 4px;
+      box-shadow: 0 1px 3px rgba(196, 99, 58, 0.15);
+      transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+      cursor: default;
+      will-change: transform, box-shadow;
+    }
+
+    .premium-badge-desktop {
+      transform: scale(0.85);
+      transform-origin: left center;
+    }
+
+    .premium-badge-mobile {
+      transform: scale(0.85);
+      transform-origin: right center;
+    }
+
+    @keyframes badgeEntry {
+      0% {
+        opacity: 0;
+        transform: scale(0.5) translateY(1.5px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(0.85) translateY(0);
+      }
+    }
+
+    .badge-premium-entry {
+      animation: badgeEntry 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    .badge-premium-entry-mob {
+      animation: badgeEntry 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    .men-badge-group:hover .premium-badge-desktop,
+    .premium-badge-desktop:hover {
+      transform: scale(0.92) translateY(-1px) !important;
+      box-shadow: 0 4px 8px rgba(196, 99, 58, 0.35);
+      background: linear-gradient(135deg, #C4633A 0%, #E07A5F 100%) !important;
+    }
+
+    .men-badge-group-mob:hover .premium-badge-mobile,
+    .premium-badge-mobile:hover {
+      transform: scale(0.92) translateY(-1px) !important;
+      box-shadow: 0 4px 8px rgba(196, 99, 58, 0.35);
+      background: linear-gradient(135deg, #C4633A 0%, #E07A5F 100%) !important;
     }
 
     /* Logo Hover and Floating Animations */
