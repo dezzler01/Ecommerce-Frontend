@@ -15,7 +15,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
   template: `
     <section
       id="kids-shoes"
-      class="relative w-full py-6 px-6 md:px-12 lg:px-24 z-10 overflow-hidden bg-transparent"
+      class="relative w-full py-6 px-4 sm:px-6 md:px-12 lg:px-24 z-10 overflow-hidden bg-transparent"
     >
       <div class="w-full section-container relative z-10">
         
@@ -27,19 +27,24 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
             style="background-image: url('/products/men_collection_perfect.png');"
           ></div>
           
-          <!-- Elegant Light Gradient overlay to ensure text is perfectly visible against palm shadows -->
-          <div class="absolute inset-y-0 left-0 w-full sm:w-[80%] md:w-[55%] z-10 bg-gradient-to-r from-[#FAF6F0]/45 via-[#FAF6F0]/20 to-[#FAF6F0]/0 pointer-events-none"></div>
+          <!-- Stronger gradient on mobile so text is readable over the photo -->
+          <div class="absolute inset-y-0 left-0 z-10 pointer-events-none
+                      w-full bg-gradient-to-r from-[#FAF6F0]/65 via-[#FAF6F0]/30 to-[#FAF6F0]/0
+                      sm:w-[85%] sm:from-[#FAF6F0]/55 sm:via-[#FAF6F0]/25
+                      md:w-[60%] md:from-[#FAF6F0]/45 md:via-[#FAF6F0]/20"></div>
           
-          <div class="bb-strip-content z-20">
+          <!-- Content: padded-right so it never slides under the badge -->
+          <div class="bb-strip-content z-20 pr-[90px] xs:pr-[100px] sm:pr-[120px] md:pr-[160px]">
             <span class="bb-label">Collection / Men</span>
-            <h2 class="bb-h2 bb-serif">Timeless <br/>&amp; Tailored</h2>
+            <h2 class="bb-h2 bb-serif">Timeless <br/>&#38; Tailored</h2>
             <p class="bb-tagline">Sharp silhouettes and contemporary essentials for the modern man.</p>
-            <div class="inline-flex items-center gap-1.5 text-[12px] uppercase tracking-wider text-[#C4633A]/60 font-bold cursor-not-allowed select-none">
+            <div class="inline-flex items-center gap-1.5 text-[11px] sm:text-[12px] uppercase tracking-wider text-[#C4633A]/60 font-bold cursor-not-allowed select-none">
               <span>Coming Soon</span>
               <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
             </div>
           </div>
 
+          <!-- Badge — always absolute, always on the right -->
           <div class="bb-disc-badge z-20">
             <span class="bb-disc-up">Men's</span>
             <span class="bb-disc-pct">SOON</span>
@@ -57,60 +62,156 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
       display: block;
       width: 100%;
     }
+
+    /* ── Banner Strip ── */
     .bb-strip {
-      position: relative; width: 100%; min-height: 280px; overflow: hidden;
-      display: flex; align-items: center;
-      border-radius: 2.5rem;
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      border-radius: 2rem;
       border: 0.5px solid #E8DDD0;
+      display: flex;
+      align-items: stretch;
+      min-height: 220px;
     }
+    @media (min-width: 640px) {
+      .bb-strip {
+        min-height: 260px;
+        border-radius: 2.5rem;
+      }
+    }
+    @media (min-width: 1024px) {
+      .bb-strip {
+        min-height: 300px;
+      }
+    }
+
+    /* ── Background zoom image ── */
     .bb-strip-bg {
       position: absolute;
-      top: -15%;
-      bottom: -15%;
-      left: 0;
-      right: 0;
+      top: -15%; bottom: -15%; left: 0; right: 0;
       background-size: cover;
       background-position: center;
     }
-    .bb-strip-content { position: relative; z-index: 20; padding: 48px 52px; }
-    @media (max-width: 768px) {
-      .bb-strip-content {
-        padding: 32px 24px;
-      }
+
+    /* ── Content block ── */
+    .bb-strip-content {
+      position: relative;
+      z-index: 20;
+      padding: 28px 20px;
+      flex: 1;
     }
-    .bb-label { font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase; color: #C4633A; font-weight: 600; margin-bottom: 8px; display: block; }
+    @media (min-width: 480px) {
+      .bb-strip-content { padding: 36px 32px; }
+    }
+    @media (min-width: 768px) {
+      .bb-strip-content { padding: 48px 52px; }
+    }
+
+    /* ── Typography ── */
+    .bb-label {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #C4633A;
+      font-weight: 600;
+      margin-bottom: 6px;
+      display: block;
+    }
+    @media (min-width: 640px) {
+      .bb-label { font-size: 13px; margin-bottom: 8px; }
+    }
+
     .bb-serif { font-family: 'Playfair Display', 'Cormorant Garamond', serif; }
-    .bb-h2 { font-size: 42px; font-weight: 600; line-height: 1.15; margin-bottom: 8px; color: #2E2118; text-transform: uppercase; }
-    @media (max-width: 768px) {
-      .bb-h2 {
-        font-size: 30px;
-      }
+
+    .bb-h2 {
+      font-size: 26px;
+      font-weight: 600;
+      line-height: 1.15;
+      margin-bottom: 6px;
+      color: #2E2118;
+      text-transform: uppercase;
     }
-    .bb-tagline { font-size: 16px; color: #8C7B6B; margin-bottom: 16px; font-weight: 300; max-width: 320px; }
-    .bb-link { font-size: 13px; text-transform: uppercase; letter-spacing: 0.14em; color: #C4633A; font-weight: 600; cursor: pointer; border: none; background: none; font-family: 'Inter',sans-serif; padding: 0; display: inline-flex; align-items: center; gap: 4px; text-decoration: none; border-bottom: 1px solid transparent; transition: all 0.3s; }
+    @media (min-width: 480px) {
+      .bb-h2 { font-size: 32px; }
+    }
+    @media (min-width: 768px) {
+      .bb-h2 { font-size: 42px; margin-bottom: 8px; }
+    }
+
+    .bb-tagline {
+      font-size: 13px;
+      color: #8C7B6B;
+      margin-bottom: 14px;
+      font-weight: 300;
+      max-width: 240px;
+      line-height: 1.5;
+    }
+    @media (min-width: 640px) {
+      .bb-tagline { font-size: 15px; max-width: 300px; margin-bottom: 16px; }
+    }
+    @media (min-width: 768px) {
+      .bb-tagline { font-size: 16px; max-width: 320px; }
+    }
+
+    .bb-link {
+      font-size: 13px; text-transform: uppercase; letter-spacing: 0.14em;
+      color: #C4633A; font-weight: 600; cursor: pointer;
+      border: none; background: none; font-family: 'Inter',sans-serif;
+      padding: 0; display: inline-flex; align-items: center; gap: 4px;
+      text-decoration: none; border-bottom: 1px solid transparent; transition: all 0.3s;
+    }
     .bb-link:hover { border-bottom-color: #C4633A; }
-    
+
+    /* ── Disc badge ──
+       Always absolute-positioned, vertically centred on the right.
+       On very small screens we keep it absolute but shrink it so it
+       never overlaps the heading text.                                 */
     .bb-disc-badge {
-      position: absolute; right: 52px; top: 50%; transform: translateY(-50%); z-index: 3;
-      background: rgba(250,246,240,0.9); border: 0.5px solid #E8DDD0; border-radius: 20px;
-      padding: 16px 20px; text-align: center; min-width: 90px;
-      box-shadow: 0 10px 30px rgba(150,110,80,0.08);
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 30;
+      background: rgba(250,246,240,0.92);
+      border: 0.5px solid #E8DDD0;
+      border-radius: 16px;
+      padding: 10px 12px;
+      text-align: center;
+      min-width: 68px;
+      box-shadow: 0 8px 24px rgba(150,110,80,0.10);
     }
-    @media (max-width: 768px) {
+    @media (min-width: 480px) {
       .bb-disc-badge {
-        position: relative;
-        right: auto;
-        top: auto;
-        transform: none;
-        margin-left: 24px;
-        margin-bottom: 24px;
-        display: inline-block;
+        right: 24px;
+        padding: 13px 16px;
+        min-width: 78px;
+        border-radius: 18px;
       }
     }
-    .bb-disc-up { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: #8C7B6B; display: block; margin-bottom: 2px; }
-    .bb-disc-pct { font-size: 30px; font-weight: 600; color: #C4633A; font-family: 'Playfair Display', 'Cormorant Garamond', serif; line-height: 1; letter-spacing: 0.05em; }
-    .bb-disc-off { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: #8C7B6B; display: block; margin-top: 2px; }
+    @media (min-width: 768px) {
+      .bb-disc-badge {
+        right: 52px;
+        padding: 16px 20px;
+        min-width: 90px;
+        border-radius: 20px;
+      }
+    }
+
+    .bb-disc-up  { font-size: 9px;  text-transform: uppercase; letter-spacing: 0.1em; color: #8C7B6B; display: block; margin-bottom: 2px; }
+    .bb-disc-pct { font-size: 22px; font-weight: 600; color: #C4633A; font-family: 'Playfair Display','Cormorant Garamond',serif; line-height: 1; letter-spacing: 0.05em; }
+    .bb-disc-off { font-size: 9px;  text-transform: uppercase; letter-spacing: 0.1em; color: #8C7B6B; display: block; margin-top: 2px; }
+
+    @media (min-width: 640px) {
+      .bb-disc-up  { font-size: 10px; }
+      .bb-disc-pct { font-size: 28px; }
+      .bb-disc-off { font-size: 10px; }
+    }
+    @media (min-width: 768px) {
+      .bb-disc-pct { font-size: 30px; }
+    }
   `]
+
 })
 export class KidsShoesSectionComponent implements OnInit {
   sneakerProduct?: ProductDto;
