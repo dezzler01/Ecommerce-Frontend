@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { CatalogService, ProductDto } from '../../core/services/catalog.service';
 import { CartService } from '../../core/services/cart.service';
 import { AuthService } from '../../services/auth.service';
+import { WishlistCompareService } from '../../core/services/wishlist-compare.service';
 import { gsap } from 'gsap';
 import { resolveImageUrl } from '../../core/utils/image-resolver';
 
@@ -23,6 +24,7 @@ export class ProductsCatalogDetailComponent implements OnInit, AfterViewInit {
   private cartService = inject(CartService);
   private http = inject(HttpClient);
   authService = inject(AuthService);
+  wishlistCompareService = inject(WishlistCompareService);
   resolveImageUrl = resolveImageUrl;
 
   @ViewChild('mainImage') mainImageRef!: ElementRef<HTMLImageElement>;
@@ -30,6 +32,12 @@ export class ProductsCatalogDetailComponent implements OnInit, AfterViewInit {
   product = signal<ProductDto | null>(null);
   loading = signal<boolean>(true);
   error = signal<string>('');
+
+  similarProducts = signal<ProductDto[]>([]);
+  showCompareModal = signal<boolean>(false);
+  zoomX = signal<string>('50%');
+  zoomY = signal<string>('50%');
+  zoomActive = signal<boolean>(false);
 
   // Gallery signals
   activeImageIndex = signal<number>(0);
@@ -245,6 +253,7 @@ export class ProductsCatalogDetailComponent implements OnInit, AfterViewInit {
   fetchProduct(id: string): void {
     this.loading.set(true);
     this.error.set('');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     this.catalogService.getProductById(id).subscribe({
       next: (res) => {
         if (res.isSuccess && res.data) {
@@ -261,6 +270,19 @@ export class ProductsCatalogDetailComponent implements OnInit, AfterViewInit {
           if (res.data.sizes && res.data.sizes.length > 0) {
             this.selectedSize.set(res.data.sizes[0]);
           }
+
+          // Fetch similar products
+          this.catalogService.getProducts({ pageSize: 100 }).subscribe({
+            next: (similarRes) => {
+              if (similarRes.isSuccess && similarRes.data && similarRes.data.items) {
+                const filtered = similarRes.data.items.filter(item => 
+                  item.id !== res.data.id && 
+                  (item.mainCategory === res.data.mainCategory || item.subCategory === res.data.subCategory)
+                );
+                this.similarProducts.set(filtered.slice(0, 4));
+              }
+            }
+          });
         } else {
           this.error.set(res.message || 'Unable to retrieve product details.');
         }
@@ -291,10 +313,54 @@ export class ProductsCatalogDetailComponent implements OnInit, AfterViewInit {
     this.validationError.set('');
   }
 
+  onMouseMove(event: MouseEvent): void {
+    if (!this.zoomActive()) return;
+    const container = event.currentTarget as HTMLElement;
+    const rect = container.getBoundingClientRect();
+    const x = ((event.clientX - rect.left) / rect.width) * 100;
+    const y = ((event.clientY - rect.top) / rect.height) * 100;
+    this.zoomX.set(`${x}%`);
+    this.zoomY.set(`${y}%`);
+  }
+
+  toggleZoom(): void {
+    this.zoomActive.update(z => !z);
+  }
+
+  toggleFavorite(): void {
+    const p = this.product();
+    if (p) {
+      this.wishlistCompareService.toggleFavorite(p);
+    }
+  }
+
+  isFavorite(): boolean {
+    const p = this.product();
+    return p ? this.wishlistCompareService.isFavorite(p.id) : false;
+  }
+
+  toggleCompare(): void {
+    const p = this.product();
+    if (p) {
+      if (this.wishlistCompareService.isInCompare(p.id)) {
+        this.wishlistCompareService.removeFromCompare(p.id);
+      } else {
+        this.wishlistCompareService.addToCompare(p);
+      }
+    }
+  }
+
+  isInCompare(): boolean {
+    const p = this.product();
+    return p ? this.wishlistCompareService.isInCompare(p.id) : false;
+  }
+
   zoomImage(zoomIn: boolean): void {
+    // Legacy hover scale transition when zoom lens is not toggled
+    if (this.zoomActive()) return;
     if (this.mainImageRef && this.mainImageRef.nativeElement) {
       gsap.to(this.mainImageRef.nativeElement, {
-        scale: zoomIn ? 1.08 : 1,
+        scale: zoomIn ? 1.05 : 1,
         duration: 0.6,
         ease: 'power1.out'
       });
