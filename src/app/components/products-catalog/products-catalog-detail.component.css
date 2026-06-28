@@ -334,3 +334,14 @@ button:hover:not(:disabled) {
 .overflow-hidden {
   transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), padding 0.35s ease, border-top 0.35s ease;
 }
+
+/* Warm card backgrounds to blend with canvas instead of stark white */
+.bg-\[\#FFFDFC\] {
+  background-color: rgba(248, 241, 234, 0.72) !important;
+  backdrop-filter: blur(14px) !important;
+}
+
+.bg-\[\#FFFDFC\]\/95 {
+  background-color: rgba(248, 241, 234, 0.92) !important;
+  backdrop-filter: blur(14px) !important;
+}

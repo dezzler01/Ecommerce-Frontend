@@ -33,20 +33,11 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
                   <animate attributeName="x1" dur="7s" values="0%;40%;0%" repeatCount="indefinite" />
                   <animate attributeName="x2" dur="7s" values="100%;140%;100%" repeatCount="indefinite" />
                 </linearGradient>
-                <filter id="nav-paint-bleed">
-                  <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="4" result="noise">
-                    <animate attributeName="baseFrequency" dur="12s" values="0.014;0.017;0.014" repeatCount="indefinite" />
-                  </feTurbulence>
-                  <feDisplacementMap in="SourceGraphic" in2="noise" scale="12" xChannelSelector="R" yChannelSelector="G" result="displaced" />
-                  <feGaussianBlur in="displaced" stdDeviation="1.0" />
-                </filter>
               </defs>
-              <g filter="url(#nav-paint-bleed)">
-                <path d="M 40,88 C 110,65 230,78 350,70 C 470,62 520,78 560,88 C 575,92 570,102 555,108 C 510,128 390,122 280,128 C 170,134 90,118 45,108 C 30,105 30,92 40,88 Z" fill="url(#nav-watercolor-gradient)" />
-              </g>
+              <path d="M 40,88 C 110,65 230,78 350,70 C 470,62 520,78 560,88 C 575,92 570,102 555,108 C 510,128 390,122 280,128 C 170,134 90,118 45,108 C 30,105 30,92 40,88 Z" fill="url(#nav-watercolor-gradient)" />
             </svg>
-            <span class="logo-text relative z-10 text-[15.5px] font-black tracking-[-0.03em] text-[#1A1816] uppercase select-none font-sans">
-              Picks&amp;More
+            <span class="logo-text relative z-10 text-[18px] font-serif-luxury tracking-[0.05em] text-[#1A1816] uppercase select-none font-bold">
+              Picks<span class="text-[#C4633A] font-light">&amp;</span>More
             </span>
           </div>
         </div>
