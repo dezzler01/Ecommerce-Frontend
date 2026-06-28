@@ -249,11 +249,11 @@ import { MediaService } from '../../services/media.service';
           <!-- Shared Header Actions (contextual by tab) -->
           <div class="flex flex-wrap gap-2.5">
             <button 
-              *ngIf="currentTab() === 'orders' && authService.hasPermission('Shipping:Update')" 
+              *ngIf="authService.hasPermission('Shipping:Update')" 
               (click)="toggleSettingsPanel()" 
               class="px-4 py-2 border border-[#B84F7D]/25 hover:bg-[#B84F7D]/5 text-[#B84F7D] text-xs font-bold uppercase tracking-widest rounded-xl transition-all"
             >
-              ⚙ Shipping Settings
+              ⚙ Settings & Payments
             </button>
             <button 
               *ngIf="currentTab() === 'orders'" 
