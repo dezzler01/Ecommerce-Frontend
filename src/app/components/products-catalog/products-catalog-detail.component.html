@@ -338,7 +338,7 @@
               <span class="text-[#D58E6A]">✓</span> Secure Checkout
             </div>
             <div class="flex items-center gap-1.5 font-medium">
-              <span class="text-[#D58E6A]">✓</span> خامات ممتازة مضمونة
+              <span class="text-[#D58E6A]">✓</span> Guaranteed Quality
             </div>
             <div class="flex items-center gap-1.5 font-medium">
               <span class="text-[#D58E6A]">✓</span> Cash on Delivery
@@ -628,50 +628,7 @@
       </div>
     </div>
 
-    <!-- Placed Orders Section -->
-    <div class="my-16 border-t border-[#7A6C64]/15 pt-16">
-      <h4 class="text-[10px] uppercase tracking-widest font-bold text-[#2C211C] mb-6">Your Placed Orders</h4>
-      
-      <div *ngIf="loadingOrders()" class="flex justify-center items-center py-8">
-        <span class="animate-spin rounded-full h-6 w-6 border-b-2 border-[#5B3A29]"></span>
-      </div>
 
-      <div *ngIf="!loadingOrders() && myProductOrders().length === 0" class="p-6 border border-dashed border-[#7A6C64]/10 rounded-xl text-center">
-        <p class="text-xs text-[#7A6C64]/60 tracking-wide">You haven't placed any orders for this piece yet.</p>
-      </div>
-
-      <div *ngIf="!loadingOrders() && myProductOrders().length > 0" class="overflow-x-auto custom-scrollbar">
-        <table class="orders-table">
-          <thead>
-            <tr>
-              <th>Order Number</th>
-              <th>Placed Date</th>
-              <th>Quantity Placed</th>
-              <th>Total Price</th>
-              <th>Order Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let order of myProductOrders()">
-              <td class="font-mono text-[#5B3A29] font-semibold">{{ order.orderNumber }}</td>
-              <td>{{ order.createdAt | date:'mediumDate' }}</td>
-              <td class="font-mono">{{ getProductQtyInOrder(order) }}</td>
-              <td class="font-mono text-[#2C211C] font-semibold">{{ order.totalPrice | currency:'EGP ' }}</td>
-              <td>
-                <span class="status-badge" [ngClass]="{
-                  'status-pending': order.status === 'PendingVerification',
-                  'status-completed': order.status === 'Delivered',
-                  'status-shipping': order.status === 'ConfirmedPreparing' || order.status === 'OutForDelivery',
-                  'status-returned': order.status === 'ReturnedRejected'
-                }">
-                  {{ order.status }}
-                </span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
 
     <!-- Recommended Specimen Section -->
     <div *ngIf="similarProducts().length > 0" class="my-16 border-t border-[#7A6C64]/15 pt-16">
