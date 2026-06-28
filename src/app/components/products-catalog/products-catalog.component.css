@@ -500,28 +500,28 @@
 
 .editorial-lookbook-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 8px;
   width: 100%;
 }
 
 @media (min-width: 640px) {
   .editorial-lookbook-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 12px;
   }
 }
 
 @media (min-width: 1024px) {
   .editorial-lookbook-grid {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 16px;
   }
 }
 
 @media (min-width: 1440px) {
   .editorial-lookbook-grid {
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 20px;
   }
 }
@@ -1195,6 +1195,7 @@
   align-items: center;
   cursor: pointer;
   width: 125px;
+  flex-shrink: 0;
   text-align: center;
   transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
@@ -1202,6 +1203,7 @@
 @media (max-width: 639px) {
   .subcategory-circle-item {
     width: 90px;
+    flex-shrink: 0;
   }
 }
 

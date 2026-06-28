@@ -46,7 +46,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
       </div>
 
       <!-- Main Content Container with standard padding -->
-      <div class="px-12 pb-20">
+      <div class="px-4 sm:px-6 md:px-12 pb-20">
 
       <!-- Horizontal Filter Bar -->
       <div class="horizontal-filter-bar mb-6">

@@ -18,7 +18,7 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
   imports: [CommonModule, RouterModule, FormsModule],
   template: `
     <header [ngClass]="headerClass">
-      <div class="w-full flex justify-between items-center md:grid md:grid-cols-3">
+      <div class="w-full flex justify-between items-center md:grid md:grid-cols-[auto_1fr_auto] md:gap-4">
         <!-- Left Zone: Logo -->
         <div class="flex justify-start items-center">
           <div [routerLink]="['/']" class="logo-container relative h-9 w-32 flex items-center justify-center cursor-pointer select-none pointer-events-auto">
@@ -325,11 +325,11 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
                   {{ getUserInitials(user.username) }}
                 </div>
                 <!-- Username -->
-                <span class="hidden sm:inline font-bold tracking-[0.05em] text-[9.5px] text-[#2A1F1A] transition-colors duration-300">
+                <span class="hidden lg:inline font-bold tracking-[0.05em] text-[9.5px] text-[#2A1F1A] transition-colors duration-300">
                   {{ user.username }}
                 </span>
                 <!-- Caret Down Icon -->
-                <svg class="hidden sm:block w-2.5 h-2.5 text-[#2A1F1A]/60 transition-transform duration-300 dropdown-arrow" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg class="hidden lg:block w-2.5 h-2.5 text-[#2A1F1A]/60 transition-transform duration-300 dropdown-arrow" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                 </svg>
               </div>
