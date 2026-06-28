@@ -1174,7 +1174,7 @@ import { ProductService, ProductDto } from '../../services/product.service';
       align-items: center;
       justify-content: center;
       padding: 1.5px 4.5px;
-      font-size: 5.5px;
+      font-size: 5.2px;
       font-weight: 900;
       letter-spacing: 0.1em;
       text-transform: uppercase;
@@ -1185,6 +1185,7 @@ import { ProductService, ProductDto } from '../../services/product.service';
       transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
       cursor: default;
       will-change: transform, box-shadow;
+      white-space: nowrap;
     }
 
     .premium-badge-desktop {

@@ -27,6 +27,9 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
             style="background-image: url('/products/men_collection_perfect.png');"
           ></div>
           
+          <!-- Elegant Light Gradient overlay to ensure text is perfectly visible against palm shadows -->
+          <div class="absolute inset-y-0 left-0 w-full sm:w-[80%] md:w-[55%] z-10 bg-gradient-to-r from-[#FAF6F0] via-[#FAF6F0]/90 to-[#FAF6F0]/0 pointer-events-none"></div>
+          
           <div class="bb-strip-content z-20">
             <span class="bb-label">Collection / Men</span>
             <h2 class="bb-h2 bb-serif">Timeless <br/>&amp; Tailored</h2>
@@ -69,7 +72,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
       background-size: cover;
       background-position: center;
     }
-    .bb-strip-content { position: relative; z-index: 2; padding: 48px 52px; }
+    .bb-strip-content { position: relative; z-index: 20; padding: 48px 52px; }
     @media (max-width: 768px) {
       .bb-strip-content {
         padding: 32px 24px;
