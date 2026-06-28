@@ -211,31 +211,31 @@ import { ProductService, ProductDto } from '../../services/product.service';
               <!-- Notifications Dropdown Panel -->
               <div 
                 *ngIf="isNotificationsDropdownOpen()" 
-                class="absolute right-0 top-full mt-2 w-72 bg-[#F8F1EA]/95 border border-[#E7D8CB] rounded-2xl shadow-2xl p-4 backdrop-blur-xl z-50 text-left"
+                class="absolute right-0 top-full mt-2 w-[340px] md:w-[380px] bg-[#F8F1EA]/98 border border-[#E7D8CB] rounded-2xl shadow-2xl p-4.5 backdrop-blur-xl z-50 text-left"
                 (click)="$event.stopPropagation()"
               >
                 <div class="flex justify-between items-center border-b border-[#E7D8CB] pb-2.5 mb-2.5">
                   <div class="flex items-center gap-1.5">
-                    <span class="text-[9px] font-mono tracking-widest text-[#C98A58] uppercase font-bold">Alert Ledger</span>
-                    <span *ngIf="notificationService.unreadCount() > 0" class="text-[7px] bg-[#C98A58]/20 text-[#C98A58] px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider font-mono">
+                    <span class="text-[10px] font-mono tracking-widest text-[#C98A58] uppercase font-bold">Alert Ledger</span>
+                    <span *ngIf="notificationService.unreadCount() > 0" class="text-[8px] bg-[#C98A58]/20 text-[#C98A58] px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider font-mono">
                       {{ notificationService.unreadCount() }} New
                     </span>
                   </div>
                   <button 
                     *ngIf="notificationService.notifications().length > 0"
                     (click)="markAllAsRead()"
-                    class="text-[7.5px] font-mono uppercase tracking-widest text-[#77685D] hover:text-[#C98A58] transition-colors"
+                    class="text-[9px] font-mono uppercase tracking-widest text-[#77685D] hover:text-[#C98A58] transition-colors"
                   >
                     Clear All
                   </button>
                 </div>
 
                 <!-- Notifications List -->
-                <div class="max-h-[220px] overflow-y-auto custom-scrollbar space-y-2 mb-1 pr-1">
+                <div class="max-h-[260px] overflow-y-auto custom-scrollbar space-y-2 mb-1 pr-1.5">
                   <!-- Empty State -->
-                  <div *ngIf="notificationService.notifications().length === 0" class="py-8 text-center">
-                    <span class="text-[8px] uppercase tracking-widest text-[#77685D] font-medium block">Canvas is peaceful</span>
-                    <span class="text-[6.5px] uppercase tracking-widest text-[#77685D]/60 mt-1 block">No notifications recorded</span>
+                  <div *ngIf="notificationService.notifications().length === 0" class="py-10 text-center">
+                    <span class="text-[9.5px] uppercase tracking-widest text-[#77685D] font-medium block">Canvas is peaceful</span>
+                    <span class="text-[8px] uppercase tracking-widest text-[#77685D]/60 mt-1 block">No notifications recorded</span>
                   </div>
 
                   <!-- Notification Item -->
@@ -243,17 +243,17 @@ import { ProductService, ProductDto } from '../../services/product.service';
                     *ngFor="let note of notificationService.notifications()" 
                     (click)="markAsRead(note)"
                     [ngClass]="note.isRead ? 'opacity-55 hover:opacity-85' : 'bg-[#C98A58]/5 border-l-2 border-[#C98A58] pl-2.5'"
-                    class="p-2.5 rounded-lg border border-[#E7D8CB] bg-white/[0.01] hover:bg-[#C98A58]/5 transition-all cursor-pointer relative group/item"
+                    class="p-3 rounded-lg border border-[#E7D8CB] bg-white/[0.01] hover:bg-[#C98A58]/5 transition-all cursor-pointer relative group/item"
                   >
-                    <div class="flex justify-between items-start gap-1">
-                      <span class="text-[8.5px] font-bold text-[#2A1F1A] uppercase tracking-wide truncate max-w-[80%]">{{ note.title }}</span>
-                      <span class="text-[6px] text-[#77685D] font-mono tracking-tighter">{{ formatTimeAgo(note.createdAt) }}</span>
+                    <div class="flex justify-between items-start gap-2">
+                      <span class="text-[11px] font-bold text-[#2A1F1A] uppercase tracking-wide truncate max-w-[75%]">{{ note.title }}</span>
+                      <span class="text-[8px] text-[#77685D] font-mono tracking-tighter">{{ formatTimeAgo(note.createdAt) }}</span>
                     </div>
-                    <p class="text-[8px] text-[#77685D] mt-1 font-normal leading-relaxed break-words">{{ note.message }}</p>
+                    <p class="text-[10.5px] text-[#4A3C35] mt-1 font-normal leading-relaxed break-words">{{ note.message }}</p>
                     
                     <!-- Quick action context link -->
                     <div *ngIf="note.relatedEntityId" class="mt-1.5 flex justify-end">
-                      <span class="text-[6.5px] font-mono text-[#C98A58] uppercase tracking-widest group-hover/item:underline">
+                      <span class="text-[8.5px] font-mono text-[#C98A58] uppercase tracking-widest group-hover/item:underline">
                         Reference Details →
                       </span>
                     </div>
@@ -1015,6 +1015,20 @@ import { ProductService, ProductDto } from '../../services/product.service';
     .badge-pop {
       animation: badgePop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(201, 138, 88, 0.35);
+      border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(201, 138, 88, 0.6);
+    }
     .neon-badge {
       background-color: #FF0055;
       box-shadow: 0 0 10px #FF0055;
@@ -1109,14 +1123,14 @@ import { ProductService, ProductDto } from '../../services/product.service';
       right: 0;
       top: 100%;
       margin-top: 10px;
-      width: 200px;
-      background: rgba(10, 10, 15, 0.92);
+      width: 220px;
+      background: rgba(248, 241, 234, 0.98);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(224, 122, 95, 0.25);
+      border: 1px solid rgba(231, 216, 203, 0.9);
       border-radius: 18px;
       padding: 14px;
-      box-shadow: 0 12px 35px rgba(10, 10, 15, 0.45);
+      box-shadow: 0 12px 35px rgba(42, 31, 26, 0.15);
       opacity: 0;
       transform: translateY(8px);
       pointer-events: none;
