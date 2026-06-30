@@ -1,11 +1,11 @@
 :host {
-  --bg-luxury-beige: #FAF6F0;
+  --bg-luxury-beige: var(--bg-cheerful-cream);
   --bg-frosted-warm: rgba(255, 253, 252, 0.95);
   --text-charcoal: #2E2118;
   --text-muted-umber: #8C7B6B;
   --brand-accent: #C4633A;
-  --border-delicate: #E8DDD0;
-  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --border-delicate: #EBF1F5;
+  --font-serif: var(--font-heading), Georgia, serif;
   --font-sans: 'Plus Jakarta Sans', sans-serif;
 }
 
@@ -56,19 +56,19 @@ body, .min-h-screen {
 }
 
 /* Map specific tailwind style colors to the site's brand colors */
-.bg-\[\#5B3A29\] {
+.bg-\[var\(--color-coral\)\] {
   background-color: var(--brand-accent) !important;
 }
-.bg-\[\#5B3A29\]:hover {
+.bg-\[var\(--color-coral\)\]\:hover:hover {
   background-color: #A9502D !important;
 }
-.text-\[\#5B3A29\] {
+.text-\[var\(--color-coral\)\] {
   color: var(--brand-accent) !important;
 }
-.border-\[\#5B3A29\] {
+.border-\[var\(--color-coral\)\] {
   border-color: var(--brand-accent) !important;
 }
-.hover\:bg-\[\#5B3A29\]\/5:hover {
+.hover\:bg-\[var\(--color-coral\)\]\/5:hover {
   background-color: rgba(196, 99, 58, 0.05) !important;
 }
 .text-\[\#D58E6A\] {

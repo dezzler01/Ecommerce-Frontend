@@ -1,23 +1,35 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Poppins:ital,wght@0,100..900;1,100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --bg-luxury-beige: #FAF6F0;
-  --bg-frosted-warm: rgba(250, 246, 240, 0.82);
-  --text-charcoal: #2E2118;
-  --text-muted-umber: #8C7B6B;
-  --brand-accent: #C4633A;
-  --border-delicate: #E8DDD0;
-  --font-serif: 'Cormorant Garamond', Georgia, serif;
-  --font-sans: 'Plus Jakarta Sans', sans-serif;
+  --bg-cheerful-cream: #FAF5F2;
+  --bg-cheerful-blue: #F0FAFE;
+  --text-charcoal: var(--text-charcoal);
+  --text-muted-umber: #77685D;
+  --color-coral: #F67B63;
+  --color-orange: #F6A04D;
+  --color-blue: #64C9F5;
+  --color-mint: #77DCC5;
+  --color-lavender: #B99AF7;
+  --color-yellow: #FFD75A;
+  --font-heading: 'Fredoka', 'Nunito', sans-serif;
+  --font-body: 'Nunito', 'Poppins', sans-serif;
+
+  /* Fallback compatibility overrides for existing layouts */
+  --bg-luxury-beige: #FAF5F2;
+  --bg-frosted-warm: rgba(255, 253, 249, 0.85);
+  --brand-accent: #F67B63;
+  --border-delicate: #EBF1F5;
+  --font-serif: 'Fredoka', 'Nunito', sans-serif;
+  --font-sans: 'Nunito', 'Poppins', sans-serif;
 }
 
 body, .global-canvas-base, .admin-canvas {
   background-image: none !important;
-  background-color: #FAF6F0 !important;
+  background-color: var(--bg-cheerful-cream) !important;
 }
 
 body {
@@ -133,7 +145,7 @@ body.accessibility-giant-cursor .custom-cursor-dot::after { content: ''; positio
 body.accessibility-giant-cursor .custom-cursor-ring, body.accessibility-giant-cursor .custom-cursor-halo { width: 80px !important; height: 80px !important; border: 4px solid #ffff00 !important; }
 
 /* 5. Dyslexia Font (Lexend) */
-body.accessibility-dyslexia-font, body.accessibility-dyslexia-font * { font-family: 'Lexend', 'Arial', sans-serif !important; letter-spacing: 0.06em !important; word-spacing: 0.12em !important; }
+body.accessibility-dyslexia-font, body.accessibility-dyslexia-font * { font-family: var(--font-heading), 'Arial', sans-serif !important; letter-spacing: 0.06em !important; word-spacing: 0.12em !important; }
 
 /* 6. Keyboard Focus Helper Outline */
 body.accessibility-focus-aid *:focus { outline: 4px solid #ffff00 !important; outline-offset: 4px !important; box-shadow: 0 0 0 8px #000000 !important; }
@@ -149,19 +161,27 @@ body.accessibility-focus-aid *:focus { outline: 4px solid #ffff00 !important; ou
   transition: none !important; /* Let GSAP requestAnimationFrame drive smooth motion */
 }
 .trail-purple {
-  width: 7px;
-  height: 7px;
-  background: #E07A5F;
+  width: 7.5px;
+  height: 7.5px;
+  background: var(--color-coral);
 }
 .trail-pink {
-  width: 5.5px;
-  height: 5.5px;
-  background: #6B5E57;
+  width: 6px;
+  height: 6px;
+  background: var(--color-blue);
 }
 .trail-yellow {
-  width: 4.5px;
-  height: 4.5px;
-  background: #2A2522;
+  width: 5px;
+  height: 5px;
+  background: var(--color-yellow);
+}
+
+.font-fredoka {
+  font-family: var(--font-serif) !important;
+}
+
+.font-nunito {
+  font-family: var(--font-sans) !important;
 }
 
 /* Hide custom elements in accessibility modes */
@@ -257,7 +277,7 @@ body.intro-running header {
 .luxury-experience-loader .loader-logo-text {
   position: relative;
   z-index: 10;
-  font-family: 'Outfit', 'Lexend', sans-serif;
+  font-family: var(--font-body), var(--font-heading), sans-serif;
   font-size: 2.75rem;
   font-weight: 900;
   letter-spacing: -0.03em;
@@ -274,7 +294,7 @@ body.intro-running header {
 }
 
 .luxury-experience-loader .loader-subtitle {
-  font-family: 'Outfit', 'Lexend', sans-serif;
+  font-family: var(--font-body), var(--font-heading), sans-serif;
   font-size: 9.5px;
   font-weight: 400;
   letter-spacing: 0.35em;
@@ -312,7 +332,7 @@ body.intro-running header {
     rgba(244, 162, 97, 0.1) 0%, 
     #F4A261 30%, 
     #E76F51 50%, 
-    #B84F7D 70%, 
+    var(--color-lavender) 70%, 
     rgba(184, 79, 125, 0.1) 100%
   );
   background-size: 200% 100%;
@@ -331,7 +351,7 @@ body.intro-running header {
   bottom: 0;
   left: 0;
   height: 100%;
-  background: linear-gradient(to right, #F4A261, #E76F51, #B84F7D);
+  background: linear-gradient(to right, #F4A261, #E76F51, var(--color-lavender));
   transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 0 8px rgba(231, 111, 81, 0.35);
 }
@@ -342,7 +362,7 @@ body.intro-running header {
   text-transform: uppercase;
   letter-spacing: 2.2px;
   font-weight: 700;
-  color: #B84F7D;
+  color: var(--color-lavender);
   animation: statusPulse 1.5s ease-in-out infinite alternate;
 }
 
@@ -445,7 +465,7 @@ body.intro-running header {
 
 /* Glassmorphism custom light highlight & inner radial glow */
 .luxury-alert-box {
-  background: radial-gradient(circle at 50% 0%, rgba(224, 122, 95, 0.03) 0%, transparent 75%), #FBF9F6;
+  background: radial-gradient(circle at 50% 0%, rgba(224, 122, 95, 0.03) 0%, transparent 75%), #FAF5F2;
   box-shadow: 
     0 4px 30px rgba(42, 37, 34, 0.03),
     0 20px 50px -10px rgba(42, 37, 34, 0.12),
@@ -552,11 +572,8 @@ body::before {
   position: fixed;
   inset: 0;
   z-index: -10;
-  background-image: url('/products/editorial_page_bg_canvas.png');
-  background-position: top center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-color: #FAF6F0;
+  background-image: none !important;
+  background-color: var(--bg-cheerful-cream);
   pointer-events: none;
 }
 .storefront-unified-canvas {
@@ -571,72 +588,31 @@ body::before {
   box-shadow: 0 20px 60px rgba(150, 110, 80, 0.04) !important;
 }
 
-/* Luxury Translucent Glassmorphic Header */
-.navbar-luxury-glass {
-  height: 105px;
-  background: transparent !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  border-bottom: 1px solid transparent !important;
-  box-shadow: none !important;
-  transition: background 0.4s ease, border-bottom 0.4s ease, backdrop-filter 0.4s ease, box-shadow 0.4s ease, height 0.4s ease !important;
-}
-
-.navbar-luxury-glass.scrolled {
-  height: 72px;
-  background: rgba(250, 246, 240, 0.85) !important;
-  backdrop-filter: blur(20px) !important;
-  -webkit-backdrop-filter: blur(20px) !important;
-  border-bottom: 1px solid rgba(232, 221, 208, 0.65) !important;
-  box-shadow: 0 10px 30px -10px rgba(42, 37, 34, 0.05) !important;
-}
-
-.nav-floating-dock {
-  background: rgba(250, 246, 240, 0.55) !important;
-  backdrop-filter: blur(14px) !important;
-  -webkit-backdrop-filter: blur(14px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.45) !important;
-  padding: 8px 16px !important; /* Smaller on tablet/Nest Hub */
-  border-radius: 9999px !important;
+/* Premium Floating Pill Header Styles */
+.initial-pill-dock {
+  background: rgba(250, 245, 242, 0.8) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(232, 221, 208, 0.5) !important;
+  padding: 14px 28px !important;
+  border-radius: 24px !important;
   box-shadow: 
-    0 4px 20px -2px rgba(42, 31, 26, 0.05),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
-}
-@media (min-width: 1024px) {
-  .nav-floating-dock {
-    padding: 8px 28px !important; /* Standard on large desktops */
-  }
+    0 8px 30px rgba(42, 31, 26, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7) !important;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
-/* Scrolled Nav State (blends with scrolled header background) */
-.nav-scrolled-state {
-  background: transparent !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  border: 1px solid transparent !important;
-  padding: 6px 4px !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-}
-
-/* Premium Advanced Nav Link hover style - simple and clean */
-.nav-link-scrolled {
-  position: relative;
-  padding: 6px 4px !important;
-  border-radius: 0;
-  color: var(--text-charcoal, #2E2118) !important;
-  transition: color 0.3s ease !important;
-}
-
-.nav-link-scrolled:hover {
-  color: var(--brand-accent, #C4633A) !important;
-}
-
-.nav-link-active-scrolled {
-  position: relative;
-  padding: 6px 4px !important;
-  border-radius: 0;
-  color: var(--brand-accent, #C4633A) !important;
+.scrolled-pill-dock {
+  background: rgba(250, 245, 242, 0.92) !important;
+  backdrop-filter: blur(24px) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
+  border: 1px solid rgba(232, 221, 208, 0.8) !important;
+  padding: 8px 20px !important;
+  border-radius: 20px !important;
+  box-shadow: 
+    0 12px 40px -10px rgba(42, 31, 26, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 /* Invisible hover bridge to prevent premature dropdown close over margin gaps */
@@ -654,15 +630,15 @@ body::before {
   z-index: 10;
 }
 
-/* ── Responsive Navbar Height Override ── */
+/* ── Responsive Pill Navbar Height Override ── */
 @media (max-width: 767px) {
-  .navbar-luxury-glass {
-    height: 68px;
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
+  .initial-pill-dock {
+    padding: 10px 16px !important;
+    border-radius: 16px !important;
   }
-  .navbar-luxury-glass.scrolled {
-    height: 60px;
+  .scrolled-pill-dock {
+    padding: 6px 12px !important;
+    border-radius: 14px !important;
   }
 }
 

@@ -19,7 +19,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
   standalone: true,
   imports: [CommonModule, RouterModule, FormsModule, NgOptimizedImage, AppImageUploaderComponent],
   template: `
-    <div class="min-h-screen bg-transparent text-left font-sans-luxury w-full overflow-x-hidden">
+    <div class="min-h-screen bg-transparent text-left font-nunito w-full overflow-x-hidden">
       <div class="animate-fade-in">
         <!-- Immersive Hero Vision Banner -->
       <div class="immersive-hero-vision">
@@ -57,14 +57,14 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
             <button 
               *ngIf="authService.hasPermission('Products:Create')" 
               (click)="openAdminProductModal(null, $event)"
-              class="mt-2.5 px-3 py-1.5 bg-[#E07A5F] hover:bg-[#E07A5F]/90 text-white text-[9px] uppercase tracking-widest font-bold rounded-lg transition-all"
+              class="mt-2.5 px-3 py-1.5 bg-[var(--color-coral)] hover:bg-[var(--color-coral)]/90 text-white text-[9px] uppercase tracking-widest font-bold rounded-lg transition-all"
             >
               + Add Product
             </button>
             <button 
               *ngIf="authService.hasPermission('Products:Update') || authService.hasPermission('Products:Delete')" 
               (click)="toggleSelectionMode()"
-              [class.bg-[#2A2522]]="isSelectionMode()"
+              [class.bg-[var(--text-charcoal)]]="isSelectionMode()"
               [class.bg-[#8C857B]]="!isSelectionMode()"
               class="mt-2.5 px-3 py-1.5 text-white text-[9px] uppercase tracking-widest font-bold rounded-lg transition-all"
             >
@@ -115,7 +115,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                 (ngModelChange)="onSearchChange()"
                 placeholder="Search catalog..."
                 (click)="$event.stopPropagation()"
-                class="w-full py-2 bg-transparent border-b border-[#2A2522]/10 text-xs text-[#2A2522] placeholder-[#6B5E57]/45 focus:outline-none focus:border-[#E07A5F] transition-all"
+                class="w-full py-2 bg-transparent border-b border-[var(--text-charcoal)]/10 text-xs text-[var(--text-charcoal)] placeholder-[#6B5E57]/45 focus:outline-none focus:border-[var(--color-coral)] transition-all"
               />
             </div>
           </div>
@@ -159,7 +159,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
             <div *ngIf="activeDropdown() === 'sizes'" class="dropdown-overlay dropdown-right p-4 min-w-[320px] max-w-[400px] space-y-4" (click)="$event.stopPropagation()">
               <!-- Women's Sizes Section -->
               <div *ngIf="targetAudience() === 'All' || targetAudience() === 'Women'" class="space-y-2">
-                <div class="text-[9px] uppercase tracking-widest font-bold text-[#B84F7D] border-b border-[#2A2522]/5 pb-1">Women's Sizes</div>
+                <div class="text-[9px] uppercase tracking-widest font-bold text-[var(--color-lavender)] border-b border-[var(--text-charcoal)]/5 pb-1">Women's Sizes</div>
                 <div class="flex flex-wrap gap-2">
                   <button 
                     *ngFor="let size of getSizesForAudience('Women')"
@@ -175,7 +175,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
 
               <!-- Men's Sizes Section -->
               <div *ngIf="targetAudience() === 'All' || targetAudience() === 'Men'" class="space-y-2">
-                <div class="text-[9px] uppercase tracking-widest font-bold text-[#B84F7D] border-b border-[#2A2522]/5 pb-1">Men's Sizes</div>
+                <div class="text-[9px] uppercase tracking-widest font-bold text-[var(--color-lavender)] border-b border-[var(--text-charcoal)]/5 pb-1">Men's Sizes</div>
                 <div class="flex flex-wrap gap-2">
                   <button 
                     *ngFor="let size of getSizesForAudience('Men')"
@@ -191,7 +191,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
 
               <!-- Children's Sizes Section -->
               <div *ngIf="targetAudience() === 'All' || targetAudience() === 'Kids'" class="space-y-2">
-                <div class="text-[9px] uppercase tracking-widest font-bold text-[#B84F7D] border-b border-[#2A2522]/5 pb-1">Children's Sizes</div>
+                <div class="text-[9px] uppercase tracking-widest font-bold text-[var(--color-lavender)] border-b border-[var(--text-charcoal)]/5 pb-1">Children's Sizes</div>
                 <div class="flex flex-wrap gap-2">
                   <button 
                     *ngFor="let size of getSizesForAudience('Kids')"
@@ -259,42 +259,35 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
 
       <!-- Asymmetric Lookbook Stream Grid -->
       <div class="w-full">
-        <!-- Advanced Luxury Experience Loader (Component indeterminate mode) -->
-        <div *ngIf="loading()" class="luxury-experience-loader">
-          <div class="loader-logo-container">
-            <!-- Watercolor SVG Accent -->
-            <svg class="loader-logo-svg" viewBox="0 0 600 180" preserveAspectRatio="none">
-              <defs>
-                <linearGradient id="loader-watercolor-gradient-catalog" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stop-color="#F4A261" stop-opacity="0.85"/>
-                  <stop offset="30%" stop-color="#E76F51" stop-opacity="0.95"/>
-                  <stop offset="65%" stop-color="#F38E75" stop-opacity="0.88"/>
-                  <stop offset="100%" stop-color="#B84F7D" stop-opacity="0.9"/>
-                  <animate attributeName="x1" dur="4s" values="0%;50%;0%" repeatCount="indefinite" />
-                  <animate attributeName="x2" dur="4s" values="100%;150%;100%" repeatCount="indefinite" />
-                </linearGradient>
-                <filter id="loader-paint-bleed-catalog">
-                  <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="4" result="noise">
-                    <animate attributeName="baseFrequency" dur="6s" values="0.012;0.022;0.012" repeatCount="indefinite" />
-                  </feTurbulence>
-                  <feDisplacementMap in="SourceGraphic" in2="noise" scale="18" xChannelSelector="R" yChannelSelector="G" result="displaced" />
-                  <feGaussianBlur in="displaced" stdDeviation="1.2" />
-                </filter>
-              </defs>
-              <g filter="url(#loader-paint-bleed-catalog)">
-                <path d="M 40,88 C 110,65 230,78 350,70 C 470,62 520,78 560,88 C 575,92 570,102 555,108 C 510,128 390,122 280,128 C 170,134 90,118 45,108 C 30,105 30,92 40,88 Z" fill="url(#loader-watercolor-gradient-catalog)" />
-              </g>
-            </svg>
-            <div class="loader-logo-text">Picks&amp;More</div>
+        <!-- Skeleton Loading Grid (Component initial loading mode) -->
+        <div *ngIf="loading()" class="editorial-lookbook-grid mb-12">
+          <!-- Render 6 skeleton cards mimicking the lookbook items -->
+          <div *ngFor="let item of [1, 2, 3, 4, 5, 6]" class="lookbook-item animate-pulse border border-[#EBF1F5] bg-white flex flex-col pointer-events-none p-0">
+            <!-- Skeleton Image Wrapper -->
+            <div class="relative w-full pt-[125%] bg-[#F5EFEA] rounded-t-2xl">
+              <!-- Backdrop Skeleton Overlay -->
+              <div class="absolute inset-0 bg-[#FAF5F2]/20 backdrop-blur-[1px]"></div>
+            </div>
+            <!-- Skeleton Meta Details -->
+            <div class="p-5 flex flex-col space-y-3.5 bg-white rounded-b-2xl">
+              <!-- Size Swatches Skeleton -->
+              <div class="flex gap-1 mb-1">
+                <div class="w-7 h-5 bg-[#FAF5F2] rounded-md border border-[#EBF1F5]"></div>
+                <div class="w-7 h-5 bg-[#FAF5F2] rounded-md border border-[#EBF1F5]"></div>
+                <div class="w-7 h-5 bg-[#FAF5F2] rounded-md border border-[#EBF1F5]"></div>
+              </div>
+              <!-- Title Skeleton -->
+              <div class="w-3/4 h-4 bg-[#F5EFEA] rounded"></div>
+              <!-- Price & CTAs Row Skeleton -->
+              <div class="flex justify-between items-center pt-2">
+                <div class="w-1/3 h-3.5 bg-[#FAF5F2] rounded"></div>
+                <div class="w-16 h-7 bg-[#C4633A]/10 rounded-full"></div>
+              </div>
+            </div>
           </div>
-          <div class="loader-subtitle">Luxury Women &amp; Baby Boutique</div>
-          <div class="loader-bar-container">
-            <div class="loader-bar-fill-indeterminate"></div>
-          </div>
-          <div class="loader-status">Synchronizing Specimen Catalog...</div>
         </div>
 
-        <div *ngIf="!loading() && filteredProducts().length === 0" class="text-center py-24 border border-dashed border-[#2A2522]/10 rounded-2xl bg-white/10">
+        <div *ngIf="!loading() && filteredProducts().length === 0" class="text-center py-24 border border-dashed border-[var(--text-charcoal)]/10 rounded-2xl bg-white/10">
           <p class="text-sm text-[#6B5E57] font-light tracking-wide">No premium pieces matching your current filters.</p>
         </div>
 
@@ -307,7 +300,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
             [ngClass]="{
               'lookbook-item': true,
               'opacity-70': !product.isVisible,
-              'border-[#E07A5F] border-2 shadow-lg scale-[0.98]': isSelectionMode() && isProductSelected(product.id)
+              'border-[var(--color-coral)] border-2 shadow-lg scale-[0.98]': isSelectionMode() && isProductSelected(product.id)
             }"
             (mouseenter)="onProductMouseEnter(product)"
             (mouseleave)="onProductMouseLeave(product)"
@@ -323,14 +316,14 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                 fill
                 loading="lazy"
               />
-              <div *ngIf="!product.imageUrl" class="w-full h-full flex flex-col items-center justify-center bg-[#2A2522]/5 text-[#6B5E57]/60 text-[10px] uppercase tracking-[2px] font-light frosted-fallback">
+              <div *ngIf="!product.imageUrl" class="w-full h-full flex flex-col items-center justify-center bg-[var(--text-charcoal)]/5 text-[#6B5E57]/60 text-[10px] uppercase tracking-[2px] font-light frosted-fallback">
                 <span>No Image</span>
-                <span class="text-[8px] opacity-60 mt-1 font-mono">Specimen Placeholder</span>
+                <span class="text-[8px] opacity-60 mt-1 font-mono">No Image Available</span>
               </div>
               
               <!-- Visibility Overlay for Admin -->
-              <div *ngIf="!product.isVisible" class="absolute inset-0 bg-[#2A2522]/20 backdrop-blur-sm flex items-center justify-center p-3 z-[5]">
-                <span class="text-[8px] uppercase tracking-[2px] font-semibold text-[#FBF9F6] bg-red-600/90 px-3 py-1 rounded shadow-md">Archived</span>
+              <div *ngIf="!product.isVisible" class="absolute inset-0 bg-[var(--text-charcoal)]/20 backdrop-blur-sm flex items-center justify-center p-3 z-[5]">
+                <span class="text-[8px] uppercase tracking-[2px] font-semibold text-[#FAF5F2] bg-red-600/90 px-3 py-1 rounded shadow-md">Archived</span>
               </div>
 
               <!-- Select Checkbox overlay (Top Left in Selection Mode) -->
@@ -340,7 +333,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                   [checked]="isProductSelected(product.id)"
                   (click)="$event.stopPropagation()"
                   (change)="toggleProductSelected(product.id, $event)"
-                  class="w-5 h-5 rounded border-[#2A2522]/25 text-[#E07A5F] focus:ring-[#E07A5F] cursor-pointer shadow-md bg-white/95"
+                  class="w-5 h-5 rounded border-[var(--text-charcoal)]/25 text-[var(--color-coral)] focus:ring-[var(--color-coral)] cursor-pointer shadow-md bg-white/95"
                 />
               </div>
 
@@ -404,20 +397,56 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
               <div class="flex flex-col gap-1 text-[9px] uppercase tracking-[1.5px] font-semibold text-[#6B5E57] lookbook-subcategory">
                 <div class="flex justify-between items-center w-full">
                   <span>{{ getProductCategoriesList(product) }}</span>
-                  <span *ngIf="authService.hasPermission('Products:Update') || authService.hasPermission('Products:Create') || authService.hasPermission('Products:Delete')" class="text-[8px] bg-[#2A2522]/5 px-2 py-0.5 rounded-sm">Size {{ product.shippingSize }}</span>
+                  <span *ngIf="authService.hasPermission('Products:Update') || authService.hasPermission('Products:Create') || authService.hasPermission('Products:Delete')" class="text-[8px] bg-[var(--text-charcoal)]/5 px-2 py-0.5 rounded-sm">Size {{ product.shippingSize }}</span>
                 </div>
                 <div class="flex justify-between items-center w-full text-[8px] opacity-75 font-normal" *ngIf="product.age">
                   <span>Age: {{ product.age }}</span>
                 </div>
               </div>
               
-              <h3 class="lookbook-title text-[#2A2522] transition-colors group-hover:text-[#E07A5F] truncate leading-tight">
+              <h3 class="lookbook-title text-[var(--text-charcoal)] transition-colors truncate leading-tight">
                 {{ product.title }}
               </h3>
+
+              <!-- Product Rating and Sold count -->
+              <div class="flex items-center gap-1 text-[11px] text-[#FFD75A] font-semibold font-fredoka my-1">
+                <div class="flex items-center">
+                  <svg class="w-3 h-3 text-[#FFD75A]" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                  <svg class="w-3 h-3 text-[#FFD75A]" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                  <svg class="w-3 h-3 text-[#FFD75A]" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                  <svg class="w-3 h-3 text-[#FFD75A]" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                  <svg class="w-3 h-3 text-[#FFD75A]" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                </div>
+                <span class="text-[10px] text-[#77685D] font-nunito">4.9</span>
+                <span class="text-[10px] text-[#77685D]/60 font-nunito">({{ (product.id.charCodeAt(0) % 25) + 15 }}+ sold)</span>
+              </div>
               
               <p class="lookbook-desc line-clamp-2 min-h-[2.5rem] leading-relaxed">
                 {{ product.description }}
               </p>
+
+              <!-- Badges & Stock Status -->
+              <div class="flex flex-col gap-1.5 mt-2">
+                <div class="flex items-center gap-1 flex-wrap">
+                  <span class="text-[8px] uppercase tracking-wider bg-[#EBF7FD] text-[#64C9F5] border border-[#64C9F5]/20 px-2 py-0.5 rounded-full font-bold font-nunito">Free Shipping</span>
+                  <span class="text-[8px] uppercase tracking-wider bg-[#EBFBF7] text-[#77DCC5] border border-[#77DCC5]/20 px-2 py-0.5 rounded-full font-bold font-nunito">Inspect First</span>
+                </div>
+                <div class="text-[9px] uppercase tracking-wider font-bold">
+                  <span *ngIf="product.stockQuantity > 3" class="text-[#77DCC5]">● In Stock</span>
+                  <span *ngIf="product.stockQuantity > 0 && product.stockQuantity <= 3" class="text-[#F6A04D] animate-pulse">● Only {{ product.stockQuantity }} left</span>
+                  <span *ngIf="product.stockQuantity === 0" class="text-red-500">● Out of Stock</span>
+                </div>
+              </div>
+
+              <!-- Sizes Preview Row -->
+              <div class="flex items-center gap-1 mt-2.5" *ngIf="product.sizes && product.sizes.length > 0">
+                <span class="text-[8.5px] text-[#77685D]/60 uppercase tracking-wide font-bold font-nunito">Sizes:</span>
+                <div class="flex gap-1">
+                  <span *ngFor="let s of product.sizes.slice(0,4)" class="text-[8px] px-1.5 py-0.5 border border-[#EBF1F5] rounded bg-[#FAF5F2] font-bold text-[var(--text-charcoal)] font-nunito">
+                    {{ s }}
+                  </span>
+                </div>
+              </div>
 
               <!-- Colors & Brand Logo Row -->
               <div class="flex items-center justify-between w-full mt-3 min-h-[24px]">
@@ -434,17 +463,26 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                 <div *ngIf="!product.colors || product.colors.length === 0"></div>
 
                 <!-- Brand Small Circle Logo (Right Aligned) -->
-                <div *ngIf="product.brandLogoUrl" class="w-6 h-6 rounded-full overflow-hidden border border-[#2A2522]/10 bg-white p-0.5 flex items-center justify-center flex-shrink-0 shadow-sm" [title]="product.brandName">
+                <div *ngIf="product.brandLogoUrl" class="w-6 h-6 rounded-full overflow-hidden border border-[var(--text-charcoal)]/10 bg-white p-0.5 flex items-center justify-center flex-shrink-0 shadow-sm" [title]="product.brandName">
                   <img [src]="product.brandLogoUrl" [alt]="product.brandName" class="w-full h-full object-contain" />
                 </div>
               </div>
 
               <!-- Price & Actions -->
-              <div class="lookbook-price-row">
-                <span class="lookbook-price">
+              <div class="lookbook-price-row flex items-center justify-between w-full mt-2.5">
+                <span class="lookbook-price font-fredoka text-base text-[#F67B63] font-bold">
                   LE {{ product.price | number:'1.2-2' }}
                 </span>
                 
+                <!-- Customer Quick Add Button -->
+                <button 
+                  *ngIf="product.isVisible && !authService.hasPermission('Products:Update')"
+                  (click)="openQuickBuy(product, $event); $event.stopPropagation()"
+                  class="flex items-center gap-1.5 px-3.5 py-1.5 bg-[#F67B63] hover:bg-[#F6A04D] text-white text-[10px] uppercase font-bold tracking-wider rounded-full shadow-sm hover:shadow-md transition-all duration-300 font-fredoka"
+                >
+                  <span>+ Add</span>
+                </button>
+
                 <!-- Admin Controls -->
                 <div *ngIf="authService.hasPermission('Products:Update')" class="flex gap-2" (click)="$event.stopPropagation()">
                   <button 
@@ -472,11 +510,11 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
         <!-- Infinite Scroll Sentinel + Loading Indicator -->
         <div #scrollAnchor class="w-full h-1"></div>
         <div *ngIf="loadingMore()" class="flex flex-col items-center justify-center py-10 gap-3">
-          <div class="w-7 h-7 border-2 border-[#E07A5F]/20 border-t-[#E07A5F] rounded-full animate-spin"></div>
+          <div class="w-7 h-7 border-2 border-[var(--color-coral)]/20 border-t-[var(--color-coral)] rounded-full animate-spin"></div>
           <span class="text-[9px] uppercase tracking-[0.2em] text-[#6B5E57] font-light">Loading more pieces...</span>
         </div>
         <div *ngIf="!loadingMore() && currentPage() >= totalPages() && products().length > 0" class="flex justify-center py-8">
-          <span class="text-[9px] uppercase tracking-[0.2em] text-[#2A2522]/30 font-light">— All {{ totalProducts() }} pieces displayed —</span>
+          <span class="text-[9px] uppercase tracking-[0.2em] text-[var(--text-charcoal)]/30 font-light">— All {{ totalProducts() }} pieces displayed —</span>
         </div>
 
       </div>
@@ -489,22 +527,22 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
         <!-- Backdrop Layer -->
         <div 
           (click)="closeQuickBuy()" 
-          class="fixed inset-0 bg-[#2A2522]/10 backdrop-blur-[3px] pointer-events-auto cursor-pointer"
+          class="fixed inset-0 bg-[var(--text-charcoal)]/10 backdrop-blur-[3px] pointer-events-auto cursor-pointer"
         ></div>
 
         <!-- Frosted Glass Configurator Sheet -->
         <div class="quick-buy-sheet pointer-events-auto">
           <!-- Header -->
-          <div class="flex justify-between items-center border-b border-[#2A2522]/10 pb-4 flex-shrink-0">
+          <div class="flex justify-between items-center border-b border-[var(--text-charcoal)]/10 pb-4 flex-shrink-0">
             <div>
-              <span class="tracking-widest font-mono text-[9px] uppercase font-bold text-[#E07A5F] block mb-1">
+              <span class="tracking-widest font-mono text-[9px] uppercase font-bold text-[var(--color-coral)] block mb-1">
                 Quick Acquisition
               </span>
-              <h3 class="text-base font-serif-luxury font-light text-[#2A2522] tracking-wider uppercase truncate max-w-[280px]">
+              <h3 class="text-base font-fredoka text-[var(--text-charcoal)] tracking-wide uppercase truncate max-w-[280px]">
                 {{ quickBuyProduct()?.title }}
               </h3>
             </div>
-            <button (click)="closeQuickBuy()" class="text-[#2A2522]/40 hover:text-[#E07A5F] text-sm p-1.5 transition-colors">
+            <button (click)="closeQuickBuy()" class="text-[var(--text-charcoal)]/40 hover:text-[var(--color-coral)] text-sm p-1.5 transition-colors">
               ✕
             </button>
           </div>
@@ -512,26 +550,26 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
           <!-- Scrollable Content -->
           <div class="flex-1 overflow-y-auto space-y-6 pr-1 custom-scrollbar my-4">
             <!-- Image Thumbnail -->
-            <div class="w-full aspect-video rounded-xl overflow-hidden bg-[#2A2522]/5 border border-[#2A2522]/5 relative flex-shrink-0 animate-fade-in">
+            <div class="w-full aspect-video rounded-xl overflow-hidden bg-[var(--text-charcoal)]/5 border border-[var(--text-charcoal)]/5 relative flex-shrink-0 animate-fade-in">
               <img 
                 *ngIf="quickBuyProduct()?.imageUrl" 
                 [src]="resolveImageUrl(quickBuyProduct()?.imageUrl)" 
                 [alt]="quickBuyProduct()?.title" 
                 class="w-full h-full object-cover"
               />
-              <div *ngIf="!quickBuyProduct()?.imageUrl" class="w-full h-full flex flex-col items-center justify-center text-[#2A2522]/40 gap-2">
-                <svg class="w-8 h-8 text-[#E07A5F]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <div *ngIf="!quickBuyProduct()?.imageUrl" class="w-full h-full flex flex-col items-center justify-center text-[var(--text-charcoal)]/40 gap-2">
+                <svg class="w-8 h-8 text-[var(--color-coral)]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
                 </svg>
               </div>
-              <span class="absolute top-3 left-3 bg-white/95 border border-[#2A2522]/5 text-[#2A2522]/80 text-[8px] uppercase tracking-widest font-mono px-2 py-0.5 rounded" *ngIf="quickBuyProduct()">
+              <span class="absolute top-3 left-3 bg-white/95 border border-[var(--text-charcoal)]/5 text-[var(--text-charcoal)]/80 text-[8px] uppercase tracking-widest font-mono px-2 py-0.5 rounded" *ngIf="quickBuyProduct()">
                 {{ getProductCategoriesList(quickBuyProduct()!) }}
               </span>
             </div>
 
             <!-- Price & Stock -->
             <div class="flex justify-between items-center">
-              <span class="text-lg font-mono text-[#E07A5F] font-bold">
+              <span class="text-lg font-mono text-[var(--color-coral)] font-bold">
                 {{ quickBuyProduct()?.price | currency:'EGP ' }}
               </span>
               <div class="flex items-center gap-2">
@@ -553,7 +591,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
             <div class="space-y-4">
               <!-- Colors Selector -->
               <div class="space-y-2" *ngIf="colors().length > 0">
-                <label class="text-[8px] uppercase tracking-widest font-bold text-[#E07A5F] block">Select Color *</label>
+                <label class="text-[8px] uppercase tracking-widest font-bold text-[var(--color-coral)] block">Select Color *</label>
                 <div class="flex flex-wrap gap-2">
                   <button 
                     *ngFor="let color of colors()"
@@ -571,7 +609,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
 
               <!-- Sizes Selector -->
               <div class="space-y-2" *ngIf="sizes().length > 0">
-                <label class="text-[8px] uppercase tracking-widest font-bold text-[#E07A5F] block">Select Size *</label>
+                <label class="text-[8px] uppercase tracking-widest font-bold text-[var(--color-coral)] block">Select Size *</label>
                 <div class="flex flex-wrap gap-2">
                   <button 
                     *ngFor="let size of sizes()"
@@ -589,25 +627,25 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
 
               <!-- Quantity Selector -->
               <div class="space-y-2" *ngIf="quickBuyProduct() && quickBuyProduct()!.stockQuantity > 0">
-                <label class="text-[8px] uppercase tracking-widest font-bold text-[#E07A5F] block">Purchase Quantity</label>
+                <label class="text-[8px] uppercase tracking-widest font-bold text-[var(--color-coral)] block">Purchase Quantity</label>
                 <div class="flex items-center gap-3">
-                  <div class="flex items-center border border-[#2A2522]/10 bg-[#2A2522]/5 rounded-lg overflow-hidden quantity-wrapper">
+                  <div class="flex items-center border border-[var(--text-charcoal)]/10 bg-[var(--text-charcoal)]/5 rounded-lg overflow-hidden quantity-wrapper">
                     <button 
                       type="button"
                       (click)="decrementQuantity()"
                       [disabled]="selectedQuantity() <= 1"
-                      class="px-3 py-1 text-[#2A2522]/60 hover:text-[#2A2522] hover:bg-[#2A2522]/5 disabled:opacity-30 disabled:hover:bg-transparent transition-all text-xs font-mono select-none"
+                      class="px-3 py-1 text-[var(--text-charcoal)]/60 hover:text-[var(--text-charcoal)] hover:bg-[var(--text-charcoal)]/5 disabled:opacity-30 disabled:hover:bg-transparent transition-all text-xs font-mono select-none"
                     >
                       －
                     </button>
-                    <span class="px-4 py-1 text-[10px] font-mono font-bold text-[#2A2522] select-none">
+                    <span class="px-4 py-1 text-[10px] font-mono font-bold text-[var(--text-charcoal)] select-none">
                       {{ selectedQuantity() }}
                     </span>
                     <button 
                       type="button"
                       (click)="incrementQuantity()"
                       [disabled]="selectedQuantity() >= quickBuyProduct()!.stockQuantity"
-                      class="px-3 py-1 text-[#2A2522]/60 hover:text-[#2A2522] hover:bg-[#2A2522]/5 disabled:opacity-30 disabled:hover:bg-transparent transition-all text-xs font-mono select-none"
+                      class="px-3 py-1 text-[var(--text-charcoal)]/60 hover:text-[var(--text-charcoal)] hover:bg-[var(--text-charcoal)]/5 disabled:opacity-30 disabled:hover:bg-transparent transition-all text-xs font-mono select-none"
                     >
                       ＋
                     </button>
@@ -621,11 +659,11 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
           </div>
 
           <!-- Footer CTA -->
-          <div class="pt-4 border-t border-[#2A2522]/10 space-y-3 flex-shrink-0">
+          <div class="pt-4 border-t border-[var(--text-charcoal)]/10 space-y-3 flex-shrink-0">
             <button 
               [disabled]="quickBuyProduct()?.stockQuantity === 0"
               (click)="confirmQuickBuy()"
-              class="w-full py-3.5 text-[#FBF9F6] text-xs font-bold uppercase tracking-[0.2em] rounded-xl transition-all flex justify-center items-center gap-2 neon-btn disabled:opacity-50"
+              class="w-full py-3.5 text-[#FAF5F2] text-xs font-bold uppercase tracking-[0.2em] rounded-xl transition-all flex justify-center items-center gap-2 neon-btn disabled:opacity-50"
             >
               {{ quickBuyProduct()?.stockQuantity === 0 ? 'OUT OF STOCK' : 'Acquire Piece' }}
             </button>
@@ -642,22 +680,22 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
         <!-- Backdrop Layer -->
         <div 
           (click)="closeAdminProductModal()" 
-          class="fixed inset-0 bg-[#2A2522]/10 backdrop-blur-[3px] pointer-events-auto cursor-pointer"
+          class="fixed inset-0 bg-[var(--text-charcoal)]/10 backdrop-blur-[3px] pointer-events-auto cursor-pointer"
         ></div>
 
         <!-- ========== STEP 1: Category Chooser ========== -->
         <div *ngIf="adminFormStep() === 'chooser'" class="admin-product-sheet admin-chooser-sheet pointer-events-auto max-w-[480px] w-full">
           <!-- Header -->
-          <div class="flex justify-between items-center border-b border-[#2A2522]/10 pb-4 flex-shrink-0">
+          <div class="flex justify-between items-center border-b border-[var(--text-charcoal)]/10 pb-4 flex-shrink-0">
             <div>
-              <span class="tracking-widest font-mono text-[9px] uppercase font-bold text-[#E07A5F] block mb-1">
+              <span class="tracking-widest font-mono text-[9px] uppercase font-bold text-[var(--color-coral)] block mb-1">
                 New Product
               </span>
-              <h3 class="text-base font-serif-luxury font-light text-[#2A2522] tracking-wider uppercase">
+              <h3 class="text-base font-fredoka text-[var(--text-charcoal)] tracking-wide uppercase">
                 Choose Collection
               </h3>
             </div>
-            <button (click)="closeAdminProductModal()" class="text-[#2A2522]/40 hover:text-[#E07A5F] text-sm p-1.5 transition-colors">
+            <button (click)="closeAdminProductModal()" class="text-[var(--text-charcoal)]/40 hover:text-[var(--color-coral)] text-sm p-1.5 transition-colors">
               ✕
             </button>
           </div>
@@ -740,28 +778,28 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
         <!-- ========== STEP 2: Product Form ========== -->
         <div *ngIf="adminFormStep() === 'form'" class="quick-buy-sheet admin-product-sheet pointer-events-auto max-w-[450px] w-full">
           <!-- Header -->
-          <div class="flex justify-between items-center border-b border-[#2A2522]/10 pb-4 flex-shrink-0">
+          <div class="flex justify-between items-center border-b border-[var(--text-charcoal)]/10 pb-4 flex-shrink-0">
             <div class="flex items-center gap-3">
               <!-- Back button for new products -->
               <button 
                 *ngIf="!editingProductId()"
                 (click)="adminFormStep.set('chooser')"
-                class="text-[#2A2522]/40 hover:text-[#E07A5F] text-sm p-1 transition-colors rounded-md hover:bg-[#E07A5F]/5"
+                class="text-[var(--text-charcoal)]/40 hover:text-[var(--color-coral)] text-sm p-1 transition-colors rounded-md hover:bg-[var(--color-coral)]/5"
               >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
                 </svg>
               </button>
               <div>
-                <span class="tracking-widest font-mono text-[9px] uppercase font-bold text-[#E07A5F] block mb-1">
+                <span class="tracking-widest font-mono text-[9px] uppercase font-bold text-[var(--color-coral)] block mb-1">
                   {{ editingProductId() ? 'Storefront Management' : formMainCategory() + ' Collection' }}
                 </span>
-                <h3 class="text-base font-serif-luxury font-light text-[#2A2522] tracking-wider uppercase truncate">
+                <h3 class="text-base font-fredoka text-[var(--text-charcoal)] tracking-wide uppercase truncate">
                   {{ editingProductId() ? 'Edit Product' : 'Create Product' }}
                 </h3>
               </div>
             </div>
-            <button (click)="closeAdminProductModal()" class="text-[#2A2522]/40 hover:text-[#E07A5F] text-sm p-1.5 transition-colors">
+            <button (click)="closeAdminProductModal()" class="text-[var(--text-charcoal)]/40 hover:text-[var(--color-coral)] text-sm p-1.5 transition-colors">
               ✕
             </button>
           </div>
@@ -776,7 +814,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
             <!-- Selected Collection Badge (for new products) -->
             <div *ngIf="!editingProductId()" class="flex items-center gap-2 mb-1">
               <span class="px-2.5 py-1 text-[9px] uppercase tracking-widest font-bold rounded-lg border" 
-                [ngClass]="formMainCategory() === 'Women' ? 'bg-[#E07A5F]/10 text-[#E07A5F] border-[#E07A5F]/20' : 'bg-[#B84F7D]/10 text-[#B84F7D] border-[#B84F7D]/20'">
+                [ngClass]="formMainCategory() === 'Women' ? 'bg-[var(--color-coral)]/10 text-[var(--color-coral)] border-[var(--color-coral)]/20' : 'bg-[var(--color-lavender)]/10 text-[var(--color-lavender)] border-[var(--color-lavender)]/20'">
                 {{ formMainCategory() }} Collection
               </span>
             </div>
@@ -789,7 +827,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                 [ngModel]="formTitle()" 
                 (ngModelChange)="formTitle.set($event)" 
                 placeholder="E.g. Linen Blend Summer Dress" 
-                class="w-full px-3 py-2 bg-white/70 border border-[#2A2522]/10 rounded-lg text-xs text-[#2A2522] focus:outline-none focus:border-[#E07A5F] transition-all"
+                class="w-full px-3 py-2 bg-white/70 border border-[var(--text-charcoal)]/10 rounded-lg text-xs text-[var(--text-charcoal)] focus:outline-none focus:border-[var(--color-coral)] transition-all"
               />
             </div>
 
@@ -801,7 +839,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                 (ngModelChange)="formDescription.set($event)" 
                 rows="3"
                 placeholder="Exquisite linen fabric drapes beautifully..." 
-                class="w-full px-3 py-2 bg-white/70 border border-[#2A2522]/10 rounded-lg text-xs text-[#2A2522] focus:outline-none focus:border-[#E07A5F] transition-all"
+                class="w-full px-3 py-2 bg-white/70 border border-[var(--text-charcoal)]/10 rounded-lg text-xs text-[var(--text-charcoal)] focus:outline-none focus:border-[var(--color-coral)] transition-all"
               ></textarea>
             </div>
 
@@ -812,7 +850,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                 <select 
                   [ngModel]="formMainCategory()" 
                   (ngModelChange)="formMainCategory.set($event); formSelectedSubCategories.set([])"
-                  class="w-full px-3 py-2 bg-white/70 border border-[#2A2522]/10 rounded-lg text-xs text-[#2A2522] focus:outline-none focus:border-[#E07A5F] transition-all"
+                  class="w-full px-3 py-2 bg-white/70 border border-[var(--text-charcoal)]/10 rounded-lg text-xs text-[var(--text-charcoal)] focus:outline-none focus:border-[var(--color-coral)] transition-all"
                 >
                   <option value="Women">Women</option>
                   <option value="Kids">Kids</option>
@@ -824,7 +862,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                 <select 
                   [ngModel]="formAge()" 
                   (ngModelChange)="formAge.set($event)" 
-                  class="w-full px-3 py-2 bg-white/70 border border-[#2A2522]/10 rounded-lg text-xs text-[#2A2522] focus:outline-none focus:border-[#E07A5F] transition-all"
+                  class="w-full px-3 py-2 bg-white/70 border border-[var(--text-charcoal)]/10 rounded-lg text-xs text-[var(--text-charcoal)] focus:outline-none focus:border-[var(--color-coral)] transition-all"
                 >
                   <option value="0-12 Months">0-12 Months</option>
                   <option value="1-3 Years">1-3 Years</option>
@@ -874,7 +912,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                   type="number" 
                   [ngModel]="formPrice()" 
                   (ngModelChange)="formPrice.set($event)" 
-                  class="w-full px-3 py-2 bg-white/70 border border-[#2A2522]/10 rounded-lg text-xs text-[#2A2522] focus:outline-none focus:border-[#E07A5F] transition-all"
+                  class="w-full px-3 py-2 bg-white/70 border border-[var(--text-charcoal)]/10 rounded-lg text-xs text-[var(--text-charcoal)] focus:outline-none focus:border-[var(--color-coral)] transition-all"
                 />
               </div>
               <div class="space-y-1">
@@ -883,7 +921,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                   type="number" 
                   [ngModel]="formCostPrice()" 
                   (ngModelChange)="formCostPrice.set($event)" 
-                  class="w-full px-3 py-2 bg-white/70 border border-[#2A2522]/10 rounded-lg text-xs text-[#2A2522] focus:outline-none focus:border-[#E07A5F] transition-all"
+                  class="w-full px-3 py-2 bg-white/70 border border-[var(--text-charcoal)]/10 rounded-lg text-xs text-[var(--text-charcoal)] focus:outline-none focus:border-[var(--color-coral)] transition-all"
                 />
               </div>
             </div>
@@ -896,7 +934,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                   type="number" 
                   [ngModel]="formStockQuantity()" 
                   (ngModelChange)="formStockQuantity.set($event)" 
-                  class="w-full px-3 py-2 bg-white/70 border border-[#2A2522]/10 rounded-lg text-xs text-[#2A2522] focus:outline-none focus:border-[#E07A5F] transition-all"
+                  class="w-full px-3 py-2 bg-white/70 border border-[var(--text-charcoal)]/10 rounded-lg text-xs text-[var(--text-charcoal)] focus:outline-none focus:border-[var(--color-coral)] transition-all"
                 />
               </div>
               <div class="space-y-1">
@@ -904,7 +942,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                 <select 
                   [ngModel]="formShippingSize()" 
                   (ngModelChange)="formShippingSize.set($event)" 
-                  class="w-full px-3 py-2 bg-white/70 border border-[#2A2522]/10 rounded-lg text-xs text-[#2A2522] focus:outline-none focus:border-[#E07A5F] transition-all"
+                  class="w-full px-3 py-2 bg-white/70 border border-[var(--text-charcoal)]/10 rounded-lg text-xs text-[var(--text-charcoal)] focus:outline-none focus:border-[var(--color-coral)] transition-all"
                 >
                   <option value="Small">Small</option>
                   <option value="Medium">Medium</option>
@@ -919,7 +957,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
               <select 
                 [ngModel]="formBrandId()" 
                 (ngModelChange)="formBrandId.set($event)" 
-                class="w-full px-3 py-2 bg-white/70 border border-[#2A2522]/10 rounded-lg text-xs text-[#2A2522] focus:outline-none focus:border-[#E07A5F] transition-all animate-fade-in"
+                class="w-full px-3 py-2 bg-white/70 border border-[var(--text-charcoal)]/10 rounded-lg text-xs text-[var(--text-charcoal)] focus:outline-none focus:border-[var(--color-coral)] transition-all animate-fade-in"
               >
                 <option value="">No Brand (Independent)</option>
                 <option *ngFor="let b of brands()" [value]="b.id">{{ b.name }}</option>
@@ -937,10 +975,10 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
               <div class="flex flex-wrap gap-2.5 items-center">
                 <div 
                   *ngFor="let imgUrl of formImageUrls(); let i = index" 
-                  class="relative w-14 h-14 rounded-lg border border-[#2A2522]/10 bg-white overflow-hidden flex items-center justify-center group/img shadow-sm animate-fade-in"
+                  class="relative w-14 h-14 rounded-lg border border-[var(--text-charcoal)]/10 bg-white overflow-hidden flex items-center justify-center group/img shadow-sm animate-fade-in"
                 >
                   <img [src]="resolveImageUrl(imgUrl)" class="w-full h-full object-cover" />
-                  <div *ngIf="i === 0" class="absolute bottom-0 left-0 right-0 bg-[#2A2522]/80 text-[6px] text-white text-center py-0.5 font-bold uppercase tracking-wider">
+                  <div *ngIf="i === 0" class="absolute bottom-0 left-0 right-0 bg-[var(--text-charcoal)]/80 text-[6px] text-white text-center py-0.5 font-bold uppercase tracking-wider">
                     Primary
                   </div>
                   <!-- Delete Swatch Button -->
@@ -956,7 +994,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                 <!-- Add Image Box -->
                 <label 
                   *ngIf="formImageUrls().length < 10"
-                  class="w-14 h-14 rounded-lg border-2 border-dashed border-[#2A2522]/15 hover:border-[#E07A5F] bg-[#FBF9F6] flex flex-col items-center justify-center text-[#8A817C] hover:text-[#E07A5F] cursor-pointer select-none transition-all"
+                  class="w-14 h-14 rounded-lg border-2 border-dashed border-[var(--text-charcoal)]/15 hover:border-[var(--color-coral)] bg-[#FAF5F2] flex flex-col items-center justify-center text-[#8A817C] hover:text-[var(--color-coral)] cursor-pointer select-none transition-all"
                 >
                   <span class="text-sm font-bold leading-none">+</span>
                   <span class="text-[6px] font-bold uppercase tracking-widest mt-0.5">Upload</span>
@@ -972,14 +1010,14 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                 <button 
                   type="button"
                   (click)="isFormColorDropdownOpen.set(!isFormColorDropdownOpen()); $event.stopPropagation()"
-                  class="w-full px-3 py-2 bg-white/70 border border-[#2A2522]/10 rounded-lg text-xs text-[#2A2522] focus:outline-none focus:border-[#E07A5F] transition-all flex justify-between items-center text-left min-h-[34px]"
+                  class="w-full px-3 py-2 bg-white/70 border border-[var(--text-charcoal)]/10 rounded-lg text-xs text-[var(--text-charcoal)] focus:outline-none focus:border-[var(--color-coral)] transition-all flex justify-between items-center text-left min-h-[34px]"
                 >
                   <div class="flex items-center gap-1 flex-wrap overflow-hidden max-w-[90%]">
                     <span *ngIf="!formColors().trim()" class="text-[#8A817C]/60 text-[11px] font-normal">Select Colors...</span>
                     <span 
                       *ngFor="let color of formColors().split(',')" 
                       [class.hidden]="!color.trim()"
-                      class="px-1.5 py-0.5 text-[9px] bg-[#2A2522]/5 border border-[#2A2522]/10 rounded-md text-[#2A2522] flex items-center gap-1 font-mono uppercase font-bold"
+                      class="px-1.5 py-0.5 text-[9px] bg-[var(--text-charcoal)]/5 border border-[var(--text-charcoal)]/10 rounded-md text-[var(--text-charcoal)] flex items-center gap-1 font-mono uppercase font-bold"
                     >
                       <span class="w-2 h-2 rounded-full border border-black/10 flex-shrink-0" [style.background-color]="getColorHex(color.trim())"></span>
                       {{ color.trim() }}
@@ -992,18 +1030,18 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                 <div 
                   *ngIf="isFormColorDropdownOpen()" 
                   (click)="$event.stopPropagation()"
-                  class="absolute left-0 right-0 mt-1 bg-white border border-[#2A2522]/15 rounded-xl shadow-lg z-50 max-h-48 overflow-y-auto p-2 custom-scrollbar grid grid-cols-1 gap-1"
+                  class="absolute left-0 right-0 mt-1 bg-white border border-[var(--text-charcoal)]/15 rounded-xl shadow-lg z-50 max-h-48 overflow-y-auto p-2 custom-scrollbar grid grid-cols-1 gap-1"
                 >
                   <button 
                     *ngFor="let color of availableColors()"
                     type="button"
                     (click)="toggleFormColor(color.name)"
-                    [ngClass]="{'bg-[#2A2522]/5 border-[#B84F7D]/20': isFormColorSelected(color.name)}"
-                    class="flex items-center gap-2 px-2 py-1.5 border border-transparent rounded-lg text-left text-xs text-[#2A2522] hover:bg-[#2A2522]/5 transition-all w-full"
+                    [ngClass]="{'bg-[var(--text-charcoal)]/5 border-[var(--color-lavender)]/20': isFormColorSelected(color.name)}"
+                    class="flex items-center gap-2 px-2 py-1.5 border border-transparent rounded-lg text-left text-xs text-[var(--text-charcoal)] hover:bg-[var(--text-charcoal)]/5 transition-all w-full"
                   >
                     <span class="w-3.5 h-3.5 rounded-full border border-black/10 flex-shrink-0" [style.background-color]="color.hexCode"></span>
                     <span class="font-medium flex-1 truncate text-[11px]">{{ color.name }}</span>
-                    <span *ngIf="isFormColorSelected(color.name)" class="text-[#B84F7D] font-bold text-[10px]">✓</span>
+                    <span *ngIf="isFormColorSelected(color.name)" class="text-[var(--color-lavender)] font-bold text-[10px]">✓</span>
                   </button>
                 </div>
               </div>
@@ -1012,14 +1050,14 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                 <button 
                   type="button"
                   (click)="isFormSizeDropdownOpen.set(!isFormSizeDropdownOpen()); $event.stopPropagation()"
-                  class="w-full px-3 py-2 bg-white/70 border border-[#2A2522]/10 rounded-lg text-xs text-[#2A2522] focus:outline-none focus:border-[#E07A5F] transition-all flex justify-between items-center text-left min-h-[34px]"
+                  class="w-full px-3 py-2 bg-white/70 border border-[var(--text-charcoal)]/10 rounded-lg text-xs text-[var(--text-charcoal)] focus:outline-none focus:border-[var(--color-coral)] transition-all flex justify-between items-center text-left min-h-[34px]"
                 >
                   <div class="flex items-center gap-1 flex-wrap overflow-hidden max-w-[90%]">
                     <span *ngIf="!formSizes().trim()" class="text-[#8A817C]/60 text-[11px] font-normal">Select Sizes...</span>
                     <span 
                       *ngFor="let size of formSizes().split(',')" 
                       [class.hidden]="!size.trim()"
-                      class="px-1.5 py-0.5 text-[9px] bg-[#2A2522]/5 border border-[#2A2522]/10 rounded-md text-[#2A2522] font-mono uppercase font-bold"
+                      class="px-1.5 py-0.5 text-[9px] bg-[var(--text-charcoal)]/5 border border-[var(--text-charcoal)]/10 rounded-md text-[var(--text-charcoal)] font-mono uppercase font-bold"
                     >
                       {{ size.trim() }}
                     </span>
@@ -1031,20 +1069,20 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                   <div 
                     *ngIf="isFormSizeDropdownOpen()" 
                     (click)="$event.stopPropagation()"
-                    class="absolute left-0 right-0 mt-1 bg-white border border-[#2A2522]/15 rounded-xl shadow-lg z-50 max-h-48 overflow-y-auto p-2 custom-scrollbar space-y-3"
+                    class="absolute left-0 right-0 mt-1 bg-white border border-[var(--text-charcoal)]/15 rounded-xl shadow-lg z-50 max-h-48 overflow-y-auto p-2 custom-scrollbar space-y-3"
                   >
                     <div *ngIf="formMainCategory() === 'Women'" class="space-y-1">
-                      <div class="text-[8px] uppercase tracking-widest font-bold text-[#B84F7D] px-2 py-0.5 border-b border-[#2A2522]/5">Women's Sizes</div>
+                      <div class="text-[8px] uppercase tracking-widest font-bold text-[var(--color-lavender)] px-2 py-0.5 border-b border-[var(--text-charcoal)]/5">Women's Sizes</div>
                       <div class="grid grid-cols-1 gap-1">
                         <button 
                           *ngFor="let size of getFormSizesForAudience('Women')"
                           type="button"
                           (click)="toggleFormSize(size)"
-                          [ngClass]="{'bg-[#2A2522]/5 border-[#B84F7D]/20': isFormSizeSelected(size)}"
-                          class="flex items-center justify-between px-2.5 py-1.5 border border-transparent rounded-lg text-left text-xs text-[#2A2522] hover:bg-[#2A2522]/5 transition-all w-full"
+                          [ngClass]="{'bg-[var(--text-charcoal)]/5 border-[var(--color-lavender)]/20': isFormSizeSelected(size)}"
+                          class="flex items-center justify-between px-2.5 py-1.5 border border-transparent rounded-lg text-left text-xs text-[var(--text-charcoal)] hover:bg-[var(--text-charcoal)]/5 transition-all w-full"
                         >
                           <span class="font-medium truncate text-[11px] font-mono uppercase">{{ size }}</span>
-                          <span *ngIf="isFormSizeSelected(size)" class="text-[#B84F7D] font-bold text-[10px]">✓</span>
+                          <span *ngIf="isFormSizeSelected(size)" class="text-[var(--color-lavender)] font-bold text-[10px]">✓</span>
                         </button>
                       </div>
                       <div *ngIf="getFormSizesForAudience('Women').length === 0" class="text-[10px] text-[#8A817C] italic px-2">No women's sizes available.</div>
@@ -1052,17 +1090,17 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
 
                     <!-- Men's sizes section (shown if mainCategory is Men) -->
                     <div *ngIf="formMainCategory() === 'Men'" class="space-y-1">
-                      <div class="text-[8px] uppercase tracking-widest font-bold text-[#B84F7D] px-2 py-0.5 border-b border-[#2A2522]/5">Men's Sizes</div>
+                      <div class="text-[8px] uppercase tracking-widest font-bold text-[var(--color-lavender)] px-2 py-0.5 border-b border-[var(--text-charcoal)]/5">Men's Sizes</div>
                       <div class="grid grid-cols-1 gap-1">
                         <button 
                           *ngFor="let size of getFormSizesForAudience('Men')"
                           type="button"
                           (click)="toggleFormSize(size)"
-                          [ngClass]="{'bg-[#2A2522]/5 border-[#B84F7D]/20': isFormSizeSelected(size)}"
-                          class="flex items-center justify-between px-2.5 py-1.5 border border-transparent rounded-lg text-left text-xs text-[#2A2522] hover:bg-[#2A2522]/5 transition-all w-full"
+                          [ngClass]="{'bg-[var(--text-charcoal)]/5 border-[var(--color-lavender)]/20': isFormSizeSelected(size)}"
+                          class="flex items-center justify-between px-2.5 py-1.5 border border-transparent rounded-lg text-left text-xs text-[var(--text-charcoal)] hover:bg-[var(--text-charcoal)]/5 transition-all w-full"
                         >
                           <span class="font-medium truncate text-[11px] font-mono uppercase">{{ size }}</span>
-                          <span *ngIf="isFormSizeSelected(size)" class="text-[#B84F7D] font-bold text-[10px]">✓</span>
+                          <span *ngIf="isFormSizeSelected(size)" class="text-[var(--color-lavender)] font-bold text-[10px]">✓</span>
                         </button>
                       </div>
                       <div *ngIf="getFormSizesForAudience('Men').length === 0" class="text-[10px] text-[#8A817C] italic px-2">No men's sizes available.</div>
@@ -1070,17 +1108,17 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
 
                     <!-- Children's sizes section (shown if mainCategory is Kids) -->
                     <div *ngIf="formMainCategory() === 'Kids'" class="space-y-1">
-                      <div class="text-[8px] uppercase tracking-widest font-bold text-[#B84F7D] px-2 py-0.5 border-b border-[#2A2522]/5">Children's Sizes</div>
+                      <div class="text-[8px] uppercase tracking-widest font-bold text-[var(--color-lavender)] px-2 py-0.5 border-b border-[var(--text-charcoal)]/5">Children's Sizes</div>
                       <div class="grid grid-cols-1 gap-1">
                         <button 
                           *ngFor="let size of getFormSizesForAudience('Kids')"
                           type="button"
                           (click)="toggleFormSize(size)"
-                          [ngClass]="{'bg-[#2A2522]/5 border-[#B84F7D]/20': isFormSizeSelected(size)}"
-                          class="flex items-center justify-between px-2.5 py-1.5 border border-transparent rounded-lg text-left text-xs text-[#2A2522] hover:bg-[#2A2522]/5 transition-all w-full"
+                          [ngClass]="{'bg-[var(--text-charcoal)]/5 border-[var(--color-lavender)]/20': isFormSizeSelected(size)}"
+                          class="flex items-center justify-between px-2.5 py-1.5 border border-transparent rounded-lg text-left text-xs text-[var(--text-charcoal)] hover:bg-[var(--text-charcoal)]/5 transition-all w-full"
                         >
                           <span class="font-medium truncate text-[11px] font-mono uppercase">{{ size }}</span>
-                          <span *ngIf="isFormSizeSelected(size)" class="text-[#B84F7D] font-bold text-[10px]">✓</span>
+                          <span *ngIf="isFormSizeSelected(size)" class="text-[var(--color-lavender)] font-bold text-[10px]">✓</span>
                         </button>
                       </div>
                       <div *ngIf="getFormSizesForAudience('Kids').length === 0" class="text-[10px] text-[#8A817C] italic px-2">No children's sizes available.</div>
@@ -1096,20 +1134,20 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                 [ngModel]="formIsVisible()" 
                 (ngModelChange)="formIsVisible.set($event)" 
                 id="formIsVisible" 
-                class="rounded border-[#2A2522]/10 text-[#E07A5F] focus:ring-[#E07A5F]"
+                class="rounded border-[var(--text-charcoal)]/10 text-[var(--color-coral)] focus:ring-[var(--color-coral)]"
               />
               <label for="formIsVisible" class="text-[9px] uppercase tracking-widest font-bold text-[#6B5E57] select-none cursor-pointer">Visible to Customers</label>
             </div>
 
             <!-- Form Row: Shipping Override -->
-            <div class="border-t border-[#2A2522]/10 pt-3 space-y-2">
+            <div class="border-t border-[var(--text-charcoal)]/10 pt-3 space-y-2">
               <div class="flex items-center gap-2">
                 <input 
                   type="checkbox" 
                   [ngModel]="formOverrideShipping()" 
                   (ngModelChange)="formOverrideShipping.set($event)" 
                   id="formOverrideShipping" 
-                  class="rounded border-[#2A2522]/10 text-[#E07A5F] focus:ring-[#E07A5F]"
+                  class="rounded border-[var(--text-charcoal)]/10 text-[var(--color-coral)] focus:ring-[var(--color-coral)]"
                 />
                 <label for="formOverrideShipping" class="text-[9px] uppercase tracking-widest font-bold text-[#6B5E57] select-none cursor-pointer font-bold">Override Standard Shipping</label>
               </div>
@@ -1125,7 +1163,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                       [ngModel]="formIsFreeShipping()" 
                       (ngModelChange)="formIsFreeShipping.set($event)" 
                       name="overrideType"
-                      class="text-[#E07A5F] focus:ring-[#E07A5F]"
+                      class="text-[var(--color-coral)] focus:ring-[var(--color-coral)]"
                     />
                     <label for="overrideFree" class="text-[9px] uppercase tracking-widest font-semibold text-[#6B5E57] select-none cursor-pointer">Free Shipping</label>
                   </div>
@@ -1137,7 +1175,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                       [ngModel]="formIsFreeShipping()" 
                       (ngModelChange)="formIsFreeShipping.set($event)" 
                       name="overrideType"
-                      class="text-[#E07A5F] focus:ring-[#E07A5F]"
+                      class="text-[var(--color-coral)] focus:ring-[var(--color-coral)]"
                     />
                     <label for="overrideFixed" class="text-[9px] uppercase tracking-widest font-semibold text-[#6B5E57] select-none cursor-pointer">Fixed Shipping Rate</label>
                   </div>
@@ -1150,7 +1188,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                     [ngModel]="formFixedShippingPrice()" 
                     (ngModelChange)="formFixedShippingPrice.set($event)" 
                     placeholder="E.g. 50" 
-                    class="w-full px-3 py-2 bg-white/70 border border-[#2A2522]/10 rounded-lg text-xs text-[#2A2522] focus:outline-none focus:border-[#E07A5F] transition-all"
+                    class="w-full px-3 py-2 bg-white/70 border border-[var(--text-charcoal)]/10 rounded-lg text-xs text-[var(--text-charcoal)] focus:outline-none focus:border-[var(--color-coral)] transition-all"
                   />
                 </div>
               </div>
@@ -1158,11 +1196,11 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
           </div>
 
           <!-- Footer CTA -->
-          <div class="pt-4 border-t border-[#2A2522]/10 space-y-3 flex-shrink-0">
+          <div class="pt-4 border-t border-[var(--text-charcoal)]/10 space-y-3 flex-shrink-0">
             <button 
               [disabled]="formSubmitting()"
               (click)="submitAdminProductForm()"
-              class="w-full py-3.5 text-[#FBF9F6] text-xs font-bold uppercase tracking-[0.2em] rounded-xl transition-all flex justify-center items-center gap-2 neon-btn disabled:opacity-50"
+              class="w-full py-3.5 text-[#FAF5F2] text-xs font-bold uppercase tracking-[0.2em] rounded-xl transition-all flex justify-center items-center gap-2 neon-btn disabled:opacity-50"
             >
               {{ formSubmitting() ? 'SUBMITTING...' : (editingProductId() ? 'UPDATE PRODUCT' : 'CREATE PRODUCT') }}
             </button>
@@ -1171,22 +1209,22 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
       </div>
 
       <!-- Floating Selection Action Bar (Glassmorphic) -->
-      <div *ngIf="isSelectionMode() && selectedProductIds().size > 0" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 flex items-center justify-between gap-6 px-6 py-4 bg-[#FBF9F6]/85 backdrop-blur-md border border-[#2A2522]/10 rounded-2xl shadow-xl max-w-2xl w-[90%] transition-all animate-slide-up">
+      <div *ngIf="isSelectionMode() && selectedProductIds().size > 0" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 flex items-center justify-between gap-6 px-6 py-4 bg-[#FAF5F2]/85 backdrop-blur-md border border-[var(--text-charcoal)]/10 rounded-2xl shadow-xl max-w-2xl w-[90%] transition-all animate-slide-up">
         <div class="flex flex-col text-left">
-          <span class="text-[9px] uppercase tracking-widest font-mono text-[#E07A5F] font-bold">Selection Active</span>
-          <span class="text-xs text-[#2A2522] font-semibold">{{ selectedProductIds().size }} products selected</span>
+          <span class="text-[9px] uppercase tracking-widest font-mono text-[var(--color-coral)] font-bold">Selection Active</span>
+          <span class="text-xs text-[var(--text-charcoal)] font-semibold">{{ selectedProductIds().size }} products selected</span>
         </div>
         <div class="flex items-center gap-3">
-          <button *ngIf="authService.hasPermission('Products:Update')" (click)="openBulkEditModal()" class="px-3.5 py-2 bg-[#E07A5F] hover:bg-[#E07A5F]/90 text-white text-[9px] uppercase tracking-widest font-bold rounded-lg transition-all shadow-sm">
+          <button *ngIf="authService.hasPermission('Products:Update')" (click)="openBulkEditModal()" class="px-3.5 py-2 bg-[var(--color-coral)] hover:bg-[var(--color-coral)]/90 text-white text-[9px] uppercase tracking-widest font-bold rounded-lg transition-all shadow-sm">
             ✏️ Edit Bulk
           </button>
-          <button *ngIf="authService.hasPermission('Products:Update')" (click)="bulkToggleVisibility()" class="px-3.5 py-2 bg-[#8C857B] hover:bg-[#2A2522] text-white text-[9px] uppercase tracking-widest font-bold rounded-lg transition-all shadow-sm">
+          <button *ngIf="authService.hasPermission('Products:Update')" (click)="bulkToggleVisibility()" class="px-3.5 py-2 bg-[#8C857B] hover:bg-[var(--text-charcoal)] text-white text-[9px] uppercase tracking-widest font-bold rounded-lg transition-all shadow-sm">
             👁️ Toggle Show
           </button>
           <button *ngIf="authService.hasPermission('Products:Delete')" (click)="bulkDelete()" class="px-3.5 py-2 bg-red-600 hover:bg-red-700 text-white text-[9px] uppercase tracking-widest font-bold rounded-lg transition-all shadow-sm">
             🗑️ Delete
           </button>
-          <button (click)="clearSelection()" class="px-3.5 py-2 border border-[#2A2522]/20 hover:bg-[#2A2522]/5 text-[#2A2522] text-[9px] uppercase tracking-widest font-bold rounded-lg transition-all">
+          <button (click)="clearSelection()" class="px-3.5 py-2 border border-[var(--text-charcoal)]/20 hover:bg-[var(--text-charcoal)]/5 text-[var(--text-charcoal)] text-[9px] uppercase tracking-widest font-bold rounded-lg transition-all">
             Cancel
           </button>
         </div>
@@ -1197,22 +1235,22 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
         <!-- Backdrop Layer -->
         <div 
           (click)="closeBulkEditModal()" 
-          class="fixed inset-0 bg-[#2A2522]/10 backdrop-blur-[3px] pointer-events-auto cursor-pointer"
+          class="fixed inset-0 bg-[var(--text-charcoal)]/10 backdrop-blur-[3px] pointer-events-auto cursor-pointer"
         ></div>
 
         <!-- Frosted Glass Configurator Sheet -->
         <div class="quick-buy-sheet admin-product-sheet bulk-edit-sheet pointer-events-auto max-w-[450px] w-full">
           <!-- Header -->
-          <div class="flex justify-between items-center border-b border-[#2A2522]/10 pb-4 flex-shrink-0">
+          <div class="flex justify-between items-center border-b border-[var(--text-charcoal)]/10 pb-4 flex-shrink-0">
             <div>
-              <span class="tracking-widest font-mono text-[9px] uppercase font-bold text-[#E07A5F] block mb-1">
+              <span class="tracking-widest font-mono text-[9px] uppercase font-bold text-[var(--color-coral)] block mb-1">
                 Storefront Management
               </span>
-              <h3 class="text-base font-serif-luxury font-light text-[#2A2522] tracking-wider uppercase truncate">
+              <h3 class="text-base font-fredoka text-[var(--text-charcoal)] tracking-wide uppercase truncate">
                 Bulk Edit {{ selectedProductIds().size }} Products
               </h3>
             </div>
-            <button (click)="closeBulkEditModal()" class="text-[#2A2522]/40 hover:text-[#E07A5F] text-sm p-1.5 transition-colors">
+            <button (click)="closeBulkEditModal()" class="text-[var(--text-charcoal)]/40 hover:text-[var(--color-coral)] text-sm p-1.5 transition-colors">
               ✕
             </button>
           </div>
@@ -1221,8 +1259,8 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
           <div class="flex-1 overflow-y-auto space-y-5 pr-1 custom-scrollbar my-4 text-left">
             <!-- Progress Overlay when submitting -->
             <div *ngIf="bulkEditSubmitting()" class="py-8 text-center space-y-3">
-              <span class="animate-spin rounded-full h-8 w-8 border-b-2 border-[#E07A5F] inline-block"></span>
-              <p class="text-xs text-[#2A2522] font-semibold uppercase tracking-wider">{{ bulkEditProgress() }}</p>
+              <span class="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--color-coral)] inline-block"></span>
+              <p class="text-xs text-[var(--text-charcoal)] font-semibold uppercase tracking-wider">{{ bulkEditProgress() }}</p>
             </div>
 
             <div *ngIf="!bulkEditSubmitting()" class="space-y-4">
@@ -1231,22 +1269,22 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
               </p>
 
               <!-- Category & Collection -->
-              <div class="border border-[#2A2522]/5 p-3 rounded-xl bg-white/40 space-y-2">
+              <div class="border border-[var(--text-charcoal)]/5 p-3 rounded-xl bg-white/40 space-y-2">
                 <div class="flex items-center gap-2">
-                  <input type="checkbox" [(ngModel)]="bulkUpdateCategory" id="bulkUpdateCategory" class="rounded border-[#2A2522]/15 text-[#E07A5F] focus:ring-[#E07A5F]" />
-                  <label for="bulkUpdateCategory" class="text-[9px] uppercase tracking-widest font-bold text-[#2A2522] select-none cursor-pointer">Update Collection & Subcategory</label>
+                  <input type="checkbox" [(ngModel)]="bulkUpdateCategory" id="bulkUpdateCategory" class="rounded border-[var(--text-charcoal)]/15 text-[var(--color-coral)] focus:ring-[var(--color-coral)]" />
+                  <label for="bulkUpdateCategory" class="text-[9px] uppercase tracking-widest font-bold text-[var(--text-charcoal)] select-none cursor-pointer">Update Collection & Subcategory</label>
                 </div>
                 <div *ngIf="bulkUpdateCategory()" class="grid grid-cols-2 gap-3 pt-1">
                   <div>
                     <label class="text-[8px] uppercase tracking-widest font-semibold text-[#6B5E57] block mb-1">Collection *</label>
-                    <select [(ngModel)]="bulkMainCategory" (ngModelChange)="bulkSubCategory.set(getBulkSubcategories()[0])" class="w-full px-2.5 py-1.5 bg-white border border-[#2A2522]/10 rounded-lg text-xs">
+                    <select [(ngModel)]="bulkMainCategory" (ngModelChange)="bulkSubCategory.set(getBulkSubcategories()[0])" class="w-full px-2.5 py-1.5 bg-white border border-[var(--text-charcoal)]/10 rounded-lg text-xs">
                       <option value="Women">Women</option>
                       <option value="Kids">Kids</option>
                     </select>
                   </div>
                   <div>
                     <label class="text-[8px] uppercase tracking-widest font-semibold text-[#6B5E57] block mb-1">Subcategory *</label>
-                    <select [(ngModel)]="bulkSubCategory" class="w-full px-2.5 py-1.5 bg-white border border-[#2A2522]/10 rounded-lg text-xs">
+                    <select [(ngModel)]="bulkSubCategory" class="w-full px-2.5 py-1.5 bg-white border border-[var(--text-charcoal)]/10 rounded-lg text-xs">
                       <option *ngFor="let cat of getBulkSubcategories()" [value]="cat">{{ cat }}</option>
                     </select>
                   </div>
@@ -1254,47 +1292,47 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
               </div>
 
               <!-- Price & Cost Price -->
-              <div class="border border-[#2A2522]/5 p-3 rounded-xl bg-white/40 space-y-3">
+              <div class="border border-[var(--text-charcoal)]/5 p-3 rounded-xl bg-white/40 space-y-3">
                 <div class="space-y-2">
                   <div class="flex items-center gap-2">
-                    <input type="checkbox" [(ngModel)]="bulkUpdatePrice" id="bulkUpdatePrice" class="rounded border-[#2A2522]/15 text-[#E07A5F] focus:ring-[#E07A5F]" />
-                    <label for="bulkUpdatePrice" class="text-[9px] uppercase tracking-widest font-bold text-[#2A2522] select-none cursor-pointer">Update Retail Price</label>
+                    <input type="checkbox" [(ngModel)]="bulkUpdatePrice" id="bulkUpdatePrice" class="rounded border-[var(--text-charcoal)]/15 text-[var(--color-coral)] focus:ring-[var(--color-coral)]" />
+                    <label for="bulkUpdatePrice" class="text-[9px] uppercase tracking-widest font-bold text-[var(--text-charcoal)] select-none cursor-pointer">Update Retail Price</label>
                   </div>
                   <div *ngIf="bulkUpdatePrice()" class="pl-5">
-                    <input type="number" [(ngModel)]="bulkPrice" placeholder="LE" class="w-full px-3 py-1.5 bg-white border border-[#2A2522]/10 rounded-lg text-xs" />
+                    <input type="number" [(ngModel)]="bulkPrice" placeholder="LE" class="w-full px-3 py-1.5 bg-white border border-[var(--text-charcoal)]/10 rounded-lg text-xs" />
                   </div>
                 </div>
 
                 <div class="space-y-2">
                   <div class="flex items-center gap-2">
-                    <input type="checkbox" [(ngModel)]="bulkUpdateCostPrice" id="bulkUpdateCostPrice" class="rounded border-[#2A2522]/15 text-[#E07A5F] focus:ring-[#E07A5F]" />
-                    <label for="bulkUpdateCostPrice" class="text-[9px] uppercase tracking-widest font-bold text-[#2A2522] select-none cursor-pointer">Update Cost Price</label>
+                    <input type="checkbox" [(ngModel)]="bulkUpdateCostPrice" id="bulkUpdateCostPrice" class="rounded border-[var(--text-charcoal)]/15 text-[var(--color-coral)] focus:ring-[var(--color-coral)]" />
+                    <label for="bulkUpdateCostPrice" class="text-[9px] uppercase tracking-widest font-bold text-[var(--text-charcoal)] select-none cursor-pointer">Update Cost Price</label>
                   </div>
                   <div *ngIf="bulkUpdateCostPrice()" class="pl-5">
-                    <input type="number" [(ngModel)]="bulkCostPrice" placeholder="LE" class="w-full px-3 py-1.5 bg-white border border-[#2A2522]/10 rounded-lg text-xs" />
+                    <input type="number" [(ngModel)]="bulkCostPrice" placeholder="LE" class="w-full px-3 py-1.5 bg-white border border-[var(--text-charcoal)]/10 rounded-lg text-xs" />
                   </div>
                 </div>
               </div>
 
               <!-- Stock & Shipping Size -->
-              <div class="border border-[#2A2522]/5 p-3 rounded-xl bg-white/40 space-y-3">
+              <div class="border border-[var(--text-charcoal)]/5 p-3 rounded-xl bg-white/40 space-y-3">
                 <div class="space-y-2">
                   <div class="flex items-center gap-2">
-                    <input type="checkbox" [(ngModel)]="bulkUpdateStock" id="bulkUpdateStock" class="rounded border-[#2A2522]/15 text-[#E07A5F] focus:ring-[#E07A5F]" />
-                    <label for="bulkUpdateStock" class="text-[9px] uppercase tracking-widest font-bold text-[#2A2522] select-none cursor-pointer">Update Stock Quantity</label>
+                    <input type="checkbox" [(ngModel)]="bulkUpdateStock" id="bulkUpdateStock" class="rounded border-[var(--text-charcoal)]/15 text-[var(--color-coral)] focus:ring-[var(--color-coral)]" />
+                    <label for="bulkUpdateStock" class="text-[9px] uppercase tracking-widest font-bold text-[var(--text-charcoal)] select-none cursor-pointer">Update Stock Quantity</label>
                   </div>
                   <div *ngIf="bulkUpdateStock()" class="pl-5">
-                    <input type="number" [(ngModel)]="bulkStock" class="w-full px-3 py-1.5 bg-white border border-[#2A2522]/10 rounded-lg text-xs" />
+                    <input type="number" [(ngModel)]="bulkStock" class="w-full px-3 py-1.5 bg-white border border-[var(--text-charcoal)]/10 rounded-lg text-xs" />
                   </div>
                 </div>
 
                 <div class="space-y-2">
                   <div class="flex items-center gap-2">
-                    <input type="checkbox" [(ngModel)]="bulkUpdateShippingSize" id="bulkUpdateShippingSize" class="rounded border-[#2A2522]/15 text-[#E07A5F] focus:ring-[#E07A5F]" />
-                    <label for="bulkUpdateShippingSize" class="text-[9px] uppercase tracking-widest font-bold text-[#2A2522] select-none cursor-pointer">Update Shipping Size</label>
+                    <input type="checkbox" [(ngModel)]="bulkUpdateShippingSize" id="bulkUpdateShippingSize" class="rounded border-[var(--text-charcoal)]/15 text-[var(--color-coral)] focus:ring-[var(--color-coral)]" />
+                    <label for="bulkUpdateShippingSize" class="text-[9px] uppercase tracking-widest font-bold text-[var(--text-charcoal)] select-none cursor-pointer">Update Shipping Size</label>
                   </div>
                   <div *ngIf="bulkUpdateShippingSize()" class="pl-5">
-                    <select [(ngModel)]="bulkShippingSize" class="w-full px-3 py-1.5 bg-white border border-[#2A2522]/10 rounded-lg text-xs">
+                    <select [(ngModel)]="bulkShippingSize" class="w-full px-3 py-1.5 bg-white border border-[var(--text-charcoal)]/10 rounded-lg text-xs">
                       <option value="Small">Small</option>
                       <option value="Medium">Medium</option>
                       <option value="Large">Large</option>
@@ -1304,36 +1342,36 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
               </div>
 
               <!-- Visibility -->
-              <div class="border border-[#2A2522]/5 p-3 rounded-xl bg-white/40 space-y-2">
+              <div class="border border-[var(--text-charcoal)]/5 p-3 rounded-xl bg-white/40 space-y-2">
                 <div class="flex items-center gap-2">
-                  <input type="checkbox" [(ngModel)]="bulkUpdateVisibility" id="bulkUpdateVisibility" class="rounded border-[#2A2522]/15 text-[#E07A5F] focus:ring-[#E07A5F]" />
-                  <label for="bulkUpdateVisibility" class="text-[9px] uppercase tracking-widest font-bold text-[#2A2522] select-none cursor-pointer">Update Customer Visibility</label>
+                  <input type="checkbox" [(ngModel)]="bulkUpdateVisibility" id="bulkUpdateVisibility" class="rounded border-[var(--text-charcoal)]/15 text-[var(--color-coral)] focus:ring-[var(--color-coral)]" />
+                  <label for="bulkUpdateVisibility" class="text-[9px] uppercase tracking-widest font-bold text-[var(--text-charcoal)] select-none cursor-pointer">Update Customer Visibility</label>
                 </div>
                 <div *ngIf="bulkUpdateVisibility()" class="pl-5 flex items-center gap-2 pt-1">
-                  <input type="checkbox" [(ngModel)]="bulkIsVisible" id="bulkIsVisible" class="rounded border-[#2A2522]/15 text-[#E07A5F] focus:ring-[#E07A5F]" />
+                  <input type="checkbox" [(ngModel)]="bulkIsVisible" id="bulkIsVisible" class="rounded border-[var(--text-charcoal)]/15 text-[var(--color-coral)] focus:ring-[var(--color-coral)]" />
                   <label for="bulkIsVisible" class="text-[9px] uppercase tracking-widest font-semibold text-[#6B5E57] select-none cursor-pointer">Visible to Customers</label>
                 </div>
               </div>
 
               <!-- Colors & Sizes -->
-              <div class="border border-[#2A2522]/5 p-3 rounded-xl bg-white/40 space-y-3">
+              <div class="border border-[var(--text-charcoal)]/5 p-3 rounded-xl bg-white/40 space-y-3">
                 <div class="space-y-2">
                   <div class="flex items-center gap-2">
-                    <input type="checkbox" [(ngModel)]="bulkUpdateColors" id="bulkUpdateColors" class="rounded border-[#2A2522]/15 text-[#E07A5F] focus:ring-[#E07A5F]" />
-                    <label for="bulkUpdateColors" class="text-[9px] uppercase tracking-widest font-bold text-[#2A2522] select-none cursor-pointer">Update Colors</label>
+                    <input type="checkbox" [(ngModel)]="bulkUpdateColors" id="bulkUpdateColors" class="rounded border-[var(--text-charcoal)]/15 text-[var(--color-coral)] focus:ring-[var(--color-coral)]" />
+                    <label for="bulkUpdateColors" class="text-[9px] uppercase tracking-widest font-bold text-[var(--text-charcoal)] select-none cursor-pointer">Update Colors</label>
                   </div>
                   <div *ngIf="bulkUpdateColors()" class="pl-5">
-                    <input type="text" [(ngModel)]="bulkColors" placeholder="E.g. Tan, Blush, Sage (comma separated)" class="w-full px-3 py-1.5 bg-white border border-[#2A2522]/10 rounded-lg text-xs" />
+                    <input type="text" [(ngModel)]="bulkColors" placeholder="E.g. Tan, Blush, Sage (comma separated)" class="w-full px-3 py-1.5 bg-white border border-[var(--text-charcoal)]/10 rounded-lg text-xs" />
                   </div>
                 </div>
 
                 <div class="space-y-2">
                   <div class="flex items-center gap-2">
-                    <input type="checkbox" [(ngModel)]="bulkUpdateSizes" id="bulkUpdateSizes" class="rounded border-[#2A2522]/15 text-[#E07A5F] focus:ring-[#E07A5F]" />
-                    <label for="bulkUpdateSizes" class="text-[9px] uppercase tracking-widest font-bold text-[#2A2522] select-none cursor-pointer">Update Sizes</label>
+                    <input type="checkbox" [(ngModel)]="bulkUpdateSizes" id="bulkUpdateSizes" class="rounded border-[var(--text-charcoal)]/15 text-[var(--color-coral)] focus:ring-[var(--color-coral)]" />
+                    <label for="bulkUpdateSizes" class="text-[9px] uppercase tracking-widest font-bold text-[var(--text-charcoal)] select-none cursor-pointer">Update Sizes</label>
                   </div>
                   <div *ngIf="bulkUpdateSizes()" class="pl-5">
-                    <input type="text" [(ngModel)]="bulkSizes" placeholder="E.g. S, M, L (comma separated)" class="w-full px-3 py-1.5 bg-white border border-[#2A2522]/10 rounded-lg text-xs" />
+                    <input type="text" [(ngModel)]="bulkSizes" placeholder="E.g. S, M, L (comma separated)" class="w-full px-3 py-1.5 bg-white border border-[var(--text-charcoal)]/10 rounded-lg text-xs" />
                   </div>
                 </div>
               </div>
@@ -1341,11 +1379,11 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
           </div>
 
           <!-- Footer CTA -->
-          <div class="pt-4 border-t border-[#2A2522]/10 space-y-3 flex-shrink-0">
+          <div class="pt-4 border-t border-[var(--text-charcoal)]/10 space-y-3 flex-shrink-0">
             <button 
               [disabled]="bulkEditSubmitting()"
               (click)="submitBulkEditForm()"
-              class="w-full py-3.5 text-[#FBF9F6] text-xs font-bold uppercase tracking-[0.2em] rounded-xl transition-all flex justify-center items-center gap-2 neon-btn disabled:opacity-50"
+              class="w-full py-3.5 text-[#FAF5F2] text-xs font-bold uppercase tracking-[0.2em] rounded-xl transition-all flex justify-center items-center gap-2 neon-btn disabled:opacity-50"
             >
               {{ bulkEditSubmitting() ? 'APPLYING CHANGES...' : 'SAVE BULK CHANGES' }}
             </button>

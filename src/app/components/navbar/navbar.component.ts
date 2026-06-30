@@ -17,86 +17,69 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
   standalone: true,
   imports: [CommonModule, RouterModule, FormsModule],
   template: `
-    <header [ngClass]="headerClass">
-      <div class="w-full flex justify-between items-center md:grid md:grid-cols-[auto_1fr_auto] md:gap-4">
+    <header class="fixed top-0 left-0 right-0 z-40 flex items-center justify-center p-3 sm:p-4 select-none transition-all duration-300">
+      <div 
+        class="w-full max-w-7xl mx-auto flex justify-between items-center transition-all duration-300 bg-[#FAF5F2]/80 backdrop-blur-xl border border-[#EBF1F5] px-4 md:px-8 py-3 rounded-2xl shadow-[0_8px_30px_rgba(42,31,26,0.04)]"
+        [ngClass]="scrolled() ? 'scrolled-pill-dock' : 'initial-pill-dock'"
+      >
         <!-- Left Zone: Logo -->
         <div class="flex justify-start items-center">
-          <div [routerLink]="['/']" class="logo-container relative h-9 w-32 flex items-center justify-center cursor-pointer select-none pointer-events-auto">
-            <!-- Watercolor SVG Accent -->
-            <svg class="logo-svg-animate absolute inset-0 w-full h-full" viewBox="0 0 600 180" preserveAspectRatio="none">
-              <defs>
-                <linearGradient id="nav-watercolor-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stop-color="#F4A261" stop-opacity="0.85"/>
-                  <stop offset="30%" stop-color="#E76F51" stop-opacity="0.95"/>
-                  <stop offset="65%" stop-color="#F38E75" stop-opacity="0.88"/>
-                  <stop offset="100%" stop-color="#B84F7D" stop-opacity="0.9"/>
-                  <animate attributeName="x1" dur="7s" values="0%;40%;0%" repeatCount="indefinite" />
-                  <animate attributeName="x2" dur="7s" values="100%;140%;100%" repeatCount="indefinite" />
-                </linearGradient>
-              </defs>
-              <path d="M 40,88 C 110,65 230,78 350,70 C 470,62 520,78 560,88 C 575,92 570,102 555,108 C 510,128 390,122 280,128 C 170,134 90,118 45,108 C 30,105 30,92 40,88 Z" fill="url(#nav-watercolor-gradient)" />
-            </svg>
-            <span class="logo-text relative z-10 text-[18px] font-serif-luxury tracking-[0.05em] text-[#1A1816] uppercase select-none font-bold">
-              Picks<span class="text-[#C4633A] font-light">&amp;</span>More
-            </span>
+          <div [routerLink]="['/']" class="logo-container relative h-10 w-36 flex items-center justify-start cursor-pointer select-none pointer-events-auto">
+            <img src="/logo.png" alt="Picks &amp; More Logo" class="h-full w-auto object-contain" />
           </div>
         </div>
 
         <!-- Center Zone: Core Catalog Links -->
         <div class="hidden md:flex justify-center items-center">
-          <nav [ngClass]="scrolled() ? 'nav-scrolled-state' : 'nav-floating-dock'" class="flex gap-8 text-[10px] font-bold uppercase tracking-[0.18em] whitespace-nowrap items-center transition-all duration-300">
-            <a [routerLink]="['/']" [ngClass]="linkClass('/')" class="transition-colors relative group py-1">
+          <nav class="flex gap-2 lg:gap-4 items-center text-[13px] font-fredoka font-bold text-[#2A1F1A]">
+            <a [routerLink]="['/']" [ngClass]="linkClass('/')">
               Home
-              <span class="absolute bottom-0 left-0 w-full h-[1px] nav-line-gradient transition-transform duration-300 origin-left" [ngClass]="isLinkActive('/') ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'"></span>
             </a>
 
             <!-- Women collection with hover dropdown -->
             <div class="relative group py-1">
-              <a [routerLink]="['/products']" [queryParams]="{ target: 'Women' }" [ngClass]="linkClass('/products', 'Women')" class="transition-colors relative flex items-center gap-1">
+              <a [routerLink]="['/products']" [queryParams]="{ target: 'Women' }" [ngClass]="linkClass('/products', 'Women')">
                 <span>Women</span>
                 <svg class="w-2.5 h-2.5 opacity-60 group-hover:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                 </svg>
-                <span class="absolute bottom-0 left-0 w-full h-[1px] nav-line-gradient transition-transform duration-300 origin-left" [ngClass]="isLinkActive('/products', 'Women') ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'"></span>
               </a>
               <!-- Subsections Panel -->
-              <div class="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-48 bg-[#FBF9F6]/95 backdrop-blur-md border border-[#E8DDD0] rounded-xl p-3 shadow-2xl opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 z-50 text-left normal-case dropdown-hover-bridge">
+              <div class="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-48 bg-[#FAF5F2]/95 backdrop-blur-md border border-[#EBF1F5] rounded-xl p-3 shadow-2xl opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 z-50 text-left normal-case dropdown-hover-bridge">
                 <div class="flex flex-col gap-2">
-                  <a [routerLink]="['/products']" [queryParams]="{ target: 'Women', subcategory: 'fashion' }" class="text-[10px] tracking-widest text-[#2A1F1A]/80 hover:text-[#C4633A] uppercase font-bold py-1.5 px-2.5 rounded-lg hover:bg-[#C4633A]/5 transition-all">Apparel</a>
-                  <a [routerLink]="['/products']" [queryParams]="{ target: 'Women', subcategory: 'shoes' }" class="text-[10px] tracking-widest text-[#2A1F1A]/80 hover:text-[#C4633A] uppercase font-bold py-1.5 px-2.5 rounded-lg hover:bg-[#C4633A]/5 transition-all">Shoes</a>
-                  <a [routerLink]="['/products']" [queryParams]="{ target: 'Women', subcategory: 'bags' }" class="text-[10px] tracking-widest text-[#2A1F1A]/80 hover:text-[#C4633A] uppercase font-bold py-1.5 px-2.5 rounded-lg hover:bg-[#C4633A]/5 transition-all">Bags &amp; Handbags</a>
+                  <a [routerLink]="['/products']" [queryParams]="{ target: 'Women', subcategory: 'fashion' }" class="text-[10px] tracking-widest text-[var(--text-charcoal)]/80 hover:text-[#C4633A] uppercase font-bold py-1.5 px-2.5 rounded-lg hover:bg-[#C4633A]/5 transition-all">Apparel</a>
+                  <a [routerLink]="['/products']" [queryParams]="{ target: 'Women', subcategory: 'shoes' }" class="text-[10px] tracking-widest text-[var(--text-charcoal)]/80 hover:text-[#C4633A] uppercase font-bold py-1.5 px-2.5 rounded-lg hover:bg-[#C4633A]/5 transition-all">Shoes</a>
+                  <a [routerLink]="['/products']" [queryParams]="{ target: 'Women', subcategory: 'bags' }" class="text-[10px] tracking-widest text-[var(--text-charcoal)]/80 hover:text-[#C4633A] uppercase font-bold py-1.5 px-2.5 rounded-lg hover:bg-[#C4633A]/5 transition-all">Bags &amp; Handbags</a>
                 </div>
               </div>
             </div>
 
             <div class="relative py-1 flex items-center gap-1.5 cursor-not-allowed select-none group/men men-badge-group">
-              <span class="text-[10px] font-bold uppercase tracking-[0.18em] text-[#2A1F1A]/40 transition-colors duration-350 group-hover/men:text-[#2A1F1A]/60">Men</span>
+              <span class="text-[13px] font-fredoka font-bold text-[#2A1F1A]/40 transition-colors duration-300 group-hover/men:text-[#2A1F1A]/60">Men</span>
               <span class="premium-badge premium-badge-desktop badge-premium-entry">Coming Soon</span>
             </div>
 
             <!-- Kids collection with hover dropdown -->
             <div class="relative group py-1">
-              <a [routerLink]="['/products']" [queryParams]="{ target: 'Kids' }" [ngClass]="linkClass('/products', 'Kids')" class="transition-colors relative flex items-center gap-1">
+              <a [routerLink]="['/products']" [queryParams]="{ target: 'Kids' }" [ngClass]="linkClass('/products', 'Kids')">
                 <span>Kids</span>
                 <svg class="w-2.5 h-2.5 opacity-60 group-hover:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                 </svg>
-                <span class="absolute bottom-0 left-0 w-full h-[1px] nav-line-gradient transition-transform duration-300 origin-left" [ngClass]="isLinkActive('/products', 'Kids') ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'"></span>
               </a>
               <!-- Subsections Panel -->
-              <div class="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-48 bg-[#FBF9F6]/95 backdrop-blur-md border border-[#E8DDD0] rounded-xl p-3 shadow-2xl opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 z-50 text-left normal-case dropdown-hover-bridge">
+              <div class="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-48 bg-[#FAF5F2]/95 backdrop-blur-md border border-[#EBF1F5] rounded-xl p-3 shadow-2xl opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 z-50 text-left normal-case dropdown-hover-bridge">
                 <div class="flex flex-col gap-2">
-                  <a [routerLink]="['/products']" [queryParams]="{ target: 'Kids', subcategory: 'baby needs' }" class="text-[10px] tracking-widest text-[#2A1F1A]/80 hover:text-[#C4633A] uppercase font-bold py-1.5 px-2.5 rounded-lg hover:bg-[#C4633A]/5 transition-all">Baby Needs</a>
-                  <a [routerLink]="['/products']" [queryParams]="{ target: 'Kids', subcategory: 'girls' }" class="text-[10px] tracking-widest text-[#2A1F1A]/80 hover:text-[#C4633A] uppercase font-bold py-1.5 px-2.5 rounded-lg hover:bg-[#C4633A]/5 transition-all">Girls collection</a>
-                  <a [routerLink]="['/products']" [queryParams]="{ target: 'Kids', subcategory: 'kids boys' }" class="text-[10px] tracking-widest text-[#2A1F1A]/80 hover:text-[#C4633A] uppercase font-bold py-1.5 px-2.5 rounded-lg hover:bg-[#C4633A]/5 transition-all">Boys collection</a>
-                  <a [routerLink]="['/products']" [queryParams]="{ target: 'Kids', subcategory: 'shoes' }" class="text-[10px] tracking-widest text-[#2A1F1A]/80 hover:text-[#C4633A] uppercase font-bold py-1.5 px-2.5 rounded-lg hover:bg-[#C4633A]/5 transition-all">Shoes</a>
+                  <a [routerLink]="['/products']" [queryParams]="{ target: 'Kids', subcategory: 'baby needs' }" class="text-[10px] tracking-widest text-[var(--text-charcoal)]/80 hover:text-[#C4633A] uppercase font-bold py-1.5 px-2.5 rounded-lg hover:bg-[#C4633A]/5 transition-all">Baby Needs</a>
+                  <a [routerLink]="['/products']" [queryParams]="{ target: 'Kids', subcategory: 'girls' }" class="text-[10px] tracking-widest text-[var(--text-charcoal)]/80 hover:text-[#C4633A] uppercase font-bold py-1.5 px-2.5 rounded-lg hover:bg-[#C4633A]/5 transition-all">Girls collection</a>
+                  <a [routerLink]="['/products']" [queryParams]="{ target: 'Kids', subcategory: 'kids boys' }" class="text-[10px] tracking-widest text-[var(--text-charcoal)]/80 hover:text-[#C4633A] uppercase font-bold py-1.5 px-2.5 rounded-lg hover:bg-[#C4633A]/5 transition-all">Boys collection</a>
+                  <a [routerLink]="['/products']" [queryParams]="{ target: 'Kids', subcategory: 'shoes' }" class="text-[10px] tracking-widest text-[var(--text-charcoal)]/80 hover:text-[#C4633A] uppercase font-bold py-1.5 px-2.5 rounded-lg hover:bg-[#C4633A]/5 transition-all">Shoes</a>
                 </div>
               </div>
             </div>
 
-            <a [routerLink]="['/products']" [queryParams]="{ target: 'All' }" [ngClass]="linkClass('/products', 'All')" class="transition-colors relative group py-1">
+            <a [routerLink]="['/products']" [queryParams]="{ target: 'All' }" [ngClass]="linkClass('/products', 'All')">
               All Collections
-              <span class="absolute bottom-0 left-0 w-full h-[1px] bg-[#E07A5F] transition-transform duration-300 origin-left" [ngClass]="isLinkActive('/products', 'All') ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'"></span>
             </a>
           </nav>
         </div>
@@ -106,7 +89,7 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
           <!-- Search Icon (Triggers Advanced Overlay) -->
           <button 
             (click)="toggleSearchOverlay(true)" 
-            class="text-[#2A1F1A] hover:text-[#C98A58] transition-colors relative flex items-center justify-center h-9 w-9 rounded-full hover:bg-[#C98A58]/10 transition-all select-none pointer-events-auto focus:outline-none"
+            class="text-[var(--text-charcoal)] hover:text-[#C4633A] transition-colors relative flex items-center justify-center h-9 w-9 rounded-full hover:bg-[#C4633A]/10 transition-all select-none pointer-events-auto focus:outline-none"
             aria-label="Search Collection"
           >
             <svg class="w-[22px] h-[22px] transition-transform duration-300 hover:scale-110" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -119,7 +102,7 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
             <button 
               [routerLink]="['/products']" 
               [queryParams]="{ filterFavorites: true }"
-              class="text-[#2A1F1A] hover:text-[#C98A58] transition-colors relative flex items-center justify-center h-9 w-9 rounded-full hover:bg-[#C98A58]/10 transition-all select-none focus:outline-none"
+              class="text-[var(--text-charcoal)] hover:text-[#C4633A] transition-colors relative flex items-center justify-center h-9 w-9 rounded-full hover:bg-[#C4633A]/10 transition-all select-none focus:outline-none"
               aria-label="Favorites"
             >
               <span class="relative flex items-center justify-center">
@@ -127,33 +110,33 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
                   <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
                 </svg>
                 <span *ngIf="wishlistCount() > 0" 
-                      class="absolute -top-2 -right-2 bg-[#E07A5F] text-white text-[7px] font-bold h-3.5 w-3.5 rounded-full flex items-center justify-center border border-[#F8F1EA] z-20">
+                      class="absolute -top-2 -right-2 bg-[var(--color-coral)] text-white text-[7px] font-bold h-3.5 w-3.5 rounded-full flex items-center justify-center border border-[#FAF5F2] z-20">
                   {{ wishlistCount() }}
                 </span>
               </span>
             </button>
-
+ 
             <!-- Mini-Wishlist Dropdown -->
-            <div class="absolute right-0 top-full mt-2 w-72 bg-[#F8F1EA]/95 backdrop-blur-md border border-[#E7D8CB] rounded-xl p-4 shadow-2xl opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 z-50 text-left">
-              <span class="text-[8px] font-mono tracking-widest text-[#C98A58] uppercase font-bold block mb-3 border-b border-[#E7D8CB] pb-2">Favorites ({{ wishlistCount() }})</span>
+            <div class="absolute right-0 top-full mt-2 w-72 bg-[#FAF5F2]/95 backdrop-blur-md border border-[#EBF1F5] rounded-xl p-4 shadow-2xl opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 z-50 text-left">
+              <span class="text-[8px] font-mono tracking-widest text-[#C4633A] uppercase font-bold block mb-3 border-b border-[#EBF1F5] pb-2">Favorites ({{ wishlistCount() }})</span>
               
               <div *ngIf="wishlistItems().length === 0" class="py-6 text-center text-[10px] text-[#77685D] font-light">
                 No items in your favorites list.
               </div>
-
+ 
               <div *ngIf="wishlistItems().length > 0" class="space-y-3 mb-4 max-h-[220px] overflow-y-auto pr-1">
-                <div *ngFor="let item of wishlistItems()" class="flex items-center gap-3 pb-3 border-b border-[#E7D8CB] last:border-b-0 last:pb-0">
-                  <a [routerLink]="['/products', item.id]" class="w-10 h-10 rounded-lg bg-white overflow-hidden flex-shrink-0 border border-[#E7D8CB] cursor-pointer">
+                <div *ngFor="let item of wishlistItems()" class="flex items-center gap-3 pb-3 border-b border-[#EBF1F5] last:border-b-0 last:pb-0">
+                  <a [routerLink]="['/products', item.id]" class="w-10 h-10 rounded-lg bg-white overflow-hidden flex-shrink-0 border border-[#EBF1F5] cursor-pointer">
                     <img *ngIf="item.imageUrl" [src]="resolveImageUrl(item.imageUrl)" [alt]="item.title" class="w-full h-full object-cover"/>
                     <div *ngIf="!item.imageUrl" class="w-full h-full flex items-center justify-center text-[7px] text-[#77685D] uppercase tracking-widest font-semibold bg-white/5">No img</div>
                   </a>
                   <div class="flex-1 min-w-0">
-                    <a [routerLink]="['/products', item.id]" class="text-[10px] text-[#2A1F1A] uppercase tracking-wide font-normal truncate hover:text-[#C98A58] block cursor-pointer">{{ item.title }}</a>
-                    <span class="text-[9px] font-mono text-[#C98A58] block mt-0.5">{{ item.price | currency:'EGP ' }}</span>
+                    <a [routerLink]="['/products', item.id]" class="text-[10px] text-[var(--text-charcoal)] uppercase tracking-wide font-normal truncate hover:text-[#C4633A] block cursor-pointer">{{ item.title }}</a>
+                    <span class="text-[9px] font-mono text-[#C4633A] block mt-0.5">{{ item.price | currency:'EGP ' }}</span>
                   </div>
                   <button 
                     (click)="removeWishlistItem(item)" 
-                    class="text-[#77685D] hover:text-[#2A1F1A] p-1.5 transition-colors focus:outline-none"
+                    class="text-[#77685D] hover:text-[var(--text-charcoal)] p-1.5 transition-colors focus:outline-none"
                     title="Remove from favorites"
                   >
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -162,21 +145,21 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
                   </button>
                 </div>
               </div>
-
+ 
               <a 
                 *ngIf="wishlistItems().length > 0"
                 [routerLink]="['/products']" 
                 [queryParams]="{ filterFavorites: true }"
-                class="w-full py-2 bg-[#2A1F1A] hover:bg-[#C98A58] text-[#F8F1EA] text-[9px] font-bold uppercase tracking-widest rounded-lg transition-all text-center block"
+                class="w-full py-2 bg-[var(--text-charcoal)] hover:bg-[#C4633A] text-[#FAF5F2] text-[9px] font-bold uppercase tracking-widest rounded-lg transition-all text-center block"
               >
                 Browse All Favorites
               </a>
             </div>
           </div>
-
+ 
           <!-- Cart Wrapper with hover dropdown -->
           <div class="relative group py-1 flex items-center justify-center pointer-events-auto">
-            <a [routerLink]="['/cart']" class="text-[#2A1F1A] hover:text-[#C98A58] transition-colors relative flex items-center justify-center h-9 w-9 rounded-full hover:bg-[#C98A58]/10 transition-all select-none">
+            <a [routerLink]="['/cart']" class="text-[var(--text-charcoal)] hover:text-[#C4633A] transition-colors relative flex items-center justify-center h-9 w-9 rounded-full hover:bg-[#C4633A]/10 transition-all select-none">
               <span class="relative flex items-center justify-center">
                 <!-- Shopping Cart Trolley SVG Icon -->
                 <svg class="w-[22px] h-[22px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -184,28 +167,28 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
                 </svg>
                 <span *ngIf="cartCount() > 0" 
                       [ngClass]="{ 'badge-pop': animateBadge() }"
-                      class="absolute -top-2 -right-2 bg-[#C98A58] text-white text-[7px] font-bold h-3.5 w-3.5 rounded-full flex items-center justify-center border border-[#F8F1EA] z-20 transition-transform duration-300">
+                      class="absolute -top-2 -right-2 bg-[#C4633A] text-white text-[7px] font-bold h-3.5 w-3.5 rounded-full flex items-center justify-center border border-[#FAF5F2] z-20 transition-transform duration-300">
                   {{ cartCount() }}
                 </span>
               </span>
             </a>
-
+ 
             <!-- Mini-Cart Dropdown -->
-            <div class="absolute right-0 top-full mt-2 w-72 bg-[#F8F1EA]/95 backdrop-blur-md border border-[#E7D8CB] rounded-xl p-4 shadow-2xl opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 z-50 text-left">
-              <span class="text-[8px] font-mono tracking-widest text-[#C98A58] uppercase font-bold block mb-3 border-b border-[#E7D8CB] pb-2">Cart Preview ({{ cartCount() }})</span>
+            <div class="absolute right-0 top-full mt-2 w-72 bg-[#FAF5F2]/95 backdrop-blur-md border border-[#EBF1F5] rounded-xl p-4 shadow-2xl opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 z-50 text-left">
+              <span class="text-[8px] font-mono tracking-widest text-[#C4633A] uppercase font-bold block mb-3 border-b border-[#EBF1F5] pb-2">Cart Preview ({{ cartCount() }})</span>
               
               <div *ngIf="cartItems().length === 0" class="py-6 text-center text-[10px] text-[#77685D] font-light">
                 Your shopping cart is empty.
               </div>
-
+ 
               <div *ngIf="cartItems().length > 0" class="space-y-3 mb-4 max-h-[220px] overflow-y-auto pr-1">
-                <div *ngFor="let item of latestItems()" class="flex items-center gap-3 pb-3 border-b border-[#E7D8CB] last:border-b-0 last:pb-0">
-                  <div class="w-10 h-10 rounded-lg bg-white overflow-hidden flex-shrink-0 border border-[#E7D8CB]">
+                <div *ngFor="let item of latestItems()" class="flex items-center gap-3 pb-3 border-b border-[#EBF1F5] last:border-b-0 last:pb-0">
+                  <div class="w-10 h-10 rounded-lg bg-white overflow-hidden flex-shrink-0 border border-[#EBF1F5]">
                     <img *ngIf="item.imageUrl" [src]="resolveImageUrl(item.imageUrl)" [alt]="item.productName" class="w-full h-full object-cover"/>
                     <div *ngIf="!item.imageUrl" class="w-full h-full flex items-center justify-center text-[7px] text-[#77685D] uppercase tracking-widest font-semibold bg-white/5">No img</div>
                   </div>
                   <div class="flex-1 min-w-0">
-                    <h5 class="text-[10px] text-[#2A1F1A] uppercase tracking-wide font-normal truncate">{{ item.productName }}</h5>
+                    <h5 class="text-[10px] text-[var(--text-charcoal)] uppercase tracking-wide font-normal truncate">{{ item.productName }}</h5>
                     <div class="flex gap-1.5 text-[8px] text-[#77685D] font-mono mt-0.5" *ngIf="item.size || item.color">
                       <span *ngIf="item.size">S: {{ item.size }}</span>
                       <span *ngIf="item.color">C: {{ item.color }}</span>
@@ -217,15 +200,15 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
                   </div>
                 </div>
               </div>
-
-              <div class="border-t border-[#E7D8CB] pt-3 flex justify-between items-center">
+ 
+              <div class="border-t border-[#EBF1F5] pt-3 flex justify-between items-center">
                 <div class="flex flex-col">
                   <span class="text-[8px] text-[#77685D] uppercase tracking-wider font-semibold">Subtotal</span>
-                  <span class="text-[11px] font-mono text-[#2A1F1A] font-bold">{{ subtotal() | currency:'EGP ' }}</span>
+                  <span class="text-[11px] font-mono text-[var(--text-charcoal)] font-bold">{{ subtotal() | currency:'EGP ' }}</span>
                 </div>
                 <a 
                   [routerLink]="['/cart']" 
-                  class="px-4 py-2 bg-[#C98A58] hover:bg-[#2A1F1A] text-white text-[9px] font-extrabold uppercase tracking-widest rounded-lg transition-all shadow-[0_0_8px_rgba(201,138,88,0.3)]"
+                  class="px-4 py-2 bg-[#C4633A] hover:bg-[#2A1F1A] text-white text-[9px] font-extrabold uppercase tracking-widest rounded-lg transition-all shadow-[0_0_8px_rgba(196,99,58,0.3)]"
                 >
                   Checkout
                 </a>
@@ -233,8 +216,8 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
             </div>
           </div>
           
-
-          <span class="hidden md:block h-3.5 w-[1px] bg-[#E7D8CB]"></span>
+ 
+          <span class="hidden md:block h-3.5 w-[1px] bg-[#EBF1F5]"></span>
           
           <ng-container *ngIf="authService.currentUser() as user; else guestNav">
             <!-- Premium Notification Bell with Dropdown -->
@@ -242,7 +225,7 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
               <!-- Bell Trigger -->
               <button 
                 (click)="toggleNotificationsDropdown($event)"
-                class="relative p-1.5 rounded-full hover:bg-[#C98A58]/10 text-[#2A1F1A] hover:text-[#C98A58] transition-colors focus:outline-none flex items-center justify-center"
+                class="relative p-1.5 rounded-full hover:bg-[#C4633A]/10 text-[var(--text-charcoal)] hover:text-[#C4633A] transition-colors focus:outline-none flex items-center justify-center"
                 aria-label="Notifications"
               >
                 <!-- Bell SVG Icon -->
@@ -253,7 +236,7 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
                 <!-- Unread count badge -->
                 <span 
                   *ngIf="notificationService.unreadCount() > 0"
-                  class="absolute top-0 right-0 min-w-[13px] h-[13px] bg-[#C98A58] text-white text-[7.5px] font-black rounded-full flex items-center justify-center px-0.5 border border-white/20 animate-pulse"
+                  class="absolute top-0 right-0 min-w-[13px] h-[13px] bg-[#C4633A] text-white text-[7.5px] font-black rounded-full flex items-center justify-center px-0.5 border border-white/20 animate-pulse"
                 >
                   {{ notificationService.unreadCount() }}
                 </span>
@@ -262,10 +245,10 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
               <!-- Notifications Dropdown Panel -->
               <div 
                 *ngIf="isNotificationsDropdownOpen()" 
-                class="absolute right-0 top-full mt-2 w-[340px] md:w-[380px] bg-[#F8F1EA]/98 border border-[#E7D8CB] rounded-2xl shadow-2xl p-5 pb-6 backdrop-blur-xl z-50 text-left"
+                class="absolute right-0 top-full mt-2 w-[340px] md:w-[380px] bg-[#FAF5F2]/98 border border-[#EBF1F5] rounded-2xl shadow-2xl p-5 pb-6 backdrop-blur-xl z-50 text-left"
                 (click)="$event.stopPropagation()"
               >
-                <div class="flex justify-between items-center border-b border-[#E7D8CB] pb-2.5 mb-2.5">
+                <div class="flex justify-between items-center border-b border-[#EBF1F5] pb-2.5 mb-2.5">
                   <div class="flex items-center gap-1.5">
                     <span class="text-[10px] font-mono tracking-widest text-[#C98A58] uppercase font-bold">Alert Ledger</span>
                     <span *ngIf="notificationService.unreadCount() > 0" class="text-[8px] bg-[#C98A58]/20 text-[#C98A58] px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider font-mono">
@@ -294,10 +277,10 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
                     *ngFor="let note of notificationService.notifications()" 
                     (click)="markAsRead(note)"
                     [ngClass]="note.isRead ? 'opacity-55 hover:opacity-85' : 'bg-[#C98A58]/5 border-l-2 border-[#C98A58] pl-2.5'"
-                    class="p-3 rounded-lg border border-[#E7D8CB] bg-white/[0.01] hover:bg-[#C98A58]/5 transition-all cursor-pointer relative group/item"
+                    class="p-3 rounded-lg border border-[#EBF1F5] bg-white/[0.01] hover:bg-[#C98A58]/5 transition-all cursor-pointer relative group/item"
                   >
                     <div class="flex justify-between items-start gap-2">
-                      <span class="text-[11px] font-bold text-[#2A1F1A] uppercase tracking-wide truncate max-w-[75%]">{{ note.title }}</span>
+                      <span class="text-[11px] font-bold text-[var(--text-charcoal)] uppercase tracking-wide truncate max-w-[75%]">{{ note.title }}</span>
                       <span class="text-[8px] text-[#77685D] font-mono tracking-tighter">{{ formatTimeAgo(note.createdAt) }}</span>
                     </div>
                     <p class="text-[10.5px] text-[#4A3C35] mt-1 font-normal leading-relaxed break-words">{{ note.message }}</p>
@@ -314,7 +297,7 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
             </div>
 
             <!-- Small vertical divider -->
-            <span class="hidden md:block h-3.5 w-[1px] bg-[#E7D8CB] mr-3"></span>
+            <span class="hidden md:block h-3.5 w-[1px] bg-[#EBF1F5] mr-3"></span>
 
             <!-- Advanced Profile Pill with Hover Dropdown -->
             <div class="hidden md:block relative profile-badge-wrapper py-1 pointer-events-auto">
@@ -325,21 +308,21 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
                   {{ getUserInitials(user.username) }}
                 </div>
                 <!-- Username -->
-                <span class="hidden lg:inline font-bold tracking-[0.05em] text-[9.5px] text-[#2A1F1A] transition-colors duration-300">
+                <span class="hidden lg:inline font-bold tracking-[0.05em] text-[9.5px] text-[var(--text-charcoal)] transition-colors duration-300">
                   {{ user.username }}
                 </span>
                 <!-- Caret Down Icon -->
-                <svg class="hidden lg:block w-2.5 h-2.5 text-[#2A1F1A]/60 transition-transform duration-300 dropdown-arrow" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg class="hidden lg:block w-2.5 h-2.5 text-[var(--text-charcoal)]/60 transition-transform duration-300 dropdown-arrow" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                 </svg>
               </div>
 
               <!-- Advanced Dropdown Panel -->
-              <div class="profile-dropdown-panel bg-[#F8F1EA] border border-[#E7D8CB] text-[#2A1F1A]">
+              <div class="profile-dropdown-panel bg-[#FAF5F2] border border-[#EBF1F5] text-[var(--text-charcoal)]">
                 <!-- User Header -->
-                <div class="border-b border-[#E7D8CB] pb-2.5 mb-2.5">
+                <div class="border-b border-[#EBF1F5] pb-2.5 mb-2.5">
                   <span class="text-[8px] font-mono tracking-widest text-[#C98A58] uppercase font-bold block mb-1">Authenticated User</span>
-                  <div class="text-[10px] text-[#2A1F1A] font-semibold truncate">{{ user.username }}</div>
+                  <div class="text-[10px] text-[var(--text-charcoal)] font-semibold truncate">{{ user.username }}</div>
                   <div class="text-[7.5px] text-[#77685D] font-mono mt-0.5 tracking-widest uppercase bg-[#C98A58]/10 px-2 py-0.5 rounded-sm inline-block">
                     {{ user.role || 'Patron' }}
                   </div>
@@ -350,7 +333,7 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
                   <a 
                     *ngIf="showAdminLink()"
                     [routerLink]="['/admin/dashboard']"
-                    class="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-[#2A1F1A]/70 hover:text-[#2A1F1A] hover:bg-[#C98A58]/10 text-[9px] uppercase tracking-wider font-semibold transition-all text-left cursor-pointer"
+                    class="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-[var(--text-charcoal)]/70 hover:text-[var(--text-charcoal)] hover:bg-[#C98A58]/10 text-[9px] uppercase tracking-wider font-semibold transition-all text-left cursor-pointer"
                   >
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25a2.25 2.25 0 0 1-2.25 2.25h-2.25A2.25 2.25 0 0 1 13.5 8.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z" />
@@ -359,7 +342,7 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
                   </a>
                   <button 
                     (click)="openSettingsModal()" 
-                    class="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-[#2A1F1A]/70 hover:text-[#2A1F1A] hover:bg-[#C98A58]/10 text-[9px] uppercase tracking-wider font-semibold transition-all text-left"
+                    class="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-[var(--text-charcoal)]/70 hover:text-[var(--text-charcoal)] hover:bg-[#C98A58]/10 text-[9px] uppercase tracking-wider font-semibold transition-all text-left"
                   >
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -370,7 +353,7 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
 
                   <button 
                     (click)="openTrackingModal()" 
-                    class="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-[#2A1F1A]/70 hover:text-[#2A1F1A] hover:bg-[#C98A58]/10 text-[9px] uppercase tracking-wider font-semibold transition-all text-left"
+                    class="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-[var(--text-charcoal)]/70 hover:text-[var(--text-charcoal)] hover:bg-[#C98A58]/10 text-[9px] uppercase tracking-wider font-semibold transition-all text-left"
                   >
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.12-1.057L1.5 5.25m0 0A2.25 2.25 0 0 1 3.75 3h15a2.25 2.25 0 0 1 2.25 2.25m-18 0h18M16.5 18.75a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.875c.621 0 1.125-.504 1.125-1.125V11.25m-18 0h18" />
@@ -396,7 +379,7 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
             <div class="hidden md:flex items-center gap-1">
               <button 
                 (click)="authService.showLoginModal.set(true)" 
-                class="hidden sm:flex items-center justify-center h-9 w-9 rounded-full hover:bg-[#C98A58]/10 text-[#2A1F1A] hover:text-[#C98A58] transition-colors focus:outline-none pointer-events-auto"
+                class="hidden sm:flex items-center justify-center h-9 w-9 rounded-full hover:bg-[#C4633A]/10 text-[var(--text-charcoal)] hover:text-[#C4633A] transition-colors focus:outline-none pointer-events-auto"
                 aria-label="Account"
               >
                 <svg class="w-[22px] h-[22px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -409,7 +392,7 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
           <!-- Hamburger Toggle Button -->
           <button 
             (click)="isMobileMenuOpen.set(!isMobileMenuOpen())"
-            [ngClass]="showScrolledState ? 'text-[#2A2522]' : 'text-[#FBF9F6]'"
+            [ngClass]="showScrolledState ? 'text-[var(--text-charcoal)]' : 'text-[#FAF5F2]'"
             class="md:hidden relative z-50 flex items-center justify-center w-8 h-8 focus:outline-none pointer-events-auto transition-colors duration-300 ml-2"
           >
             <span class="sr-only">Toggle Menu</span>
@@ -432,57 +415,57 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
     <!-- Mobile Menu Drawer Content -->
     <div 
       [ngClass]="isMobileMenuOpen() ? 'translate-x-0 shadow-2xl' : 'translate-x-full'"
-      class="fixed top-0 right-0 bottom-0 z-50 w-[280px] max-w-[85vw] bg-[#FDFBF9]/95 backdrop-blur-xl border-l border-[#2A2522]/10 md:hidden flex flex-col p-6 transition-transform duration-500 ease-out z-50 pointer-events-auto"
+      class="fixed top-0 right-0 bottom-0 z-50 w-[280px] max-w-[85vw] bg-[#FAF5F2]/95 backdrop-blur-xl border-l border-[var(--text-charcoal)]/10 md:hidden flex flex-col p-6 transition-transform duration-500 ease-out z-50 pointer-events-auto"
     >
       <!-- Close button and header -->
-      <div class="h-16 flex items-center justify-between border-b border-[#2A2522]/5 pb-4 mb-6">
-        <span class="text-[10px] font-mono tracking-widest text-[#E07A5F] uppercase font-bold">Catalog Navigation</span>
-        <button (click)="isMobileMenuOpen.set(false)" class="text-[#8A817C] hover:text-[#E07A5F] text-xs p-1 transition-colors">
+      <div class="h-16 flex items-center justify-between border-b border-[var(--text-charcoal)]/5 pb-4 mb-6">
+        <span class="text-[10px] font-mono tracking-widest text-[var(--color-coral)] uppercase font-bold">Catalog Navigation</span>
+        <button (click)="isMobileMenuOpen.set(false)" class="text-[#8A817C] hover:text-[var(--color-coral)] text-xs p-1 transition-colors">
           ✕
         </button>
       </div>
 
       <!-- Vertical Catalog Routes -->
       <nav class="flex flex-col gap-6 text-[10px] font-extrabold uppercase tracking-[0.25em] text-left">
-        <a [routerLink]="['/']" (click)="isMobileMenuOpen.set(false)" [ngClass]="isLinkActive('/') ? 'text-[#E07A5F]' : 'text-[#2A2522]'" class="transition-colors py-1 block">
+        <a [routerLink]="['/']" (click)="isMobileMenuOpen.set(false)" [ngClass]="isLinkActive('/') ? 'text-[var(--color-coral)]' : 'text-[var(--text-charcoal)]'" class="transition-colors py-1 block">
           Home
         </a>
-        <a [routerLink]="['/products']" [queryParams]="{ target: 'Women' }" (click)="isMobileMenuOpen.set(false)" [ngClass]="isLinkActive('/products', 'Women') ? 'text-[#E07A5F]' : 'text-[#2A2522]'" class="transition-colors py-1 block">
+        <a [routerLink]="['/products']" [queryParams]="{ target: 'Women' }" (click)="isMobileMenuOpen.set(false)" [ngClass]="isLinkActive('/products', 'Women') ? 'text-[var(--color-coral)]' : 'text-[var(--text-charcoal)]'" class="transition-colors py-1 block">
           Women
         </a>
-        <div class="py-1 block flex items-center justify-between text-[#2A2522]/40 cursor-not-allowed select-none group/men-mob men-badge-group-mob">
-          <span class="transition-colors duration-350 group-hover/men-mob:text-[#2A2522]/60">Men</span>
+        <div class="py-1 block flex items-center justify-between text-[var(--text-charcoal)]/40 cursor-not-allowed select-none group/men-mob men-badge-group-mob">
+          <span class="transition-colors duration-350 group-hover/men-mob:text-[var(--text-charcoal)]/60">Men</span>
           <span class="premium-badge premium-badge-mobile badge-premium-entry-mob">Coming Soon</span>
         </div>
-        <a [routerLink]="['/products']" [queryParams]="{ target: 'Kids' }" (click)="isMobileMenuOpen.set(false)" [ngClass]="isLinkActive('/products', 'Kids') ? 'text-[#E07A5F]' : 'text-[#2A2522]'" class="transition-colors py-1 block">
+        <a [routerLink]="['/products']" [queryParams]="{ target: 'Kids' }" (click)="isMobileMenuOpen.set(false)" [ngClass]="isLinkActive('/products', 'Kids') ? 'text-[var(--color-coral)]' : 'text-[var(--text-charcoal)]'" class="transition-colors py-1 block">
           Kids
         </a>
-        <a [routerLink]="['/products']" [queryParams]="{ target: 'All' }" (click)="isMobileMenuOpen.set(false)" [ngClass]="isLinkActive('/products', 'All') ? 'text-[#E07A5F]' : 'text-[#2A2522]'" class="transition-colors py-1 block">
+        <a [routerLink]="['/products']" [queryParams]="{ target: 'All' }" (click)="isMobileMenuOpen.set(false)" [ngClass]="isLinkActive('/products', 'All') ? 'text-[var(--color-coral)]' : 'text-[var(--text-charcoal)]'" class="transition-colors py-1 block">
           All Collections
         </a>
-        <a [routerLink]="['/cart']" (click)="isMobileMenuOpen.set(false)" [ngClass]="isLinkActive('/cart') ? 'text-[#E07A5F]' : 'text-[#2A2522]'" class="transition-colors py-1 block flex items-center justify-between">
+        <a [routerLink]="['/cart']" (click)="isMobileMenuOpen.set(false)" [ngClass]="isLinkActive('/cart') ? 'text-[var(--color-coral)]' : 'text-[var(--text-charcoal)]'" class="transition-colors py-1 block flex items-center justify-between">
           <span>My Cart ({{ cartCount() }})</span>
           <span class="w-4 h-4 rounded-full bg-[#FF0055] text-[7.5px] font-bold text-white flex items-center justify-center border border-white/10" *ngIf="cartCount() > 0">
             {{ cartCount() }}
           </span>
         </a>
-        <a [routerLink]="['/products']" [queryParams]="{ filterFavorites: true }" (click)="isMobileMenuOpen.set(false)" class="transition-colors py-1 block flex items-center justify-between text-[#2A2522]">
+        <a [routerLink]="['/products']" [queryParams]="{ filterFavorites: true }" (click)="isMobileMenuOpen.set(false)" class="transition-colors py-1 block flex items-center justify-between text-[var(--text-charcoal)]">
           <span>Favorites ({{ wishlistCount() }})</span>
-          <span class="w-4 h-4 rounded-full bg-[#E07A5F] text-[7.5px] font-bold text-white flex items-center justify-center border border-white/10" *ngIf="wishlistCount() > 0">
+          <span class="w-4 h-4 rounded-full bg-[var(--color-coral)] text-[7.5px] font-bold text-white flex items-center justify-center border border-white/10" *ngIf="wishlistCount() > 0">
             {{ wishlistCount() }}
           </span>
         </a>
       </nav>
 
       <!-- Bottom Session Settings/Profile -->
-      <div class="mt-auto border-t border-[#2A2522]/5 pt-6 space-y-4 text-left">
+      <div class="mt-auto border-t border-[var(--text-charcoal)]/5 pt-6 space-y-4 text-left">
         <ng-container *ngIf="authService.currentUser() as user; else guestMobileNav">
           <div class="flex items-center gap-3">
-            <div class="h-7 w-7 rounded-full bg-gradient-to-tr from-[#E07A5F] to-[#B84F7D] flex items-center justify-center text-[10px] font-black text-white uppercase shadow-sm">
+            <div class="h-7 w-7 rounded-full bg-gradient-to-tr from-[var(--color-coral)] to-[var(--color-lavender)] flex items-center justify-center text-[10px] font-black text-white uppercase shadow-sm">
               {{ getUserInitials(user.username) }}
             </div>
             <div class="flex flex-col min-w-0">
-              <span class="text-[10.5px] font-bold text-[#2A2522] truncate">{{ user.username }}</span>
+              <span class="text-[10.5px] font-bold text-[var(--text-charcoal)] truncate">{{ user.username }}</span>
               <span class="text-[7.5px] font-mono tracking-widest text-[#8A817C] uppercase">{{ user.role || 'Patron' }}</span>
             </div>
           </div>
@@ -492,19 +475,19 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
               *ngIf="showAdminLink()"
               [routerLink]="['/admin/dashboard']"
               (click)="isMobileMenuOpen.set(false)"
-              class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-[#2A2522]/70 hover:text-[#2A2522] hover:bg-[#2A2522]/5 text-[9px] uppercase tracking-wider font-semibold transition-all text-left"
+              class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-[var(--text-charcoal)]/70 hover:text-[var(--text-charcoal)] hover:bg-[var(--text-charcoal)]/5 text-[9px] uppercase tracking-wider font-semibold transition-all text-left"
             >
               Store Dashboard
             </a>
             <button 
               (click)="isMobileMenuOpen.set(false); openSettingsModal()" 
-              class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-[#2A2522]/70 hover:text-[#2A2522] hover:bg-[#2A2522]/5 text-[9px] uppercase tracking-wider font-semibold transition-all text-left"
+              class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-[var(--text-charcoal)]/70 hover:text-[var(--text-charcoal)] hover:bg-[var(--text-charcoal)]/5 text-[9px] uppercase tracking-wider font-semibold transition-all text-left"
             >
               Profile Settings
             </button>
             <button 
               (click)="openTrackingModal()" 
-              class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-[#2A2522]/70 hover:text-[#2A2522] hover:bg-[#2A2522]/5 text-[9px] uppercase tracking-wider font-semibold transition-all text-left"
+              class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-[var(--text-charcoal)]/70 hover:text-[var(--text-charcoal)] hover:bg-[var(--text-charcoal)]/5 text-[9px] uppercase tracking-wider font-semibold transition-all text-left"
             >
               Track Orders
             </button>
@@ -520,7 +503,7 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
         <ng-template #guestMobileNav>
           <button 
             (click)="isMobileMenuOpen.set(false); authService.showLoginModal.set(true)" 
-            class="w-full py-2.5 bg-[#2A2522] hover:bg-[#E07A5F] text-[#FBF9F6] text-[10px] font-bold uppercase tracking-[0.2em] rounded-xl transition-all"
+            class="w-full py-2.5 bg-[var(--text-charcoal)] hover:bg-[var(--color-coral)] text-[#FAF5F2] text-[10px] font-bold uppercase tracking-[0.2em] rounded-xl transition-all"
           >
             Sign In
           </button>
@@ -534,26 +517,26 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
       class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1A1816]/65 backdrop-blur-sm transition-all duration-300"
     >
       <div 
-        class="w-full max-w-md bg-[#FBF9F6]/95 backdrop-blur-md border border-[#2A2522]/10 rounded-3xl p-7 shadow-2xl space-y-6 text-left relative"
+        class="w-full max-w-md bg-[#FAF5F2]/95 backdrop-blur-md border border-[var(--text-charcoal)]/10 rounded-3xl p-7 shadow-2xl space-y-6 text-left relative"
       >
         <!-- Close Button -->
         <button 
           (click)="showSettingsModal.set(false)" 
-          class="absolute top-4 right-4 text-[#8A817C] hover:text-[#E07A5F] text-sm p-1.5 transition-colors"
+          class="absolute top-4 right-4 text-[#8A817C] hover:text-[var(--color-coral)] text-sm p-1.5 transition-colors"
         >
           ✕
         </button>
 
         <!-- Header -->
         <div>
-          <span class="tracking-widest font-mono text-[9px] uppercase font-bold text-[#E07A5F] block mb-1">Account settings</span>
-          <h3 class="text-xl font-light text-[#2A2522] tracking-[0.03em] uppercase">Edit Profile Info</h3>
-          <div class="w-12 h-[1.5px] bg-[#E07A5F] mt-2"></div>
+          <span class="tracking-widest font-mono text-[9px] uppercase font-bold text-[var(--color-coral)] block mb-1">Account settings</span>
+          <h3 class="text-xl font-light text-[var(--text-charcoal)] tracking-[0.03em] uppercase">Edit Profile Info</h3>
+          <div class="w-12 h-[1.5px] bg-[var(--color-coral)] mt-2"></div>
         </div>
 
         <!-- Loading State -->
         <div *ngIf="loadingProfile()" class="flex justify-center items-center py-12">
-          <span class="animate-spin rounded-full h-8 w-8 border-b-2 border-[#E07A5F]"></span>
+          <span class="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--color-coral)]"></span>
         </div>
 
         <!-- Error / Success Alert -->
@@ -572,7 +555,7 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
               [(ngModel)]="profileData.fullName" 
               name="fullName" 
               required 
-              class="w-full px-3.5 py-2.5 bg-white/70 border border-[#2A2522]/10 rounded-xl text-xs text-[#2A2522] focus:outline-none focus:border-[#E07A5F] transition-all"
+              class="w-full px-3.5 py-2.5 bg-white/70 border border-[var(--text-charcoal)]/10 rounded-xl text-xs text-[var(--text-charcoal)] focus:outline-none focus:border-[var(--color-coral)] transition-all"
             />
           </div>
 
@@ -584,7 +567,7 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
               [(ngModel)]="profileData.phoneNumber" 
               name="phoneNumber" 
               placeholder="E.g. 01001234567"
-              class="w-full px-3.5 py-2.5 bg-white/70 border border-[#2A2522]/10 rounded-xl text-xs text-[#2A2522] focus:outline-none focus:border-[#E07A5F] transition-all"
+              class="w-full px-3.5 py-2.5 bg-white/70 border border-[var(--text-charcoal)]/10 rounded-xl text-xs text-[var(--text-charcoal)] focus:outline-none focus:border-[var(--color-coral)] transition-all"
             />
           </div>
 
@@ -596,7 +579,7 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
               [(ngModel)]="profileData.secondaryPhoneNumber" 
               name="secondaryPhoneNumber" 
               placeholder="E.g. 01229876543"
-              class="w-full px-3.5 py-2.5 bg-white/70 border border-[#2A2522]/10 rounded-xl text-xs text-[#2A2522] focus:outline-none focus:border-[#E07A5F] transition-all"
+              class="w-full px-3.5 py-2.5 bg-white/70 border border-[var(--text-charcoal)]/10 rounded-xl text-xs text-[var(--text-charcoal)] focus:outline-none focus:border-[var(--color-coral)] transition-all"
             />
           </div>
 
@@ -607,7 +590,7 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
               [(ngModel)]="profileData.governorate" 
               name="governorate" 
               required
-              class="w-full px-3.5 py-2.5 bg-white/70 border border-[#2A2522]/10 rounded-xl text-xs text-[#2A2522] focus:outline-none focus:border-[#E07A5F] transition-all"
+              class="w-full px-3.5 py-2.5 bg-white/70 border border-[var(--text-charcoal)]/10 rounded-xl text-xs text-[var(--text-charcoal)] focus:outline-none focus:border-[var(--color-coral)] transition-all"
             >
               <option value="" disabled>Select Governorate</option>
               <option value="Cairo">Cairo</option>
@@ -648,7 +631,7 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
               name="addressDetails" 
               rows="2.5" 
               placeholder="Street name, building, apartment..." 
-              class="w-full px-3.5 py-2.5 bg-white/70 border border-[#2A2522]/10 rounded-xl text-xs text-[#2A2522] focus:outline-none focus:border-[#E07A5F] transition-all"
+              class="w-full px-3.5 py-2.5 bg-white/70 border border-[var(--text-charcoal)]/10 rounded-xl text-xs text-[var(--text-charcoal)] focus:outline-none focus:border-[var(--color-coral)] transition-all"
             ></textarea>
           </div>
 
@@ -657,14 +640,14 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
             <button 
               type="button" 
               (click)="showSettingsModal.set(false)" 
-              class="flex-1 py-2.5 border border-[#2A2522]/15 text-[#4A4340] text-[10px] font-bold uppercase tracking-widest rounded-xl hover:bg-[#2A2522]/5 transition-all"
+              class="flex-1 py-2.5 border border-[var(--text-charcoal)]/15 text-[#4A4340] text-[10px] font-bold uppercase tracking-widest rounded-xl hover:bg-[var(--text-charcoal)]/5 transition-all"
             >
               Cancel
             </button>
             <button 
               type="submit" 
               [disabled]="savingProfile()" 
-              class="flex-1 py-2.5 bg-[#E07A5F] hover:bg-[#2A2522] text-[#FBF9F6] text-[10px] font-bold uppercase tracking-widest rounded-xl shadow-md transition-all flex justify-center items-center gap-2 disabled:opacity-50"
+              class="flex-1 py-2.5 bg-[var(--color-coral)] hover:bg-[var(--text-charcoal)] text-[#FAF5F2] text-[10px] font-bold uppercase tracking-widest rounded-xl shadow-md transition-all flex justify-center items-center gap-2 disabled:opacity-50"
             >
               <span *ngIf="savingProfile()" class="animate-spin rounded-full h-3 w-3 border-b-2 border-white"></span>
               Save
@@ -680,35 +663,35 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
       class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1A1816]/65 backdrop-blur-sm transition-all duration-300"
     >
       <div 
-        class="w-full max-w-2xl bg-[#FBF9F6]/95 backdrop-blur-md border border-[#2A2522]/10 rounded-3xl p-7 shadow-2xl space-y-6 text-left relative flex flex-col max-h-[90vh] overflow-hidden"
+        class="w-full max-w-2xl bg-[#FAF5F2]/95 backdrop-blur-md border border-[var(--text-charcoal)]/10 rounded-3xl p-7 shadow-2xl space-y-6 text-left relative flex flex-col max-h-[90vh] overflow-hidden"
       >
         <!-- Close Button -->
         <button 
           (click)="showTrackingModal.set(false)" 
-          class="absolute top-4 right-4 text-[#8A817C] hover:text-[#E07A5F] text-sm p-1.5 transition-colors"
+          class="absolute top-4 right-4 text-[#8A817C] hover:text-[var(--color-coral)] text-sm p-1.5 transition-colors"
         >
           ✕
         </button>
 
         <!-- Header -->
         <div>
-          <span class="tracking-widest font-mono text-[9px] uppercase font-bold text-[#E07A5F] block mb-1">Customer Panel</span>
-          <h3 class="text-xl font-light text-[#2A2522] tracking-[0.03em] uppercase">Track Order & History</h3>
-          <div class="w-12 h-[1.5px] bg-[#E07A5F] mt-2"></div>
+          <span class="tracking-widest font-mono text-[9px] uppercase font-bold text-[var(--color-coral)] block mb-1">Customer Panel</span>
+          <h3 class="text-xl font-light text-[var(--text-charcoal)] tracking-[0.03em] uppercase">Track Order & History</h3>
+          <div class="w-12 h-[1.5px] bg-[var(--color-coral)] mt-2"></div>
         </div>
 
         <!-- Navigation Tabs -->
-        <div class="flex border-b border-[#2A2522]/5 pb-2 gap-4">
+        <div class="flex border-b border-[var(--text-charcoal)]/5 pb-2 gap-4">
           <button 
             (click)="activeHistoryTab.set('track')" 
-            [ngClass]="activeHistoryTab() === 'track' ? 'border-[#E07A5F] text-[#2A2522] font-semibold' : 'border-transparent text-[#8A817C]'"
+            [ngClass]="activeHistoryTab() === 'track' ? 'border-[var(--color-coral)] text-[var(--text-charcoal)] font-semibold' : 'border-transparent text-[#8A817C]'"
             class="pb-2 border-b-2 text-[10px] uppercase tracking-wider font-bold transition-all focus:outline-none"
           >
             Track Package
           </button>
           <button 
             (click)="setHistoryTab()" 
-            [ngClass]="activeHistoryTab() === 'history' ? 'border-[#E07A5F] text-[#2A2522] font-semibold' : 'border-transparent text-[#8A817C]'"
+            [ngClass]="activeHistoryTab() === 'history' ? 'border-[var(--color-coral)] text-[var(--text-charcoal)] font-semibold' : 'border-transparent text-[#8A817C]'"
             class="pb-2 border-b-2 text-[10px] uppercase tracking-wider font-bold transition-all focus:outline-none"
           >
             Order History
@@ -727,7 +710,7 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
                   [(ngModel)]="trackingOrderId" 
                   name="trackingOrderId"
                   placeholder="e.g. xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" 
-                  class="w-full px-4 py-2.5 bg-[#FBF9F6]/50 border border-[#2A2522]/10 rounded-xl text-xs text-[#2A2522] placeholder-[#8A817C]/40 focus:outline-none focus:ring-1 focus:ring-[#E07A5F] focus:border-[#E07A5F]"
+                  class="w-full px-4 py-2.5 bg-[#FAF5F2]/50 border border-[var(--text-charcoal)]/10 rounded-xl text-xs text-[var(--text-charcoal)] placeholder-[#8A817C]/40 focus:outline-none focus:ring-1 focus:ring-[var(--color-coral)] focus:border-[var(--color-coral)]"
                 />
               </div>
               <div class="space-y-1.5">
@@ -738,7 +721,7 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
                   name="trackingPhone"
                   placeholder="e.g. 5678" 
                   maxlength="4"
-                  class="w-full px-4 py-2.5 bg-[#FBF9F6]/50 border border-[#2A2522]/10 rounded-xl text-xs text-[#2A2522] placeholder-[#8A817C]/40 focus:outline-none focus:ring-1 focus:ring-[#E07A5F] focus:border-[#E07A5F]"
+                  class="w-full px-4 py-2.5 bg-[#FAF5F2]/50 border border-[var(--text-charcoal)]/10 rounded-xl text-xs text-[var(--text-charcoal)] placeholder-[#8A817C]/40 focus:outline-none focus:ring-1 focus:ring-[var(--color-coral)] focus:border-[var(--color-coral)]"
                 />
               </div>
             </div>
@@ -746,7 +729,7 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
             <button 
               (click)="trackOrder()" 
               [disabled]="trackingLoading()"
-              class="w-full py-2.5 bg-[#2A2522] hover:bg-[#E07A5F] text-[#FBF9F6] text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all disabled:opacity-50"
+              class="w-full py-2.5 bg-[var(--text-charcoal)] hover:bg-[var(--color-coral)] text-[#FAF5F2] text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all disabled:opacity-50"
             >
               {{ trackingLoading() ? 'Locating Package...' : 'Track Package' }}
             </button>
@@ -757,11 +740,11 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
             </div>
 
             <!-- Tracked Order Results -->
-            <div *ngIf="trackedOrder()" class="border border-[#2A2522]/5 rounded-2xl p-4 bg-[#FBF9F6]/50 space-y-4 animate-fade-in">
-              <div class="flex justify-between items-center border-b border-[#2A2522]/5 pb-2">
+            <div *ngIf="trackedOrder()" class="border border-[var(--text-charcoal)]/5 rounded-2xl p-4 bg-[#FAF5F2]/50 space-y-4 animate-fade-in">
+              <div class="flex justify-between items-center border-b border-[var(--text-charcoal)]/5 pb-2">
                 <div>
                   <span class="text-[9px] uppercase tracking-wider text-[#8A817C]">Order #{{ trackedOrder().orderNumber }}</span>
-                  <span class="block text-[10px] text-[#2A2522] font-semibold">{{ trackedOrder().orderDate | date:'mediumDate' }}</span>
+                  <span class="block text-[10px] text-[var(--text-charcoal)] font-semibold">{{ trackedOrder().orderDate | date:'mediumDate' }}</span>
                 </div>
                 <span class="px-2 py-0.5 rounded text-[8px] uppercase font-bold text-white" 
                       [style.background-color]="getStatusColor(trackedOrder().status)">
@@ -774,35 +757,35 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
                 <label class="text-[8px] uppercase tracking-widest font-black text-[#8A817C] block">Shipping Status Timeline</label>
                 <div class="relative flex justify-between items-center pt-2">
                   <!-- Connection bar -->
-                  <div class="absolute left-3 right-3 top-5.5 h-1 bg-[#2A2522]/5 z-0"></div>
-                  <div class="absolute left-3 top-5.5 h-1 bg-[#E07A5F] transition-all duration-500 z-0"
+                  <div class="absolute left-3 right-3 top-5.5 h-1 bg-[var(--text-charcoal)]/5 z-0"></div>
+                  <div class="absolute left-3 top-5.5 h-1 bg-[var(--color-coral)] transition-all duration-500 z-0"
                        [style.width]="getTimelineProgressWidth(trackedOrder().status)"></div>
 
                   <!-- Step 1: Pending -->
                   <div class="flex flex-col items-center gap-1 z-0">
                     <span class="h-6 w-6 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-colors"
-                          [ngClass]="isStepActive('PendingVerification', trackedOrder().status) ? 'bg-[#E07A5F]' : 'bg-[#8A817C]/20 text-[#8A817C]'">1</span>
+                          [ngClass]="isStepActive('PendingVerification', trackedOrder().status) ? 'bg-[var(--color-coral)]' : 'bg-[#8A817C]/20 text-[#8A817C]'">1</span>
                     <span class="text-[8px] uppercase tracking-wider text-[#8A817C]">Pending</span>
                   </div>
 
                   <!-- Step 2: Preparing -->
                   <div class="flex flex-col items-center gap-1 z-0">
                     <span class="h-6 w-6 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-colors"
-                          [ngClass]="isStepActive('ConfirmedPreparing', trackedOrder().status) ? 'bg-[#E07A5F]' : 'bg-[#8A817C]/20 text-[#8A817C]'">2</span>
+                          [ngClass]="isStepActive('ConfirmedPreparing', trackedOrder().status) ? 'bg-[var(--color-coral)]' : 'bg-[#8A817C]/20 text-[#8A817C]'">2</span>
                     <span class="text-[8px] uppercase tracking-wider text-[#8A817C]">Preparing</span>
                   </div>
 
                   <!-- Step 3: Out for Delivery -->
                   <div class="flex flex-col items-center gap-1 z-0">
                     <span class="h-6 w-6 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-colors"
-                          [ngClass]="isStepActive('OutForDelivery', trackedOrder().status) ? 'bg-[#E07A5F]' : 'bg-[#8A817C]/20 text-[#8A817C]'">3</span>
+                          [ngClass]="isStepActive('OutForDelivery', trackedOrder().status) ? 'bg-[var(--color-coral)]' : 'bg-[#8A817C]/20 text-[#8A817C]'">3</span>
                     <span class="text-[8px] uppercase tracking-wider text-[#8A817C]">On Way</span>
                   </div>
 
                   <!-- Step 4: Finalized (Delivered / Returned) -->
                   <div class="flex flex-col items-center gap-1 z-0">
                     <span class="h-6 w-6 rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-colors"
-                          [ngClass]="isStepFinished(trackedOrder().status) ? 'bg-[#E07A5F]' : 'bg-[#8A817C]/20 text-[#8A817C]'">
+                          [ngClass]="isStepFinished(trackedOrder().status) ? 'bg-[var(--color-coral)]' : 'bg-[#8A817C]/20 text-[#8A817C]'">
                       {{ trackedOrder().status === 'ReturnedRejected' ? '✕' : '✓' }}
                     </span>
                     <span class="text-[8px] uppercase tracking-wider text-[#8A817C]">
@@ -816,17 +799,17 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
               <div class="space-y-1.5 pt-2">
                 <label class="text-[8px] uppercase tracking-widest font-black text-[#8A817C] block">Package Items</label>
                 <div class="space-y-1 max-h-[120px] overflow-y-auto pr-1">
-                  <div *ngFor="let item of trackedOrder().items" class="flex justify-between items-center text-xs py-1 border-b border-[#2A2522]/5">
-                    <span class="text-[#2A2522] font-light">{{ item.productName }} <span class="text-[#8A817C] text-[10px]">x{{ item.quantity }}</span></span>
-                    <span class="text-[#2A2522] font-semibold">EGP {{ item.unitPrice * item.quantity | number:'1.2-2' }}</span>
+                  <div *ngFor="let item of trackedOrder().items" class="flex justify-between items-center text-xs py-1 border-b border-[var(--text-charcoal)]/5">
+                    <span class="text-[var(--text-charcoal)] font-light">{{ item.productName }} <span class="text-[#8A817C] text-[10px]">x{{ item.quantity }}</span></span>
+                    <span class="text-[var(--text-charcoal)] font-semibold">EGP {{ item.unitPrice * item.quantity | number:'1.2-2' }}</span>
                   </div>
                 </div>
               </div>
 
               <!-- Totals Details -->
-              <div class="flex justify-between items-center pt-2 border-t border-[#2A2522]/5 text-xs">
+              <div class="flex justify-between items-center pt-2 border-t border-[var(--text-charcoal)]/5 text-xs">
                 <span class="text-[#8A817C]">Delivery Fee: EGP {{ trackedOrder().shippingCost | number:'1.2-2' }}</span>
-                <span class="text-[#2A2522] font-bold">Total: EGP {{ trackedOrder().totalPrice | number:'1.2-2' }}</span>
+                <span class="text-[var(--text-charcoal)] font-bold">Total: EGP {{ trackedOrder().totalPrice | number:'1.2-2' }}</span>
               </div>
             </div>
           </div>
@@ -838,7 +821,7 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
               <p class="text-xs text-[#8A817C] font-light">Please register or log in to view your complete shopping and order history ledger.</p>
               <button 
                 (click)="showTrackingModal.set(false); authService.showLoginModal.set(true)"
-                class="px-5 py-2 bg-[#E07A5F] hover:bg-[#2A2522] text-[#FBF9F6] text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all"
+                class="px-5 py-2 bg-[var(--color-coral)] hover:bg-[var(--text-charcoal)] text-[#FAF5F2] text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all"
               >
                 Log In / Register
               </button>
@@ -847,7 +830,7 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
             <!-- Logged-in view -->
             <div *ngIf="authService.currentUser()">
               <div *ngIf="historyLoading()" class="flex justify-center items-center py-12">
-                <span class="animate-spin rounded-full h-6 w-6 border-b-2 border-[#E07A5F]"></span>
+                <span class="animate-spin rounded-full h-6 w-6 border-b-2 border-[var(--color-coral)]"></span>
               </div>
 
               <div *ngIf="!historyLoading() && historyOrders().length === 0" class="text-center py-12">
@@ -856,55 +839,55 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
 
               <!-- Orders List -->
               <div *ngIf="!historyLoading() && historyOrders().length > 0" class="space-y-3">
-                <div *ngFor="let order of historyOrders()" class="border border-[#2A2522]/5 rounded-2xl p-4 bg-[#FBF9F6]/50 space-y-3">
+                <div *ngFor="let order of historyOrders()" class="border border-[var(--text-charcoal)]/5 rounded-2xl p-4 bg-[#FAF5F2]/50 space-y-3">
                   <div class="flex justify-between items-center">
                     <div>
                       <span class="text-[9px] uppercase tracking-wider text-[#8A817C]">Order #{{ order.orderNumber }}</span>
-                      <span class="block text-[10px] text-[#2A2522] font-semibold">{{ order.orderDate | date:'mediumDate' }}</span>
+                      <span class="block text-[10px] text-[var(--text-charcoal)] font-semibold">{{ order.orderDate | date:'mediumDate' }}</span>
                     </div>
                     <div class="text-right space-y-1">
                       <span class="px-2 py-0.5 rounded text-[8px] uppercase font-bold text-white" 
                             [style.background-color]="getStatusColor(order.status)">
                         {{ getStatusLabel(order.status) }}
                       </span>
-                      <span class="block text-xs font-bold text-[#E07A5F]">EGP {{ order.totalPrice | number:'1.2-2' }}</span>
+                      <span class="block text-xs font-bold text-[var(--color-coral)]">EGP {{ order.totalPrice | number:'1.2-2' }}</span>
                     </div>
                   </div>
 
                   <!-- Order expansion trigger button -->
                   <button 
                     (click)="toggleOrderDetails(order)" 
-                    class="w-full py-1.5 bg-[#2A2522]/5 hover:bg-[#E07A5F]/10 text-[#2A2522] hover:text-[#E07A5F] text-[9px] uppercase tracking-wider font-bold rounded-lg transition-all"
+                    class="w-full py-1.5 bg-[var(--text-charcoal)]/5 hover:bg-[var(--color-coral)]/10 text-[var(--text-charcoal)] hover:text-[var(--color-coral)] text-[9px] uppercase tracking-wider font-bold rounded-lg transition-all"
                   >
                     {{ selectedHistoryOrder()?.id === order.id ? 'Hide Details' : 'View Tracking Details' }}
                   </button>
 
                   <!-- Expanded order details inside history card -->
-                  <div *ngIf="selectedHistoryOrder()?.id === order.id" class="pt-3 border-t border-[#2A2522]/5 space-y-3 animate-fade-in">
+                  <div *ngIf="selectedHistoryOrder()?.id === order.id" class="pt-3 border-t border-[var(--text-charcoal)]/5 space-y-3 animate-fade-in">
                     <!-- Progress timeline -->
                     <div class="relative flex justify-between items-center pt-2">
-                      <div class="absolute left-3 right-3 top-5.5 h-1 bg-[#2A2522]/5 z-0"></div>
-                      <div class="absolute left-3 top-5.5 h-1 bg-[#E07A5F] transition-all duration-500 z-0"
+                      <div class="absolute left-3 right-3 top-5.5 h-1 bg-[var(--text-charcoal)]/5 z-0"></div>
+                      <div class="absolute left-3 top-5.5 h-1 bg-[var(--color-coral)] transition-all duration-500 z-0"
                            [style.width]="getTimelineProgressWidth(order.status)"></div>
 
                       <div class="flex flex-col items-center gap-1 z-0">
                         <span class="h-5 w-5 rounded-full flex items-center justify-center text-[8px] font-bold text-white transition-colors"
-                              [ngClass]="isStepActive('PendingVerification', order.status) ? 'bg-[#E07A5F]' : 'bg-[#8A817C]/20 text-[#8A817C]'">1</span>
+                              [ngClass]="isStepActive('PendingVerification', order.status) ? 'bg-[var(--color-coral)]' : 'bg-[#8A817C]/20 text-[#8A817C]'">1</span>
                         <span class="text-[7px] uppercase tracking-wider text-[#8A817C]">Pending</span>
                       </div>
                       <div class="flex flex-col items-center gap-1 z-0">
                         <span class="h-5 w-5 rounded-full flex items-center justify-center text-[8px] font-bold text-white transition-colors"
-                              [ngClass]="isStepActive('ConfirmedPreparing', order.status) ? 'bg-[#E07A5F]' : 'bg-[#8A817C]/20 text-[#8A817C]'">2</span>
+                              [ngClass]="isStepActive('ConfirmedPreparing', order.status) ? 'bg-[var(--color-coral)]' : 'bg-[#8A817C]/20 text-[#8A817C]'">2</span>
                         <span class="text-[7px] uppercase tracking-wider text-[#8A817C]">Preparing</span>
                       </div>
                       <div class="flex flex-col items-center gap-1 z-0">
                         <span class="h-5 w-5 rounded-full flex items-center justify-center text-[8px] font-bold text-white transition-colors"
-                              [ngClass]="isStepActive('OutForDelivery', order.status) ? 'bg-[#E07A5F]' : 'bg-[#8A817C]/20 text-[#8A817C]'">3</span>
+                              [ngClass]="isStepActive('OutForDelivery', order.status) ? 'bg-[var(--color-coral)]' : 'bg-[#8A817C]/20 text-[#8A817C]'">3</span>
                         <span class="text-[7px] uppercase tracking-wider text-[#8A817C]">On Way</span>
                       </div>
                       <div class="flex flex-col items-center gap-1 z-0">
                         <span class="h-5 w-5 rounded-full flex items-center justify-center text-[8px] font-bold text-white transition-colors"
-                              [ngClass]="isStepFinished(order.status) ? 'bg-[#E07A5F]' : 'bg-[#8A817C]/20 text-[#8A817C]'">
+                              [ngClass]="isStepFinished(order.status) ? 'bg-[var(--color-coral)]' : 'bg-[#8A817C]/20 text-[#8A817C]'">
                           {{ order.status === 'ReturnedRejected' ? '✕' : '✓' }}
                         </span>
                         <span class="text-[7px] uppercase tracking-wider text-[#8A817C]">
@@ -916,13 +899,13 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
                     <!-- Items inside history card -->
                     <div class="space-y-1 pt-1">
                       <div *ngFor="let item of order.items" class="flex justify-between items-center text-[11px] py-0.5">
-                        <span class="text-[#2A2522] font-light">{{ item.productName }} <span class="text-[#8A817C]">x{{ item.quantity }}</span></span>
-                        <span class="text-[#2A2522] font-semibold">EGP {{ item.unitPrice * item.quantity | number:'1.2-2' }}</span>
+                        <span class="text-[var(--text-charcoal)] font-light">{{ item.productName }} <span class="text-[#8A817C]">x{{ item.quantity }}</span></span>
+                        <span class="text-[var(--text-charcoal)] font-semibold">EGP {{ item.unitPrice * item.quantity | number:'1.2-2' }}</span>
                       </div>
                     </div>
 
                     <!-- Address/Payment summary -->
-                    <div class="text-[10px] text-[#8A817C] leading-normal pt-1 border-t border-[#2A2522]/5">
+                    <div class="text-[10px] text-[#8A817C] leading-normal pt-1 border-t border-[var(--text-charcoal)]/5">
                       <strong>Address:</strong> {{ order.shippingAddress?.detailedAddress }}, {{ order.shippingAddress?.governorate }} <br/>
                       <strong>Payment:</strong> {{ order.paymentMethod }} | Delivery Fee: EGP {{ order.shippingCost | number:'1.2-2' }}
                     </div>
@@ -934,10 +917,10 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
         </div>
 
         <!-- Footer actions -->
-        <div class="flex justify-end pt-3 border-t border-[#2A2522]/5">
+        <div class="flex justify-end pt-3 border-t border-[var(--text-charcoal)]/5">
           <button 
             (click)="showTrackingModal.set(false)" 
-            class="px-5 py-2 border border-[#2A2522]/10 hover:bg-[#2A2522]/5 text-[#2A2522] text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all"
+            class="px-5 py-2 border border-[var(--text-charcoal)]/10 hover:bg-[var(--text-charcoal)]/5 text-[var(--text-charcoal)] text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all"
           >
             Close
           </button>
@@ -948,30 +931,31 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
     <!-- Advanced Search Fullscreen Glassmorphic Overlay -->
     <div 
       *ngIf="showSearchOverlay()" 
-      class="fixed inset-0 z-[100] flex flex-col bg-[#1A1816]/75 backdrop-blur-2xl p-6 md:p-20 text-left animate-fade-in pointer-events-auto"
+      class="fixed inset-0 z-[100] flex flex-col p-6 md:p-20 text-left animate-fade-in pointer-events-auto"
+      style="background: rgba(248, 241, 234, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);"
     >
       <div class="max-w-4xl mx-auto w-full flex flex-col h-full relative">
         <!-- Close Button -->
         <button 
           (click)="toggleSearchOverlay(false)" 
-          class="absolute top-0 right-0 text-white/50 hover:text-white text-2xl transition-colors focus:outline-none"
+          class="absolute top-0 right-0 text-[#2A1F1A]/50 hover:text-[#2A1F1A] text-2xl transition-colors focus:outline-none"
           aria-label="Close Search"
         >
           ✕
         </button>
         
         <!-- Search Input Area -->
-        <div class="mt-12 md:mt-24 border-b border-white/10 pb-6 relative">
+        <div class="mt-12 md:mt-24 border-b border-[#2A1F1A]/15 pb-6 relative">
           <input 
             id="navbar-search-input"
             type="text" 
             [ngModel]="searchQuery()"
             (ngModelChange)="onSearchInput($event)"
             placeholder="What are you looking for?" 
-            class="w-full text-2xl md:text-5xl font-light font-serif-luxury text-white bg-transparent outline-none placeholder:text-white/20 tracking-wide border-none focus:ring-0"
+            class="w-full text-2xl md:text-5xl font-light font-serif-luxury text-[#2A1F1A] bg-transparent outline-none placeholder:text-[#2A1F1A]/35 tracking-wide border-none focus:ring-0"
             autocomplete="off"
           />
-          <span class="absolute right-0 bottom-6 text-white/40 text-[10px] font-mono tracking-widest hidden sm:inline">ESC TO CLOSE</span>
+          <span class="absolute right-0 bottom-6 text-[#2A1F1A]/40 text-[10px] font-mono tracking-widest hidden sm:inline">ESC TO CLOSE</span>
         </div>
 
         <!-- Interactive Content Area -->
@@ -979,39 +963,49 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
           <!-- Left Column: Quick Suggestions / Trends -->
           <div class="md:col-span-1 space-y-6">
             <div>
-              <span class="text-[8px] font-mono tracking-[0.25em] text-[#C98A58] uppercase font-black block mb-4">Trending Curations</span>
+              <span class="text-[8px] font-mono tracking-[0.25em] text-[#C4633A] uppercase font-black block mb-4">Trending Curations</span>
               <div class="flex flex-wrap gap-2">
-                <button (click)="onSearchInput('Diaper Bag')" class="px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-white/80 hover:text-white text-[9px] uppercase tracking-widest transition-all border border-white/5 font-semibold">Diaper Bag</button>
-                <button (click)="onSearchInput('Bunny')" class="px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-white/80 hover:text-white text-[9px] uppercase tracking-widest transition-all border border-white/5 font-semibold">Bunny</button>
-                <button (click)="onSearchInput('Shoes')" class="px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-white/80 hover:text-white text-[9px] uppercase tracking-widest transition-all border border-white/5 font-semibold">Baby Shoes</button>
-                <button (click)="onSearchInput('Dress')" class="px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-white/80 hover:text-white text-[9px] uppercase tracking-widest transition-all border border-white/5 font-semibold">Dresses</button>
+                <button (click)="onSearchInput('Diaper Bag')" class="px-3 py-1.5 rounded-full bg-white hover:bg-[#C4633A]/10 text-[#2A1F1A]/80 hover:text-[#C4633A] text-[9px] uppercase tracking-widest transition-all border border-[#2A1F1A]/10 font-semibold">Diaper Bag</button>
+                <button (click)="onSearchInput('Bunny')" class="px-3 py-1.5 rounded-full bg-white hover:bg-[#C4633A]/10 text-[#2A1F1A]/80 hover:text-[#C4633A] text-[9px] uppercase tracking-widest transition-all border border-[#2A1F1A]/10 font-semibold">Bunny</button>
+                <button (click)="onSearchInput('Shoes')" class="px-3 py-1.5 rounded-full bg-white hover:bg-[#C4633A]/10 text-[#2A1F1A]/80 hover:text-[#C4633A] text-[9px] uppercase tracking-widest transition-all border border-[#2A1F1A]/10 font-semibold">Baby Shoes</button>
+                <button (click)="onSearchInput('Dress')" class="px-3 py-1.5 rounded-full bg-white hover:bg-[#C4633A]/10 text-[#2A1F1A]/80 hover:text-[#C4633A] text-[9px] uppercase tracking-widest transition-all border border-[#2A1F1A]/10 font-semibold">Dresses</button>
               </div>
             </div>
             
-            <div class="pt-4 border-t border-white/5">
-              <span class="text-[8px] font-mono tracking-[0.25em] text-[#C98A58] uppercase font-black block mb-3">Hotkeys</span>
-              <p class="text-[9px] text-white/50 leading-relaxed font-light">Press <kbd class="px-1.5 py-0.5 rounded bg-white/10 text-white font-mono text-[8px]">Ctrl</kbd> + <kbd class="px-1.5 py-0.5 rounded bg-white/10 text-white font-mono text-[8px]">K</kbd> anywhere to query.</p>
+            <div class="pt-4 border-t border-[#2A1F1A]/10">
+              <span class="text-[8px] font-mono tracking-[0.25em] text-[#C4633A] uppercase font-black block mb-3">Hotkeys</span>
+              <p class="text-[9px] text-[#2A1F1A]/60 leading-relaxed font-light">Press <kbd class="px-1.5 py-0.5 rounded bg-[#2A1F1A]/5 text-[#2A1F1A] font-mono text-[8px]">Ctrl</kbd> + <kbd class="px-1.5 py-0.5 rounded bg-[#2A1F1A]/5 text-[#2A1F1A] font-mono text-[8px]">K</kbd> anywhere to query.</p>
             </div>
           </div>
 
           <!-- Right Column: Search Results list -->
           <div class="md:col-span-2 space-y-6">
-            <span class="text-[8px] font-mono tracking-[0.25em] text-[#C98A58] uppercase font-black block">
+            <span class="text-[8px] font-mono tracking-[0.25em] text-[#C4633A] uppercase font-black block">
               {{ searching() ? 'Searching Ledger...' : (searchResults().length > 0 ? 'Discovered Matches (' + searchResults().length + ')' : 'Search Ledger') }}
             </span>
 
-            <!-- Loading state spinner -->
-            <div *ngIf="searching()" class="py-12 flex justify-center">
-              <span class="animate-spin rounded-full h-8 w-8 border-b-2 border-[#C98A58]"></span>
+            <!-- Skeleton Search Loader -->
+            <div *ngIf="searching()" class="space-y-4">
+              <div *ngFor="let item of [1, 2, 3]" class="flex items-center gap-4 p-3 rounded-2xl bg-white border border-[#EBF1F5] shadow-sm animate-pulse pointer-events-none">
+                <!-- Skeleton Image Box -->
+                <div class="w-12 h-12 rounded-xl bg-[#2A1F1A]/10 flex-shrink-0"></div>
+                <!-- Skeleton Details -->
+                <div class="flex-1 min-w-0 space-y-2">
+                  <div class="w-2/3 h-3 bg-[#2A1F1A]/10 rounded"></div>
+                  <div class="w-1/4 h-2 bg-[#2A1F1A]/10 rounded"></div>
+                </div>
+                <!-- Action Arrow Skeleton -->
+                <div class="w-3 h-3 bg-[#2A1F1A]/10 rounded-full"></div>
+              </div>
             </div>
 
             <!-- Empty results state -->
-            <div *ngIf="!searching() && searchQuery().length >= 2 && searchResults().length === 0" class="py-8 text-white/40 font-light text-xs">
+            <div *ngIf="!searching() && searchQuery().length >= 2 && searchResults().length === 0" class="py-8 text-[#2A1F1A]/50 font-light text-xs">
               No items matched your query. Try searching for something else.
             </div>
 
             <!-- Default Prompt -->
-            <div *ngIf="!searching() && searchQuery().length < 2" class="py-8 text-white/30 font-light text-xs">
+            <div *ngIf="!searching() && searchQuery().length < 2" class="py-8 text-[#2A1F1A]/40 font-light text-xs">
               Begin typing to query our premium collection.
             </div>
 
@@ -1021,10 +1015,10 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
                 *ngFor="let item of searchResults()" 
                 [routerLink]="['/products', item.id]"
                 (click)="toggleSearchOverlay(false)"
-                class="flex items-center gap-4 p-3 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/5 transition-all cursor-pointer group"
+                class="flex items-center gap-4 p-3 rounded-2xl bg-white hover:bg-[#C4633A]/5 border border-[#EBF1F5] shadow-sm transition-all cursor-pointer group"
               >
                 <!-- Product Image -->
-                <div class="w-12 h-12 rounded-xl bg-white overflow-hidden flex-shrink-0">
+                <div class="w-12 h-12 rounded-xl bg-white overflow-hidden flex-shrink-0 border border-[#EBF1F5]">
                   <img 
                     *ngIf="item.imageUrl" 
                     [src]="resolveImageUrl(item.imageUrl)" 
@@ -1034,11 +1028,11 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
                 </div>
                 <!-- Product text metadata -->
                 <div class="flex-1 min-w-0">
-                  <h5 class="text-xs font-semibold text-white truncate uppercase tracking-wider">{{ item.title }}</h5>
-                  <p class="text-[9px] text-[#C98A58] mt-1 font-mono">{{ item.price | currency:'EGP ' }}</p>
+                  <h5 class="text-xs font-semibold text-[#2A1F1A] truncate uppercase tracking-wider">{{ item.title }}</h5>
+                  <p class="text-[9px] text-[#C4633A] mt-1 font-mono">{{ item.price | currency:'EGP ' }}</p>
                 </div>
                 <!-- Action Arrow -->
-                <span class="text-white/30 group-hover:text-white group-hover:translate-x-1 transition-all text-xs">→</span>
+                <span class="text-[#2A1F1A]/30 group-hover:text-[#C4633A] group-hover:translate-x-1 transition-all text-xs">→</span>
               </div>
             </div>
           </div>
@@ -1088,22 +1082,22 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
 
     /* Custom Navbar link styles when header is scrolled */
     .nav-link-scrolled {
-      color: #4A4340 !important;
+      color: #2A1F1A !important;
       text-shadow: none !important;
       transition: color 0.3s ease;
     }
     .nav-link-scrolled:hover {
-      color: #2A2522 !important;
+      color: #C4633A !important;
     }
 
     /* Active link styles */
     .nav-link-active-transparent {
-      color: #E07A5F !important;
+      color: var(--color-coral) !important;
       text-shadow: 0 1px 3px rgba(10, 10, 15, 0.5);
       font-weight: 800 !important;
     }
     .nav-link-active-scrolled {
-      color: #E07A5F !important;
+      color: var(--color-coral) !important;
       text-shadow: none !important;
       font-weight: 800 !important;
     }
@@ -1123,7 +1117,7 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
       transition: color 0.3s ease;
     }
     .nav-icon-scrolled:hover {
-      color: #2A2522 !important;
+      color: var(--text-charcoal) !important;
     }
 
     /* Advanced profile badge pill */
@@ -1205,7 +1199,7 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
     }
 
     .nav-line-gradient {
-      background: linear-gradient(to right, #F4A261, #E76F51, #F38E75, #B84F7D) !important;
+      background: linear-gradient(to right, #F4A261, #E76F51, #F38E75, var(--color-lavender)) !important;
     }
 
     /* Premium COMING SOON Badge styles */
@@ -1261,14 +1255,14 @@ import { WishlistCompareService } from '../../core/services/wishlist-compare.ser
     .premium-badge-desktop:hover {
       transform: scale(0.92) translateY(-1px) !important;
       box-shadow: 0 4px 8px rgba(196, 99, 58, 0.35);
-      background: linear-gradient(135deg, #C4633A 0%, #E07A5F 100%) !important;
+      background: linear-gradient(135deg, #C4633A 0%, var(--color-coral) 100%) !important;
     }
 
     .men-badge-group-mob:hover .premium-badge-mobile,
     .premium-badge-mobile:hover {
       transform: scale(0.92) translateY(-1px) !important;
       box-shadow: 0 4px 8px rgba(196, 99, 58, 0.35);
-      background: linear-gradient(135deg, #C4633A 0%, #E07A5F 100%) !important;
+      background: linear-gradient(135deg, #C4633A 0%, var(--color-coral) 100%) !important;
     }
 
     /* Logo Hover and Floating Animations */
@@ -1464,12 +1458,17 @@ export class NavbarComponent implements AfterViewInit {
 
   linkClass(routePath: string, targetParam?: string): string {
     const isActive = this.isLinkActive(routePath, targetParam);
-    return isActive ? 'nav-link-active-scrolled' : 'nav-link-scrolled';
-  }
-
-  get headerClass(): string {
-    const scrollClass = this.scrolled() ? ' scrolled' : '';
-    return 'fixed top-0 left-0 right-0 z-40 navbar-luxury-glass' + scrollClass + ' flex items-center px-6 md:px-12 transition-all duration-300';
+    const base = 'px-3.5 py-1.5 rounded-full transition-all duration-300 font-fredoka text-[13px] tracking-wide inline-flex items-center gap-1.5 ';
+    
+    if (isActive) {
+      if (targetParam === 'Kids') return base + 'bg-[#64C9F5]/10 text-[#64C9F5]';
+      if (targetParam === 'All') return base + 'bg-[#B99AF7]/10 text-[#B99AF7]';
+      return base + 'bg-[#F67B63]/10 text-[#C4633A]'; // Women / Home / default
+    }
+    
+    if (targetParam === 'Kids') return base + 'text-[#2A1F1A]/80 hover:bg-[#64C9F5]/8 hover:text-[#64C9F5]';
+    if (targetParam === 'All') return base + 'text-[#2A1F1A]/80 hover:bg-[#B99AF7]/8 hover:text-[#B99AF7]';
+    return base + 'text-[#2A1F1A]/80 hover:bg-[#F67B63]/8 hover:text-[#C4633A]'; // Women / Home / default
   }
 
   isLinkActive(routePath: string, targetParam?: string): boolean {

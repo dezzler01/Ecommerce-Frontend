@@ -22,14 +22,14 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
         
         <!-- Left Side: Editorial Typography & Copy (5 cols) -->
         <div class="lg:col-span-5 flex flex-col items-start text-left space-y-6">
-          <span class="tracking-[0.25em] font-mono text-[10px] md:text-xs uppercase font-bold text-[#E07A5F] block">
+          <span class="tracking-[0.25em] font-mono text-[10px] md:text-xs uppercase font-bold text-[var(--color-coral)] block">
             COLLECTION / MATERNITY LUXE
           </span>
-          <h2 class="font-serif-luxury text-4xl md:text-5xl lg:text-6xl tracking-tight text-[#2A2522] uppercase leading-tight select-none">
+          <h2 class="font-serif-luxury text-4xl md:text-5xl lg:text-6xl tracking-tight text-[var(--text-charcoal)] uppercase leading-tight select-none">
             Maternity <br/>
             <span class="font-light italic text-[#8A817C]">&amp; Comfort</span>
           </h2>
-          <div class="w-16 h-[1.5px] bg-[#E07A5F] my-2"></div>
+          <div class="w-16 h-[1.5px] bg-[var(--color-coral)] my-2"></div>
           <p class="font-sans text-xs md:text-sm text-[#6B5E57] font-light leading-relaxed max-w-md select-none">
             A harmonious blend of luxury aesthetics and essential utility. Crafted with premium canvas, gold-plated hardware, and intuitive compartments.
           </p>
@@ -37,10 +37,10 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
             <a 
               [routerLink]="['/products']" 
               [queryParams]="{ target: 'Kids', subcategory: 'baby needs' }" 
-              class="relative overflow-hidden px-8 py-4 bg-[#2A2522] hover:bg-[#E07A5F] text-[#FBF9F6] text-[10px] font-bold tracking-[0.2em] uppercase rounded-xl transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg shadow-black/10 group cursor-pointer"
+              class="relative overflow-hidden px-8 py-4 bg-[var(--text-charcoal)] hover:bg-[var(--color-coral)] text-[#FAF5F2] text-[10px] font-bold tracking-[0.2em] uppercase rounded-xl transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg shadow-black/10 group cursor-pointer"
             >
               <span class="relative z-10">Explore Maternity</span>
-              <span class="absolute inset-0 bg-[#E07A5F] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-0"></span>
+              <span class="absolute inset-0 bg-[var(--color-coral)] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-0"></span>
             </a>
           </div>
         </div>
@@ -52,7 +52,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
 
           <!-- Product: Luxury Diaper Bag -->
           <div *ngIf="diaperBagProduct" class="editorial-float flex flex-col space-y-4 relative z-10 max-w-md w-full">
-            <div class="relative w-full aspect-[4/5] rounded-[2rem] overflow-hidden border border-[#2A2522]/5 shadow-2xl shadow-black/10 group pointer-events-auto">
+            <div class="relative w-full aspect-[4/5] rounded-[2rem] overflow-hidden border border-[var(--text-charcoal)]/5 shadow-2xl shadow-black/10 group pointer-events-auto">
               <img 
                 [src]="resolveImageUrl(diaperBagProduct.imageUrl)" 
                 [alt]="diaperBagProduct.title" 
@@ -60,7 +60,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
               />
               <!-- Glassmorphic Reveal Overlay -->
               <div class="absolute inset-0 bg-[#110F0E]/40 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-center items-center p-6 text-center z-20">
-                <span class="text-[9px] font-mono tracking-widest text-[#E07A5F] uppercase font-bold mb-2">Ref. 05 / MATERNITY</span>
+                <span class="text-[9px] font-mono tracking-widest text-[var(--color-coral)] uppercase font-bold mb-2">Ref. 05 / MATERNITY</span>
                 <h4 class="text-sm font-light text-white uppercase tracking-wide mb-1">{{ diaperBagProduct.title }}</h4>
                 <span class="text-xs font-mono text-white/90 font-bold mb-4">{{ diaperBagProduct.price | currency:'EGP ' }}</span>
                 <a [routerLink]="['/products', diaperBagProduct.id]" class="px-5 py-2.5 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 text-white text-[9px] font-bold uppercase tracking-widest rounded-xl transition-all">

@@ -29,16 +29,16 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
           
           <!-- Stronger gradient on mobile so text is readable over the photo -->
           <div class="absolute inset-y-0 left-0 z-10 pointer-events-none
-                      w-full bg-gradient-to-r from-[#FAF6F0]/65 via-[#FAF6F0]/30 to-[#FAF6F0]/0
-                      sm:w-[85%] sm:from-[#FAF6F0]/55 sm:via-[#FAF6F0]/25
-                      md:w-[60%] md:from-[#FAF6F0]/45 md:via-[#FAF6F0]/20"></div>
+                      w-full bg-gradient-to-r from-[#FAF5F2]/65 via-[#FAF5F2]/30 to-[#FAF5F2]/0
+                      sm:w-[85%] sm:from-[#FAF5F2]/55 sm:via-[#FAF5F2]/25
+                      md:w-[60%] md:from-[#FAF5F2]/45 md:via-[#FAF5F2]/20"></div>
           
           <!-- Content: padded-right so it never slides under the badge -->
-          <div class="bb-strip-content z-20 pr-[90px] xs:pr-[100px] sm:pr-[120px] md:pr-[160px]">
+          <div class="bb-strip-content z-20 pr-[90px] xs:pr-[100px] sm:pr-[120px] md:pr-[160px] text-left">
             <span class="bb-label">Collection / Men</span>
             <h2 class="bb-h2 bb-serif">Timeless <br/>&#38; Tailored</h2>
             <p class="bb-tagline">Sharp silhouettes and contemporary essentials for the modern man.</p>
-            <div class="inline-flex items-center gap-1.5 text-[11px] sm:text-[12px] uppercase tracking-wider text-[#C4633A]/60 font-bold cursor-not-allowed select-none">
+            <div class="inline-flex items-center gap-1.5 text-[11px] sm:text-[12px] uppercase tracking-wider text-[#F67B63]/60 font-bold cursor-not-allowed select-none font-nunito">
               <span>Coming Soon</span>
               <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
             </div>
@@ -49,7 +49,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
             <span class="bb-disc-up">Men's</span>
             <span class="bb-disc-pct">SOON</span>
             <span class="bb-disc-off">Coming</span>
-            <span class="text-[11px] text-[#C4633A] mt-0.5 block">⚡</span>
+            <span class="text-[11px] text-[#F67B63] mt-0.5 block">⚡</span>
           </div>
 
         </div>
@@ -68,8 +68,8 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
       position: relative;
       width: 100%;
       overflow: hidden;
-      border-radius: 2rem;
-      border: 0.5px solid #E8DDD0;
+      border-radius: 2.5rem;
+      border: 0.5px solid var(--border-delicate);
       display: flex;
       align-items: stretch;
       min-height: 220px;
@@ -77,7 +77,6 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
     @media (min-width: 640px) {
       .bb-strip {
         min-height: 260px;
-        border-radius: 2.5rem;
       }
     }
     @media (min-width: 1024px) {
@@ -113,23 +112,24 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
       font-size: 11px;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: #C4633A;
-      font-weight: 600;
+      color: #F67B63;
+      font-weight: 700;
       margin-bottom: 6px;
       display: block;
+      font-family: var(--font-heading);
     }
     @media (min-width: 640px) {
       .bb-label { font-size: 13px; margin-bottom: 8px; }
     }
 
-    .bb-serif { font-family: 'Playfair Display', 'Cormorant Garamond', serif; }
+    .bb-serif { font-family: var(--font-heading) !important; }
 
     .bb-h2 {
       font-size: 26px;
-      font-weight: 600;
+      font-weight: 700;
       line-height: 1.15;
       margin-bottom: 6px;
-      color: #2E2118;
+      color: var(--text-charcoal);
       text-transform: uppercase;
     }
     @media (min-width: 480px) {
@@ -141,11 +141,12 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
 
     .bb-tagline {
       font-size: 13px;
-      color: #8C7B6B;
+      color: #77685D;
       margin-bottom: 14px;
-      font-weight: 300;
+      font-weight: 600;
       max-width: 240px;
       line-height: 1.5;
+      font-family: var(--font-sans);
     }
     @media (min-width: 640px) {
       .bb-tagline { font-size: 15px; max-width: 300px; margin-bottom: 16px; }
@@ -154,32 +155,20 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
       .bb-tagline { font-size: 16px; max-width: 320px; }
     }
 
-    .bb-link {
-      font-size: 13px; text-transform: uppercase; letter-spacing: 0.14em;
-      color: #C4633A; font-weight: 600; cursor: pointer;
-      border: none; background: none; font-family: 'Inter',sans-serif;
-      padding: 0; display: inline-flex; align-items: center; gap: 4px;
-      text-decoration: none; border-bottom: 1px solid transparent; transition: all 0.3s;
-    }
-    .bb-link:hover { border-bottom-color: #C4633A; }
-
-    /* ── Disc badge ──
-       Always absolute-positioned, vertically centred on the right.
-       On very small screens we keep it absolute but shrink it so it
-       never overlaps the heading text.                                 */
+    /* ── Disc badge ── */
     .bb-disc-badge {
       position: absolute;
       right: 16px;
       top: 50%;
       transform: translateY(-50%);
       z-index: 30;
-      background: rgba(250,246,240,0.92);
-      border: 0.5px solid #E8DDD0;
+      background: rgba(255,253,249,0.92);
+      border: 0.5px solid var(--border-delicate);
       border-radius: 16px;
       padding: 10px 12px;
       text-align: center;
       min-width: 68px;
-      box-shadow: 0 8px 24px rgba(150,110,80,0.10);
+      box-shadow: 0 8px 24px rgba(42,31,26,0.04);
     }
     @media (min-width: 480px) {
       .bb-disc-badge {
@@ -198,9 +187,9 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
       }
     }
 
-    .bb-disc-up  { font-size: 9px;  text-transform: uppercase; letter-spacing: 0.1em; color: #8C7B6B; display: block; margin-bottom: 2px; }
-    .bb-disc-pct { font-size: 22px; font-weight: 600; color: #C4633A; font-family: 'Playfair Display','Cormorant Garamond',serif; line-height: 1; letter-spacing: 0.05em; }
-    .bb-disc-off { font-size: 9px;  text-transform: uppercase; letter-spacing: 0.1em; color: #8C7B6B; display: block; margin-top: 2px; }
+    .bb-disc-up  { font-size: 9px;  text-transform: uppercase; letter-spacing: 0.1em; color: #77685D; display: block; margin-bottom: 2px; font-family: var(--font-sans); }
+    .bb-disc-pct { font-size: 22px; font-weight: 700; color: #F67B63; line-height: 1; letter-spacing: 0.05em; font-family: var(--font-heading); }
+    .bb-disc-off { font-size: 9px;  text-transform: uppercase; letter-spacing: 0.1em; color: #77685D; display: block; margin-top: 2px; font-family: var(--font-sans); }
 
     @media (min-width: 640px) {
       .bb-disc-up  { font-size: 10px; }

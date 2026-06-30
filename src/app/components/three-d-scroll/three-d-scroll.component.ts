@@ -405,7 +405,7 @@ export class ThreeDScrollComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Draw the letter or symbol in the center (black)
     ctx.fillStyle = '#000000';
-    ctx.font = 'bold 230px "Playfair Display", "Georgia", "Times New Roman", serif';
+    ctx.font = 'bold 230px var(--font-heading), "Georgia", "Times New Roman", serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     

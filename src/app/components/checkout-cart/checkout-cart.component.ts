@@ -16,19 +16,19 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
       <div class="max-w-4xl mx-auto w-full">
         <!-- Header -->
         <div class="mb-10">
-          <span class="tracking-widest font-mono text-[10px] uppercase font-semibold text-[#E07A5F] block mb-2">Fulfillment Console</span>
-          <h2 class="text-3xl font-extralight text-[#2A2522] tracking-[0.05em] uppercase">Shopping Bag &amp; Checkout</h2>
+          <span class="tracking-widest font-mono text-[10px] uppercase font-semibold text-[var(--color-coral)] block mb-2">Fulfillment Console</span>
+          <h2 class="text-3xl font-extralight text-[var(--text-charcoal)] tracking-[0.05em] uppercase">Shopping Bag &amp; Checkout</h2>
         </div>
 
         <div *ngIf="orderPlaced()" class="bg-white/80 border border-emerald-200 p-8 rounded-2xl text-center space-y-6">
           <div class="h-16 w-16 bg-emerald-100 text-emerald-800 rounded-full flex items-center justify-center mx-auto text-2xl font-bold">✓</div>
-          <h3 class="text-xl uppercase tracking-wider text-[#2A2522]">Order Submitted Successfully!</h3>
+          <h3 class="text-xl uppercase tracking-wider text-[var(--text-charcoal)]">Order Submitted Successfully!</h3>
           <p class="text-xs text-[#8A817C] max-w-md mx-auto leading-relaxed">
-            Your order has been recorded. Reference Number: <strong class="text-[#2A2522]">{{ lastOrderNumber() }}</strong>.<br/>
-            Order ID: <span class="font-mono text-[10px] text-[#8A817C] bg-[#2A2522]/5 px-2 py-1 rounded select-all">{{ orderId() }}</span>.<br/><br/>
+            Your order has been recorded. Reference Number: <strong class="text-[var(--text-charcoal)]">{{ lastOrderNumber() }}</strong>.<br/>
+            Order ID: <span class="font-mono text-[10px] text-[#8A817C] bg-[var(--text-charcoal)]/5 px-2 py-1 rounded select-all">{{ orderId() }}</span>.<br/><br/>
             If you chose digital payment, a logistics agent will verify your transaction shortly.
           </p>
-          <button [routerLink]="['/products']" class="px-6 py-2.5 bg-[#2A2522] hover:bg-[#E07A5F] text-white text-xs uppercase tracking-widest font-bold rounded-xl transition-all">
+          <button [routerLink]="['/products']" class="px-6 py-2.5 bg-[var(--text-charcoal)] hover:bg-[var(--color-coral)] text-white text-xs uppercase tracking-widest font-bold rounded-xl transition-all">
             Continue Shopping
           </button>
         </div>
@@ -36,23 +36,23 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
         <div *ngIf="!orderPlaced()" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           <!-- Cart Items Summary (7 cols) -->
           <div class="lg:col-span-7 space-y-6">
-            <div class="bg-white/50 backdrop-blur-md border border-[#2A2522]/5 p-6 rounded-2xl">
-              <h3 class="text-xs font-mono uppercase tracking-widest font-bold text-[#2A2522] border-b border-[#2A2522]/5 pb-3 mb-4">Cart Items</h3>
+            <div class="bg-white/50 backdrop-blur-md border border-[var(--text-charcoal)]/5 p-6 rounded-2xl">
+              <h3 class="text-xs font-mono uppercase tracking-widest font-bold text-[var(--text-charcoal)] border-b border-[var(--text-charcoal)]/5 pb-3 mb-4">Cart Items</h3>
               
               <div *ngIf="cartItems().length === 0" class="text-center py-12">
                 <p class="text-xs text-[#8A817C] font-light">Your shopping bag is empty.</p>
-                <button (click)="seedCart()" class="mt-4 text-[10px] uppercase font-bold tracking-widest text-[#E07A5F] hover:underline">
+                <button (click)="seedCart()" class="mt-4 text-[10px] uppercase font-bold tracking-widest text-[var(--color-coral)] hover:underline">
                   Seed Test Items
                 </button>
               </div>
 
               <div *ngIf="cartItems().length > 0" class="space-y-4">
-                <div *ngFor="let item of cartItems(); let idx = index" class="flex items-center gap-4 pb-4 border-b border-[#2A2522]/5 last:border-b-0 last:pb-0">
-                  <div class="w-16 h-16 rounded-lg bg-[#2A2522]/5 overflow-hidden flex-shrink-0">
+                <div *ngFor="let item of cartItems(); let idx = index" class="flex items-center gap-4 pb-4 border-b border-[var(--text-charcoal)]/5 last:border-b-0 last:pb-0">
+                  <div class="w-16 h-16 rounded-lg bg-[var(--text-charcoal)]/5 overflow-hidden flex-shrink-0">
                     <img *ngIf="item.imageUrl" [src]="resolveImageUrl(item.imageUrl)" [alt]="item.productName" class="w-full h-full object-cover"/>
                   </div>
                   <div class="flex-1 min-w-0">
-                    <h4 class="text-xs font-light text-[#2A2522] uppercase tracking-wide truncate">{{ item.productName }}</h4>
+                    <h4 class="text-xs font-light text-[var(--text-charcoal)] uppercase tracking-wide truncate">{{ item.productName }}</h4>
                     <div class="flex gap-2 text-[9px] uppercase tracking-widest text-[#8A817C] font-mono mt-0.5" *ngIf="item.size || item.color">
                       <span *ngIf="item.size">Size: {{ item.size }}</span>
                       <span *ngIf="item.color">Color: {{ item.color }}</span>
@@ -61,9 +61,9 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                   </div>
                   <!-- Quantity Control -->
                   <div class="flex items-center gap-2">
-                    <button (click)="changeQty(idx, -1)" class="w-6 h-6 rounded-lg border border-[#2A2522]/10 flex items-center justify-center text-xs hover:bg-[#2A2522]/5">-</button>
+                    <button (click)="changeQty(idx, -1)" class="w-6 h-6 rounded-lg border border-[var(--text-charcoal)]/10 flex items-center justify-center text-xs hover:bg-[var(--text-charcoal)]/5">-</button>
                     <span class="text-xs font-mono w-4 text-center">{{ item.quantity }}</span>
-                    <button (click)="changeQty(idx, 1)" class="w-6 h-6 rounded-lg border border-[#2A2522]/10 flex items-center justify-center text-xs hover:bg-[#2A2522]/5">+</button>
+                    <button (click)="changeQty(idx, 1)" class="w-6 h-6 rounded-lg border border-[var(--text-charcoal)]/10 flex items-center justify-center text-xs hover:bg-[var(--text-charcoal)]/5">+</button>
                   </div>
                   <!-- Delete -->
                   <button (click)="removeItem(idx)" class="text-[#8A817C] hover:text-red-600 transition-colors p-1" aria-label="Remove item">
@@ -74,14 +74,14 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
             </div>
 
             <!-- Financial Summary -->
-            <div *ngIf="cartItems().length > 0" class="bg-white/30 border border-[#2A2522]/5 p-6 rounded-2xl space-y-3">
+            <div *ngIf="cartItems().length > 0" class="bg-white/30 border border-[var(--text-charcoal)]/5 p-6 rounded-2xl space-y-3">
               <div class="flex justify-between text-xs text-[#8A817C]">
                 <span>Items Subtotal</span>
                 <span class="font-mono">{{ subtotal() | currency:'EGP ' }}</span>
               </div>
               <div class="flex justify-between text-xs text-[#8A817C]">
               <!-- Financial Summary -->
-            <div *ngIf="cartItems().length > 0" class="bg-white/30 border border-[#2A2522]/5 p-6 rounded-2xl space-y-3">
+            <div *ngIf="cartItems().length > 0" class="bg-white/30 border border-[var(--text-charcoal)]/5 p-6 rounded-2xl space-y-3">
               <div class="flex justify-between text-xs text-[#8A817C]">
                 <span>Items Subtotal</span>
                 <span class="font-mono">{{ subtotal() | currency:'EGP ' }}</span>
@@ -93,12 +93,12 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
               <div class="flex justify-between text-xs text-[#8A817C] items-center">
                 <span>Estimated Shipping</span>
                 <div class="flex items-center gap-1.5 font-mono">
-                  <span *ngIf="isFreeShippingActive() && subtotal() >= freeShippingThreshold()" class="bg-[#E07A5F]/15 text-[#E07A5F] px-2 py-0.5 rounded-full text-[9px] font-black tracking-wide uppercase">FREE OVER {{ freeShippingThreshold() }} EGP</span>
+                  <span *ngIf="isFreeShippingActive() && subtotal() >= freeShippingThreshold()" class="bg-[var(--color-coral)]/15 text-[var(--color-coral)] px-2 py-0.5 rounded-full text-[9px] font-black tracking-wide uppercase">FREE OVER {{ freeShippingThreshold() }} EGP</span>
                   <span *ngIf="(!isFreeShippingActive() || subtotal() < freeShippingThreshold()) && shippingCost() === 0" class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full text-[9px] font-black tracking-wide uppercase">FREE SHIPPING PROMO</span>
                   <span>{{ shippingCost() === 0 ? 'FREE' : (shippingCost() | currency:'EGP ') }}</span>
                 </div>
               </div>
-              <div class="flex justify-between text-xs font-bold text-[#2A2522] pt-2 border-t border-[#2A2522]/5">
+              <div class="flex justify-between text-xs font-bold text-[var(--text-charcoal)] pt-2 border-t border-[var(--text-charcoal)]/5">
                 <span>Total Due</span>
                 <span class="font-mono text-sm">{{ totalDue() | currency:'EGP ' }}</span>
               </div>
@@ -107,8 +107,8 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
 
           <!-- Checkout Form (5 cols) -->
           <div *ngIf="cartItems().length > 0" class="lg:col-span-5">
-            <div class="bg-white/50 backdrop-blur-md border border-[#2A2522]/5 p-6 rounded-2xl space-y-5">
-              <h3 class="text-xs font-mono uppercase tracking-widest font-bold text-[#2A2522] border-b border-[#2A2522]/5 pb-3">Checkout Form</h3>
+            <div class="bg-white/50 backdrop-blur-md border border-[var(--text-charcoal)]/5 p-6 rounded-2xl space-y-5">
+              <h3 class="text-xs font-mono uppercase tracking-widest font-bold text-[var(--text-charcoal)] border-b border-[var(--text-charcoal)]/5 pb-3">Checkout Form</h3>
               
               <div *ngIf="errorMessage()" class="p-3 bg-red-50 border border-red-200 text-[11px] text-red-800 rounded-lg">
                 {{ errorMessage() }}
@@ -118,25 +118,25 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                 <!-- Customer Name -->
                 <div class="space-y-1">
                   <label class="text-[9px] uppercase tracking-widest font-semibold text-[#8A817C]">FullName</label>
-                  <input type="text" [(ngModel)]="form.customerName" name="customerName" required placeholder="E.g. Yasmin Ali" class="w-full px-3 py-2 bg-[#FBF9F6] border border-[#2A2522]/5 rounded-xl text-xs text-[#2A2522] focus:outline-none"/>
+                  <input type="text" [(ngModel)]="form.customerName" name="customerName" required placeholder="E.g. Yasmin Ali" class="w-full px-3 py-2 bg-[#FAF5F2] border border-[var(--text-charcoal)]/5 rounded-xl text-xs text-[var(--text-charcoal)] focus:outline-none"/>
                 </div>
 
                 <!-- Phone 1 -->
                 <div class="space-y-1">
                   <label class="text-[9px] uppercase tracking-widest font-semibold text-[#8A817C]">Primary Phone</label>
-                  <input type="text" [(ngModel)]="form.primaryPhone" name="primaryPhone" required placeholder="01xxxxxxxxx" class="w-full px-3 py-2 bg-[#FBF9F6] border border-[#2A2522]/5 rounded-xl text-xs text-[#2A2522] focus:outline-none"/>
+                  <input type="text" [(ngModel)]="form.primaryPhone" name="primaryPhone" required placeholder="01xxxxxxxxx" class="w-full px-3 py-2 bg-[#FAF5F2] border border-[var(--text-charcoal)]/5 rounded-xl text-xs text-[var(--text-charcoal)] focus:outline-none"/>
                 </div>
 
                 <!-- Phone 2 -->
                 <div class="space-y-1">
                   <label class="text-[9px] uppercase tracking-widest font-semibold text-[#8A817C]">Secondary Phone (Optional)</label>
-                  <input type="text" [(ngModel)]="form.secondaryPhone" name="secondaryPhone" placeholder="01xxxxxxxxx" class="w-full px-3 py-2 bg-[#FBF9F6] border border-[#2A2522]/5 rounded-xl text-xs text-[#2A2522] focus:outline-none"/>
+                  <input type="text" [(ngModel)]="form.secondaryPhone" name="secondaryPhone" placeholder="01xxxxxxxxx" class="w-full px-3 py-2 bg-[#FAF5F2] border border-[var(--text-charcoal)]/5 rounded-xl text-xs text-[var(--text-charcoal)] focus:outline-none"/>
                 </div>
 
                 <!-- Governorate -->
                 <div class="space-y-1">
                   <label class="text-[9px] uppercase tracking-widest font-semibold text-[#8A817C]">Governorate</label>
-                  <select [(ngModel)]="form.governorate" name="governorate" required class="w-full px-3 py-2 bg-[#FBF9F6] border border-[#2A2522]/5 rounded-xl text-xs text-[#2A2522] focus:outline-none">
+                  <select [(ngModel)]="form.governorate" name="governorate" required class="w-full px-3 py-2 bg-[#FAF5F2] border border-[var(--text-charcoal)]/5 rounded-xl text-xs text-[var(--text-charcoal)] focus:outline-none">
                     <option value="" disabled>Select Governorate</option>
                     <option value="Cairo">Cairo</option>
                     <option value="Giza">Giza</option>
@@ -171,7 +171,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                 <!-- Address -->
                 <div class="space-y-1">
                   <label class="text-[9px] uppercase tracking-widest font-semibold text-[#8A817C]">Detailed Address</label>
-                  <textarea [(ngModel)]="form.detailedAddress" name="detailedAddress" required rows="2" placeholder="Street name, building, apartment..." class="w-full px-3 py-2 bg-[#FBF9F6] border border-[#2A2522]/5 rounded-xl text-xs text-[#2A2522] focus:outline-none"></textarea>
+                  <textarea [(ngModel)]="form.detailedAddress" name="detailedAddress" required rows="2" placeholder="Street name, building, apartment..." class="w-full px-3 py-2 bg-[#FAF5F2] border border-[var(--text-charcoal)]/5 rounded-xl text-xs text-[var(--text-charcoal)] focus:outline-none"></textarea>
                 </div>
 
                 <!-- Promo Code -->
@@ -184,14 +184,14 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                       name="promoCode" 
                       [disabled]="appliedPromo() !== null"
                       placeholder="E.g. SAVE10" 
-                      class="flex-1 px-3 py-2 bg-[#FBF9F6] border border-[#2A2522]/5 rounded-xl text-xs text-[#2A2522] focus:outline-none uppercase"
+                      class="flex-1 px-3 py-2 bg-[#FAF5F2] border border-[var(--text-charcoal)]/5 rounded-xl text-xs text-[var(--text-charcoal)] focus:outline-none uppercase"
                     />
                     <button 
                       type="button" 
                       *ngIf="appliedPromo() === null"
                       (click)="applyPromo()"
                       [disabled]="validatingPromo() || !form.promoCode"
-                      class="px-4 py-2 bg-[#2A2522] hover:bg-[#E07A5F] text-[#FBF9F6] text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all disabled:opacity-50"
+                      class="px-4 py-2 bg-[var(--text-charcoal)] hover:bg-[var(--color-coral)] text-[#FAF5F2] text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all disabled:opacity-50"
                     >
                       {{ validatingPromo() ? 'Validating...' : 'Apply' }}
                     </button>
@@ -218,8 +218,8 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                       type="button" 
                       (click)="form.paymentMethod = 'COD'"
                       [ngClass]="{
-                        'bg-[#2A2522] text-[#FBF9F6]': form.paymentMethod === 'COD',
-                        'bg-[#FBF9F6] text-[#4A4340] border border-[#2A2522]/5': form.paymentMethod !== 'COD'
+                        'bg-[var(--text-charcoal)] text-[#FAF5F2]': form.paymentMethod === 'COD',
+                        'bg-[#FAF5F2] text-[#4A4340] border border-[var(--text-charcoal)]/5': form.paymentMethod !== 'COD'
                       }"
                       class="py-2 text-[9px] font-bold uppercase tracking-wider rounded-xl transition-all"
                     >
@@ -229,8 +229,8 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                       type="button" 
                       (click)="form.paymentMethod = 'InstaPay'"
                       [ngClass]="{
-                        'bg-[#2A2522] text-[#FBF9F6]': form.paymentMethod === 'InstaPay',
-                        'bg-[#FBF9F6] text-[#4A4340] border border-[#2A2522]/5': form.paymentMethod !== 'InstaPay'
+                        'bg-[var(--text-charcoal)] text-[#FAF5F2]': form.paymentMethod === 'InstaPay',
+                        'bg-[#FAF5F2] text-[#4A4340] border border-[var(--text-charcoal)]/5': form.paymentMethod !== 'InstaPay'
                       }"
                       class="py-2 text-[9px] font-bold uppercase tracking-wider rounded-xl transition-all"
                     >
@@ -240,8 +240,8 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                       type="button" 
                       (click)="form.paymentMethod = 'VodafoneCash'"
                       [ngClass]="{
-                        'bg-[#2A2522] text-[#FBF9F6]': form.paymentMethod === 'VodafoneCash',
-                        'bg-[#FBF9F6] text-[#4A4340] border border-[#2A2522]/5': form.paymentMethod !== 'VodafoneCash'
+                        'bg-[var(--text-charcoal)] text-[#FAF5F2]': form.paymentMethod === 'VodafoneCash',
+                        'bg-[#FAF5F2] text-[#4A4340] border border-[var(--text-charcoal)]/5': form.paymentMethod !== 'VodafoneCash'
                       }"
                       class="py-2 text-[9px] font-bold uppercase tracking-wider rounded-xl transition-all"
                     >
@@ -251,8 +251,8 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                 </div>
 
                 <!-- Digital Wallet Verification Fields -->
-                <div *ngIf="form.paymentMethod === 'DigitalWallet' || form.paymentMethod === 'InstaPay' || form.paymentMethod === 'VodafoneCash'" class="p-4 bg-[#E07A5F]/5 border border-[#E07A5F]/10 rounded-xl space-y-3">
-                  <span class="text-[8px] uppercase tracking-widest font-black text-[#E07A5F] block">Verification Portal</span>
+                <div *ngIf="form.paymentMethod === 'DigitalWallet' || form.paymentMethod === 'InstaPay' || form.paymentMethod === 'VodafoneCash'" class="p-4 bg-[var(--color-coral)]/5 border border-[var(--color-coral)]/10 rounded-xl space-y-3">
+                  <span class="text-[8px] uppercase tracking-widest font-black text-[var(--color-coral)] block">Verification Portal</span>
                   <p class="text-[10px] text-[#8A817C] leading-normal font-light">
                     <span *ngIf="form.paymentMethod === 'InstaPay'">
                       Please transfer the total amount to InstaPay address <strong>{{ paymentSettings().instaPayAddress }}</strong><span *ngIf="paymentSettings().instaPayPhone"> or mobile number <strong>{{ paymentSettings().instaPayPhone }}</strong></span>, then attach details below:
@@ -267,12 +267,12 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                   
                   <div class="space-y-1">
                     <label class="text-[9px] uppercase tracking-widest font-semibold text-[#8A817C]">Transfer Screenshot URL</label>
-                    <input type="text" [(ngModel)]="form.walletScreenshotUrl" name="walletScreenshotUrl" required placeholder="https://imagehost.com/receipt.jpg" class="w-full px-3 py-2 bg-[#FBF9F6] border border-[#2A2522]/5 rounded-xl text-xs text-[#2A2522] focus:outline-none"/>
+                    <input type="text" [(ngModel)]="form.walletScreenshotUrl" name="walletScreenshotUrl" required placeholder="https://imagehost.com/receipt.jpg" class="w-full px-3 py-2 bg-[#FAF5F2] border border-[var(--text-charcoal)]/5 rounded-xl text-xs text-[var(--text-charcoal)] focus:outline-none"/>
                   </div>
 
                   <div class="space-y-1">
                     <label class="text-[9px] uppercase tracking-widest font-semibold text-[#8A817C]">Sender Phone / Account Name</label>
-                    <input type="text" [(ngModel)]="form.walletSenderPhoneNumberOrName" name="walletSenderPhoneNumberOrName" required placeholder="01xxxxxxxxx or Name" class="w-full px-3 py-2 bg-[#FBF9F6] border border-[#2A2522]/5 rounded-xl text-xs text-[#2A2522] focus:outline-none"/>
+                    <input type="text" [(ngModel)]="form.walletSenderPhoneNumberOrName" name="walletSenderPhoneNumberOrName" required placeholder="01xxxxxxxxx or Name" class="w-full px-3 py-2 bg-[#FAF5F2] border border-[var(--text-charcoal)]/5 rounded-xl text-xs text-[var(--text-charcoal)] focus:outline-none"/>
                   </div>
                 </div>
 
@@ -280,7 +280,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
                 <button 
                   type="submit" 
                   [disabled]="submitting()"
-                  class="w-full py-3 bg-[#E07A5F] hover:bg-[#2A2522] text-[#FBF9F6] text-xs font-bold uppercase tracking-[0.2em] rounded-xl shadow-md transition-all flex justify-center items-center gap-2 disabled:opacity-50"
+                  class="w-full py-3 bg-[var(--color-coral)] hover:bg-[var(--text-charcoal)] text-[#FAF5F2] text-xs font-bold uppercase tracking-[0.2em] rounded-xl shadow-md transition-all flex justify-center items-center gap-2 disabled:opacity-50"
                 >
                   <span *ngIf="submitting()" class="animate-spin rounded-full h-3.5 w-3.5 border-b-2 border-white"></span>
                   {{ submitting() ? 'Submitting Order...' : 'Place Order' }}

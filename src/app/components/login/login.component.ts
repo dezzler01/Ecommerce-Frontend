@@ -21,13 +21,13 @@ function passwordValidator(control: AbstractControl): ValidationErrors | null {
   template: `
     <div 
       *ngIf="authService.showLoginModal()" 
-      class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#2A2522]/40 backdrop-blur-md transition-all duration-500"
+      class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[var(--text-charcoal)]/40 backdrop-blur-md transition-all duration-500"
       (click)="closeModal()"
     >
       <!-- Modal Container: Dual-pane configuration -->
       <div 
-        class="w-full max-w-4xl h-[600px] bg-[#FBF9F6]/90 border border-[#2A2522]/10 rounded-3xl shadow-2xl relative overflow-hidden flex flex-col md:flex-row transform transition-all duration-300 scale-100 backdrop-blur-md"
-        [ngClass]="{ 'border-[#E07A5F]/20': isRegister() }"
+        class="w-full max-w-4xl h-[600px] bg-[#FAF5F2]/90 border border-[var(--text-charcoal)]/10 rounded-3xl shadow-2xl relative overflow-hidden flex flex-col md:flex-row transform transition-all duration-300 scale-100 backdrop-blur-md"
+        [ngClass]="{ 'border-[var(--color-coral)]/20': isRegister() }"
         (click)="$event.stopPropagation()"
       >
         <!-- Left Cinematic Pane -->
@@ -46,10 +46,10 @@ function passwordValidator(control: AbstractControl): ValidationErrors | null {
           
           <!-- Brand Overlaid content -->
           <div class="absolute bottom-12 left-10 right-10 z-10 text-left">
-            <h1 class="text-3xl font-serif text-[#FBF9F6] tracking-[0.25em] uppercase font-light leading-none mb-3">
+            <h1 class="text-3xl font-serif text-[#FAF5F2] tracking-[0.25em] uppercase font-light leading-none mb-3">
               Picks & More
             </h1>
-            <div class="w-12 h-[1px] bg-[#E07A5F] mb-4"></div>
+            <div class="w-12 h-[1px] bg-[var(--color-coral)] mb-4"></div>
             <p class="text-xs text-[#EEDFD2]/80 uppercase tracking-[0.2em] font-medium leading-relaxed">
               Curated with intention.<br/>
               Crafted for refined styles.
@@ -58,17 +58,17 @@ function passwordValidator(control: AbstractControl): ValidationErrors | null {
         </div>
 
         <!-- Right Form Pane -->
-        <div class="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center relative bg-[#FBF9F6]/95">
+        <div class="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center relative bg-[#FAF5F2]/95">
           <!-- Top aesthetic accent bar -->
           <div 
             class="absolute top-0 left-0 right-0 h-[3px] transition-all duration-300"
-            [style.background-color]="isRegister() ? '#E07A5F' : '#8A817C'"
+            [style.background-color]="isRegister() ? 'var(--color-coral)' : '#8A817C'"
           ></div>
 
           <!-- Close Button -->
           <button 
             (click)="closeModal()" 
-            class="absolute top-6 right-6 text-[#8A817C] hover:text-[#2A2522] transition-colors p-1"
+            class="absolute top-6 right-6 text-[#8A817C] hover:text-[var(--text-charcoal)] transition-colors p-1"
             aria-label="Close modal"
           >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -79,7 +79,7 @@ function passwordValidator(control: AbstractControl): ValidationErrors | null {
           <div class="space-y-6">
             <!-- Header -->
             <div class="text-left">
-              <h2 class="text-2xl font-light tracking-[0.15em] text-[#2A2522] uppercase">
+              <h2 class="text-2xl font-light tracking-[0.15em] text-[var(--text-charcoal)] uppercase">
                 {{ isRegister() ? 'Create Account' : 'Welcome Back' }}
               </h2>
               <p class="text-[10px] text-[#8A817C] tracking-widest uppercase mt-2 leading-relaxed">
@@ -108,8 +108,8 @@ function passwordValidator(control: AbstractControl): ValidationErrors | null {
                   type="text" 
                   formControlName="fullName"
                   placeholder="Alexander Mercer"
-                  class="w-full px-4 py-3 bg-[#FBF9F6]/50 border rounded-lg text-sm text-[#2A2522] placeholder-[#8A817C]/40 focus:outline-none focus:ring-2 focus:ring-[#E07A5F] focus:border-[#E07A5F] transition-all duration-300"
-                  [ngClass]="isFieldInvalid('fullName') ? 'border-red-400' : 'border-[#2A2522]/10'"
+                  class="w-full px-4 py-3 bg-[#FAF5F2]/50 border rounded-lg text-sm text-[var(--text-charcoal)] placeholder-[#8A817C]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-coral)] focus:border-[var(--color-coral)] transition-all duration-300"
+                  [ngClass]="isFieldInvalid('fullName') ? 'border-red-400' : 'border-[var(--text-charcoal)]/10'"
                 />
                 <span *ngIf="isFieldInvalid('fullName')" class="text-[10px] text-red-500 block mt-1">
                   Full Name is required and must be at least 3 characters.
@@ -123,8 +123,8 @@ function passwordValidator(control: AbstractControl): ValidationErrors | null {
                   type="text" 
                   formControlName="phoneNumber"
                   placeholder="01001234567"
-                  class="w-full px-4 py-3 bg-[#FBF9F6]/50 border rounded-lg text-sm text-[#2A2522] placeholder-[#8A817C]/40 focus:outline-none focus:ring-2 focus:ring-[#E07A5F] focus:border-[#E07A5F] transition-all duration-300"
-                  [ngClass]="isFieldInvalid('phoneNumber') ? 'border-red-400' : 'border-[#2A2522]/10'"
+                  class="w-full px-4 py-3 bg-[#FAF5F2]/50 border rounded-lg text-sm text-[var(--text-charcoal)] placeholder-[#8A817C]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-coral)] focus:border-[var(--color-coral)] transition-all duration-300"
+                  [ngClass]="isFieldInvalid('phoneNumber') ? 'border-red-400' : 'border-[var(--text-charcoal)]/10'"
                 />
                 <span *ngIf="isFieldInvalid('phoneNumber')" class="text-[10px] text-red-500 block mt-1">
                   Valid phone number is required (10-15 digits).
@@ -138,8 +138,8 @@ function passwordValidator(control: AbstractControl): ValidationErrors | null {
                   type="email" 
                   formControlName="email"
                   placeholder="name@example.com"
-                  class="w-full px-4 py-3 bg-[#FBF9F6]/50 border rounded-lg text-sm text-[#2A2522] placeholder-[#8A817C]/40 focus:outline-none focus:ring-2 focus:ring-[#E07A5F] focus:border-[#E07A5F] transition-all duration-300"
-                  [ngClass]="isFieldInvalid('email') ? 'border-red-400' : 'border-[#2A2522]/10'"
+                  class="w-full px-4 py-3 bg-[#FAF5F2]/50 border rounded-lg text-sm text-[var(--text-charcoal)] placeholder-[#8A817C]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-coral)] focus:border-[var(--color-coral)] transition-all duration-300"
+                  [ngClass]="isFieldInvalid('email') ? 'border-red-400' : 'border-[var(--text-charcoal)]/10'"
                 />
                 <span *ngIf="isFieldInvalid('email')" class="text-[10px] text-red-500 block mt-1">
                   Please enter a valid email address.
@@ -153,8 +153,8 @@ function passwordValidator(control: AbstractControl): ValidationErrors | null {
                   type="password" 
                   formControlName="password"
                   placeholder="••••••••"
-                  class="w-full px-4 py-3 bg-[#FBF9F6]/50 border rounded-lg text-sm text-[#2A2522] placeholder-[#8A817C]/40 focus:outline-none focus:ring-2 focus:ring-[#E07A5F] focus:border-[#E07A5F] transition-all duration-300"
-                  [ngClass]="isFieldInvalid('password') ? 'border-red-400' : 'border-[#2A2522]/10'"
+                  class="w-full px-4 py-3 bg-[#FAF5F2]/50 border rounded-lg text-sm text-[var(--text-charcoal)] placeholder-[#8A817C]/40 focus:outline-none focus:ring-2 focus:ring-[var(--color-coral)] focus:border-[var(--color-coral)] transition-all duration-300"
+                  [ngClass]="isFieldInvalid('password') ? 'border-red-400' : 'border-[var(--text-charcoal)]/10'"
                 />
                 <span *ngIf="isFieldInvalid('password')" class="text-[10px] text-red-500 block mt-1 leading-relaxed">
                   Password must be at least 8 characters with a capital letter, a number, and a special character.
@@ -165,7 +165,7 @@ function passwordValidator(control: AbstractControl): ValidationErrors | null {
               <button 
                 type="submit" 
                 [disabled]="loading() || authForm.invalid && (authForm.touched || isRegister())"
-                class="w-full py-3.5 mt-4 bg-[#2A2522] hover:bg-[#E07A5F] active:scale-[0.98] text-[#FBF9F6] text-xs font-semibold tracking-[0.2em] uppercase rounded-xl shadow-md hover:shadow-lg hover:shadow-[#E07A5F]/15 transition-all duration-300 disabled:opacity-55 flex justify-center items-center gap-2"
+                class="w-full py-3.5 mt-4 bg-[var(--text-charcoal)] hover:bg-[var(--color-coral)] active:scale-[0.98] text-[#FAF5F2] text-xs font-semibold tracking-[0.2em] uppercase rounded-xl shadow-md hover:shadow-lg hover:shadow-[var(--color-coral)]/15 transition-all duration-300 disabled:opacity-55 flex justify-center items-center gap-2"
               >
                 <span *ngIf="loading()" class="animate-spin rounded-full h-3.5 w-3.5 border-b-2 border-white"></span>
                 {{ loading() ? 'Processing...' : (isRegister() ? 'Register' : 'Sign In') }}
@@ -174,13 +174,13 @@ function passwordValidator(control: AbstractControl): ValidationErrors | null {
           </div>
 
           <!-- Toggle Mode -->
-          <div class="mt-6 pt-6 border-t border-[#2A2522]/5 text-center">
+          <div class="mt-6 pt-6 border-t border-[var(--text-charcoal)]/5 text-center">
             <p class="text-xs text-[#8A817C] tracking-wide">
               {{ isRegister() ? 'Already have an account?' : "Don't have an account?" }}
               <button 
                 type="button" 
                 (click)="toggleMode()"
-                class="text-[#E07A5F] hover:text-[#2A2522] font-semibold transition-colors ml-1 uppercase tracking-widest text-[10px]"
+                class="text-[var(--color-coral)] hover:text-[var(--text-charcoal)] font-semibold transition-colors ml-1 uppercase tracking-widest text-[10px]"
               >
                 {{ isRegister() ? 'Sign In' : 'Register' }}
               </button>
@@ -194,8 +194,8 @@ function passwordValidator(control: AbstractControl): ValidationErrors | null {
     input:-webkit-autofill,
     input:-webkit-autofill:hover, 
     input:-webkit-autofill:focus {
-      -webkit-box-shadow: 0 0 0px 1000px #FBF9F6 inset !important;
-      -webkit-text-fill-color: #2A2522 !important;
+      -webkit-box-shadow: 0 0 0px 1000px #FAF5F2 inset !important;
+      -webkit-text-fill-color: var(--text-charcoal) !important;
     }
     
     @keyframes fadeIn {

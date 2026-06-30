@@ -18,17 +18,17 @@ import { NotificationService } from '../../services/notification.service';
         
         <div class="p-4 flex justify-between items-start gap-3">
           <div class="flex-1 space-y-1 text-left">
-            <span class="tracking-widest font-mono text-[8px] uppercase font-bold text-[#E07A5F] block">
+            <span class="tracking-widest font-mono text-[8px] uppercase font-bold text-[var(--color-coral)] block">
               {{ getToastTitle(toast.type) }}
             </span>
-            <p class="text-[11px] font-medium leading-relaxed text-[#2A2522]">
+            <p class="text-[11px] font-medium leading-relaxed text-[var(--text-charcoal)]">
               {{ toast.message }}
             </p>
             <span class="text-[8px] text-[#8A817C]/60 font-mono block mt-1">
               {{ toast.timestamp | date:'HH:mm:ss' }}
             </span>
           </div>
-          <button (click)="dismiss(toast.id); $event.stopPropagation()" class="text-[#2A2522]/30 hover:text-[#E07A5F] text-[10px] transition-colors p-0.5">
+          <button (click)="dismiss(toast.id); $event.stopPropagation()" class="text-[var(--text-charcoal)]/30 hover:text-[var(--color-coral)] text-[10px] transition-colors p-0.5">
             ✕
           </button>
         </div>
@@ -43,7 +43,7 @@ import { NotificationService } from '../../services/notification.service';
       border: 1px solid rgba(42, 37, 34, 0.06);
       border-radius: 16px;
       box-shadow: 0 10px 30px rgba(42, 37, 34, 0.08);
-      font-family: 'Lexend', sans-serif;
+      font-family: var(--font-heading), sans-serif;
       position: relative;
       overflow: hidden;
       cursor: pointer;
@@ -68,7 +68,7 @@ import { NotificationService } from '../../services/notification.service';
     }
     
     .accent-status {
-      background: linear-gradient(to right, #B84F7D, #E76F51);
+      background: linear-gradient(to right, var(--color-lavender), #E76F51);
     }
     
     .accent-promo {

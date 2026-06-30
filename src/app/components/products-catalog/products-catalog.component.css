@@ -148,7 +148,7 @@
 
 .index-title {
   font-size: 11px;
-  font-family: 'Cormorant Garamond', serif;
+  font-family: var(--font-heading), serif;
   text-transform: uppercase;
   letter-spacing: 2px;
   font-weight: 700;
@@ -415,9 +415,9 @@
 .editorial-banner-title {
   font-size: 2.25rem; /* Larger title text */
   line-height: 1.2;
-  font-family: 'Cormorant Garamond', serif;
+  font-family: var(--font-heading), serif;
   font-weight: 400;
-  color: #FDFBF9; /* Warm luxury white */
+  color: #FAF5F2; /* Warm luxury white */
   letter-spacing: 0.06em;
   text-transform: uppercase;
   margin-bottom: 0.75rem;
@@ -432,19 +432,19 @@
 .editorial-banner-title-italic {
   font-weight: 400;
   font-style: italic;
-  color: #FDFBF9; /* Warm luxury white for maximum contrast */
+  color: #FAF5F2; /* Warm luxury white for maximum contrast */
   opacity: 0.95;
 }
 
 .editorial-banner-line {
   width: 6rem; /* w-24 */
   height: 1.5px;
-  background: linear-gradient(to right, #F4A261, #E76F51, #F38E75, #B84F7D);
+  background: linear-gradient(to right, #F4A261, #E76F51, #F38E75, var(--color-lavender));
   margin-top: 0.5rem;
 }
 
 
-/* ─── Circular Badges (Sale, Latest, Bestseller, Featured) ─── */
+/* ─── Capsule Badges (Sale, Latest, Bestseller, Featured) ─── */
 .card-sale-badge,
 .card-latest-badge,
 .card-bestseller-badge,
@@ -452,40 +452,47 @@
   position: absolute;
   top: 16px;
   right: 16px;
-  color: #ffffff;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  display: flex;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  text-transform: capitalize;
+  text-transform: uppercase;
   pointer-events: none;
   z-index: 10;
-  animation: saleRibbonIn 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-family: var(--font-heading);
+  animation: saleRibbonIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .card-sale-badge {
-  background: #E30613; /* Bright crimson red */
-  box-shadow: 0 4px 12px rgba(227, 6, 19, 0.25);
+  background: #FDECEF;
+  color: #F67B63;
+  border: 1px solid rgba(246, 123, 99, 0.2);
+  box-shadow: 0 4px 10px rgba(246, 123, 99, 0.05);
 }
 
 .card-latest-badge {
-  background: #5F8575; /* Sage Green */
-  box-shadow: 0 4px 12px rgba(95, 133, 117, 0.25);
+  background: #FFF9E6;
+  color: #F6A04D;
+  border: 1px solid rgba(246, 160, 77, 0.2);
+  box-shadow: 0 4px 10px rgba(246, 160, 77, 0.05);
 }
 
 .card-bestseller-badge {
-  background: #B84F7D; /* Muted Rose */
-  box-shadow: 0 4px 12px rgba(184, 79, 125, 0.25);
+  background: #EBF7FD;
+  color: #64C9F5;
+  border: 1px solid rgba(100, 201, 245, 0.2);
+  box-shadow: 0 4px 10px rgba(100, 201, 245, 0.05);
 }
 
 .card-featured-badge {
-  background: #C39B62; /* Bronze Gold */
-  box-shadow: 0 4px 12px rgba(195, 155, 98, 0.25);
+  background: #EBFBF7;
+  color: #77DCC5;
+  border: 1px solid rgba(119, 220, 197, 0.2);
+  box-shadow: 0 4px 10px rgba(119, 220, 197, 0.05);
 }
 
 @keyframes saleRibbonIn {
@@ -532,28 +539,22 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  border-radius: 16px;
+  border-radius: 24px;
   overflow: hidden;
-  background: rgba(247, 244, 239, 0.85); /* Premium warm ivory, stronger than white */
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(42, 37, 34, 0.08);
-  box-shadow:
-    0 2px 8px rgba(42, 37, 34, 0.03),
-    0 8px 32px rgba(42, 37, 34, 0.04);
+  background: #ffffff;
+  border: 1px solid var(--border-delicate);
+  box-shadow: 0 10px 30px rgba(42,31,26,0.03);
   transition:
-    transform 0.5s cubic-bezier(0.25, 1, 0.5, 1),
-    box-shadow 0.5s cubic-bezier(0.25, 1, 0.5, 1),
+    transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    box-shadow 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275),
     border-color 0.4s ease;
   will-change: transform;
 }
 
 .lookbook-item:hover {
-  transform: translateY(-6px);
-  box-shadow:
-    0 12px 40px rgba(42, 37, 34, 0.1),
-    0 4px 12px rgba(184, 79, 125, 0.08); /* Premium plum halo shadow */
-  border-color: rgba(184, 79, 125, 0.3); /* Match our brand plum accent lines */
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 20px 45px rgba(246, 123, 99, 0.12);
+  border-color: var(--color-coral);
 }
 
 /* ─── Image Container ─── */
@@ -714,7 +715,7 @@
 }
 
 .card-icon-btn:hover {
-  color: var(--brand-accent, #E07A5F);
+  color: var(--brand-accent, var(--color-coral));
   transform: scale(1.18);
 }
 
@@ -756,7 +757,7 @@
 }
 
 .lookbook-category-tag {
-  font-family: 'Outfit', 'Lexend', sans-serif;
+  font-family: var(--font-body), var(--font-heading), sans-serif;
   font-size: 8.5px;
   font-weight: 600;
   letter-spacing: 2.2px;
@@ -779,11 +780,11 @@
 
 /* Product Title */
 .lookbook-title {
-  font-family: 'Outfit', 'Lexend', sans-serif; /* Sleek modern luxury sans-serif font */
-  font-weight: 500;
-  font-size: 0.88rem; /* Refined small luxury size */
-  letter-spacing: 1.2px; /* Elegant wide letter spacing */
-  text-transform: uppercase;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.98rem;
+  letter-spacing: 0.3px;
+  text-transform: capitalize;
   color: var(--text-charcoal);
   line-height: 1.4;
   transition: color 0.3s ease;
@@ -793,22 +794,22 @@
 }
 
 .lookbook-item:hover .lookbook-title {
-  color: var(--brand-accent);
+  color: var(--color-coral);
 }
 
 /* Product Description */
 .lookbook-desc {
-  font-family: 'Outfit', 'Lexend', sans-serif;
-  font-size: 10.5px;
+  font-family: var(--font-sans);
+  font-size: 11px;
   line-height: 1.6;
   color: var(--text-muted-umber);
-  opacity: 0.8;
+  opacity: 0.85;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  font-weight: 300;
-  letter-spacing: 0.4px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
 }
 
 /* ─── Color Swatches Row (Inline on card) ─── */
@@ -854,7 +855,7 @@
 }
 
 .lookbook-price {
-  font-family: 'Outfit', 'Lexend', sans-serif;
+  font-family: var(--font-body), var(--font-heading), sans-serif;
   font-weight: 600;
   font-size: 13.5px;
   color: #E30613; /* Bright editorial red */
@@ -862,7 +863,7 @@
 }
 
 .lookbook-price-currency {
-  font-family: 'Outfit', 'Lexend', sans-serif;
+  font-family: var(--font-body), var(--font-heading), sans-serif;
   font-weight: 400;
   font-size: 9.5px;
   color: var(--text-muted-umber);
@@ -944,8 +945,8 @@
 
 .color-swatch-circle.active {
   transform: scale(1.1);
-  border-color: var(--brand-accent, #E07A5F);
-  box-shadow: 0 0 0 2px var(--bg-luxury-beige), 0 0 0 3.5px var(--brand-accent, #E07A5F);
+  border-color: var(--brand-accent, var(--color-coral));
+  box-shadow: 0 0 0 2px var(--bg-luxury-beige), 0 0 0 3.5px var(--brand-accent, var(--color-coral));
 }
 
 .color-swatch-circle .inner-dot {
@@ -1047,11 +1048,11 @@
 }
 
 .console-tab-anchor:hover {
-  color: var(--text-charcoal, #2A2522);
+  color: var(--text-charcoal, var(--text-charcoal));
 }
 
 .console-tab-anchor.active {
-  color: var(--text-charcoal, #2A2522);
+  color: var(--text-charcoal, var(--text-charcoal));
 }
 
 .console-tab-anchor::after {
@@ -1068,7 +1069,7 @@
 }
 
 .console-tab-anchor.active::after {
-  background-color: var(--brand-accent, #E07A5F);
+  background-color: var(--brand-accent, var(--color-coral));
   transform: scaleX(1);
 }
 
@@ -1246,11 +1247,11 @@
 .subcategory-circle-name {
   margin-top: 14px;
   font-size: 11px;
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-body), sans-serif;
   text-transform: uppercase;
   letter-spacing: 2px;
   font-weight: 600;
-  color: var(--text-charcoal, #2A2522);
+  color: var(--text-charcoal, var(--text-charcoal));
   transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
   position: relative;
   padding-bottom: 4px;
@@ -1264,14 +1265,14 @@
   left: 20%;
   width: 60%;
   height: 1.5px;
-  background-color: var(--brand-accent, #E07A5F);
+  background-color: var(--brand-accent, var(--color-coral));
   transform: scaleX(0);
   transform-origin: center;
   transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .subcategory-circle-item:hover .subcategory-circle-name {
-  color: var(--brand-accent, #E07A5F);
+  color: var(--brand-accent, var(--color-coral));
 }
 
 .subcategory-circle-item:hover .subcategory-circle-name::after {
@@ -1288,19 +1289,19 @@
 
 /* Active State */
 .subcategory-circle-item.active .subcategory-circle-img-wrapper {
-  border-color: var(--brand-accent, #E07A5F);
+  border-color: var(--brand-accent, var(--color-coral));
   box-shadow: 0 10px 25px rgba(224, 122, 95, 0.25);
   transform: scale(1.05);
 }
 
 .subcategory-circle-item.active .subcategory-circle-name {
-  color: var(--brand-accent, #E07A5F);
+  color: var(--brand-accent, var(--color-coral));
   font-weight: 750;
 }
 
 .subcategory-circle-item.active .subcategory-circle-name::after {
   transform: scaleX(1);
-  background-color: var(--brand-accent, #E07A5F);
+  background-color: var(--brand-accent, var(--color-coral));
 }
 
 /* Admin Product Editor */
@@ -1345,7 +1346,7 @@
   border: 1px solid var(--border-delicate, rgba(42, 37, 34, 0.08));
   border-radius: 24px;
   box-shadow: 0 25px 60px rgba(42, 37, 34, 0.15);
-  color: var(--text-charcoal, #2A2522);
+  color: var(--text-charcoal, var(--text-charcoal));
   padding: 28px 24px;
   z-index: 50;
   opacity: 0;
@@ -1419,7 +1420,7 @@
 }
 
 .category-chooser-icon {
-  color: var(--brand-accent, #E07A5F);
+  color: var(--brand-accent, var(--color-coral));
   opacity: 0.8;
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
@@ -1435,7 +1436,7 @@
   font-weight: 400;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--text-charcoal, #2A2522);
+  color: var(--text-charcoal, var(--text-charcoal));
   line-height: 1.2;
 }
 
@@ -1450,7 +1451,7 @@
 
 .category-chooser-arrow {
   font-size: 14px;
-  color: var(--brand-accent, #E07A5F);
+  color: var(--brand-accent, var(--color-coral));
   transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;
   opacity: 0;
   transform: translateX(-6px);

@@ -25,33 +25,10 @@ const TOTAL_FRAMES_PER_VIDEO = 48;
   template: `
     <!-- Advanced Luxury Experience Loader (Fullscreen determinate mode) -->
     <div *ngIf="!loaded" class="luxury-experience-loader fullscreen">
-      <div class="loader-logo-container">
-        <!-- Watercolor SVG Accent -->
-        <svg class="loader-logo-svg" viewBox="0 0 600 180" preserveAspectRatio="none">
-          <defs>
-            <linearGradient id="loader-watercolor-gradient-canvas" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#F4A261" stop-opacity="0.85"/>
-              <stop offset="30%" stop-color="#E76F51" stop-opacity="0.95"/>
-              <stop offset="65%" stop-color="#F38E75" stop-opacity="0.88"/>
-              <stop offset="100%" stop-color="#B84F7D" stop-opacity="0.9"/>
-              <animate attributeName="x1" dur="4s" values="0%;50%;0%" repeatCount="indefinite" />
-              <animate attributeName="x2" dur="4s" values="100%;150%;100%" repeatCount="indefinite" />
-            </linearGradient>
-            <filter id="loader-paint-bleed-canvas">
-              <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="4" result="noise">
-                <animate attributeName="baseFrequency" dur="6s" values="0.012;0.022;0.012" repeatCount="indefinite" />
-              </feTurbulence>
-              <feDisplacementMap in="SourceGraphic" in2="noise" scale="18" xChannelSelector="R" yChannelSelector="G" result="displaced" />
-              <feGaussianBlur in="displaced" stdDeviation="1.2" />
-            </filter>
-          </defs>
-          <g filter="url(#loader-paint-bleed-canvas)">
-            <path d="M 40,88 C 110,65 230,78 350,70 C 470,62 520,78 560,88 C 575,92 570,102 555,108 C 510,128 390,122 280,128 C 170,134 90,118 45,108 C 30,105 30,92 40,88 Z" fill="url(#loader-watercolor-gradient-canvas)" />
-          </g>
-        </svg>
-        <div class="loader-logo-text">Picks&amp;More</div>
+      <div class="loader-logo-container flex items-center justify-center h-16 mb-4">
+        <img src="/logo.png" alt="Picks &amp; More Logo" class="h-full w-auto object-contain" />
       </div>
-      <div class="loader-subtitle">Luxury Women &amp; Baby Boutique</div>
+      <div class="loader-subtitle">Cheerful Family Collections</div>
       <div class="loader-bar-container">
         <div class="loader-bar-fill-determinate" [style.width.%]="loadingProgress"></div>
       </div>
@@ -496,7 +473,7 @@ export class VideoScrollCanvasComponent implements OnInit, AfterViewInit, OnDest
     const safeHeight = height > 0 ? height : 1080;
 
     // Clear background with solid color fallback first
-    ctx.fillStyle = '#FBF9F6';
+    ctx.fillStyle = '#FAF5F2';
     ctx.fillRect(0, 0, safeWidth, safeHeight);
 
     // Verify if image is fully loaded and valid
@@ -524,7 +501,7 @@ export class VideoScrollCanvasComponent implements OnInit, AfterViewInit, OnDest
       if (isPlaceholderValid) {
         this.drawActualImage(placeholderImg, safeWidth, safeHeight, ctx, placeholderIndex);
       } else {
-        ctx.fillStyle = '#2A2522';
+        ctx.fillStyle = 'var(--text-charcoal)';
         ctx.font = '16px monospace';
         ctx.textAlign = 'center';
         ctx.fillText(`[Missing/Loading Frame ${index}]`, safeWidth / 2, safeHeight / 2);

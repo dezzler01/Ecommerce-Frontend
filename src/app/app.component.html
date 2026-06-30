@@ -22,13 +22,13 @@
       <defs>
         <linearGradient id="cursor-grad" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stop-color="#1F85A0">
-            <animate attributeName="stop-color" values="#1F85A0;#B84F7D;#F4A261;#1F85A0" dur="4s" repeatCount="indefinite" />
+            <animate attributeName="stop-color" values="#1F85A0;var(--color-lavender);#F4A261;#1F85A0" dur="4s" repeatCount="indefinite" />
           </stop>
-          <stop offset="50%" stop-color="#B84F7D">
-            <animate attributeName="stop-color" values="#B84F7D;#F4A261;#1F85A0;#B84F7D" dur="4s" repeatCount="indefinite" />
+          <stop offset="50%" stop-color="var(--color-lavender)">
+            <animate attributeName="stop-color" values="var(--color-lavender);#F4A261;#1F85A0;var(--color-lavender)" dur="4s" repeatCount="indefinite" />
           </stop>
           <stop offset="100%" stop-color="#F4A261">
-            <animate attributeName="stop-color" values="#F4A261;#1F85A0;#B84F7D;#F4A261" dur="4s" repeatCount="indefinite" />
+            <animate attributeName="stop-color" values="#F4A261;#1F85A0;var(--color-lavender);#F4A261" dur="4s" repeatCount="indefinite" />
           </stop>
         </linearGradient>
       </defs>
@@ -41,13 +41,13 @@
       <defs>
         <linearGradient id="cursor-grad2" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stop-color="#1F85A0">
-            <animate attributeName="stop-color" values="#1F85A0;#B84F7D;#F4A261;#1F85A0" dur="4s" repeatCount="indefinite" />
+            <animate attributeName="stop-color" values="#1F85A0;var(--color-lavender);#F4A261;#1F85A0" dur="4s" repeatCount="indefinite" />
           </stop>
-          <stop offset="50%" stop-color="#B84F7D">
-            <animate attributeName="stop-color" values="#B84F7D;#F4A261;#1F85A0;#B84F7D" dur="4s" repeatCount="indefinite" />
+          <stop offset="50%" stop-color="var(--color-lavender)">
+            <animate attributeName="stop-color" values="var(--color-lavender);#F4A261;#1F85A0;var(--color-lavender)" dur="4s" repeatCount="indefinite" />
           </stop>
           <stop offset="100%" stop-color="#F4A261">
-            <animate attributeName="stop-color" values="#F4A261;#1F85A0;#B84F7D;#F4A261" dur="4s" repeatCount="indefinite" />
+            <animate attributeName="stop-color" values="#F4A261;#1F85A0;var(--color-lavender);#F4A261" dur="4s" repeatCount="indefinite" />
           </stop>
         </linearGradient>
       </defs>
@@ -64,14 +64,14 @@
   <!-- Advanced Luxury Custom Alert Modal -->
   <div *ngIf="alertService.isOpen()" class="fixed inset-0 z-[100] flex items-center justify-center p-4 animate-fade-in pointer-events-auto">
     <!-- Frosted Backdrop with Deepened Glassmorphism -->
-    <div (click)="alertService.cancel()" class="fixed inset-0 bg-[#2A2522]/20 backdrop-blur-[8px] cursor-pointer"></div>
+    <div (click)="alertService.cancel()" class="fixed inset-0 bg-[var(--text-charcoal)]/20 backdrop-blur-[8px] cursor-pointer"></div>
     
     <!-- Sleek Glassmorphic Luxury Alert Box -->
-    <div class="luxury-alert-box relative w-full max-w-md border border-[#2A2522]/10 p-6 md:p-8 rounded-2xl flex flex-col space-y-6 max-h-[90vh] overflow-y-auto custom-scrollbar animate-scale-up-bounce z-10 text-left transform duration-300 hover:shadow-[#E07A5F]/5">
+    <div class="luxury-alert-box relative w-full max-w-md border border-[var(--text-charcoal)]/10 p-6 md:p-8 rounded-2xl flex flex-col space-y-6 max-h-[90vh] overflow-y-auto custom-scrollbar animate-scale-up-bounce z-10 text-left transform duration-300 hover:shadow-[var(--color-coral)]/5">
       <!-- Top Decorative Aesthetic Accent Bar -->
       <div 
         [ngClass]="{
-          'bg-[#E07A5F]': alertService.type() === 'success',
+          'bg-[var(--color-coral)]': alertService.type() === 'success',
           'bg-red-500': alertService.type() === 'error',
           'bg-[#8C857B]': alertService.type() === 'info',
           'bg-amber-500': alertService.type() === 'warning'
@@ -84,7 +84,7 @@
         <!-- Stylized Icon Container with Custom Animations -->
         <div 
           [ngClass]="{
-            'bg-[#E07A5F]/10 text-[#E07A5F]': alertService.type() === 'success',
+            'bg-[var(--color-coral)]/10 text-[var(--color-coral)]': alertService.type() === 'success',
             'bg-red-500/10 text-red-500 animate-shake-error': alertService.type() === 'error',
             'bg-[#8C857B]/10 text-[#8C857B] animate-pulse-info': alertService.type() === 'info',
             'bg-amber-500/10 text-amber-500 animate-wiggle-warning': alertService.type() === 'warning'
@@ -111,7 +111,7 @@
  
         <!-- Text Context -->
         <div class="flex-1 min-w-0">
-          <h3 class="font-serif-luxury text-base uppercase tracking-wider text-[#2A2522] leading-tight mb-2">
+          <h3 class="font-serif-luxury text-base uppercase tracking-wider text-[var(--text-charcoal)] leading-tight mb-2">
             {{ alertService.title() }}
           </h3>
           <p class="font-sans text-xs leading-relaxed text-[#6B5E57] break-words whitespace-pre-line">
@@ -125,16 +125,16 @@
         <button 
           *ngIf="alertService.cancelText()" 
           (click)="alertService.cancel()"
-          class="px-5 py-2.5 border border-[#2A2522]/10 hover:bg-[#2A2522]/5 text-[#2A2522] text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all duration-300 transform active:scale-95 hover:border-[#2A2522]/25"
+          class="px-5 py-2.5 border border-[var(--text-charcoal)]/10 hover:bg-[var(--text-charcoal)]/5 text-[var(--text-charcoal)] text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all duration-300 transform active:scale-95 hover:border-[var(--text-charcoal)]/25"
         >
           {{ alertService.cancelText() }}
         </button>
         <button 
           (click)="alertService.confirm()"
           [ngClass]="{
-            'bg-[#E07A5F] hover:bg-[#E07A5F]/90 hover:shadow-[#E07A5F]/20': alertService.type() === 'success',
+            'bg-[var(--color-coral)] hover:bg-[var(--color-coral)]/90 hover:shadow-[var(--color-coral)]/20': alertService.type() === 'success',
             'bg-red-600 hover:bg-red-700 hover:shadow-red-600/20': alertService.type() === 'error',
-            'bg-[#2A2522] hover:bg-[#B84F7D] hover:shadow-[#B84F7D]/20': alertService.type() === 'info',
+            'bg-[var(--text-charcoal)] hover:bg-[var(--color-lavender)] hover:shadow-[var(--color-lavender)]/20': alertService.type() === 'info',
             'bg-amber-600 hover:bg-amber-700 hover:shadow-amber-600/20': alertService.type() === 'warning'
           }"
           class="px-5 py-2.5 text-white text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all duration-300 shadow-sm hover:shadow-md transform active:scale-95"

@@ -1,44 +1,21 @@
 <div class="min-h-screen bg-transparent pt-28 pb-20 px-6 md:px-12 lg:px-24 text-left font-sans-luxury">
   <!-- Advanced Luxury Experience Loader (Component indeterminate mode) -->
   <div *ngIf="loading()" class="luxury-experience-loader py-32 bg-transparent">
-    <div class="loader-logo-container">
-      <!-- Watercolor SVG Accent -->
-      <svg class="loader-logo-svg" viewBox="0 0 600 180" preserveAspectRatio="none">
-        <defs>
-          <linearGradient id="loader-watercolor-gradient-detail" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#F4A261" stop-opacity="0.85"/>
-            <stop offset="30%" stop-color="#E76F51" stop-opacity="0.95"/>
-            <stop offset="65%" stop-color="#F38E75" stop-opacity="0.88"/>
-            <stop offset="100%" stop-color="#B84F7D" stop-opacity="0.9"/>
-            <animate attributeName="x1" dur="4s" values="0%;50%;0%" repeatCount="indefinite" />
-            <animate attributeName="x2" dur="4s" values="100%;150%;100%" repeatCount="indefinite" />
-          </linearGradient>
-          <filter id="loader-paint-bleed-detail">
-            <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="4" result="noise">
-              <animate attributeName="baseFrequency" dur="6s" values="0.012;0.022;0.012" repeatCount="indefinite" />
-            </feTurbulence>
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="18" xChannelSelector="R" yChannelSelector="G" result="displaced" />
-            <feGaussianBlur in="displaced" stdDeviation="1.2" />
-          </filter>
-        </defs>
-        <g filter="url(#loader-paint-bleed-detail)">
-          <path d="M 40,88 C 110,65 230,78 350,70 C 470,62 520,78 560,88 C 575,92 570,102 555,108 C 510,128 390,122 280,128 C 170,134 90,118 45,108 C 30,105 30,92 40,88 Z" fill="url(#loader-watercolor-gradient-detail)" />
-        </g>
-      </svg>
-      <div class="loader-logo-text">Picks&amp;More</div>
+    <div class="loader-logo-container flex items-center justify-center h-16 mb-4">
+      <img src="/logo.png" alt="Picks &amp; More Logo" class="h-full w-auto object-contain" />
     </div>
-    <div class="loader-subtitle">Luxury Women &amp; Baby Boutique</div>
+    <div class="loader-subtitle">Cheerful Family Collections</div>
     <div class="loader-bar-container">
       <div class="loader-bar-fill-indeterminate"></div>
     </div>
-    <div class="loader-status">Decoding Specimen Context...</div>
+    <div class="loader-status">Preparing Details...</div>
   </div>
 
   <!-- Error State -->
   <div *ngIf="!loading() && error()" class="w-full flex flex-col justify-center items-center py-32 text-center animate-fade-in">
     <div class="p-6 bg-red-50 border border-red-200 rounded-2xl max-w-md">
       <span class="text-xs font-mono uppercase tracking-widest text-red-500 font-bold block mb-2">Refusal Code</span>
-      <p class="text-sm text-[#2A2522] leading-relaxed font-light mb-6">{{ error() }}</p>
+      <p class="text-sm text-[var(--text-charcoal)] leading-relaxed font-light mb-6">{{ error() }}</p>
       <button routerLink="/products" class="px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold uppercase tracking-widest rounded-xl transition-all">
         Return to Catalog
       </button>
@@ -115,7 +92,7 @@
               <svg class="w-12 h-12 text-[#D58E6A]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
               </svg>
-              <span class="text-[9px] uppercase tracking-widest font-mono text-[#D58E6A] font-bold">Exclusive Specimen</span>
+              <span class="text-[9px] uppercase tracking-widest font-mono text-[#D58E6A] font-bold">Exclusive Piece</span>
             </div>
 
             <!-- Category Glass Badge -->
@@ -139,7 +116,7 @@
               <!-- Inspect Magnifier Button -->
               <button 
                 (click)="toggleZoom(); $event.stopPropagation()"
-                [ngClass]="zoomActive() ? 'bg-[#5B3A29] text-[#FFFDFC] border-[#5B3A29]' : 'bg-[#FFFDFC]/95 text-[#2C211C] border-[#7A6C64]/15'"
+                [ngClass]="zoomActive() ? 'bg-[var(--color-coral)] text-[#FFFDFC] border-[var(--color-coral)]' : 'bg-[#FFFDFC]/95 text-[#2C211C] border-[#7A6C64]/15'"
                 class="flex items-center gap-1.5 px-4 py-2 border rounded-full text-[9px] uppercase tracking-widest font-bold transition-all shadow-md hover:scale-105 active:scale-95 focus:outline-none"
               >
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -194,7 +171,7 @@
 
           <!-- Price & Stock Status -->
           <div class="flex items-baseline justify-between border-y border-[#7A6C64]/10 py-4">
-            <span class="text-2xl font-mono text-[#5B3A29] font-bold">
+            <span class="text-2xl font-mono text-[var(--color-coral)] font-bold">
               {{ product()?.price | currency:'EGP ' }}
             </span>
 
@@ -228,7 +205,7 @@
                 <button 
                   *ngFor="let color of colors()"
                   (click)="selectColor(color)"
-                  [ngClass]="selectedColor() === color ? 'border-[#5B3A29] bg-[#5B3A29] text-[#FFFDFC]' : 'border-[#7A6C64]/20 bg-transparent text-[#2C211C] hover:border-[#5B3A29]/50'"
+                  [ngClass]="selectedColor() === color ? 'border-[var(--color-coral)] bg-[var(--color-coral)] text-[#FFFDFC]' : 'border-[#7A6C64]/20 bg-transparent text-[#2C211C] hover:border-[var(--color-coral)]/50'"
                   class="px-4 py-2 text-[10px] uppercase tracking-widest font-bold border rounded-lg transition-all focus:outline-none"
                 >
                   {{ color }}
@@ -246,7 +223,7 @@
                 <button 
                   *ngFor="let size of sizes()"
                   (click)="selectSize(size)"
-                  [ngClass]="selectedSize() === size ? 'border-[#5B3A29] bg-[#5B3A29] text-[#FFFDFC]' : 'border-[#7A6C64]/20 bg-transparent text-[#2C211C] hover:border-[#5B3A29]/50'"
+                  [ngClass]="selectedSize() === size ? 'border-[var(--color-coral)] bg-[var(--color-coral)] text-[#FFFDFC]' : 'border-[#7A6C64]/20 bg-transparent text-[#2C211C] hover:border-[var(--color-coral)]/50'"
                   class="px-4 py-2 text-[10px] uppercase tracking-widest font-bold border rounded-lg transition-all focus:outline-none"
                 >
                   {{ size }}
@@ -288,7 +265,7 @@
               <button 
                 [disabled]="product()?.stockQuantity === 0"
                 (click)="acquireProduct()"
-                class="flex-1 py-4 bg-[#5B3A29] hover:bg-[#704936] text-[#FFFDFC] text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all shadow-sm focus:outline-none disabled:opacity-40 hover:scale-[1.01] active:scale-[0.99]"
+                class="flex-1 py-4 bg-[var(--color-coral)] hover:bg-[#704936] text-[#FFFDFC] text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all shadow-sm focus:outline-none disabled:opacity-40 hover:scale-[1.01] active:scale-[0.99]"
               >
                 Add to Cart
               </button>
@@ -322,7 +299,7 @@
             <button 
               [disabled]="product()?.stockQuantity === 0"
               (click)="buyNow()"
-              class="w-full py-4 border border-[#5B3A29] hover:bg-[#5B3A29]/5 text-[#5B3A29] text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all focus:outline-none disabled:opacity-40 hover:scale-[1.01] active:scale-[0.99]"
+              class="w-full py-4 border border-[var(--color-coral)] hover:bg-[var(--color-coral)]/5 text-[var(--color-coral)] text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all focus:outline-none disabled:opacity-40 hover:scale-[1.01] active:scale-[0.99]"
             >
               Buy Now
             </button>
@@ -388,7 +365,7 @@
 
     <!-- Feature Cards Section -->
     <div class="my-16 space-y-6">
-      <h3 class="text-center text-xs font-bold uppercase tracking-widest text-[#D58E6A]">Key Specimen Credentials</h3>
+      <h3 class="text-center text-xs font-bold uppercase tracking-widest text-[#D58E6A]">Product Specifications</h3>
       <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div class="bg-[#FFFDFC] border border-[#7A6C64]/10 rounded-2xl p-6 text-center space-y-2.5 shadow-sm">
           <span class="text-2xl block">🌿</span>
@@ -431,7 +408,7 @@
           class="overflow-hidden transition-all duration-300 bg-[#FAF6F1]/30"
         >
           <div class="flex flex-wrap gap-2">
-            <span *ngFor="let mat of product()?.materials" class="text-[10px] uppercase font-bold text-[#5B3A29] bg-[#D58E6A]/10 border border-[#D58E6A]/20 px-3 py-1 rounded-lg">
+            <span *ngFor="let mat of product()?.materials" class="text-[10px] uppercase font-bold text-[var(--color-coral)] bg-[#D58E6A]/10 border border-[#D58E6A]/20 px-3 py-1 rounded-lg">
               {{ mat }}
             </span>
             <span *ngIf="!product()?.materials || product()!.materials!.length === 0" class="text-xs text-[#7A6C64] italic">General cotton &amp; synthetic blend.</span>
@@ -477,7 +454,7 @@
               <span class="font-bold text-[#2C211C]">{{ product()?.shippingSize || 'Standard' }}</span>
             </div>
             <div class="flex justify-between">
-              <span>Specimen Age Target</span>
+              <span>Age Group</span>
               <span class="font-bold text-[#2C211C]">{{ product()?.age || 'General / All Ages' }}</span>
             </div>
           </div>
@@ -519,7 +496,7 @@
 
           <!-- Average Score Block -->
           <div class="bg-[#FFFDFC] border border-[#7A6C64]/10 rounded-3xl p-6 text-center space-y-3 shadow-sm">
-            <div class="text-4xl font-mono font-bold text-[#5B3A29]">{{ evaluationScore() | number:'1.1-1' }}</div>
+            <div class="text-4xl font-mono font-bold text-[var(--color-coral)]">{{ evaluationScore() | number:'1.1-1' }}</div>
             
             <div class="flex justify-center items-center gap-0.5">
               <svg *ngFor="let s of getStars(evaluationScore())" class="w-4.5 h-4.5 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
@@ -538,7 +515,7 @@
             <div *ngFor="let row of starPercentages()" class="flex items-center gap-3 text-xs text-[#2C211C]">
               <span class="w-10 text-right font-mono font-bold">{{ row.stars }} ★</span>
               <div class="flex-1 h-2 bg-[#7A6C64]/10 rounded-full overflow-hidden">
-                <div class="h-full bg-[#5B3A29] rounded-full transition-all duration-500" [style.width]="row.pct + '%'"></div>
+                <div class="h-full bg-[var(--color-coral)] rounded-full transition-all duration-500" [style.width]="row.pct + '%'"></div>
               </div>
               <span class="w-12 text-left font-mono text-[#7A6C64]">{{ row.pct }}% ({{ row.count }})</span>
             </div>
@@ -576,7 +553,7 @@
 
           <!-- Write review console -->
           <div class="bg-[#FFFDFC] border border-[#7A6C64]/10 rounded-3xl p-6 space-y-4 shadow-sm">
-            <h5 class="text-[9px] uppercase tracking-widest font-bold text-[#5B3A29]">Submit Client Appraisal</h5>
+            <h5 class="text-[9px] uppercase tracking-widest font-bold text-[var(--color-coral)]">Submit Client Appraisal</h5>
             
             <div *ngIf="authService.currentUser() !== null; else loginPrompt">
               <div class="space-y-3">
@@ -600,7 +577,7 @@
                   [(ngModel)]="newComment"
                   placeholder="Share details on the materials quality, fit accuracy, and shipping duration..." 
                   rows="3"
-                  class="w-full p-4 bg-[#FAF6F1]/50 border border-[#7A6C64]/25 rounded-2xl text-xs text-[#2C211C] placeholder-[#7A6C64]/40 focus:outline-none focus:border-[#5B3A29] focus:bg-[#FFFDFC] transition-all"
+                  class="w-full p-4 bg-[#FAF6F1]/50 border border-[#7A6C64]/25 rounded-2xl text-xs text-[#2C211C] placeholder-[#7A6C64]/40 focus:outline-none focus:border-[var(--color-coral)] focus:bg-[#FFFDFC] transition-all"
                 ></textarea>
 
                 <div *ngIf="reviewError()" class="text-[9px] uppercase tracking-wider text-red-600 font-bold font-mono">⚠ {{ reviewError() }}</div>
@@ -609,7 +586,7 @@
                 <button 
                   [disabled]="submittingReview()"
                   (click)="submitReview()"
-                  class="w-full py-3 bg-[#5B3A29] hover:bg-[#704936] disabled:opacity-50 text-[#FFFDFC] text-[9px] font-bold uppercase tracking-widest rounded-xl transition-all shadow-sm focus:outline-none hover:scale-[1.01] active:scale-[0.99]"
+                  class="w-full py-3 bg-[var(--color-coral)] hover:bg-[#704936] disabled:opacity-50 text-[#FFFDFC] text-[9px] font-bold uppercase tracking-widest rounded-xl transition-all shadow-sm focus:outline-none hover:scale-[1.01] active:scale-[0.99]"
                 >
                   {{ submittingReview() ? 'Transmitting...' : 'Submit Appraisal' }}
                 </button>
@@ -619,7 +596,7 @@
             <ng-template #loginPrompt>
               <div class="text-center py-4">
                 <p class="text-[10px] text-[#7A6C64] uppercase tracking-widest font-light mb-2">Authenticity required to leave reviews</p>
-                <p class="text-xs text-[#5B3A29] font-bold">Please log in to your account</p>
+                <p class="text-xs text-[var(--color-coral)] font-bold">Please log in to your account</p>
               </div>
             </ng-template>
           </div>
@@ -636,7 +613,7 @@
         Complementary Curation
       </span>
       <h3 class="text-2xl font-serif-luxury font-light text-[#2C211C] tracking-wider uppercase mb-8 text-center">
-        Related Specimen
+        Related Products
       </h3>
 
       <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -701,7 +678,7 @@
       <button 
         [disabled]="wishlistCompareService.compareList().length < 2"
         (click)="showCompareModal.set(true)"
-        class="px-4 py-2 bg-[#5B3A29] hover:bg-[#704936] disabled:opacity-50 text-[#FFFDFC] text-[9px] font-bold uppercase tracking-widest rounded-xl transition-all"
+        class="px-4 py-2 bg-[var(--color-coral)] hover:bg-[#704936] disabled:opacity-50 text-[#FFFDFC] text-[9px] font-bold uppercase tracking-widest rounded-xl transition-all"
       >
         Compare Now
       </button>
@@ -725,7 +702,7 @@
       (click)="$event.stopPropagation()"
     >
       <div class="flex justify-between items-center border-b border-[#7A6C64]/10 pb-3">
-        <h3 class="text-xs font-black uppercase tracking-widest text-[#D58E6A]">Specimen Comparison Engine</h3>
+        <h3 class="text-xs font-black uppercase tracking-widest text-[#D58E6A]">Compare Products</h3>
         <button (click)="showCompareModal.set(false)" class="text-[#7A6C64] hover:text-[#2C211C] text-xs">✕</button>
       </div>
 
@@ -739,7 +716,7 @@
           </div>
           
           <div>
-            <span class="text-[8px] uppercase tracking-widest font-mono font-bold text-[#D58E6A] block mb-1">Specimen {{ idx + 1 }}</span>
+            <span class="text-[8px] uppercase tracking-widest font-mono font-bold text-[#D58E6A] block mb-1">Product {{ idx + 1 }}</span>
             <h4 class="text-lg font-serif-luxury font-light text-[#2C211C] uppercase truncate">{{ item.title }}</h4>
             <span class="text-sm font-mono text-[#D58E6A] font-bold block mt-1">{{ item.price | currency:'EGP ' }}</span>
           </div>
@@ -783,7 +760,7 @@
 
           <button 
             (click)="showCompareModal.set(false); fetchProduct(item.id)"
-            class="w-full py-2.5 bg-[#5B3A29] hover:bg-[#704936] text-[#FFFDFC] text-[9px] font-bold uppercase tracking-widest rounded-xl transition-all"
+            class="w-full py-2.5 bg-[var(--color-coral)] hover:bg-[#704936] text-[#FFFDFC] text-[9px] font-bold uppercase tracking-widest rounded-xl transition-all"
           >
             View Details Sheet
           </button>

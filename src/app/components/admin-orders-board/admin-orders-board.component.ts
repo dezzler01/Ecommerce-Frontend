@@ -215,27 +215,27 @@ import { MediaService } from '../../services/media.service';
       <main class="admin-main">
         <div class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
-            <span class="font-lexend tracking-widest text-[10px] uppercase font-semibold text-[#B84F7D] block mb-2">Management Console</span>
+            <span class="font-lexend tracking-widest text-[10px] uppercase font-semibold text-[var(--color-lavender)] block mb-2">Management Console</span>
             <div class="flex items-center gap-3">
-              <h2 class="title-header text-3xl font-light text-[#2A2522] tracking-[0.05em] uppercase">Store Admin Console</h2>
+              <h2 class="title-header text-3xl font-light text-[var(--text-charcoal)] tracking-[0.05em] uppercase">Store Admin Console</h2>
               <button 
                 *ngIf="authService.hasPermission('Orders:Read')"
                 (click)="handleBellClick()"
-                class="relative p-2 rounded-full hover:bg-[#2A2522]/5 transition-all focus:outline-none"
+                class="relative p-2 rounded-full hover:bg-[var(--text-charcoal)]/5 transition-all focus:outline-none"
                 [title]="notificationService.hasNewOrders() ? 'New orders submitted! Click to refresh ledger.' : 'No new order notifications'"
               >
                 <span 
                   *ngIf="notificationService.hasNewOrders()" 
-                  class="absolute top-1 right-1 w-2.5 h-2.5 bg-[#B84F7D] rounded-full animate-ping"
+                  class="absolute top-1 right-1 w-2.5 h-2.5 bg-[var(--color-lavender)] rounded-full animate-ping"
                 ></span>
                 <span 
                   *ngIf="notificationService.hasNewOrders()" 
-                  class="absolute top-1 right-1 w-2.5 h-2.5 bg-[#B84F7D] rounded-full"
+                  class="absolute top-1 right-1 w-2.5 h-2.5 bg-[var(--color-lavender)] rounded-full"
                 ></span>
                 <svg 
                   [class.animate-soft-bell]="notificationService.hasNewOrders()"
-                  class="w-6 h-6 text-[#2A2522] transition-colors"
-                  [class.text-[#B84F7D]]="notificationService.hasNewOrders()"
+                  class="w-6 h-6 text-[var(--text-charcoal)] transition-colors"
+                  [class.text-[var(--color-lavender)]]="notificationService.hasNewOrders()"
                   fill="none" 
                   stroke="currentColor" 
                   viewBox="0 0 24 24"
@@ -251,21 +251,21 @@ import { MediaService } from '../../services/media.service';
             <button 
               *ngIf="currentTab() === 'orders' && authService.hasPermission('Shipping:Update')" 
               (click)="toggleSettingsPanel()" 
-              class="px-4 py-2 border border-[#B84F7D]/25 hover:bg-[#B84F7D]/5 text-[#B84F7D] text-xs font-bold uppercase tracking-widest rounded-xl transition-all"
+              class="px-4 py-2 border border-[var(--color-lavender)]/25 hover:bg-[var(--color-lavender)]/5 text-[var(--color-lavender)] text-xs font-bold uppercase tracking-widest rounded-xl transition-all"
             >
               ⚙ Settings & Payments
             </button>
             <button 
               *ngIf="currentTab() === 'orders'" 
               (click)="clearFilters()" 
-              class="px-4 py-2 border border-[#2A2522]/10 hover:bg-[#2A2522]/5 text-[#2A2522] text-xs font-bold uppercase tracking-widest rounded-xl transition-all"
+              class="px-4 py-2 border border-[var(--text-charcoal)]/10 hover:bg-[var(--text-charcoal)]/5 text-[var(--text-charcoal)] text-xs font-bold uppercase tracking-widest rounded-xl transition-all"
             >
               Clear Filters
             </button>
             <button 
               *ngIf="currentTab() === 'orders'" 
               (click)="loadOrders()" 
-              class="px-4 py-2 bg-[#2A2522] hover:bg-[#B84F7D] text-[#FBF9F6] text-xs font-bold uppercase tracking-widest rounded-xl transition-all"
+              class="px-4 py-2 bg-[var(--text-charcoal)] hover:bg-[var(--color-lavender)] text-[#FAF5F2] text-xs font-bold uppercase tracking-widest rounded-xl transition-all"
             >
               Refresh Orders
             </button>
@@ -273,14 +273,14 @@ import { MediaService } from '../../services/media.service';
             <button 
               *ngIf="currentTab() === 'promocodes'" 
               (click)="showCreatePromoModal.set(true)" 
-              class="px-4 py-2 bg-[#B84F7D] hover:bg-[#B84F7D]/90 text-[#FBF9F6] text-xs font-bold uppercase tracking-widest rounded-xl transition-all"
+              class="px-4 py-2 bg-[var(--color-lavender)] hover:bg-[var(--color-lavender)]/90 text-[#FAF5F2] text-xs font-bold uppercase tracking-widest rounded-xl transition-all"
             >
               + Create Promo Code
             </button>
             <button 
               *ngIf="currentTab() === 'promocodes'" 
               (click)="loadPromoCodes()" 
-              class="px-4 py-2 border border-[#2A2522]/10 hover:bg-[#2A2522]/5 text-[#2A2522] text-xs font-bold uppercase tracking-widest rounded-xl transition-all"
+              class="px-4 py-2 border border-[var(--text-charcoal)]/10 hover:bg-[var(--text-charcoal)]/5 text-[var(--text-charcoal)] text-xs font-bold uppercase tracking-widest rounded-xl transition-all"
             >
               Refresh Codes
             </button>
@@ -293,9 +293,9 @@ import { MediaService } from '../../services/media.service';
         <div *ngIf="currentTab() === 'orders'" class="space-y-6 animate-fade-in">
           <!-- Shipping & Payments Settings Panel -->
           <div *ngIf="showSettingsPanel()" class="frosted-card p-6 rounded-2xl space-y-4">
-            <div class="flex justify-between items-center border-b border-[#2A2522]/5 pb-3">
-              <h3 class="title-header text-xs font-bold text-[#B84F7D]">Free Shipping Configurations</h3>
-              <button (click)="showSettingsPanel.set(false)" class="text-[#8A817C] hover:text-[#2A2522] text-xs">✕</button>
+            <div class="flex justify-between items-center border-b border-[var(--text-charcoal)]/5 pb-3">
+              <h3 class="title-header text-xs font-bold text-[var(--color-lavender)]">Free Shipping Configurations</h3>
+              <button (click)="showSettingsPanel.set(false)" class="text-[#8A817C] hover:text-[var(--text-charcoal)] text-xs">✕</button>
             </div>
             
             <div *ngIf="settingsMessage()" class="p-2.5 text-[10px] uppercase font-bold tracking-wider rounded-xl text-center" 
@@ -309,7 +309,7 @@ import { MediaService } from '../../services/media.service';
                 <input 
                   type="number" 
                   [(ngModel)]="settingsThreshold" 
-                  class="px-3 py-2 bg-[#FBF9F6]/80 border border-[#2A2522]/5 rounded-xl text-xs text-[#2A2522] focus:outline-none focus:border-[#B84F7D]/50 transition-colors"
+                  class="px-3 py-2 bg-[#FAF5F2]/80 border border-[var(--text-charcoal)]/5 rounded-xl text-xs text-[var(--text-charcoal)] focus:outline-none focus:border-[var(--color-lavender)]/50 transition-colors"
                   placeholder="E.g. 2000"
                 />
               </div>
@@ -319,9 +319,9 @@ import { MediaService } from '../../services/media.service';
                   type="checkbox" 
                   id="free-shipping-active"
                   [(ngModel)]="settingsIsActive" 
-                  class="w-4 h-4 rounded border-[#2A2522]/10 text-[#B84F7D] focus:ring-[#B84F7D]"
+                  class="w-4 h-4 rounded border-[var(--text-charcoal)]/10 text-[var(--color-lavender)] focus:ring-[var(--color-lavender)]"
                 />
-                <label for="free-shipping-active" class="text-[10px] uppercase tracking-widest font-semibold text-[#2A2522] cursor-pointer select-none">
+                <label for="free-shipping-active" class="text-[10px] uppercase tracking-widest font-semibold text-[var(--text-charcoal)] cursor-pointer select-none">
                   Enable Free Shipping Rule
                 </label>
               </div>
@@ -330,7 +330,7 @@ import { MediaService } from '../../services/media.service';
                 <button 
                   (click)="saveShippingSettings()" 
                   [disabled]="savingSettings()"
-                  class="flex-1 px-4 py-2.5 bg-[#B84F7D] hover:bg-[#2A2522] text-[#FBF9F6] text-xs font-bold uppercase tracking-widest rounded-xl transition-all disabled:opacity-50"
+                  class="flex-1 px-4 py-2.5 bg-[var(--color-lavender)] hover:bg-[var(--text-charcoal)] text-[#FAF5F2] text-xs font-bold uppercase tracking-widest rounded-xl transition-all disabled:opacity-50"
                 >
                   {{ savingSettings() ? 'Saving...' : 'Save Settings' }}
                 </button>
@@ -338,13 +338,13 @@ import { MediaService } from '../../services/media.service';
             </div>
 
             <!-- Payment Gateways Settings -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 items-end border-t border-[#2A2522]/5 pt-4 mt-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 items-end border-t border-[var(--text-charcoal)]/5 pt-4 mt-4">
               <div class="flex flex-col gap-1.5">
                 <label class="text-[9px] uppercase tracking-widest font-semibold text-[#8A817C]">InstaPay Address</label>
                 <input 
                   type="text" 
                   [(ngModel)]="paymentInstaPayAddress" 
-                  class="px-3 py-2 bg-[#FBF9F6]/80 border border-[#2A2522]/5 rounded-xl text-xs text-[#2A2522] focus:outline-none focus:border-[#B84F7D]/50 transition-colors"
+                  class="px-3 py-2 bg-[#FAF5F2]/80 border border-[var(--text-charcoal)]/5 rounded-xl text-xs text-[var(--text-charcoal)] focus:outline-none focus:border-[var(--color-lavender)]/50 transition-colors"
                   placeholder="name@instapay"
                 />
               </div>
@@ -354,7 +354,7 @@ import { MediaService } from '../../services/media.service';
                 <input 
                   type="text" 
                   [(ngModel)]="paymentInstaPayPhone" 
-                  class="px-3 py-2 bg-[#FBF9F6]/80 border border-[#2A2522]/5 rounded-xl text-xs text-[#2A2522] focus:outline-none focus:border-[#B84F7D]/50 transition-colors"
+                  class="px-3 py-2 bg-[#FAF5F2]/80 border border-[var(--text-charcoal)]/5 rounded-xl text-xs text-[var(--text-charcoal)] focus:outline-none focus:border-[var(--color-lavender)]/50 transition-colors"
                   placeholder="01xxxxxxxxx"
                 />
               </div>
@@ -364,7 +364,7 @@ import { MediaService } from '../../services/media.service';
                 <input 
                   type="text" 
                   [(ngModel)]="paymentVodafoneCashNumber" 
-                  class="px-3 py-2 bg-[#FBF9F6]/80 border border-[#2A2522]/5 rounded-xl text-xs text-[#2A2522] focus:outline-none focus:border-[#B84F7D]/50 transition-colors"
+                  class="px-3 py-2 bg-[#FAF5F2]/80 border border-[var(--text-charcoal)]/5 rounded-xl text-xs text-[var(--text-charcoal)] focus:outline-none focus:border-[var(--color-lavender)]/50 transition-colors"
                   placeholder="01xxxxxxxxx"
                 />
               </div>
@@ -373,7 +373,7 @@ import { MediaService } from '../../services/media.service';
                 <button 
                   (click)="savePaymentSettings()" 
                   [disabled]="savingPaymentSettings()"
-                  class="flex-1 px-4 py-2.5 bg-[#2A2522] hover:bg-[#B84F7D] text-[#FBF9F6] text-xs font-bold uppercase tracking-widest rounded-xl transition-all disabled:opacity-50"
+                  class="flex-1 px-4 py-2.5 bg-[var(--text-charcoal)] hover:bg-[var(--color-lavender)] text-[#FAF5F2] text-xs font-bold uppercase tracking-widest rounded-xl transition-all disabled:opacity-50"
                 >
                   {{ savingPaymentSettings() ? 'Saving...' : 'Save Payment Config' }}
                 </button>
@@ -390,7 +390,7 @@ import { MediaService } from '../../services/media.service';
                 [(ngModel)]="searchQuery" 
                 (ngModelChange)="onFilterChange()"
                 placeholder="Search by name, phone, order number..." 
-                class="px-3 py-2 bg-[#FBF9F6]/80 border border-[#2A2522]/5 rounded-xl text-xs text-[#2A2522] focus:outline-none focus:border-[#B84F7D]/50 transition-colors"
+                class="px-3 py-2 bg-[#FAF5F2]/80 border border-[var(--text-charcoal)]/5 rounded-xl text-xs text-[var(--text-charcoal)] focus:outline-none focus:border-[var(--color-lavender)]/50 transition-colors"
               />
             </div>
 
@@ -399,7 +399,7 @@ import { MediaService } from '../../services/media.service';
               <select 
                 [(ngModel)]="statusFilter" 
                 (ngModelChange)="onFilterChange()"
-                class="px-3 py-2 bg-[#FBF9F6]/80 border border-[#2A2522]/5 rounded-xl text-xs text-[#2A2522] focus:outline-none focus:border-[#B84F7D]/50 transition-colors"
+                class="px-3 py-2 bg-[#FAF5F2]/80 border border-[var(--text-charcoal)]/5 rounded-xl text-xs text-[var(--text-charcoal)] focus:outline-none focus:border-[var(--color-lavender)]/50 transition-colors"
               >
                 <option value="">All Statuses</option>
                 <option value="PendingVerification">Pending Verification</option>
@@ -415,7 +415,7 @@ import { MediaService } from '../../services/media.service';
               <select 
                 [(ngModel)]="governorateFilter" 
                 (ngModelChange)="onFilterChange()"
-                class="px-3 py-2 bg-[#FBF9F6]/80 border border-[#2A2522]/5 rounded-xl text-xs text-[#2A2522] focus:outline-none focus:border-[#B84F7D]/50 transition-colors"
+                class="px-3 py-2 bg-[#FAF5F2]/80 border border-[var(--text-charcoal)]/5 rounded-xl text-xs text-[var(--text-charcoal)] focus:outline-none focus:border-[var(--color-lavender)]/50 transition-colors"
               >
                 <option value="">All Governorates</option>
                 <option value="Cairo">Cairo</option>
@@ -452,8 +452,8 @@ import { MediaService } from '../../services/media.service';
           <!-- Orders Table Grid -->
           <div class="frosted-card rounded-2xl overflow-hidden">
             <div *ngIf="loading()" class="luxury-experience-loader py-16 bg-transparent">
-              <div class="loader-logo-container">
-                <div class="loader-logo-text">Picks&amp;More</div>
+              <div class="loader-logo-container flex items-center justify-center h-16 mb-4">
+                <img src="/logo.png" alt="Picks &amp; More Logo" class="h-full w-auto object-contain" />
               </div>
               <div class="loader-subtitle">Loading Ledger...</div>
               <div class="loader-bar-container">
@@ -467,7 +467,7 @@ import { MediaService } from '../../services/media.service';
 
             <table *ngIf="!loading() && orders().length > 0" class="w-full text-left border-collapse animate-rows">
               <thead>
-                <tr class="border-b border-[#2A2522]/5 bg-[#2A2522]/5 text-[9px] uppercase tracking-widest font-bold text-[#4A4340]">
+                <tr class="border-b border-[var(--text-charcoal)]/5 bg-[var(--text-charcoal)]/5 text-[9px] uppercase tracking-widest font-bold text-[#4A4340]">
                   <th class="py-4 px-6">Order ID</th>
                   <th class="py-4 px-6">Customer</th>
                   <th class="py-4 px-6">Date</th>
@@ -477,11 +477,11 @@ import { MediaService } from '../../services/media.service';
                   <th class="py-4 px-6 text-right">Action</th>
                 </tr>
               </thead>
-              <tbody class="text-xs text-[#2A2522] font-light">
+              <tbody class="text-xs text-[var(--text-charcoal)] font-light">
                 <tr 
                   *ngFor="let order of orders()" 
                   (click)="openOrder(order)"
-                  class="border-b border-[#2A2522]/5 hover:bg-white/30 cursor-pointer transition-colors"
+                  class="border-b border-[var(--text-charcoal)]/5 hover:bg-white/30 cursor-pointer transition-colors"
                 >
                   <td class="py-4 px-6 font-lexend font-semibold">{{ order.orderNumber }}</td>
                   <td class="py-4 px-6">{{ order.customerName }}</td>
@@ -532,7 +532,7 @@ import { MediaService } from '../../services/media.service';
           <!-- Promo Codes Table -->
           <div class="frosted-card rounded-2xl overflow-hidden">
             <div *ngIf="loadingPromoCodes()" class="luxury-experience-loader py-16 bg-transparent">
-              <div class="loader-logo-text text-center text-[#B84F7D] font-lexend text-[10px] uppercase tracking-widest">Loading Promo Ledger...</div>
+              <div class="loader-logo-text text-center text-[var(--color-lavender)] font-lexend text-[10px] uppercase tracking-widest">Loading Promo Ledger...</div>
             </div>
 
             <div *ngIf="!loadingPromoCodes() && promoCodes().length === 0" class="text-center py-20 text-[#8A817C] font-light text-xs">
@@ -541,7 +541,7 @@ import { MediaService } from '../../services/media.service';
 
             <table *ngIf="!loadingPromoCodes() && promoCodes().length > 0" class="w-full text-left border-collapse">
               <thead>
-                <tr class="border-b border-[#2A2522]/5 bg-[#2A2522]/5 text-[9px] uppercase tracking-widest font-bold text-[#4A4340]">
+                <tr class="border-b border-[var(--text-charcoal)]/5 bg-[var(--text-charcoal)]/5 text-[9px] uppercase tracking-widest font-bold text-[#4A4340]">
                   <th class="py-4 px-6">Promo Code</th>
                   <th class="py-4 px-6">Discount Type</th>
                   <th class="py-4 px-6">Value</th>
@@ -552,9 +552,9 @@ import { MediaService } from '../../services/media.service';
                   <th class="py-4 px-6 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody class="text-xs text-[#2A2522] font-light">
-                <tr *ngFor="let promo of promoCodes()" class="border-b border-[#2A2522]/5 hover:bg-white/30 transition-colors">
-                  <td class="py-4 px-6 font-lexend font-bold text-[#B84F7D]">{{ promo.code }}</td>
+              <tbody class="text-xs text-[var(--text-charcoal)] font-light">
+                <tr *ngFor="let promo of promoCodes()" class="border-b border-[var(--text-charcoal)]/5 hover:bg-white/30 transition-colors">
+                  <td class="py-4 px-6 font-lexend font-bold text-[var(--color-lavender)]">{{ promo.code }}</td>
                   <td class="py-4 px-6 uppercase tracking-wider text-[10px]">{{ promo.discountType }}</td>
                   <td class="py-4 px-6 font-lexend">
                     <span *ngIf="promo.discountType === 'Percentage'">{{ promo.value }}%</span>
@@ -575,7 +575,7 @@ import { MediaService } from '../../services/media.service';
                   <td class="py-4 px-6 text-right space-x-2">
                     <button 
                       (click)="togglePromoCodeActive(promo.id)"
-                      class="px-2.5 py-1 text-[9px] font-bold uppercase tracking-[1px] rounded bg-[#2A2522] text-white hover:bg-[#B84F7D] transition-all"
+                      class="px-2.5 py-1 text-[9px] font-bold uppercase tracking-[1px] rounded bg-[var(--text-charcoal)] text-white hover:bg-[var(--color-lavender)] transition-all"
                     >
                       {{ promo.isActive ? 'Disable' : 'Enable' }}
                     </button>
@@ -596,7 +596,7 @@ import { MediaService } from '../../services/media.service';
         <div *ngIf="currentTab() === 'bulkadd'" class="space-y-6 animate-fade-in">
           <!-- Overview -->
           <div class="frosted-card p-5 rounded-2xl text-xs space-y-2">
-            <h3 class="title-header text-xs font-bold text-[#B84F7D]">Excel-Like Bulk Product Panel</h3>
+            <h3 class="title-header text-xs font-bold text-[var(--color-lavender)]">Excel-Like Bulk Product Panel</h3>
             <p class="text-[#8A817C] font-light">Type or paste multiple products in rows below. Enter comma-separated values for Colors and Sizes. Click "Publish Batch" to save them all to the store database at once.</p>
             
             <div *ngIf="bulkMessage()" class="p-3 uppercase font-bold tracking-wider text-[10px] rounded-xl text-center"
@@ -607,14 +607,14 @@ import { MediaService } from '../../services/media.service';
 
           <!-- Bulk Fill Tools Belt -->
           <div class="frosted-card p-4 rounded-2xl flex flex-wrap gap-4 items-end text-xs">
-            <div class="w-full border-b border-[#2A2522]/5 pb-1">
-              <span class="text-[9px] uppercase tracking-widest font-bold text-[#B84F7D]">⚡ Row Auto-Fill Belt (Applies to <span class="font-black underline">{{ selectedRowsCount() }}</span> selected rows)</span>
+            <div class="w-full border-b border-[var(--text-charcoal)]/5 pb-1">
+              <span class="text-[9px] uppercase tracking-widest font-bold text-[var(--color-lavender)]">⚡ Row Auto-Fill Belt (Applies to <span class="font-black underline">{{ selectedRowsCount() }}</span> selected rows)</span>
             </div>
 
             <!-- Category Fill -->
             <div class="flex flex-col gap-1">
               <label class="text-[9px] uppercase text-[#8A817C]">Collection</label>
-              <select [(ngModel)]="bulkFillMainCategory" class="px-2.5 py-1.5 bg-[#FBF9F6] border border-[#2A2522]/10 rounded-lg text-xs w-28">
+              <select [(ngModel)]="bulkFillMainCategory" class="px-2.5 py-1.5 bg-[#FAF5F2] border border-[var(--text-charcoal)]/10 rounded-lg text-xs w-28">
                 <option value="Women">Women</option>
                 <option value="Kids">Kids</option>
               </select>
@@ -622,52 +622,52 @@ import { MediaService } from '../../services/media.service';
 
             <div class="flex flex-col gap-1">
               <label class="text-[9px] uppercase text-[#8A817C]">Subcategory</label>
-              <select [(ngModel)]="bulkFillSubCategory" class="px-2.5 py-1.5 bg-[#FBF9F6] border border-[#2A2522]/10 rounded-lg text-xs w-28">
+              <select [(ngModel)]="bulkFillSubCategory" class="px-2.5 py-1.5 bg-[#FAF5F2] border border-[var(--text-charcoal)]/10 rounded-lg text-xs w-28">
                 <option *ngFor="let cat of getSubcategories(bulkFillMainCategory)" [value]="cat">{{ cat }}</option>
               </select>
             </div>
             
-            <button (click)="applyBulkFill('mainCategory', bulkFillMainCategory); applyBulkFill('subCategory', bulkFillSubCategory)" class="px-3 py-1.5 bg-[#2A2522] hover:bg-[#B84F7D] text-white text-[9px] uppercase tracking-widest font-bold rounded-lg transition-all">
+            <button (click)="applyBulkFill('mainCategory', bulkFillMainCategory); applyBulkFill('subCategory', bulkFillSubCategory)" class="px-3 py-1.5 bg-[var(--text-charcoal)] hover:bg-[var(--color-lavender)] text-white text-[9px] uppercase tracking-widest font-bold rounded-lg transition-all">
               Apply Cats
             </button>
 
             <!-- Stock Fill -->
             <div class="flex flex-col gap-1">
               <label class="text-[9px] uppercase text-[#8A817C]">Stock Qty</label>
-              <input type="number" [(ngModel)]="bulkFillStockQuantity" class="px-2 py-1 bg-[#FBF9F6] border border-[#2A2522]/10 rounded-lg text-xs w-16 text-center" />
+              <input type="number" [(ngModel)]="bulkFillStockQuantity" class="px-2 py-1 bg-[#FAF5F2] border border-[var(--text-charcoal)]/10 rounded-lg text-xs w-16 text-center" />
             </div>
-            <button (click)="applyBulkFill('stockQuantity', bulkFillStockQuantity)" class="px-3 py-1.5 bg-[#2A2522] hover:bg-[#B84F7D] text-white text-[9px] uppercase tracking-widest font-bold rounded-lg transition-all">
+            <button (click)="applyBulkFill('stockQuantity', bulkFillStockQuantity)" class="px-3 py-1.5 bg-[var(--text-charcoal)] hover:bg-[var(--color-lavender)] text-white text-[9px] uppercase tracking-widest font-bold rounded-lg transition-all">
               Apply Stock
             </button>
 
             <!-- Colors Fill -->
             <div class="flex flex-col gap-1">
               <label class="text-[9px] uppercase text-[#8A817C]">Colors</label>
-              <input type="text" [(ngModel)]="bulkFillColors" placeholder="Tan, Black, Sage" class="px-2 py-1 bg-[#FBF9F6] border border-[#2A2522]/10 rounded-lg text-xs w-28" />
+              <input type="text" [(ngModel)]="bulkFillColors" placeholder="Tan, Black, Sage" class="px-2 py-1 bg-[#FAF5F2] border border-[var(--text-charcoal)]/10 rounded-lg text-xs w-28" />
             </div>
-            <button (click)="applyBulkFill('colors', bulkFillColors)" class="px-3 py-1.5 bg-[#2A2522] hover:bg-[#B84F7D] text-white text-[9px] uppercase tracking-widest font-bold rounded-lg transition-all">
+            <button (click)="applyBulkFill('colors', bulkFillColors)" class="px-3 py-1.5 bg-[var(--text-charcoal)] hover:bg-[var(--color-lavender)] text-white text-[9px] uppercase tracking-widest font-bold rounded-lg transition-all">
               Apply Colors
             </button>
 
             <!-- Sizes Fill -->
             <div class="flex flex-col gap-1">
               <label class="text-[9px] uppercase text-[#8A817C]">Sizes</label>
-              <input type="text" [(ngModel)]="bulkFillSizes" placeholder="S, M, L" class="px-2 py-1 bg-[#FBF9F6] border border-[#2A2522]/10 rounded-lg text-xs w-28" />
+              <input type="text" [(ngModel)]="bulkFillSizes" placeholder="S, M, L" class="px-2 py-1 bg-[#FAF5F2] border border-[var(--text-charcoal)]/10 rounded-lg text-xs w-28" />
             </div>
-            <button (click)="applyBulkFill('sizes', bulkFillSizes)" class="px-3 py-1.5 bg-[#2A2522] hover:bg-[#B84F7D] text-white text-[9px] uppercase tracking-widest font-bold rounded-lg transition-all">
+            <button (click)="applyBulkFill('sizes', bulkFillSizes)" class="px-3 py-1.5 bg-[var(--text-charcoal)] hover:bg-[var(--color-lavender)] text-white text-[9px] uppercase tracking-widest font-bold rounded-lg transition-all">
               Apply Sizes
             </button>
 
             <!-- Shipping Size Fill -->
             <div class="flex flex-col gap-1">
               <label class="text-[9px] uppercase text-[#8A817C]">Ship Size</label>
-              <select [(ngModel)]="bulkFillShippingSize" class="px-2.5 py-1.5 bg-[#FBF9F6] border border-[#2A2522]/10 rounded-lg text-xs w-24">
+              <select [(ngModel)]="bulkFillShippingSize" class="px-2.5 py-1.5 bg-[#FAF5F2] border border-[var(--text-charcoal)]/10 rounded-lg text-xs w-24">
                 <option value="Small">Small</option>
                 <option value="Medium">Medium</option>
                 <option value="Large">Large</option>
               </select>
             </div>
-            <button (click)="applyBulkFill('shippingSize', bulkFillShippingSize)" class="px-3 py-1.5 bg-[#2A2522] hover:bg-[#B84F7D] text-white text-[9px] uppercase tracking-widest font-bold rounded-lg transition-all">
+            <button (click)="applyBulkFill('shippingSize', bulkFillShippingSize)" class="px-3 py-1.5 bg-[var(--text-charcoal)] hover:bg-[var(--color-lavender)] text-white text-[9px] uppercase tracking-widest font-bold rounded-lg transition-all">
               Apply Ship Size
             </button>
           </div>
@@ -676,9 +676,9 @@ import { MediaService } from '../../services/media.service';
           <div class="overflow-x-auto w-full rounded-xl frosted-card">
             <table class="w-full text-left border-collapse table-auto min-w-[1500px]">
               <thead>
-                <tr class="border-b border-[#2A2522]/10 bg-[#2A2522]/5 text-[9px] uppercase tracking-widest font-bold text-[#4A4340] select-none">
+                <tr class="border-b border-[var(--text-charcoal)]/10 bg-[var(--text-charcoal)]/5 text-[9px] uppercase tracking-widest font-bold text-[#4A4340] select-none">
                   <th class="py-3 px-3 text-center w-10">
-                    <input type="checkbox" [checked]="isAllSelected()" (change)="toggleAllSelected($event)" class="rounded border-[#2A2522]/15 text-[#B84F7D] focus:ring-[#B84F7D] cursor-pointer" />
+                    <input type="checkbox" [checked]="isAllSelected()" (change)="toggleAllSelected($event)" class="rounded border-[var(--text-charcoal)]/15 text-[var(--color-lavender)] focus:ring-[var(--color-lavender)] cursor-pointer" />
                   </th>
                   <th class="py-3 px-3 text-center w-12">Row</th>
                   <th class="py-3 px-3">Title *</th>
@@ -696,23 +696,23 @@ import { MediaService } from '../../services/media.service';
                   <th class="py-3 px-3 text-center w-12">✕</th>
                 </tr>
               </thead>
-              <tbody class="text-xs font-light text-[#2A2522]">
-                <tr *ngFor="let row of bulkRows(); let idx = index" class="border-b border-[#2A2522]/5 hover:bg-[#2A2522]/2 transition-colors" [class.selected-row]="row.selected">
+              <tbody class="text-xs font-light text-[var(--text-charcoal)]">
+                <tr *ngFor="let row of bulkRows(); let idx = index" class="border-b border-[var(--text-charcoal)]/5 hover:bg-[var(--text-charcoal)]/2 transition-colors" [class.selected-row]="row.selected">
                   <!-- Checkbox -->
                   <td class="py-2.5 px-3 text-center">
-                    <input type="checkbox" [(ngModel)]="row.selected" class="rounded border-[#2A2522]/15 text-[#B84F7D] focus:ring-[#B84F7D] cursor-pointer" />
+                    <input type="checkbox" [(ngModel)]="row.selected" class="rounded border-[var(--text-charcoal)]/15 text-[var(--color-lavender)] focus:ring-[var(--color-lavender)] cursor-pointer" />
                   </td>
                   <!-- Index -->
                   <td class="py-2.5 px-3 text-center font-lexend text-[10px] text-[#8A817C]">{{ idx + 1 }}</td>
                   
                   <!-- Title -->
                   <td class="py-2 px-3">
-                    <input type="text" [(ngModel)]="row.title" placeholder="Linen Blazer" class="px-2 py-1 bg-transparent focus:bg-white border-b border-[#2A2522]/10 text-xs w-full focus:outline-none" />
+                    <input type="text" [(ngModel)]="row.title" placeholder="Linen Blazer" class="px-2 py-1 bg-transparent focus:bg-white border-b border-[var(--text-charcoal)]/10 text-xs w-full focus:outline-none" />
                   </td>
 
                   <!-- MainCategory -->
                   <td class="py-2 px-3">
-                    <select [(ngModel)]="row.mainCategory" (ngModelChange)="row.subCategory = getSubcategories(row.mainCategory)[0]" class="px-2 py-1 bg-transparent focus:bg-white border-b border-[#2A2522]/10 text-xs w-full focus:outline-none">
+                    <select [(ngModel)]="row.mainCategory" (ngModelChange)="row.subCategory = getSubcategories(row.mainCategory)[0]" class="px-2 py-1 bg-transparent focus:bg-white border-b border-[var(--text-charcoal)]/10 text-xs w-full focus:outline-none">
                       <option value="Women">Women</option>
                       <option value="Kids">Kids</option>
                     </select>
@@ -720,29 +720,29 @@ import { MediaService } from '../../services/media.service';
 
                   <!-- SubCategory -->
                   <td class="py-2 px-3">
-                    <select [(ngModel)]="row.subCategory" class="px-2 py-1 bg-transparent focus:bg-white border-b border-[#2A2522]/10 text-xs w-full focus:outline-none">
+                    <select [(ngModel)]="row.subCategory" class="px-2 py-1 bg-transparent focus:bg-white border-b border-[var(--text-charcoal)]/10 text-xs w-full focus:outline-none">
                       <option *ngFor="let cat of getSubcategories(row.mainCategory)" [value]="cat">{{ cat }}</option>
                     </select>
                   </td>
 
                   <!-- Price -->
                   <td class="py-2 px-3">
-                    <input type="number" [(ngModel)]="row.price" placeholder="1400" class="px-2 py-1 bg-transparent focus:bg-white border-b border-[#2A2522]/10 text-xs w-full text-center focus:outline-none font-lexend" />
+                    <input type="number" [(ngModel)]="row.price" placeholder="1400" class="px-2 py-1 bg-transparent focus:bg-white border-b border-[var(--text-charcoal)]/10 text-xs w-full text-center focus:outline-none font-lexend" />
                   </td>
 
                   <!-- Cost Price -->
                   <td class="py-2 px-3">
-                    <input type="number" [(ngModel)]="row.costPrice" placeholder="800" class="px-2 py-1 bg-transparent focus:bg-white border-b border-[#2A2522]/10 text-xs w-full text-center focus:outline-none font-lexend" />
+                    <input type="number" [(ngModel)]="row.costPrice" placeholder="800" class="px-2 py-1 bg-transparent focus:bg-white border-b border-[var(--text-charcoal)]/10 text-xs w-full text-center focus:outline-none font-lexend" />
                   </td>
 
                   <!-- Stock Quantity -->
                   <td class="py-2 px-3">
-                    <input type="number" [(ngModel)]="row.stockQuantity" placeholder="15" class="px-2 py-1 bg-transparent focus:bg-white border-b border-[#2A2522]/10 text-xs w-full text-center focus:outline-none font-lexend" />
+                    <input type="number" [(ngModel)]="row.stockQuantity" placeholder="15" class="px-2 py-1 bg-transparent focus:bg-white border-b border-[var(--text-charcoal)]/10 text-xs w-full text-center focus:outline-none font-lexend" />
                   </td>
 
                   <!-- Shipping Size -->
                   <td class="py-2 px-3">
-                    <select [(ngModel)]="row.shippingSize" class="px-2 py-1 bg-transparent focus:bg-white border-b border-[#2A2522]/10 text-xs w-full focus:outline-none">
+                    <select [(ngModel)]="row.shippingSize" class="px-2 py-1 bg-transparent focus:bg-white border-b border-[var(--text-charcoal)]/10 text-xs w-full focus:outline-none">
                       <option value="Small">Small</option>
                       <option value="Medium">Medium</option>
                       <option value="Large">Large</option>
@@ -751,22 +751,22 @@ import { MediaService } from '../../services/media.service';
 
                   <!-- Sizes -->
                   <td class="py-2 px-3">
-                    <input type="text" [(ngModel)]="row.sizes" placeholder="S, M, L" class="px-2 py-1 bg-transparent focus:bg-white border-b border-[#2A2522]/10 text-xs w-full focus:outline-none" />
+                    <input type="text" [(ngModel)]="row.sizes" placeholder="S, M, L" class="px-2 py-1 bg-transparent focus:bg-white border-b border-[var(--text-charcoal)]/10 text-xs w-full focus:outline-none" />
                   </td>
 
                   <!-- Colors -->
                   <td class="py-2 px-3">
-                    <input type="text" [(ngModel)]="row.colors" placeholder="Tan, Blush" class="px-2 py-1 bg-transparent focus:bg-white border-b border-[#2A2522]/10 text-xs w-full focus:outline-none" />
+                    <input type="text" [(ngModel)]="row.colors" placeholder="Tan, Blush" class="px-2 py-1 bg-transparent focus:bg-white border-b border-[var(--text-charcoal)]/10 text-xs w-full focus:outline-none" />
                   </td>
 
                   <!-- Age -->
                   <td class="py-2 px-3">
-                    <input type="text" [disabled]="row.mainCategory === 'Women'" [(ngModel)]="row.age" placeholder="1-3 Years" class="px-2 py-1 bg-transparent focus:bg-white border-b border-[#2A2522]/10 text-xs w-full disabled:opacity-40 focus:outline-none" />
+                    <input type="text" [disabled]="row.mainCategory === 'Women'" [(ngModel)]="row.age" placeholder="1-3 Years" class="px-2 py-1 bg-transparent focus:bg-white border-b border-[var(--text-charcoal)]/10 text-xs w-full disabled:opacity-40 focus:outline-none" />
                   </td>
 
                   <!-- Description -->
                   <td class="py-2 px-3">
-                    <input type="text" [(ngModel)]="row.description" placeholder="Premium linen fabric..." class="px-2 py-1 bg-transparent focus:bg-white border-b border-[#2A2522]/10 text-xs w-full focus:outline-none" />
+                    <input type="text" [(ngModel)]="row.description" placeholder="Premium linen fabric..." class="px-2 py-1 bg-transparent focus:bg-white border-b border-[var(--text-charcoal)]/10 text-xs w-full focus:outline-none" />
                   </td>
 
                   <!-- ImageUrl Upload (Multiple) -->
@@ -775,11 +775,11 @@ import { MediaService } from '../../services/media.service';
                       <button 
                         type="button"
                         (click)="openBulkRowImagesModal(row)"
-                        class="px-2 py-1.5 border border-[#2A2522]/15 hover:bg-[#2A2522]/5 text-[#2A2522] rounded-lg text-[9px] uppercase tracking-widest font-bold flex items-center gap-1 min-w-[90px]"
+                        class="px-2 py-1.5 border border-[var(--text-charcoal)]/15 hover:bg-[var(--text-charcoal)]/5 text-[var(--text-charcoal)] rounded-lg text-[9px] uppercase tracking-widest font-bold flex items-center gap-1 min-w-[90px]"
                       >
                         📷 Images ({{ row.imageUrls?.length || 0 }})
                       </button>
-                      <img *ngIf="row.imageUrls && row.imageUrls.length > 0" [src]="resolveImageUrl(row.imageUrls[0] || '')" class="w-6 h-6 rounded object-cover border border-[#2A2522]/10" />
+                      <img *ngIf="row.imageUrls && row.imageUrls.length > 0" [src]="resolveImageUrl(row.imageUrls[0] || '')" class="w-6 h-6 rounded object-cover border border-[var(--text-charcoal)]/10" />
                     </div>
                   </td>
 
@@ -795,7 +795,7 @@ import { MediaService } from '../../services/media.service';
           <!-- Bottom Grid Controls -->
           <div class="flex justify-between items-center pt-2">
             <div class="flex gap-3">
-              <button (click)="addBulkRow()" class="px-4 py-2 border border-[#2A2522]/15 hover:bg-[#2A2522]/5 text-[#2A2522] text-xs font-bold uppercase tracking-widest rounded-xl transition-all">
+              <button (click)="addBulkRow()" class="px-4 py-2 border border-[var(--text-charcoal)]/15 hover:bg-[var(--text-charcoal)]/5 text-[var(--text-charcoal)] text-xs font-bold uppercase tracking-widest rounded-xl transition-all">
                 + Add Empty Row
               </button>
               <button (click)="clearBulkRows()" class="px-4 py-2 border border-red-200 text-red-600 hover:bg-red-50 text-xs font-bold uppercase tracking-widest rounded-xl transition-all">
@@ -806,30 +806,30 @@ import { MediaService } from '../../services/media.service';
             <button 
               (click)="publishBulkProducts()" 
               [disabled]="publishingBulk()"
-              class="px-6 py-3 bg-[#B84F7D] hover:bg-[#2A2522] text-[#FBF9F6] text-xs font-bold uppercase tracking-[0.15em] rounded-xl transition-all disabled:opacity-50"
+              class="px-6 py-3 bg-[var(--color-lavender)] hover:bg-[var(--text-charcoal)] text-[#FAF5F2] text-xs font-bold uppercase tracking-[0.15em] rounded-xl transition-all disabled:opacity-50"
             >
               {{ publishingBulk() ? 'Publishing Batch...' : 'Publish Product Batch' }}
             </button>
           </div>
 
           <!-- Row Images Modal Overlay -->
-          <div *ngIf="activeBulkImageRow() !== null" class="fixed inset-0 bg-[#2A2522]/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" (click)="closeBulkRowImagesModal()">
-            <div class="frosted-card w-full max-w-md p-6 rounded-2xl space-y-6 text-[#2A2522] animate-fade-in shadow-2xl" (click)="$event.stopPropagation()">
-              <div class="flex justify-between items-center border-b border-[#2A2522]/10 pb-3">
+          <div *ngIf="activeBulkImageRow() !== null" class="fixed inset-0 bg-[var(--text-charcoal)]/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" (click)="closeBulkRowImagesModal()">
+            <div class="frosted-card w-full max-w-md p-6 rounded-2xl space-y-6 text-[var(--text-charcoal)] animate-fade-in shadow-2xl" (click)="$event.stopPropagation()">
+              <div class="flex justify-between items-center border-b border-[var(--text-charcoal)]/10 pb-3">
                 <div>
-                  <h4 class="title-header text-sm font-bold text-[#B84F7D]">Manage Row Images</h4>
+                  <h4 class="title-header text-sm font-bold text-[var(--color-lavender)]">Manage Row Images</h4>
                   <span class="text-[9px] uppercase tracking-widest text-[#8A817C] font-lexend">Upload up to 10 images for: {{ activeBulkImageRow()?.title || 'this row' }}</span>
                 </div>
-                <button (click)="closeBulkRowImagesModal()" class="text-xs text-[#8A817C] hover:text-[#B84F7D] font-bold">✕</button>
+                <button (click)="closeBulkRowImagesModal()" class="text-xs text-[#8A817C] hover:text-[var(--color-lavender)] font-bold">✕</button>
               </div>
 
               <div class="flex flex-wrap gap-3">
                 <div 
                   *ngFor="let imgUrl of activeBulkImageRow()?.imageUrls || []; let i = index" 
-                  class="relative w-20 h-20 rounded-xl border border-[#2A2522]/10 bg-white overflow-hidden flex items-center justify-center group/bulk-img shadow-sm animate-fade-in"
+                  class="relative w-20 h-20 rounded-xl border border-[var(--text-charcoal)]/10 bg-white overflow-hidden flex items-center justify-center group/bulk-img shadow-sm animate-fade-in"
                 >
                   <img [src]="resolveImageUrl(imgUrl)" class="w-full h-full object-cover" />
-                  <div *ngIf="i === 0" class="absolute bottom-0 left-0 right-0 bg-[#2A2522]/80 text-[7px] text-white text-center py-0.5 font-bold uppercase tracking-wider">
+                  <div *ngIf="i === 0" class="absolute bottom-0 left-0 right-0 bg-[var(--text-charcoal)]/80 text-[7px] text-white text-center py-0.5 font-bold uppercase tracking-wider">
                     Primary
                   </div>
                   <!-- Delete Swatch Button -->
@@ -845,7 +845,7 @@ import { MediaService } from '../../services/media.service';
                 <!-- Upload Box -->
                 <label 
                   *ngIf="(activeBulkImageRow()?.imageUrls?.length || 0) < 10"
-                  class="w-20 h-20 rounded-xl border-2 border-dashed border-[#2A2522]/15 hover:border-[#E07A5F] bg-[#FBF9F6] flex flex-col items-center justify-center text-[#8A817C] hover:text-[#E07A5F] cursor-pointer select-none transition-all"
+                  class="w-20 h-20 rounded-xl border-2 border-dashed border-[var(--text-charcoal)]/15 hover:border-[var(--color-coral)] bg-[#FAF5F2] flex flex-col items-center justify-center text-[#8A817C] hover:text-[var(--color-coral)] cursor-pointer select-none transition-all"
                 >
                   <span class="text-base font-bold leading-none">+</span>
                   <span class="text-[8px] font-bold uppercase tracking-widest mt-0.5 animate-pulse">Upload</span>
@@ -853,8 +853,8 @@ import { MediaService } from '../../services/media.service';
                 </label>
               </div>
 
-              <div class="pt-4 border-t border-[#2A2522]/10 flex justify-end">
-                <button (click)="closeBulkRowImagesModal()" class="px-5 py-2 bg-[#2A2522] hover:bg-[#B84F7D] text-[#FBF9F6] text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all shadow-sm">
+              <div class="pt-4 border-t border-[var(--text-charcoal)]/10 flex justify-end">
+                <button (click)="closeBulkRowImagesModal()" class="px-5 py-2 bg-[var(--text-charcoal)] hover:bg-[var(--color-lavender)] text-[#FAF5F2] text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all shadow-sm">
                   Done
                 </button>
               </div>
@@ -863,18 +863,18 @@ import { MediaService } from '../../services/media.service';
         </div>
 
         <!-- TAB 4: SHIPPING CONSOLE LEDGER -->
-        <div *ngIf="currentTab() === 'shipping'" class="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-fade-in text-[#2A2522]">
+        <div *ngIf="currentTab() === 'shipping'" class="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-fade-in text-[var(--text-charcoal)]">
           
           <!-- Left 2 Columns: Governorate rates ledger -->
           <div class="lg:col-span-2 space-y-6">
             <div class="frosted-card p-6 rounded-2xl space-y-4">
-              <div class="border-b border-[#2A2522]/10 pb-4 flex justify-between items-center">
+              <div class="border-b border-[var(--text-charcoal)]/10 pb-4 flex justify-between items-center">
                 <div>
-                  <h3 class="title-header text-base font-light text-[#2A2522]">Egyptian Governorates Rate Ledger</h3>
+                  <h3 class="title-header text-base font-light text-[var(--text-charcoal)]">Egyptian Governorates Rate Ledger</h3>
                   <span class="text-[9px] uppercase tracking-widest text-[#8A817C] font-lexend">Baseline delivery costs per packaging sizing category</span>
                 </div>
                 <div class="flex gap-2">
-                  <button (click)="loadShippingData()" class="px-3.5 py-1.5 border border-[#2A2522]/10 hover:bg-[#2A2522]/5 text-[#2A2522] text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all">
+                  <button (click)="loadShippingData()" class="px-3.5 py-1.5 border border-[var(--text-charcoal)]/10 hover:bg-[var(--text-charcoal)]/5 text-[var(--text-charcoal)] text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all">
                     ↻ Refresh Console
                   </button>
                 </div>
@@ -882,14 +882,14 @@ import { MediaService } from '../../services/media.service';
 
               <!-- Message Banner -->
               <div *ngIf="shippingMessage()" class="p-3 text-[10px] uppercase font-bold tracking-wider rounded-xl text-center" 
-                   [ngClass]="shippingIsError() ? 'bg-red-50 border border-red-200 text-red-800' : 'bg-[#2A2522]/5 border border-[#2A2522]/10 text-[#2A2522]'">
+                   [ngClass]="shippingIsError() ? 'bg-red-50 border border-red-200 text-red-800' : 'bg-[var(--text-charcoal)]/5 border border-[var(--text-charcoal)]/10 text-[var(--text-charcoal)]'">
                 {{ shippingMessage() }}
               </div>
 
               <div class="overflow-x-auto w-full rounded-xl frosted-card">
                 <table class="w-full text-left border-collapse table-auto">
                   <thead>
-                    <tr class="border-b border-[#2A2522]/10 bg-[#2A2522]/5 text-[9px] uppercase tracking-widest font-bold text-[#4A4340] select-none">
+                    <tr class="border-b border-[var(--text-charcoal)]/10 bg-[var(--text-charcoal)]/5 text-[9px] uppercase tracking-widest font-bold text-[#4A4340] select-none">
                       <th class="py-3 px-4">Governorate</th>
                       <th class="py-3 px-4 w-28 text-center">Small (LE)</th>
                       <th class="py-3 px-4 w-28 text-center">Medium (LE)</th>
@@ -897,38 +897,38 @@ import { MediaService } from '../../services/media.service';
                       <th class="py-3 px-4 w-24 text-center">Action</th>
                     </tr>
                   </thead>
-                  <tbody class="text-xs font-light divide-y divide-[#2A2522]/5">
-                    <tr *ngFor="let gov of governorates()" class="hover:bg-[#2A2522]/2 transition-colors">
+                  <tbody class="text-xs font-light divide-y divide-[var(--text-charcoal)]/5">
+                    <tr *ngFor="let gov of governorates()" class="hover:bg-[var(--text-charcoal)]/2 transition-colors">
                       <td class="py-3 px-4 font-lexend font-medium tracking-wide text-sm">{{ gov.governorate }}</td>
                       
                       <!-- Small Price -->
                       <td class="py-2 px-4 text-center">
                         <span *ngIf="!gov.isEditing" class="font-lexend">{{ gov.basePriceSmall | number:'1.2-2' }}</span>
-                        <input *ngIf="gov.isEditing" type="number" [(ngModel)]="gov.basePriceSmall" class="px-2 py-1 w-20 bg-white border border-[#2A2522]/15 rounded text-center text-xs font-lexend focus:outline-none" />
+                        <input *ngIf="gov.isEditing" type="number" [(ngModel)]="gov.basePriceSmall" class="px-2 py-1 w-20 bg-white border border-[var(--text-charcoal)]/15 rounded text-center text-xs font-lexend focus:outline-none" />
                       </td>
 
                       <!-- Medium Price -->
                       <td class="py-2 px-4 text-center">
                         <span *ngIf="!gov.isEditing" class="font-lexend">{{ gov.basePriceMedium | number:'1.2-2' }}</span>
-                        <input *ngIf="gov.isEditing" type="number" [(ngModel)]="gov.basePriceMedium" class="px-2 py-1 w-20 bg-white border border-[#2A2522]/15 rounded text-center text-xs font-lexend focus:outline-none" />
+                        <input *ngIf="gov.isEditing" type="number" [(ngModel)]="gov.basePriceMedium" class="px-2 py-1 w-20 bg-white border border-[var(--text-charcoal)]/15 rounded text-center text-xs font-lexend focus:outline-none" />
                       </td>
 
                       <!-- Large Price -->
                       <td class="py-2 px-4 text-center">
                         <span *ngIf="!gov.isEditing" class="font-lexend">{{ gov.basePriceLarge | number:'1.2-2' }}</span>
-                        <input *ngIf="gov.isEditing" type="number" [(ngModel)]="gov.basePriceLarge" class="px-2 py-1 w-20 bg-white border border-[#2A2522]/15 rounded text-center text-xs font-lexend focus:outline-none" />
+                        <input *ngIf="gov.isEditing" type="number" [(ngModel)]="gov.basePriceLarge" class="px-2 py-1 w-20 bg-white border border-[var(--text-charcoal)]/15 rounded text-center text-xs font-lexend focus:outline-none" />
                       </td>
 
                       <!-- Action Button -->
                       <td class="py-2 px-4 text-center font-lexend">
-                        <button *ngIf="!gov.isEditing" (click)="startEditGovernorate(gov)" class="text-[#B84F7D] hover:text-[#B84F7D]/80 text-[10px] font-bold uppercase tracking-widest transition-colors">
+                        <button *ngIf="!gov.isEditing" (click)="startEditGovernorate(gov)" class="text-[var(--color-lavender)] hover:text-[var(--color-lavender)]/80 text-[10px] font-bold uppercase tracking-widest transition-colors">
                           Edit
                         </button>
                         <div *ngIf="gov.isEditing" class="flex gap-2 justify-center">
                           <button (click)="saveGovernorate(gov)" class="text-emerald-700 hover:text-emerald-900 text-[10px] font-bold uppercase tracking-widest">
                             Save
                           </button>
-                          <button (click)="cancelEditGovernorate(gov)" class="text-[#8A817C] hover:text-[#2A2522] text-[10px] font-bold uppercase tracking-widest">
+                          <button (click)="cancelEditGovernorate(gov)" class="text-[#8A817C] hover:text-[var(--text-charcoal)] text-[10px] font-bold uppercase tracking-widest">
                             Cancel
                           </button>
                         </div>
@@ -944,20 +944,20 @@ import { MediaService } from '../../services/media.service';
           <div class="space-y-6">
             <!-- Sizing Combination Rules -->
             <div class="frosted-card p-6 rounded-2xl space-y-4">
-              <div class="border-b border-[#2A2522]/10 pb-4">
-                <h3 class="title-header text-base font-light text-[#2A2522]">Sizing Combo Rules</h3>
+              <div class="border-b border-[var(--text-charcoal)]/10 pb-4">
+                <h3 class="title-header text-base font-light text-[var(--text-charcoal)]">Sizing Combo Rules</h3>
                 <span class="text-[9px] uppercase tracking-widest text-[#8A817C] font-lexend">Consolidate multiple items into single package size</span>
               </div>
 
               <!-- Rules list -->
               <div class="space-y-3 max-h-[350px] overflow-y-auto pr-1 custom-scrollbar">
-                <div *ngFor="let rule of comboRules()" class="p-3 bg-white border border-[#2A2522]/5 rounded-xl text-xs flex justify-between items-center hover:shadow-xs transition-shadow">
+                <div *ngFor="let rule of comboRules()" class="p-3 bg-white border border-[var(--text-charcoal)]/5 rounded-xl text-xs flex justify-between items-center hover:shadow-xs transition-shadow">
                   <div class="space-y-0.5">
-                    <div class="font-semibold text-[#2A2522] font-lexend">
+                    <div class="font-semibold text-[var(--text-charcoal)] font-lexend">
                       {{ rule.inputSmallCount }} Small + {{ rule.inputMediumCount }} Medium
                     </div>
                     <div class="text-[10px] text-[#8A817C] font-light flex items-center gap-1">
-                      Result: <span class="bg-[#B84F7D]/10 text-[#B84F7D] px-1.5 py-0.2 rounded font-bold uppercase tracking-wider text-[8px] font-lexend">{{ getShippingSizeName(rule.resultingSize) }}</span>
+                      Result: <span class="bg-[var(--color-lavender)]/10 text-[var(--color-lavender)] px-1.5 py-0.2 rounded font-bold uppercase tracking-wider text-[8px] font-lexend">{{ getShippingSizeName(rule.resultingSize) }}</span>
                     </div>
                   </div>
                   <button (click)="deleteComboRule(rule.id)" class="text-red-500 hover:text-red-700 text-xs p-1">
@@ -970,30 +970,30 @@ import { MediaService } from '../../services/media.service';
               </div>
 
               <!-- New rule creator form -->
-              <div class="border-t border-[#2A2522]/10 pt-4 space-y-3">
-                <h4 class="title-header text-[10px] font-bold text-[#2A2522]">Create Combination Rule</h4>
+              <div class="border-t border-[var(--text-charcoal)]/10 pt-4 space-y-3">
+                <h4 class="title-header text-[10px] font-bold text-[var(--text-charcoal)]">Create Combination Rule</h4>
                 
                 <div class="grid grid-cols-2 gap-3">
                   <div class="space-y-1">
                     <label class="text-[8px] uppercase tracking-widest font-semibold text-[#8A817C] block">Small Qty *</label>
-                    <input type="number" [(ngModel)]="ruleInputSmallCount" class="w-full px-2.5 py-1.5 bg-white border border-[#2A2522]/10 rounded-lg text-xs font-lexend text-center focus:outline-none" />
+                    <input type="number" [(ngModel)]="ruleInputSmallCount" class="w-full px-2.5 py-1.5 bg-white border border-[var(--text-charcoal)]/10 rounded-lg text-xs font-lexend text-center focus:outline-none" />
                   </div>
                   <div class="space-y-1">
                     <label class="text-[8px] uppercase tracking-widest font-semibold text-[#8A817C] block">Medium Qty *</label>
-                    <input type="number" [(ngModel)]="ruleInputMediumCount" class="w-full px-2.5 py-1.5 bg-white border border-[#2A2522]/10 rounded-lg text-xs font-lexend text-center focus:outline-none" />
+                    <input type="number" [(ngModel)]="ruleInputMediumCount" class="w-full px-2.5 py-1.5 bg-white border border-[var(--text-charcoal)]/10 rounded-lg text-xs font-lexend text-center focus:outline-none" />
                   </div>
                 </div>
 
                 <div class="space-y-1">
                   <label class="text-[8px] uppercase tracking-widest font-semibold text-[#8A817C] block">Resulting Size *</label>
-                  <select [(ngModel)]="ruleResultingSize" class="w-full px-3 py-1.5 bg-white border border-[#2A2522]/10 rounded-lg text-xs focus:outline-none">
+                  <select [(ngModel)]="ruleResultingSize" class="w-full px-3 py-1.5 bg-white border border-[var(--text-charcoal)]/10 rounded-lg text-xs focus:outline-none">
                     <option value="Small">Small</option>
                     <option value="Medium">Medium</option>
                     <option value="Large">Large</option>
                   </select>
                 </div>
 
-                <button (click)="createComboRule()" class="w-full py-2.5 bg-[#2A2522] hover:bg-[#B84F7D] text-[#FBF9F6] text-xs font-bold uppercase tracking-widest rounded-xl transition-all">
+                <button (click)="createComboRule()" class="w-full py-2.5 bg-[var(--text-charcoal)] hover:bg-[var(--color-lavender)] text-[#FAF5F2] text-xs font-bold uppercase tracking-widest rounded-xl transition-all">
                   + Add Combo Rule
                 </button>
             </div>
@@ -1003,16 +1003,16 @@ import { MediaService } from '../../services/media.service';
       </div>
 
         <!-- TAB 5: BRANDS DIRECTORY -->
-        <div *ngIf="currentTab() === 'brands'" class="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-fade-in text-[#2A2522]">
+        <div *ngIf="currentTab() === 'brands'" class="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-fade-in text-[var(--text-charcoal)]">
           <!-- Left 2 Columns: Brand Grid List -->
           <div class="lg:col-span-2 space-y-6">
             <div class="frosted-card p-6 rounded-2xl space-y-4">
-              <div class="border-b border-[#2A2522]/10 pb-4 flex justify-between items-center">
+              <div class="border-b border-[var(--text-charcoal)]/10 pb-4 flex justify-between items-center">
                 <div>
-                  <h3 class="title-header text-base font-light text-[#2A2522]">Design Houses &amp; Brands</h3>
+                  <h3 class="title-header text-base font-light text-[var(--text-charcoal)]">Design Houses &amp; Brands</h3>
                   <span class="text-[9px] uppercase tracking-widest text-[#8A817C] font-lexend">Catalog brands, logos, and storefront cards promotion settings</span>
                 </div>
-                <button (click)="loadBrands()" class="px-3.5 py-1.5 border border-[#2A2522]/10 hover:bg-[#2A2522]/5 text-[#2A2522] text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all">
+                <button (click)="loadBrands()" class="px-3.5 py-1.5 border border-[var(--text-charcoal)]/10 hover:bg-[var(--text-charcoal)]/5 text-[var(--text-charcoal)] text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all">
                   ↻ Refresh Brands
                 </button>
               </div>
@@ -1029,17 +1029,17 @@ import { MediaService } from '../../services/media.service';
 
               <!-- Brand Cards Grid -->
               <div *ngIf="!loadingBrands()" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div *ngFor="let brand of brands()" class="p-4 bg-white/40 border border-[#2A2522]/5 rounded-xl hover:shadow-sm transition-all duration-300 flex items-center justify-between">
+                <div *ngFor="let brand of brands()" class="p-4 bg-white/40 border border-[var(--text-charcoal)]/5 rounded-xl hover:shadow-sm transition-all duration-300 flex items-center justify-between">
                   <div class="flex items-center gap-3.5">
                     <!-- Brand Logo Wrapper -->
-                    <div class="w-12 h-12 rounded-full overflow-hidden border border-[#2A2522]/10 bg-white p-1 flex items-center justify-center flex-shrink-0">
+                    <div class="w-12 h-12 rounded-full overflow-hidden border border-[var(--text-charcoal)]/10 bg-white p-1 flex items-center justify-center flex-shrink-0">
                       <img [src]="resolveImageUrl(brand.logoUrl)" [alt]="brand.name" class="w-full h-full object-contain" />
                     </div>
                     <div>
-                      <h4 class="font-lexend text-sm font-semibold text-[#2A2522] tracking-wide">{{ brand.name }}</h4>
+                      <h4 class="font-lexend text-sm font-semibold text-[var(--text-charcoal)] tracking-wide">{{ brand.name }}</h4>
                       <div class="flex flex-wrap gap-1.5 mt-1">
                         <span class="text-[8px] uppercase tracking-widest font-lexend font-bold px-1.5 py-0.5 rounded"
-                              [ngClass]="brand.showInCards ? 'bg-amber-50 text-amber-700 border border-amber-200' : 'bg-[#2A2522]/5 text-[#8A817C]'">
+                              [ngClass]="brand.showInCards ? 'bg-amber-50 text-amber-700 border border-amber-200' : 'bg-[var(--text-charcoal)]/5 text-[#8A817C]'">
                           {{ brand.showInCards ? '⭐ Homepage Card' : 'Hidden from Homepage' }}
                         </span>
                         <span class="text-[8px] uppercase tracking-widest font-lexend font-bold px-1.5 py-0.5 rounded"
@@ -1050,7 +1050,7 @@ import { MediaService } from '../../services/media.service';
                     </div>
                   </div>
                   <div class="flex gap-2">
-                    <button (click)="startEditBrand(brand)" class="text-[#B84F7D] hover:text-[#B84F7D]/80 text-[10px] font-bold uppercase tracking-widest transition-colors px-2 py-1">
+                    <button (click)="startEditBrand(brand)" class="text-[var(--color-lavender)] hover:text-[var(--color-lavender)]/80 text-[10px] font-bold uppercase tracking-widest transition-colors px-2 py-1">
                       Edit
                     </button>
                     <button (click)="deleteBrand(brand.id)" class="text-red-500 hover:text-red-700 text-[10px] font-bold uppercase tracking-widest transition-colors px-2 py-1">
@@ -1068,8 +1068,8 @@ import { MediaService } from '../../services/media.service';
           <!-- Right Column: Brand Creator Form -->
           <div class="space-y-6">
             <div class="frosted-card p-6 rounded-2xl space-y-4">
-              <div class="border-b border-[#2A2522]/10 pb-4">
-                <h3 class="title-header text-base font-light text-[#2A2522]">{{ editingBrandId() ? 'Modify Brand' : 'Register Brand' }}</h3>
+              <div class="border-b border-[var(--text-charcoal)]/10 pb-4">
+                <h3 class="title-header text-base font-light text-[var(--text-charcoal)]">{{ editingBrandId() ? 'Modify Brand' : 'Register Brand' }}</h3>
                 <span class="text-[9px] uppercase tracking-widest text-[#8A817C] font-lexend">
                   {{ editingBrandId() ? 'Save edits to database' : 'Add new design house to catalog' }}
                 </span>
@@ -1079,7 +1079,7 @@ import { MediaService } from '../../services/media.service';
                 <!-- Name input -->
                 <div class="space-y-1">
                   <label class="text-[8px] uppercase tracking-widest font-semibold text-[#8A817C] block">Brand Name *</label>
-                  <input type="text" [(ngModel)]="brandFormName" placeholder="E.g. Gucci, Chanel" class="w-full px-3 py-2 bg-white border border-[#2A2522]/10 rounded-lg text-xs focus:outline-none" />
+                  <input type="text" [(ngModel)]="brandFormName" placeholder="E.g. Gucci, Chanel" class="w-full px-3 py-2 bg-white border border-[var(--text-charcoal)]/10 rounded-lg text-xs focus:outline-none" />
                 </div>
 
                 <!-- Logo Upload instead of URL input -->
@@ -1094,25 +1094,25 @@ import { MediaService } from '../../services/media.service';
 
                 <!-- Show in Cards checkbox -->
                 <div class="flex items-center gap-2.5 py-1">
-                  <input type="checkbox" id="brandFormShowInCards" [(ngModel)]="brandFormShowInCards" class="w-4 h-4 rounded border-[#2A2522]/10 text-[#B84F7D] focus:ring-[#B84F7D]" />
-                  <label for="brandFormShowInCards" class="text-[10px] uppercase tracking-widest font-semibold text-[#2A2522] cursor-pointer select-none">
+                  <input type="checkbox" id="brandFormShowInCards" [(ngModel)]="brandFormShowInCards" class="w-4 h-4 rounded border-[var(--text-charcoal)]/10 text-[var(--color-lavender)] focus:ring-[var(--color-lavender)]" />
+                  <label for="brandFormShowInCards" class="text-[10px] uppercase tracking-widest font-semibold text-[var(--text-charcoal)] cursor-pointer select-none">
                     Show in Homepage Cards
                   </label>
                 </div>
 
                 <!-- Is Visible checkbox -->
                 <div class="flex items-center gap-2.5 py-1">
-                  <input type="checkbox" id="brandFormIsVisible" [(ngModel)]="brandFormIsVisible" class="w-4 h-4 rounded border-[#2A2522]/10 text-[#B84F7D] focus:ring-[#B84F7D]" />
-                  <label for="brandFormIsVisible" class="text-[10px] uppercase tracking-widest font-semibold text-[#2A2522] cursor-pointer select-none">
+                  <input type="checkbox" id="brandFormIsVisible" [(ngModel)]="brandFormIsVisible" class="w-4 h-4 rounded border-[var(--text-charcoal)]/10 text-[var(--color-lavender)] focus:ring-[var(--color-lavender)]" />
+                  <label for="brandFormIsVisible" class="text-[10px] uppercase tracking-widest font-semibold text-[var(--text-charcoal)] cursor-pointer select-none">
                     Visible to Customers
                   </label>
                 </div>
 
                 <div class="flex gap-2.5 pt-2">
-                  <button (click)="editingBrandId() ? updateBrand() : createBrand()" [disabled]="submittingBrand()" class="flex-1 py-2.5 bg-[#2A2522] hover:bg-[#B84F7D] text-[#FBF9F6] text-xs font-bold uppercase tracking-widest rounded-xl transition-all disabled:opacity-50">
+                  <button (click)="editingBrandId() ? updateBrand() : createBrand()" [disabled]="submittingBrand()" class="flex-1 py-2.5 bg-[var(--text-charcoal)] hover:bg-[var(--color-lavender)] text-[#FAF5F2] text-xs font-bold uppercase tracking-widest rounded-xl transition-all disabled:opacity-50">
                     {{ submittingBrand() ? 'Saving...' : (editingBrandId() ? 'Save Brand' : 'Create Brand') }}
                   </button>
-                  <button *ngIf="editingBrandId()" (click)="cancelEditBrand()" class="py-2.5 px-4 border border-[#2A2522]/15 hover:bg-[#2A2522]/5 text-[#2A2522] text-xs font-bold uppercase tracking-widest rounded-xl transition-all">
+                  <button *ngIf="editingBrandId()" (click)="cancelEditBrand()" class="py-2.5 px-4 border border-[var(--text-charcoal)]/15 hover:bg-[var(--text-charcoal)]/5 text-[var(--text-charcoal)] text-xs font-bold uppercase tracking-widest rounded-xl transition-all">
                     Cancel
                   </button>
                 </div>
@@ -1122,13 +1122,13 @@ import { MediaService } from '../../services/media.service';
             </div>
 
         <!-- TAB 6: ENTERPRISE ANALYTICS LEDGER -->
-        <div *ngIf="currentTab() === 'analytics'" class="space-y-8 animate-fade-in text-[#2A2522]">
+        <div *ngIf="currentTab() === 'analytics'" class="space-y-8 animate-fade-in text-[var(--text-charcoal)]">
           <!-- Top Block: Financial Metrics Grid -->
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <!-- Total Sales Card -->
             <div class="frosted-card p-6 rounded-2xl flex flex-col justify-between h-36">
               <span class="tracking-widest font-lexend text-[9px] uppercase font-semibold text-[#8A817C]">Total Gross Sales</span>
-              <div class="text-3xl font-light font-lexend tracking-wide text-[#2A2522]">
+              <div class="text-3xl font-light font-lexend tracking-wide text-[var(--text-charcoal)]">
                 {{ (analyticsSummary()?.totalSales || 0) | currency:'EGP ' }}
               </div>
               <span class="text-[9px] font-lexend text-[#8A817C] uppercase tracking-wider">Active delivered & shipped orders</span>
@@ -1137,7 +1137,7 @@ import { MediaService } from '../../services/media.service';
             <!-- Net Profit Card -->
             <div class="frosted-card p-6 rounded-2xl flex flex-col justify-between h-36">
               <span class="tracking-widest font-lexend text-[9px] uppercase font-semibold text-[#8A817C]">Net Operation Profit</span>
-              <div class="text-3xl font-light font-lexend tracking-wide text-[#2A2522]">
+              <div class="text-3xl font-light font-lexend tracking-wide text-[var(--text-charcoal)]">
                 {{ (analyticsSummary()?.netProfit || 0) | currency:'EGP ' }}
               </div>
               <span class="text-[9px] font-lexend text-[#8A817C] uppercase tracking-wider">Gross sales minus wholesale costs</span>
@@ -1146,7 +1146,7 @@ import { MediaService } from '../../services/media.service';
             <!-- Shipping Revenue Card -->
             <div class="frosted-card p-6 rounded-2xl flex flex-col justify-between h-36">
               <span class="tracking-widest font-lexend text-[9px] uppercase font-semibold text-[#8A817C]">Shipping Fees Collected</span>
-              <div class="text-3xl font-light font-lexend tracking-wide text-[#2A2522]">
+              <div class="text-3xl font-light font-lexend tracking-wide text-[var(--text-charcoal)]">
                 {{ (analyticsSummary()?.totalShippingCollected || 0) | currency:'EGP ' }}
               </div>
               <span class="text-[9px] font-lexend text-[#8A817C] uppercase tracking-wider">Logistics delivery revenues</span>
@@ -1159,19 +1159,19 @@ import { MediaService } from '../../services/media.service';
             <!-- Left Column: Geographic Traffic Console -->
             <div class="frosted-card p-6 rounded-2xl space-y-6">
               <div>
-                <h3 class="title-header text-base font-light text-[#2A2522]">Geographic Traffic Radar</h3>
+                <h3 class="title-header text-base font-light text-[var(--text-charcoal)]">Geographic Traffic Radar</h3>
                 <span class="text-[9px] uppercase tracking-widest text-[#8A817C] font-lexend">Real-time visitor locations and order shipping hubs</span>
               </div>
 
               <!-- Top Countries -->
               <div class="space-y-3">
-                <span class="text-[10px] uppercase tracking-widest font-bold text-[#8A817C] block border-b border-[#2A2522]/5 pb-1">Top Countries</span>
+                <span class="text-[10px] uppercase tracking-widest font-bold text-[#8A817C] block border-b border-[var(--text-charcoal)]/5 pb-1">Top Countries</span>
                 <div class="space-y-2">
                   <div *ngFor="let item of countryList()" class="flex justify-between items-center text-xs font-light py-1">
                     <span class="font-lexend tracking-wide flex items-center gap-2 text-[13px]">
                       🌍 {{ item.name }}
                     </span>
-                    <span class="font-lexend font-medium bg-[#2A2522]/5 px-2 py-0.5 rounded">{{ item.count }} visits</span>
+                    <span class="font-lexend font-medium bg-[var(--text-charcoal)]/5 px-2 py-0.5 rounded">{{ item.count }} visits</span>
                   </div>
                   <div *ngIf="countryList().length === 0" class="text-center py-4 text-xs text-[#8A817C] font-light italic">
                     No country traffic recorded.
@@ -1181,13 +1181,13 @@ import { MediaService } from '../../services/media.service';
 
               <!-- Top Egypt Governorates -->
               <div class="space-y-3 pt-2">
-                <span class="text-[10px] uppercase tracking-widest font-bold text-[#8A817C] block border-b border-[#2A2522]/5 pb-1">Top Egyptian Governorates</span>
+                <span class="text-[10px] uppercase tracking-widest font-bold text-[#8A817C] block border-b border-[var(--text-charcoal)]/5 pb-1">Top Egyptian Governorates</span>
                 <div class="space-y-2 max-h-[300px] overflow-y-auto custom-scrollbar pr-1">
                   <div *ngFor="let item of governorateList()" class="flex justify-between items-center text-xs font-light py-1">
                     <span class="font-lexend tracking-wide text-[13px]">
                       📍 {{ item.name }}
                     </span>
-                    <span class="font-lexend font-medium bg-[#2A2522]/5 px-2 py-0.5 rounded">{{ item.count }} hits</span>
+                    <span class="font-lexend font-medium bg-[var(--text-charcoal)]/5 px-2 py-0.5 rounded">{{ item.count }} hits</span>
                   </div>
                   <div *ngIf="governorateList().length === 0" class="text-center py-4 text-xs text-[#8A817C] font-light italic">
                     No governorate traffic recorded.
@@ -1199,12 +1199,12 @@ import { MediaService } from '../../services/media.service';
             <!-- Right Column: Transaction Auditing -->
             <div class="frosted-card p-6 rounded-2xl space-y-6">
               <div>
-                <h3 class="title-header text-base font-light text-[#2A2522]">Transaction Auditing</h3>
+                <h3 class="title-header text-base font-light text-[var(--text-charcoal)]">Transaction Auditing</h3>
                 <span class="text-[9px] uppercase tracking-widest text-[#8A817C] font-lexend">Digital wallet verification logs and failure codes</span>
               </div>
 
               <!-- Verification Success / Rejection Rate Graph -->
-              <div class="space-y-4 bg-white/40 p-5 rounded-xl border border-[#2A2522]/5">
+              <div class="space-y-4 bg-white/40 p-5 rounded-xl border border-[var(--text-charcoal)]/5">
                 <span class="text-[9px] uppercase tracking-widest font-bold text-[#8A817C] block mb-2">InstaPay verification rate</span>
                 
                 <div class="space-y-3">
@@ -1214,7 +1214,7 @@ import { MediaService } from '../../services/media.service';
                       <span>Approved Wallet Payments</span>
                       <span class="font-lexend">{{ walletApprovedCount() }}</span>
                     </div>
-                    <div class="w-full bg-[#2A2522]/5 h-1.5 rounded-full overflow-hidden">
+                    <div class="w-full bg-[var(--text-charcoal)]/5 h-1.5 rounded-full overflow-hidden">
                       <div class="bg-emerald-700 h-full rounded-full" [style.width.%]="walletApprovedPercent()"></div>
                     </div>
                   </div>
@@ -1225,7 +1225,7 @@ import { MediaService } from '../../services/media.service';
                       <span>Rejected Wallet Payments</span>
                       <span class="font-lexend">{{ walletRejectedCount() }}</span>
                     </div>
-                    <div class="w-full bg-[#2A2522]/5 h-1.5 rounded-full overflow-hidden">
+                    <div class="w-full bg-[var(--text-charcoal)]/5 h-1.5 rounded-full overflow-hidden">
                       <div class="bg-red-700 h-full rounded-full" [style.width.%]="walletRejectedPercent()"></div>
                     </div>
                   </div>
@@ -1234,7 +1234,7 @@ import { MediaService } from '../../services/media.service';
 
               <!-- Rejection Reasons Summary List -->
               <div class="space-y-3">
-                <span class="text-[10px] uppercase tracking-widest font-bold text-[#8A817C] block border-b border-[#2A2522]/5 pb-1">Audit Failure Reason Codes</span>
+                <span class="text-[10px] uppercase tracking-widest font-bold text-[#8A817C] block border-b border-[var(--text-charcoal)]/5 pb-1">Audit Failure Reason Codes</span>
                 <div class="space-y-2">
                   <div *ngFor="let reason of failureReasonList()" class="flex justify-between items-start text-xs font-light py-1">
                     <span class="text-[#8A817C] font-lexend text-[11px] block pr-4">
@@ -1252,9 +1252,9 @@ import { MediaService } from '../../services/media.service';
         </div>
 
         <!-- TAB 7: ACCESS CONTROL LEDGER -->
-        <div *ngIf="currentTab() === 'roles'" class="space-y-8 animate-fade-in text-[#2A2522]">
-          <div class="border-b border-[#2A2522]/10 pb-4">
-            <h3 class="title-header text-lg font-light text-[#2A2522]">Access Control Ledger</h3>
+        <div *ngIf="currentTab() === 'roles'" class="space-y-8 animate-fade-in text-[var(--text-charcoal)]">
+          <div class="border-b border-[var(--text-charcoal)]/10 pb-4">
+            <h3 class="title-header text-lg font-light text-[var(--text-charcoal)]">Access Control Ledger</h3>
             <span class="text-[9px] uppercase tracking-widest text-[#8A817C] font-lexend">Configure permission mapping across system roles & administrative authorities</span>
           </div>
 
@@ -1262,45 +1262,45 @@ import { MediaService } from '../../services/media.service';
             <!-- Left Column: Role List & Creation -->
             <div class="lg:col-span-1 space-y-6">
               <div class="frosted-card p-6 rounded-2xl space-y-4">
-                <h4 class="title-header text-[10px] font-bold text-[#2A2522] border-b border-[#2A2522]/5 pb-2">System Roles</h4>
+                <h4 class="title-header text-[10px] font-bold text-[var(--text-charcoal)] border-b border-[var(--text-charcoal)]/5 pb-2">System Roles</h4>
                 
                 <!-- Roles List -->
                 <div class="space-y-2 max-h-[300px] overflow-y-auto pr-1 custom-scrollbar">
                   <div 
                     *ngFor="let role of roles()" 
                     (click)="selectRole(role)"
-                    [ngClass]="selectedRoleId() === role.id ? 'bg-[#2A2522]/5 border-[#B84F7D]' : 'bg-white/40 border-transparent'"
-                    class="p-4 border-l-2 rounded-r-xl cursor-pointer hover:bg-[#2A2522]/5 transition-all duration-300 flex flex-col gap-1"
+                    [ngClass]="selectedRoleId() === role.id ? 'bg-[var(--text-charcoal)]/5 border-[var(--color-lavender)]' : 'bg-white/40 border-transparent'"
+                    class="p-4 border-l-2 rounded-r-xl cursor-pointer hover:bg-[var(--text-charcoal)]/5 transition-all duration-300 flex flex-col gap-1"
                   >
                     <div class="flex justify-between items-center">
-                      <span class="text-xs uppercase tracking-wider font-bold" [ngClass]="selectedRoleId() === role.id ? 'text-[#B84F7D]' : 'text-[#2A2522]'">
+                      <span class="text-xs uppercase tracking-wider font-bold" [ngClass]="selectedRoleId() === role.id ? 'text-[var(--color-lavender)]' : 'text-[var(--text-charcoal)]'">
                         {{ role.name }}
                       </span>
-                      <span class="text-[9px] font-lexend bg-[#2A2522]/5 px-1.5 py-0.5 rounded text-[#8A817C]">{{ role.permissions.length }} perms</span>
+                      <span class="text-[9px] font-lexend bg-[var(--text-charcoal)]/5 px-1.5 py-0.5 rounded text-[#8A817C]">{{ role.permissions.length }} perms</span>
                     </div>
                     <span class="text-[10px] text-[#8A817C] font-light leading-relaxed">{{ role.description }}</span>
                   </div>
                 </div>
 
                 <!-- Create New Role Inline Input -->
-                <div class="border-t border-[#2A2522]/10 pt-4 space-y-3">
+                <div class="border-t border-[var(--text-charcoal)]/10 pt-4 space-y-3">
                   <h5 class="text-[9px] uppercase tracking-widest font-bold text-[#8A817C] block">Propose New Role</h5>
                   <div class="space-y-2">
                     <input 
                       type="text" 
                       [(ngModel)]="newRoleName" 
                       placeholder="Role Tag (e.g. Sales)" 
-                      class="w-full px-3 py-2 bg-white border border-[#2A2522]/10 rounded-xl text-xs focus:outline-none focus:border-[#B84F7D] transition-colors placeholder:text-[#8A817C]/50" 
+                      class="w-full px-3 py-2 bg-white border border-[var(--text-charcoal)]/10 rounded-xl text-xs focus:outline-none focus:border-[var(--color-lavender)] transition-colors placeholder:text-[#8A817C]/50" 
                     />
                     <input 
                       type="text" 
                       [(ngModel)]="newRoleDescription" 
                       placeholder="Role description..." 
-                      class="w-full px-3 py-2 bg-white border border-[#2A2522]/10 rounded-xl text-xs focus:outline-none focus:border-[#B84F7D] transition-colors placeholder:text-[#8A817C]/50" 
+                      class="w-full px-3 py-2 bg-white border border-[var(--text-charcoal)]/10 rounded-xl text-xs focus:outline-none focus:border-[var(--color-lavender)] transition-colors placeholder:text-[#8A817C]/50" 
                     />
                     <button 
                       (click)="createRole()" 
-                      class="w-full py-2 bg-[#2A2522] hover:bg-[#B84F7D] text-[#FBF9F6] text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all"
+                      class="w-full py-2 bg-[var(--text-charcoal)] hover:bg-[var(--color-lavender)] text-[#FAF5F2] text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all"
                     >
                       + Register Role
                     </button>
@@ -1312,9 +1312,9 @@ import { MediaService } from '../../services/media.service';
             <!-- Right Column: Permissions Console Checklist -->
             <div class="lg:col-span-2 space-y-6">
               <div class="frosted-card p-6 rounded-2xl space-y-6">
-                <div class="border-b border-[#2A2522]/5 pb-3 flex justify-between items-center">
+                <div class="border-b border-[var(--text-charcoal)]/5 pb-3 flex justify-between items-center">
                   <div>
-                    <h4 class="title-header text-[10px] font-bold text-[#2A2522]">Permission Token Grid</h4>
+                    <h4 class="title-header text-[10px] font-bold text-[var(--text-charcoal)]">Permission Token Grid</h4>
                     <span class="text-[9px] uppercase tracking-widest text-[#8A817C] font-lexend">Assign capabilities directly to selected user authority</span>
                   </div>
                   
@@ -1322,7 +1322,7 @@ import { MediaService } from '../../services/media.service';
                     *ngIf="selectedRoleId()" 
                     [disabled]="savingPermissions()"
                     (click)="savePermissions()" 
-                    class="px-5 py-2.5 bg-[#B84F7D] hover:bg-[#2A2522] text-white text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all shadow-sm disabled:opacity-50"
+                    class="px-5 py-2.5 bg-[var(--color-lavender)] hover:bg-[var(--text-charcoal)] text-white text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all shadow-sm disabled:opacity-50"
                   >
                     {{ savingPermissions() ? 'Saving Changes...' : 'Save Console Changes' }}
                   </button>
@@ -1331,15 +1331,15 @@ import { MediaService } from '../../services/media.service';
                 <div *ngIf="selectedRoleId(); else noRoleSelected" class="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div 
                     *ngFor="let feat of featuresList" 
-                    class="p-5 frosted-card rounded-2xl hover:border-[#B84F7D]/30 transition-all flex flex-col justify-between"
+                    class="p-5 frosted-card rounded-2xl hover:border-[var(--color-lavender)]/30 transition-all flex flex-col justify-between"
                   >
                     <div>
-                      <h5 class="title-header text-xs font-bold text-[#2A2522] mb-1">{{ feat.label }}</h5>
+                      <h5 class="title-header text-xs font-bold text-[var(--text-charcoal)] mb-1">{{ feat.label }}</h5>
                       <span class="text-[9px] uppercase tracking-wider text-[#8A817C] font-lexend block">Feature: {{ feat.key }}</span>
                     </div>
 
                     <!-- Inline Horizontal Flex Layout with 4 explicit checkboxes -->
-                    <div class="flex flex-wrap gap-4 items-center border-t border-[#2A2522]/5 pt-3">
+                    <div class="flex flex-wrap gap-4 items-center border-t border-[var(--text-charcoal)]/5 pt-3">
                       <div 
                         *ngFor="let act of actionsList" 
                         (click)="toggleGranularPermission(feat.key, act)"
@@ -1347,7 +1347,7 @@ import { MediaService } from '../../services/media.service';
                       >
                         <!-- Custom Luxury Checkbox -->
                         <div 
-                          [ngClass]="hasGranularPermission(feat.key, act) ? 'border-[#B84F7D] bg-[#B84F7D]' : 'border-[#2A2522]/20 bg-transparent group-hover/item:border-[#B84F7D]/50'" 
+                          [ngClass]="hasGranularPermission(feat.key, act) ? 'border-[var(--color-lavender)] bg-[var(--color-lavender)]' : 'border-[var(--text-charcoal)]/20 bg-transparent group-hover/item:border-[var(--color-lavender)]/50'" 
                           class="w-4 h-4 rounded border flex items-center justify-center transition-all flex-shrink-0"
                         >
                           <svg *ngIf="hasGranularPermission(feat.key, act)" class="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1355,7 +1355,7 @@ import { MediaService } from '../../services/media.service';
                           </svg>
                         </div>
                         <span 
-                          [ngClass]="hasGranularPermission(feat.key, act) ? 'text-[#B84F7D] font-bold' : 'text-[#2A2522]'"
+                          [ngClass]="hasGranularPermission(feat.key, act) ? 'text-[var(--color-lavender)] font-bold' : 'text-[var(--text-charcoal)]'"
                           class="text-[10px] uppercase tracking-widest font-lexend transition-colors"
                         >
                           {{ act }}
@@ -1376,14 +1376,14 @@ import { MediaService } from '../../services/media.service';
 
           <!-- User Directory / Authority Delegation -->
           <div class="frosted-card p-6 rounded-2xl space-y-6 mt-8">
-            <div class="border-b border-[#2A2522]/5 pb-3 flex justify-between items-center">
+            <div class="border-b border-[var(--text-charcoal)]/5 pb-3 flex justify-between items-center">
               <div>
-                <h4 class="title-header text-sm font-semibold text-[#2A2522] uppercase">User Directory &amp; Authority Delegation</h4>
+                <h4 class="title-header text-sm font-semibold text-[var(--text-charcoal)] uppercase">User Directory &amp; Authority Delegation</h4>
                 <span class="text-[9px] uppercase tracking-widest text-[#8A817C] font-lexend">Assign system roles directly to registered personnel</span>
               </div>
               <button 
                 (click)="loadUsers()"
-                class="px-4 py-2 border border-[#2A2522]/10 hover:bg-[#2A2522]/5 text-[#2A2522] text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all"
+                class="px-4 py-2 border border-[var(--text-charcoal)]/10 hover:bg-[var(--text-charcoal)]/5 text-[var(--text-charcoal)] text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all"
               >
                 Refresh Users
               </button>
@@ -1391,7 +1391,7 @@ import { MediaService } from '../../services/media.service';
 
             <!-- Loader or Users Table -->
             <div *ngIf="loadingUsers()" class="py-8 text-center">
-              <span class="animate-spin rounded-full h-6 w-6 border-b-2 border-[#B84F7D] inline-block"></span>
+              <span class="animate-spin rounded-full h-6 w-6 border-b-2 border-[var(--color-lavender)] inline-block"></span>
             </div>
 
             <div *ngIf="!loadingUsers() && systemUsers().length === 0" class="text-center py-10 text-[#8A817C] text-xs font-light">
@@ -1401,7 +1401,7 @@ import { MediaService } from '../../services/media.service';
             <div *ngIf="!loadingUsers() && systemUsers().length > 0" class="overflow-x-auto">
               <table class="w-full text-left border-collapse">
                 <thead>
-                  <tr class="border-b border-[#2A2522]/5 text-[9px] uppercase tracking-widest font-bold text-[#8A817C]">
+                  <tr class="border-b border-[var(--text-charcoal)]/5 text-[9px] uppercase tracking-widest font-bold text-[#8A817C]">
                     <th class="py-3 px-4">Full Name</th>
                     <th class="py-3 px-4">Email</th>
                     <th class="py-3 px-4">Phone</th>
@@ -1409,13 +1409,13 @@ import { MediaService } from '../../services/media.service';
                     <th class="py-3 px-4 text-right">Delegate Position</th>
                   </tr>
                 </thead>
-                <tbody class="text-xs font-light text-[#4A4340] divide-y divide-[#2A2522]/5">
-                  <tr *ngFor="let user of systemUsers()" class="hover:bg-[#2A2522]/5 transition-colors">
-                    <td class="py-3.5 px-4 font-semibold text-[#2A2522]">{{ user.fullName }}</td>
+                <tbody class="text-xs font-light text-[#4A4340] divide-y divide-[var(--text-charcoal)]/5">
+                  <tr *ngFor="let user of systemUsers()" class="hover:bg-[var(--text-charcoal)]/5 transition-colors">
+                    <td class="py-3.5 px-4 font-semibold text-[var(--text-charcoal)]">{{ user.fullName }}</td>
                     <td class="py-3.5 px-4 font-lexend">{{ user.email }}</td>
                     <td class="py-3.5 px-4 font-lexend">{{ user.phoneNumber || 'N/A' }}</td>
                     <td class="py-3.5 px-4">
-                      <span class="text-[9px] uppercase tracking-wider font-bold bg-[#B84F7D]/10 text-[#B84F7D] px-2 py-0.5 rounded">
+                      <span class="text-[9px] uppercase tracking-wider font-bold bg-[var(--color-lavender)]/10 text-[var(--color-lavender)] px-2 py-0.5 rounded">
                         {{ user.roleName }}
                       </span>
                     </td>
@@ -1423,7 +1423,7 @@ import { MediaService } from '../../services/media.service';
                       <select 
                         [ngModel]="user.roleId" 
                         (ngModelChange)="assignUserRole(user.id, $event)"
-                        class="px-2 py-1 bg-white border border-[#2A2522]/10 rounded-lg text-[10px] focus:outline-none focus:border-[#B84F7D]"
+                        class="px-2 py-1 bg-white border border-[var(--text-charcoal)]/10 rounded-lg text-[10px] focus:outline-none focus:border-[var(--color-lavender)]"
                       >
                         <option *ngFor="let r of roles()" [value]="r.id">{{ r.name }}</option>
                       </select>
@@ -1436,23 +1436,23 @@ import { MediaService } from '../../services/media.service';
         </div>
 
         <!-- Notifications Console Tab Content -->
-        <div *ngIf="currentTab() === 'notifications'" class="space-y-6 animate-fade-in text-[#2A2522]">
-          <div class="border-b border-[#2A2522]/10 pb-4">
-            <h3 class="title-header text-lg font-light text-[#2A2522] tracking-[0.05em] uppercase">Notification Routing Console</h3>
+        <div *ngIf="currentTab() === 'notifications'" class="space-y-6 animate-fade-in text-[var(--text-charcoal)]">
+          <div class="border-b border-[var(--text-charcoal)]/10 pb-4">
+            <h3 class="title-header text-lg font-light text-[var(--text-charcoal)] tracking-[0.05em] uppercase">Notification Routing Console</h3>
             <p class="text-[9px] uppercase tracking-widest text-[#8A817C] font-lexend mt-2 leading-relaxed">
               Designate which personnel and staff members receive real-time alerts when new orders are placed.
             </p>
           </div>
 
           <div class="frosted-card p-6 rounded-2xl space-y-6">
-            <div class="flex justify-between items-center border-b border-[#2A2522]/5 pb-3">
+            <div class="flex justify-between items-center border-b border-[var(--text-charcoal)]/5 pb-3">
               <div>
-                <h4 class="title-header text-sm font-semibold text-[#2A2522] uppercase">Staff Alerts Subscriptions</h4>
+                <h4 class="title-header text-sm font-semibold text-[var(--text-charcoal)] uppercase">Staff Alerts Subscriptions</h4>
                 <span class="text-[9px] uppercase tracking-widest text-[#8A817C] font-lexend">Check/uncheck users to configure new order notification dispatch</span>
               </div>
               <button 
                 (click)="loadSubscriptions()"
-                class="px-4 py-2 border border-[#2A2522]/10 hover:bg-[#2A2522]/5 text-[#2A2522] text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all"
+                class="px-4 py-2 border border-[var(--text-charcoal)]/10 hover:bg-[var(--text-charcoal)]/5 text-[var(--text-charcoal)] text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all"
               >
                 Refresh Console
               </button>
@@ -1460,7 +1460,7 @@ import { MediaService } from '../../services/media.service';
 
             <!-- Loader or subscriptions table -->
             <div *ngIf="loadingSubscriptions()" class="py-8 text-center">
-              <span class="animate-spin rounded-full h-6 w-6 border-b-2 border-[#B84F7D] inline-block"></span>
+              <span class="animate-spin rounded-full h-6 w-6 border-b-2 border-[var(--color-lavender)] inline-block"></span>
             </div>
 
             <div *ngIf="!loadingSubscriptions() && subscriptions().length === 0" class="text-center py-10 text-[#8A817C] text-xs font-light">
@@ -1470,19 +1470,19 @@ import { MediaService } from '../../services/media.service';
             <div *ngIf="!loadingSubscriptions() && subscriptions().length > 0" class="overflow-x-auto">
               <table class="w-full text-left border-collapse">
                 <thead>
-                  <tr class="border-b border-[#2A2522]/5 text-[9px] uppercase tracking-widest font-bold text-[#8A817C]">
+                  <tr class="border-b border-[var(--text-charcoal)]/5 text-[9px] uppercase tracking-widest font-bold text-[#8A817C]">
                     <th class="py-3 px-4">Full Name</th>
                     <th class="py-3 px-4">Email</th>
                     <th class="py-3 px-4">Assigned Role</th>
                     <th class="py-3 px-4 text-center">Receive New Order Alerts</th>
                   </tr>
                 </thead>
-                <tbody class="text-xs font-light text-[#4A4340] divide-y divide-[#2A2522]/5">
-                  <tr *ngFor="let sub of subscriptions()" class="hover:bg-[#2A2522]/5 transition-colors">
-                    <td class="py-3.5 px-4 font-semibold text-[#2A2522]">{{ sub.fullName }}</td>
+                <tbody class="text-xs font-light text-[#4A4340] divide-y divide-[var(--text-charcoal)]/5">
+                  <tr *ngFor="let sub of subscriptions()" class="hover:bg-[var(--text-charcoal)]/5 transition-colors">
+                    <td class="py-3.5 px-4 font-semibold text-[var(--text-charcoal)]">{{ sub.fullName }}</td>
                     <td class="py-3.5 px-4 font-lexend">{{ sub.email }}</td>
                     <td class="py-3.5 px-4">
-                      <span class="text-[9px] uppercase tracking-wider font-bold bg-[#B84F7D]/10 text-[#B84F7D] px-2 py-0.5 rounded">
+                      <span class="text-[9px] uppercase tracking-wider font-bold bg-[var(--color-lavender)]/10 text-[var(--color-lavender)] px-2 py-0.5 rounded">
                         {{ sub.roleName }}
                       </span>
                     </td>
@@ -1494,7 +1494,7 @@ import { MediaService } from '../../services/media.service';
                       >
                         <!-- Custom Checkbox -->
                         <div 
-                          [ngClass]="sub.isSubscribed ? 'border-[#B84F7D] bg-[#B84F7D]' : 'border-[#2A2522]/20 bg-transparent group-hover/toggle:border-[#B84F7D]/50'" 
+                          [ngClass]="sub.isSubscribed ? 'border-[var(--color-lavender)] bg-[var(--color-lavender)]' : 'border-[var(--text-charcoal)]/20 bg-transparent group-hover/toggle:border-[var(--color-lavender)]/50'" 
                           class="w-5 h-5 rounded border flex items-center justify-center transition-all flex-shrink-0"
                         >
                           <svg *ngIf="sub.isSubscribed" class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1511,9 +1511,9 @@ import { MediaService } from '../../services/media.service';
         </div>
 
         <!-- TAB 9: INVENTORY ATTRIBUTES LEDGER (Colors & Sizes) -->
-        <div *ngIf="currentTab() === 'attributes'" class="space-y-8 animate-fade-in text-[#2A2522]">
-          <div class="border-b border-[#2A2522]/10 pb-4">
-            <h3 class="title-header text-lg font-light text-[#2A2522]">Inventory Attributes Console</h3>
+        <div *ngIf="currentTab() === 'attributes'" class="space-y-8 animate-fade-in text-[var(--text-charcoal)]">
+          <div class="border-b border-[var(--text-charcoal)]/10 pb-4">
+            <h3 class="title-header text-lg font-light text-[var(--text-charcoal)]">Inventory Attributes Console</h3>
             <span class="text-[9px] uppercase tracking-widest text-[#8A817C] font-lexend">Manage dynamic product colors and size choices across all categories</span>
           </div>
 
@@ -1521,27 +1521,27 @@ import { MediaService } from '../../services/media.service';
             <!-- Left Panel: Colors Swatches & Palette Builder -->
             <div class="space-y-6">
               <div class="frosted-card p-6 rounded-2xl space-y-6">
-                <div class="flex justify-between items-center border-b border-[#2A2522]/5 pb-3">
+                <div class="flex justify-between items-center border-b border-[var(--text-charcoal)]/5 pb-3">
                   <div>
-                    <h4 class="title-header text-sm font-semibold text-[#2A2522] uppercase">🎨 Colors Registry</h4>
+                    <h4 class="title-header text-sm font-semibold text-[var(--text-charcoal)] uppercase">🎨 Colors Registry</h4>
                     <span class="text-[9px] uppercase tracking-widest text-[#8A817C] font-lexend">Predefined color palette with visual previews</span>
                   </div>
-                  <button (click)="loadColors()" class="text-[9px] font-lexend text-[#B84F7D] hover:underline uppercase tracking-wider font-bold">Refresh</button>
+                  <button (click)="loadColors()" class="text-[9px] font-lexend text-[var(--color-lavender)] hover:underline uppercase tracking-wider font-bold">Refresh</button>
                 </div>
 
                 <!-- Colors List -->
                 <div class="grid grid-cols-1 gap-2 max-h-[300px] overflow-y-auto pr-1 custom-scrollbar">
-                  <div *ngFor="let col of availableColors()" class="p-3 bg-white/40 border border-[#2A2522]/5 rounded-xl flex items-center justify-between hover:bg-white/60 transition-all">
+                  <div *ngFor="let col of availableColors()" class="p-3 bg-white/40 border border-[var(--text-charcoal)]/5 rounded-xl flex items-center justify-between hover:bg-white/60 transition-all">
                     <div class="flex items-center gap-3">
                       <span class="w-6 h-6 rounded-full border border-black/10 flex-shrink-0" [style.background-color]="col.hexCode"></span>
                       <div class="flex flex-col">
-                        <span class="text-xs font-bold text-[#2A2522]">{{ col.name }}</span>
+                        <span class="text-xs font-bold text-[var(--text-charcoal)]">{{ col.name }}</span>
                         <span class="text-[9px] font-mono text-[#8A817C] uppercase">{{ col.hexCode }}</span>
                       </div>
                     </div>
                     <div class="flex items-center gap-2">
-                      <button (click)="startEditColor(col)" class="text-[#B84F7D] hover:text-[#B84F7D]/85 text-[10px] uppercase font-bold tracking-widest">Edit</button>
-                      <span class="text-[#2A2522]/10 text-xs">|</span>
+                      <button (click)="startEditColor(col)" class="text-[var(--color-lavender)] hover:text-[var(--color-lavender)]/85 text-[10px] uppercase font-bold tracking-widest">Edit</button>
+                      <span class="text-[var(--text-charcoal)]/10 text-xs">|</span>
                       <button (click)="deleteColor(col.id)" class="text-red-500 hover:text-red-700 text-[10px] uppercase font-bold tracking-widest">Delete</button>
                     </div>
                   </div>
@@ -1549,8 +1549,8 @@ import { MediaService } from '../../services/media.service';
                 </div>
 
                 <!-- Add/Edit Color Form -->
-                <div class="border-t border-[#2A2522]/10 pt-4 space-y-3">
-                  <h5 class="text-[9px] uppercase tracking-widest font-bold text-[#B84F7D]">
+                <div class="border-t border-[var(--text-charcoal)]/10 pt-4 space-y-3">
+                  <h5 class="text-[9px] uppercase tracking-widest font-bold text-[var(--color-lavender)]">
                     {{ editingColorId() ? 'Modify Color Option' : 'Register New Color Swatch' }}
                   </h5>
                   <div class="grid grid-cols-3 gap-2 items-end">
@@ -1560,7 +1560,7 @@ import { MediaService } from '../../services/media.service';
                         type="text" 
                         [(ngModel)]="newColorName" 
                         placeholder="E.g. Sage, Blush" 
-                        class="w-full px-3 py-2 bg-white border border-[#2A2522]/10 rounded-xl text-xs focus:outline-none focus:border-[#B84F7D] transition-colors" 
+                        class="w-full px-3 py-2 bg-white border border-[var(--text-charcoal)]/10 rounded-xl text-xs focus:outline-none focus:border-[var(--color-lavender)] transition-colors" 
                       />
                     </div>
                     <div class="space-y-1">
@@ -1570,14 +1570,14 @@ import { MediaService } from '../../services/media.service';
                           type="color" 
                           [ngModel]="newColorHex()" 
                           (ngModelChange)="onColorHexChange($event)"
-                          class="w-8 h-8 rounded-lg cursor-pointer border border-[#2A2522]/10 p-0 flex-shrink-0"
+                          class="w-8 h-8 rounded-lg cursor-pointer border border-[var(--text-charcoal)]/10 p-0 flex-shrink-0"
                         />
                         <input 
                           type="text" 
                           [ngModel]="newColorHex()" 
                           (ngModelChange)="onColorHexChange($event)"
                           placeholder="#FFFFFF" 
-                          class="w-full px-2 py-1.5 bg-white border border-[#2A2522]/10 rounded-lg text-[10px] font-mono uppercase text-center focus:outline-none" 
+                          class="w-full px-2 py-1.5 bg-white border border-[var(--text-charcoal)]/10 rounded-lg text-[10px] font-mono uppercase text-center focus:outline-none" 
                         />
                       </div>
                     </div>
@@ -1585,14 +1585,14 @@ import { MediaService } from '../../services/media.service';
                   <div class="flex gap-2 pt-1">
                     <button 
                       (click)="saveColor()" 
-                      class="flex-1 py-2 bg-[#2A2522] hover:bg-[#B84F7D] text-[#FBF9F6] text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all"
+                      class="flex-1 py-2 bg-[var(--text-charcoal)] hover:bg-[var(--color-lavender)] text-[#FAF5F2] text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all"
                     >
                       {{ editingColorId() ? 'Save Color' : '+ Register Swatch' }}
                     </button>
                     <button 
                       *ngIf="editingColorId()"
                       (click)="cancelEditColor()" 
-                      class="px-4 py-2 border border-[#2A2522]/15 text-[#8A817C] hover:bg-[#2A2522]/5 text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all"
+                      class="px-4 py-2 border border-[var(--text-charcoal)]/15 text-[#8A817C] hover:bg-[var(--text-charcoal)]/5 text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all"
                     >
                       Cancel
                     </button>
@@ -1604,26 +1604,26 @@ import { MediaService } from '../../services/media.service';
             <!-- Right Panel: Sizes Console -->
             <div class="space-y-6">
               <div class="frosted-card p-6 rounded-2xl space-y-6">
-                <div class="flex justify-between items-center border-b border-[#2A2522]/5 pb-3">
+                <div class="flex justify-between items-center border-b border-[var(--text-charcoal)]/5 pb-3">
                   <div>
-                    <h4 class="title-header text-sm font-semibold text-[#2A2522] uppercase">📏 Sizes Registry</h4>
+                    <h4 class="title-header text-sm font-semibold text-[var(--text-charcoal)] uppercase">📏 Sizes Registry</h4>
                     <span class="text-[9px] uppercase tracking-widest text-[#8A817C] font-lexend">Configured size lists filtered by target collection</span>
                   </div>
-                  <button (click)="loadSizes()" class="text-[9px] font-lexend text-[#B84F7D] hover:underline uppercase tracking-wider font-bold">Refresh</button>
+                  <button (click)="loadSizes()" class="text-[9px] font-lexend text-[var(--color-lavender)] hover:underline uppercase tracking-wider font-bold">Refresh</button>
                 </div>
 
                 <!-- Sizes List -->
                 <div class="grid grid-cols-1 gap-2 max-h-[300px] overflow-y-auto pr-1 custom-scrollbar">
-                  <div *ngFor="let sz of availableSizes()" class="p-3 bg-white/40 border border-[#2A2522]/5 rounded-xl flex items-center justify-between hover:bg-white/60 transition-all">
+                  <div *ngFor="let sz of availableSizes()" class="p-3 bg-white/40 border border-[var(--text-charcoal)]/5 rounded-xl flex items-center justify-between hover:bg-white/60 transition-all">
                     <div class="flex flex-col">
-                      <span class="text-xs font-bold text-[#2A2522]">{{ sz.name }}</span>
+                      <span class="text-xs font-bold text-[var(--text-charcoal)]">{{ sz.name }}</span>
                       <span class="text-[9px] uppercase tracking-widest text-[#8A817C] font-lexend font-semibold">Category: {{ sz.categoryType }}</span>
                     </div>
                     <div class="flex items-center gap-3">
-                      <span class="text-[9px] font-mono text-[#8A817C] bg-[#2A2522]/5 px-2 py-0.5 rounded">Order: {{ sz.sortOrder }}</span>
+                      <span class="text-[9px] font-mono text-[#8A817C] bg-[var(--text-charcoal)]/5 px-2 py-0.5 rounded">Order: {{ sz.sortOrder }}</span>
                       <div class="flex items-center gap-2">
-                        <button (click)="startEditSize(sz)" class="text-[#B84F7D] hover:text-[#B84F7D]/85 text-[10px] uppercase font-bold tracking-widest">Edit</button>
-                        <span class="text-[#2A2522]/10 text-xs">|</span>
+                        <button (click)="startEditSize(sz)" class="text-[var(--color-lavender)] hover:text-[var(--color-lavender)]/85 text-[10px] uppercase font-bold tracking-widest">Edit</button>
+                        <span class="text-[var(--text-charcoal)]/10 text-xs">|</span>
                         <button (click)="deleteSize(sz.id)" class="text-red-500 hover:text-red-700 text-[10px] uppercase font-bold tracking-widest">Delete</button>
                       </div>
                     </div>
@@ -1632,8 +1632,8 @@ import { MediaService } from '../../services/media.service';
                 </div>
 
                 <!-- Add/Edit Size Form -->
-                <div class="border-t border-[#2A2522]/10 pt-4 space-y-3">
-                  <h5 class="text-[9px] uppercase tracking-widest font-bold text-[#B84F7D]">
+                <div class="border-t border-[var(--text-charcoal)]/10 pt-4 space-y-3">
+                  <h5 class="text-[9px] uppercase tracking-widest font-bold text-[var(--color-lavender)]">
                     {{ editingSizeId() ? 'Modify Size Option' : 'Register New Size Option' }}
                   </h5>
                   <div class="grid grid-cols-3 gap-2 items-end">
@@ -1643,7 +1643,7 @@ import { MediaService } from '../../services/media.service';
                         type="text" 
                         [(ngModel)]="newSizeName" 
                         placeholder="E.g. S, M, EU 37" 
-                        class="w-full px-3 py-2 bg-white border border-[#2A2522]/10 rounded-xl text-xs focus:outline-none focus:border-[#B84F7D] transition-colors" 
+                        class="w-full px-3 py-2 bg-white border border-[var(--text-charcoal)]/10 rounded-xl text-xs focus:outline-none focus:border-[var(--color-lavender)] transition-colors" 
                       />
                     </div>
                     <div class="space-y-1 col-span-2">
@@ -1651,7 +1651,7 @@ import { MediaService } from '../../services/media.service';
                       <select 
                         [ngModel]="newSizeCategoryType()" 
                         (ngModelChange)="onSizeCategoryTypeChange($event)"
-                        class="w-full px-3 py-2 bg-white border border-[#2A2522]/10 rounded-xl text-xs focus:outline-none focus:border-[#B84F7D] transition-colors"
+                        class="w-full px-3 py-2 bg-white border border-[var(--text-charcoal)]/10 rounded-xl text-xs focus:outline-none focus:border-[var(--color-lavender)] transition-colors"
                       >
                         <option value="Women Clothing">Women Clothing</option>
                         <option value="Women Shoes">Women Shoes</option>
@@ -1664,14 +1664,14 @@ import { MediaService } from '../../services/media.service';
                   <div class="flex gap-2 pt-1">
                     <button 
                       (click)="saveSize()" 
-                      class="flex-1 py-2 bg-[#2A2522] hover:bg-[#B84F7D] text-[#FBF9F6] text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all"
+                      class="flex-1 py-2 bg-[var(--text-charcoal)] hover:bg-[var(--color-lavender)] text-[#FAF5F2] text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all"
                     >
                       {{ editingSizeId() ? 'Save Size' : '+ Register Size' }}
                     </button>
                     <button 
                       *ngIf="editingSizeId()"
                       (click)="cancelEditSize()" 
-                      class="px-4 py-2 border border-[#2A2522]/15 text-[#8A817C] hover:bg-[#2A2522]/5 text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all"
+                      class="px-4 py-2 border border-[var(--text-charcoal)]/15 text-[#8A817C] hover:bg-[var(--text-charcoal)]/5 text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all"
                     >
                       Cancel
                     </button>
@@ -1688,7 +1688,7 @@ import { MediaService } from '../../services/media.service';
     <!-- Side Drawer Overlay for Order Details -->
     <div 
       *ngIf="selectedOrder()" 
-      class="fixed inset-0 z-50 flex justify-end bg-[#2A2522]/30 backdrop-blur-sm transition-all duration-300"
+      class="fixed inset-0 z-50 flex justify-end bg-[var(--text-charcoal)]/30 backdrop-blur-sm transition-all duration-300"
       (click)="closeOrder()"
     >
       <div 
@@ -1696,12 +1696,12 @@ import { MediaService } from '../../services/media.service';
         (click)="$event.stopPropagation()"
       >
         <!-- Drawer Header -->
-        <div class="flex justify-between items-center border-b border-[#2A2522]/5 pb-4">
+        <div class="flex justify-between items-center border-b border-[var(--text-charcoal)]/5 pb-4">
           <div>
-            <span class="text-[9px] font-lexend tracking-widest text-[#B84F7D] uppercase font-semibold">Fulfillment Sheet</span>
-            <h3 class="title-header text-lg font-light text-[#2A2522]">{{ selectedOrder()?.orderNumber }}</h3>
+            <span class="text-[9px] font-lexend tracking-widest text-[var(--color-lavender)] uppercase font-semibold">Fulfillment Sheet</span>
+            <h3 class="title-header text-lg font-light text-[var(--text-charcoal)]">{{ selectedOrder()?.orderNumber }}</h3>
           </div>
-          <button (click)="closeOrder()" class="text-[#8A817C] hover:text-[#2A2522] text-lg">✕</button>
+          <button (click)="closeOrder()" class="text-[#8A817C] hover:text-[var(--text-charcoal)] text-lg">✕</button>
         </div>
 
         <div *ngIf="drawerMessage()" class="p-3 bg-emerald-50 border border-emerald-200 text-xs text-emerald-800 rounded-lg">
@@ -1710,8 +1710,8 @@ import { MediaService } from '../../services/media.service';
 
         <!-- Customer & Shipping Block -->
         <div class="space-y-2.5">
-          <h4 class="title-header text-[10px] font-bold text-[#2A2522]">Customer Details</h4>
-          <div class="text-xs text-[#5A504B] space-y-1.5 bg-white/40 p-4 rounded-xl border border-[#2A2522]/5 font-light">
+          <h4 class="title-header text-[10px] font-bold text-[var(--text-charcoal)]">Customer Details</h4>
+          <div class="text-xs text-[#5A504B] space-y-1.5 bg-white/40 p-4 rounded-xl border border-[var(--text-charcoal)]/5 font-light">
             <p><strong>Customer:</strong> {{ selectedOrder()?.customerName }}</p>
             <p><strong>Governorate:</strong> {{ selectedOrder()?.shippingGovernorate }}</p>
             <p><strong>Detailed Address:</strong> {{ selectedOrder()?.shippingDetailedAddress }}</p>
@@ -1722,23 +1722,23 @@ import { MediaService } from '../../services/media.service';
 
         <!-- Digital Wallet Verification Drawer Section -->
         <div *ngIf="selectedOrder()?.paymentMethod === 'DigitalWallet'" class="space-y-3">
-          <h4 class="title-header text-[10px] font-bold text-[#2A2522]">Digital Wallet Audit</h4>
-          <div class="bg-white/40 p-4 rounded-xl border border-[#2A2522]/5 space-y-3 text-xs">
+          <h4 class="title-header text-[10px] font-bold text-[var(--text-charcoal)]">Digital Wallet Audit</h4>
+          <div class="bg-white/40 p-4 rounded-xl border border-[var(--text-charcoal)]/5 space-y-3 text-xs">
             <div class="flex justify-between items-center">
               <span class="font-light text-[#8A817C]">Sender Identity:</span>
               <strong class="font-semibold">{{ selectedOrder()?.walletVerification?.senderPhoneNumberOrName }}</strong>
             </div>
             <div class="flex justify-between items-center">
               <span class="font-light text-[#8A817C]">Audit Status:</span>
-              <span class="font-bold text-[#B84F7D] uppercase tracking-wider text-[9px] bg-[#B84F7D]/10 px-2 py-0.5 rounded">
+              <span class="font-bold text-[var(--color-lavender)] uppercase tracking-wider text-[9px] bg-[var(--color-lavender)]/10 px-2 py-0.5 rounded">
                 {{ selectedOrder()?.walletVerification?.isVerified ? 'VERIFIED' : 'PENDING AUDIT' }}
               </span>
             </div>
 
             <!-- Image Screenshot -->
-            <div class="w-full aspect-[4/3] rounded-lg overflow-hidden border border-[#2A2522]/10 bg-[#2A2522]/5 relative group">
+            <div class="w-full aspect-[4/3] rounded-lg overflow-hidden border border-[var(--text-charcoal)]/10 bg-[var(--text-charcoal)]/5 relative group">
               <img [src]="resolveImageUrl(selectedOrder()?.walletVerification?.screenshotUrl)" alt="Payment Screenshot" class="w-full h-full object-contain cursor-zoom-in"/>
-              <a [href]="resolveImageUrl(selectedOrder()?.walletVerification?.screenshotUrl)" target="_blank" class="absolute bottom-2 right-2 bg-[#2A2522]/80 text-white text-[9px] uppercase font-bold tracking-widest px-2.5 py-1 rounded transition-all opacity-0 group-hover:opacity-100 font-lexend">View Fullscreen</a>
+              <a [href]="resolveImageUrl(selectedOrder()?.walletVerification?.screenshotUrl)" target="_blank" class="absolute bottom-2 right-2 bg-[var(--text-charcoal)]/80 text-white text-[9px] uppercase font-bold tracking-widest px-2.5 py-1 rounded transition-all opacity-0 group-hover:opacity-100 font-lexend">View Fullscreen</a>
             </div>
 
             <!-- Audit Approve / Reject Controls -->
@@ -1761,7 +1761,7 @@ import { MediaService } from '../../services/media.service';
 
         <!-- State Machine Transition Trigger -->
         <div class="space-y-3">
-          <h4 class="title-header text-[10px] font-bold text-[#2A2522]">Order Actions</h4>
+          <h4 class="title-header text-[10px] font-bold text-[var(--text-charcoal)]">Order Actions</h4>
           <div class="grid grid-cols-2 gap-3">
             <button 
               *ngIf="selectedOrder()?.status === 'ConfirmedPreparing'" 
@@ -1795,16 +1795,16 @@ import { MediaService } from '../../services/media.service';
         </div>
 
         <!-- Packing List & Partial Return Section -->
-        <div class="space-y-3 border-t border-[#2A2522]/5 pt-4">
+        <div class="space-y-3 border-t border-[var(--text-charcoal)]/5 pt-4">
           <div class="flex justify-between items-center">
-            <h4 class="title-header text-[10px] font-bold text-[#2A2522]">Itemized Packing Checklist</h4>
+            <h4 class="title-header text-[10px] font-bold text-[var(--text-charcoal)]">Itemized Packing Checklist</h4>
             <span class="text-[9px] text-[#8A817C] font-lexend">Invoice Recalculations</span>
           </div>
 
           <div class="space-y-3">
             <div 
               *ngFor="let item of selectedOrder()?.items; let i = index" 
-              class="flex flex-col gap-2 p-3 bg-white/40 border border-[#2A2522]/5 rounded-xl text-xs"
+              class="flex flex-col gap-2 p-3 bg-white/40 border border-[var(--text-charcoal)]/5 rounded-xl text-xs"
             >
               <div class="flex justify-between items-start">
                 <div>
@@ -1812,29 +1812,29 @@ import { MediaService } from '../../services/media.service';
                   <div class="text-[10px] text-[#8A817C] font-light">Price: {{ item.unitPrice | currency:'EGP ' }}</div>
                 </div>
                 <div class="text-right">
-                  <div>Qty: <strong class="font-bold text-[#2A2522]">{{ item.quantity }}</strong></div>
+                  <div>Qty: <strong class="font-bold text-[var(--text-charcoal)]">{{ item.quantity }}</strong></div>
                   <div *ngIf="item.isReturnedPartially" class="text-[9px] text-red-600 font-bold uppercase">Returned Partially</div>
                 </div>
               </div>
 
-              <div *ngIf="selectedOrder()?.status === 'Delivered' && !item.isReturnedPartially" class="flex gap-2 items-center justify-end border-t border-[#2A2522]/5 pt-2 mt-1">
+              <div *ngIf="selectedOrder()?.status === 'Delivered' && !item.isReturnedPartially" class="flex gap-2 items-center justify-end border-t border-[var(--text-charcoal)]/5 pt-2 mt-1">
                 <span class="text-[9px] text-[#8A817C]">Return Qty:</span>
                 <input 
                   type="number" 
                   [(ngModel)]="item.returnQty" 
                   min="0" 
                   [max]="item.quantity"
-                  class="w-16 px-2 py-1 bg-[#FBF9F6] border border-[#2A2522]/5 rounded text-xs text-center focus:outline-none font-lexend"
+                  class="w-16 px-2 py-1 bg-[#FAF5F2] border border-[var(--text-charcoal)]/5 rounded text-xs text-center focus:outline-none font-lexend"
                 />
               </div>
             </div>
           </div>
 
           <!-- Submit Partial Return Button -->
-          <div *ngIf="selectedOrder()?.status === 'Delivered' && hasReturnableItems()" class="pt-4 border-t border-[#2A2522]/5">
+          <div *ngIf="selectedOrder()?.status === 'Delivered' && hasReturnableItems()" class="pt-4 border-t border-[var(--text-charcoal)]/5">
             <button 
               (click)="submitBulkReturn()"
-              class="w-full py-2.5 bg-[#B84F7D] hover:bg-[#B84F7D]/95 text-white text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all shadow-sm"
+              class="w-full py-2.5 bg-[var(--color-lavender)] hover:bg-[var(--color-lavender)]/95 text-white text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all shadow-sm"
             >
               Submit Partial Return
             </button>
@@ -1848,18 +1848,18 @@ import { MediaService } from '../../services/media.service';
       <!-- Backdrop -->
       <div 
         (click)="showCreatePromoModal.set(false); resetPromoForm()" 
-        class="fixed inset-0 bg-[#2A2522]/10 backdrop-blur-[3px] pointer-events-auto cursor-pointer"
+        class="fixed inset-0 bg-[var(--text-charcoal)]/10 backdrop-blur-[3px] pointer-events-auto cursor-pointer"
       ></div>
 
       <!-- Modal Card -->
       <div class="quick-buy-sheet frosted-card pointer-events-auto max-w-[420px] w-full p-6 rounded-2xl shadow-xl flex flex-col justify-between" style="opacity:1; transform:translateY(0);">
         <!-- Header -->
-        <div class="flex justify-between items-center border-b border-[#2A2522]/10 pb-4 mb-4 flex-shrink-0">
+        <div class="flex justify-between items-center border-b border-[var(--text-charcoal)]/10 pb-4 mb-4 flex-shrink-0">
           <div>
-            <span class="tracking-widest font-lexend text-[9px] uppercase font-bold text-[#B84F7D] block mb-1">Discounts Engine</span>
-            <h3 class="title-header text-sm font-light text-[#2A2522]">Create Promo Code</h3>
+            <span class="tracking-widest font-lexend text-[9px] uppercase font-bold text-[var(--color-lavender)] block mb-1">Discounts Engine</span>
+            <h3 class="title-header text-sm font-light text-[var(--text-charcoal)]">Create Promo Code</h3>
           </div>
-          <button (click)="showCreatePromoModal.set(false); resetPromoForm()" class="text-[#2A2522]/40 hover:text-[#B84F7D] text-sm p-1">✕</button>
+          <button (click)="showCreatePromoModal.set(false); resetPromoForm()" class="text-[var(--text-charcoal)]/40 hover:text-[var(--color-lavender)] text-sm p-1">✕</button>
         </div>
 
         <!-- Scrollable content -->
@@ -1877,7 +1877,7 @@ import { MediaService } from '../../services/media.service';
               type="text" 
               [(ngModel)]="formCode" 
               placeholder="E.g. EID2026, SAVE10"
-              class="w-full px-3 py-2 bg-white border border-[#2A2522]/15 rounded-xl text-xs text-[#2A2522] focus:outline-none focus:border-[#B84F7D]"
+              class="w-full px-3 py-2 bg-white border border-[var(--text-charcoal)]/15 rounded-xl text-xs text-[var(--text-charcoal)] focus:outline-none focus:border-[var(--color-lavender)]"
             />
           </div>
 
@@ -1886,7 +1886,7 @@ import { MediaService } from '../../services/media.service';
             <label class="text-[8px] uppercase tracking-widest font-bold text-[#8A817C] block">Discount Classification *</label>
             <select 
               [(ngModel)]="formDiscountType" 
-              class="w-full px-3 py-2 bg-white border border-[#2A2522]/15 rounded-xl text-xs text-[#2A2522] focus:outline-none focus:border-[#B84F7D]"
+              class="w-full px-3 py-2 bg-white border border-[var(--text-charcoal)]/15 rounded-xl text-xs text-[var(--text-charcoal)] focus:outline-none focus:border-[var(--color-lavender)]"
             >
               <option value="FixedAmount">Fixed Cash Discount (EGP)</option>
               <option value="Percentage">Percentage Off (%)</option>
@@ -1903,7 +1903,7 @@ import { MediaService } from '../../services/media.service';
               type="number" 
               [(ngModel)]="formValue" 
               placeholder="E.g. 15 or 100"
-              class="w-full px-3 py-2 bg-white border border-[#2A2522]/15 rounded-xl text-xs text-[#2A2522] focus:outline-none focus:border-[#B84F7D]"
+              class="w-full px-3 py-2 bg-white border border-[var(--text-charcoal)]/15 rounded-xl text-xs text-[var(--text-charcoal)] focus:outline-none focus:border-[var(--color-lavender)]"
             />
           </div>
 
@@ -1914,7 +1914,7 @@ import { MediaService } from '../../services/media.service';
               type="number" 
               [(ngModel)]="formMinOrderAmount" 
               placeholder="E.g. 2000"
-              class="w-full px-3 py-2 bg-white border border-[#2A2522]/15 rounded-xl text-xs text-[#2A2522] focus:outline-none focus:border-[#B84F7D]"
+              class="w-full px-3 py-2 bg-white border border-[var(--text-charcoal)]/15 rounded-xl text-xs text-[var(--text-charcoal)] focus:outline-none focus:border-[var(--color-lavender)]"
             />
           </div>
 
@@ -1924,7 +1924,7 @@ import { MediaService } from '../../services/media.service';
             <input 
               type="date" 
               [(ngModel)]="formExpiryDate" 
-              class="w-full px-3 py-2 bg-white border border-[#2A2522]/15 rounded-xl text-xs text-[#2A2522] focus:outline-none focus:border-[#B84F7D]"
+              class="w-full px-3 py-2 bg-white border border-[var(--text-charcoal)]/15 rounded-xl text-xs text-[var(--text-charcoal)] focus:outline-none focus:border-[var(--color-lavender)]"
             />
           </div>
 
@@ -1935,7 +1935,7 @@ import { MediaService } from '../../services/media.service';
               type="number" 
               [(ngModel)]="formUsageLimit" 
               placeholder="E.g. 500"
-              class="w-full px-3 py-2 bg-white border border-[#2A2522]/15 rounded-xl text-xs text-[#2A2522] focus:outline-none focus:border-[#B84F7D]"
+              class="w-full px-3 py-2 bg-white border border-[var(--text-charcoal)]/15 rounded-xl text-xs text-[var(--text-charcoal)] focus:outline-none focus:border-[var(--color-lavender)]"
             />
           </div>
 
@@ -1945,18 +1945,18 @@ import { MediaService } from '../../services/media.service';
               type="checkbox" 
               [(ngModel)]="formIsActive" 
               id="promo-form-active" 
-              class="rounded border-[#2A2522]/15 text-[#B84F7D] focus:ring-[#B84F7D]"
+              class="rounded border-[var(--text-charcoal)]/15 text-[var(--color-lavender)] focus:ring-[var(--color-lavender)]"
             />
             <label for="promo-form-active" class="text-[9px] uppercase tracking-widest font-bold text-[#8A817C] cursor-pointer select-none">Active Immediately</label>
           </div>
         </div>
 
         <!-- Footer -->
-        <div class="pt-4 border-t border-[#2A2522]/10 mt-4 flex-shrink-0">
+        <div class="pt-4 border-t border-[var(--text-charcoal)]/10 mt-4 flex-shrink-0">
           <button 
             [disabled]="submittingPromo()"
             (click)="createPromoCode()"
-            class="w-full py-3 bg-[#B84F7D] hover:bg-[#2A2522] text-white text-xs font-bold uppercase tracking-widest rounded-xl transition-all disabled:opacity-50"
+            class="w-full py-3 bg-[var(--color-lavender)] hover:bg-[var(--text-charcoal)] text-white text-xs font-bold uppercase tracking-widest rounded-xl transition-all disabled:opacity-50"
           >
             {{ submittingPromo() ? 'Creating Code...' : 'Create Coupon' }}
           </button>
@@ -1969,7 +1969,7 @@ import { MediaService } from '../../services/media.service';
     ::ng-deep app-navbar header, 
     ::ng-deep .admin-canvas {
       background-image: none !important;
-      background-color: #FBF9F6 !important;
+      background-color: #FAF5F2 !important;
     }
     :host {
       display: block;
@@ -1978,7 +1978,7 @@ import { MediaService } from '../../services/media.service';
       min-height: 100vh;
       background: radial-gradient(circle at 80% 20%, rgba(231, 111, 81, 0.025) 0%, transparent 50%),
                   radial-gradient(circle at 10% 80%, rgba(42, 37, 34, 0.015) 0%, transparent 60%),
-                  #FBF9F6 !important;
+                  #FAF5F2 !important;
       background-image: none !important;
     }
     .admin-canvas {
@@ -2002,7 +2002,7 @@ import { MediaService } from '../../services/media.service';
       border-right: 1px solid rgba(42, 37, 34, 0.08);
     }
     .sidebar-title {
-      font-family: 'Lexend', sans-serif;
+      font-family: var(--font-heading), sans-serif;
       font-size: 9px;
       text-transform: uppercase;
       letter-spacing: 0.2em;
@@ -2014,7 +2014,7 @@ import { MediaService } from '../../services/media.service';
     .sidebar-btn {
       background: transparent;
       border: none;
-      font-family: 'Lexend', sans-serif;
+      font-family: var(--font-heading), sans-serif;
       font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.15em;
@@ -2029,7 +2029,7 @@ import { MediaService } from '../../services/media.service';
       border-radius: 0 12px 12px 0;
     }
     .sidebar-btn:hover {
-      color: #2A2522;
+      color: var(--text-charcoal);
       background: rgba(42, 37, 34, 0.02);
     }
     .sidebar-btn.active {
@@ -2059,12 +2059,12 @@ import { MediaService } from '../../services/media.service';
       box-shadow: 0 20px 50px rgba(42, 37, 34, 0.02) !important;
     }
     .title-header {
-      font-family: 'Cormorant Garamond', serif !important;
+      font-family: var(--font-heading), serif !important;
       text-transform: uppercase !important;
       letter-spacing: 0.1em !important;
     }
     .font-lexend {
-      font-family: 'Lexend', sans-serif !important;
+      font-family: var(--font-heading), sans-serif !important;
     }
     .luxury-experience-loader {
       display: flex;
@@ -2074,12 +2074,12 @@ import { MediaService } from '../../services/media.service';
       text-align: center;
     }
     .loader-logo-text {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: var(--font-heading), serif;
       font-size: 24px;
       font-weight: 300;
       letter-spacing: 4px;
       text-transform: uppercase;
-      color: #2A2522;
+      color: var(--text-charcoal);
     }
     .loader-subtitle {
       font-size: 10px;
@@ -2101,7 +2101,7 @@ import { MediaService } from '../../services/media.service';
       position: absolute;
       top: 0;
       bottom: 0;
-      background: #B84F7D;
+      background: var(--color-lavender);
       width: 40%;
       border-radius: 9999px;
       animation: indeterminateLoad 1.5s infinite ease-in-out;

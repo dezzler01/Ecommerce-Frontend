@@ -1,6 +1,6 @@
 <!-- Accessibility Floating Circular Button -->
 <button
-  class="accessibility-widget-btn fixed bottom-6 right-6 z-[9999] w-12 h-12 rounded-full bg-[#E07A5F] text-[#FBF9F6] flex items-center justify-center shadow-lg hover:scale-105 transition-transform duration-300 pointer-events-auto"
+  class="accessibility-widget-btn fixed bottom-6 right-6 z-[9999] w-12 h-12 rounded-full bg-[var(--color-coral)] text-[#FAF5F2] flex items-center justify-center shadow-lg hover:scale-105 transition-transform duration-300 pointer-events-auto"
   [class.active-panel]="panelOpen"
   (click)="togglePanel()"
   aria-label="Accessibility Settings"
@@ -16,16 +16,16 @@
 <div
   #panelContainer
   *ngIf="panelOpen"
-  class="accessibility-panel-container fixed bottom-24 right-6 z-[9999] w-80 bg-[#FBF9F6] border border-[#2A2522]/10 rounded-2xl shadow-2xl p-6 text-left transition-all duration-300 ease-out pointer-events-auto"
+  class="accessibility-panel-container fixed bottom-24 right-6 z-[9999] w-80 bg-[#FAF5F2] border border-[var(--text-charcoal)]/10 rounded-2xl shadow-2xl p-6 text-left transition-all duration-300 ease-out pointer-events-auto"
   role="dialog"
   aria-label="Accessibility Control Panel"
 >
-  <div class="flex items-center justify-between mb-5 border-b border-[#2A2522]/10 pb-3">
-    <h3 class="text-sm font-bold tracking-wider text-[#2A2522] uppercase">
+  <div class="flex items-center justify-between mb-5 border-b border-[var(--text-charcoal)]/10 pb-3">
+    <h3 class="text-sm font-bold tracking-wider text-[var(--text-charcoal)] uppercase">
       Accessibility Options
     </h3>
     <button
-      class="text-[#8A817C] hover:text-[#2A2522] transition-colors text-xs"
+      class="text-[#8A817C] hover:text-[var(--text-charcoal)] transition-colors text-xs"
       (click)="togglePanel()"
       aria-label="Close panel"
     >
@@ -44,7 +44,7 @@
         role="switch"
         [attr.aria-checked]="largeText"
         class="toggle-switch relative w-10 h-6 bg-[#EEDFD2] rounded-full transition-colors duration-200 focus:outline-none"
-        [class.bg-[#E07A5F]]="largeText"
+        [class.bg-[var(--color-coral)]]="largeText"
         (click)="toggleLargeText()"
       >
         <span
@@ -64,7 +64,7 @@
         role="switch"
         [attr.aria-checked]="highContrast"
         class="toggle-switch relative w-10 h-6 bg-[#EEDFD2] rounded-full transition-colors duration-200 focus:outline-none"
-        [class.bg-[#E07A5F]]="highContrast"
+        [class.bg-[var(--color-coral)]]="highContrast"
         (click)="toggleHighContrast()"
       >
         <span
@@ -84,7 +84,7 @@
         role="switch"
         [attr.aria-checked]="giantCursor"
         class="toggle-switch relative w-10 h-6 bg-[#EEDFD2] rounded-full transition-colors duration-200 focus:outline-none"
-        [class.bg-[#E07A5F]]="giantCursor"
+        [class.bg-[var(--color-coral)]]="giantCursor"
         (click)="toggleGiantCursor()"
       >
         <span
@@ -104,7 +104,7 @@
         role="switch"
         [attr.aria-checked]="freezeMotion"
         class="toggle-switch relative w-10 h-6 bg-[#EEDFD2] rounded-full transition-colors duration-200 focus:outline-none"
-        [class.bg-[#E07A5F]]="freezeMotion"
+        [class.bg-[var(--color-coral)]]="freezeMotion"
         (click)="toggleFreezeMotion()"
       >
         <span
@@ -124,7 +124,7 @@
         role="switch"
         [attr.aria-checked]="dyslexiaFont"
         class="toggle-switch relative w-10 h-6 bg-[#EEDFD2] rounded-full transition-colors duration-200 focus:outline-none"
-        [class.bg-[#E07A5F]]="dyslexiaFont"
+        [class.bg-[var(--color-coral)]]="dyslexiaFont"
         (click)="toggleDyslexiaFont()"
       >
         <span
@@ -144,7 +144,7 @@
         role="switch"
         [attr.aria-checked]="focusAid"
         class="toggle-switch relative w-10 h-6 bg-[#EEDFD2] rounded-full transition-colors duration-200 focus:outline-none"
-        [class.bg-[#E07A5F]]="focusAid"
+        [class.bg-[var(--color-coral)]]="focusAid"
         (click)="toggleFocusAid()"
       >
         <span
@@ -157,7 +157,7 @@
 
   <!-- Reset Button -->
   <button
-    class="reset-btn mt-6 w-full py-2.5 px-4 text-xs font-bold tracking-wider text-center uppercase border border-[#E07A5F] text-[#E07A5F] hover:bg-[#E07A5F] hover:text-white rounded-xl transition-all duration-300"
+    class="reset-btn mt-6 w-full py-2.5 px-4 text-xs font-bold tracking-wider text-center uppercase border border-[var(--color-coral)] text-[var(--color-coral)] hover:bg-[var(--color-coral)] hover:text-white rounded-xl transition-all duration-300"
     (click)="resetAll()"
     aria-label="Reset all accessibility settings"
   >

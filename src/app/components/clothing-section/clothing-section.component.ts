@@ -32,8 +32,8 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
             <div class="bb-cell-overlay z-10"></div>
             <div class="bb-cell-content z-20">
               <span class="bb-cell-label">Women</span>
-              <h3 class="bb-h3 bb-serif" style="font-style: italic;">Effortless<br>Everyday Looks</h3>
-              <p class="bb-cell-sub">Timeless pieces for modern moms.</p>
+              <h3 class="bb-h3 bb-serif">Effortless<br>Everyday Looks</h3>
+              <p class="bb-cell-sub font-semibold">Timeless pieces for modern moms.</p>
               <a 
                 [routerLink]="['/products']" 
                 [queryParams]="{ target: 'Women' }" 
@@ -55,8 +55,8 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
             <div class="bb-cell-overlay z-10"></div>
             <div class="bb-cell-content z-20">
               <span class="bb-cell-label">Newborn Care</span>
-              <h3 class="bb-h3 bb-serif" style="font-weight: 600;">Gentle Care,<br>Pure Love</h3>
-              <p class="bb-cell-sub">Everything for their safest start.</p>
+              <h3 class="bb-h3 bb-serif">Gentle Care,<br>Pure Love</h3>
+              <p class="bb-cell-sub font-semibold">Everything for their safest start.</p>
               <a 
                 [routerLink]="['/products']" 
                 [queryParams]="{ target: 'Kids', subcategory: 'baby needs' }" 
@@ -92,7 +92,7 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
       position: relative; min-height: 320px; overflow: hidden;
       display: flex; align-items: flex-end;
       border-radius: 2.5rem;
-      border: 0.5px solid #E8DDD0;
+      border: 0.5px solid var(--border-delicate);
     }
     .bb-cell-bg {
       position: absolute;
@@ -105,15 +105,15 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
     }
     .bb-cell-overlay {
       position: absolute; inset: 0; z-index: 2;
-      background: linear-gradient(to top, rgba(46,33,24,0.75) 0%, rgba(46,33,24,0.2) 50%, rgba(46,33,24,0.02) 100%);
+      background: linear-gradient(to top, rgba(42,31,26,0.8) 0%, rgba(42,31,26,0.25) 50%, rgba(42,31,26,0.02) 100%);
     }
-    .bb-cell-content { position: relative; z-index: 3; padding: 28px 36px; width: 100%; }
-    .bb-cell-label { font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: #FAF6F0; opacity: 0.85; font-weight: 500; display: block; margin-bottom: 6px; }
-    .bb-serif { font-family: 'Playfair Display', 'Cormorant Garamond', serif; }
-    .bb-h3 { font-size: 32px; font-weight: 400; line-height: 1.25; margin-bottom: 6px; color: #FAF6F0; }
-    .bb-cell-sub { font-size: 15px; color: rgba(250,246,240,0.8); margin-bottom: 14px; line-height: 1.5; font-weight: 300; }
-    .bb-cell-link { font-size: 12px; text-transform: uppercase; letter-spacing: 0.14em; color: #FFF; font-weight: 600; cursor: pointer; border: none; background: none; font-family: 'Inter',sans-serif; padding: 0; display: inline-flex; align-items: center; gap: 4px; text-decoration: none; border-bottom: 1px solid transparent; transition: all 0.3s; }
-    .bb-cell-link:hover { border-bottom-color: #FFF; }
+    .bb-cell-content { position: relative; z-index: 3; padding: 28px 36px; width: 100%; text-align: left; }
+    .bb-cell-label { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--bg-cheerful-cream); opacity: 0.85; font-weight: 700; display: block; margin-bottom: 6px; font-family: var(--font-heading); }
+    .bb-serif { font-family: var(--font-heading) !important; }
+    .bb-h3 { font-size: 32px; font-weight: 700; line-height: 1.25; margin-bottom: 6px; color: var(--bg-cheerful-cream); }
+    .bb-cell-sub { font-size: 15px; color: rgba(250,246,240,0.8); margin-bottom: 14px; line-height: 1.5; font-weight: 400; font-family: var(--font-sans); }
+    .bb-cell-link { font-size: 12px; text-transform: uppercase; letter-spacing: 0.14em; color: #FFF; font-weight: 700; cursor: pointer; border: none; background: none; font-family: var(--font-heading); padding: 0; display: inline-flex; align-items: center; gap: 4px; text-decoration: none; border-bottom: 2px solid transparent; transition: all 0.3s; }
+    .bb-cell-link:hover { border-bottom-color: #FFF; transform: translateX(3px); }
   `]
 })
 export class ClothingSectionComponent implements OnInit {

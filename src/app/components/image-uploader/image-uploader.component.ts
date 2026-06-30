@@ -12,22 +12,22 @@ import { resolveImageUrl } from '../../core/utils/image-resolver';
       <!-- Image Preview Thumbnail -->
       <div 
         [ngClass]="compact ? 'w-8 h-8 rounded' : 'w-16 h-16 rounded-xl'"
-        class="relative border border-[#2A2522]/10 bg-white overflow-hidden flex items-center justify-center flex-shrink-0 shadow-sm transition-all duration-300"
+        class="relative border border-[var(--text-charcoal)]/10 bg-white overflow-hidden flex items-center justify-center flex-shrink-0 shadow-sm transition-all duration-300"
       >
         <img *ngIf="imageUrl" [src]="resolveImageUrl(imageUrl)" class="w-full h-full object-cover" />
-        <div *ngIf="!imageUrl" class="w-full h-full flex flex-col items-center justify-center text-[7px] text-[#8A817C] uppercase font-bold tracking-widest bg-gray-50 border-2 border-dashed border-[#2A2522]/10 select-none">
+        <div *ngIf="!imageUrl" class="w-full h-full flex flex-col items-center justify-center text-[7px] text-[#8A817C] uppercase font-bold tracking-widest bg-gray-50 border-2 border-dashed border-[var(--text-charcoal)]/10 select-none">
           No Img
         </div>
         <!-- Loader Spinner Overlay -->
         <div *ngIf="loading()" class="absolute inset-0 bg-white/70 backdrop-blur-[1px] flex items-center justify-center z-10">
-          <span class="animate-spin rounded-full h-4 w-4 border-b-2 border-[#E07A5F]" [ngClass]="{'h-3 w-3': compact}"></span>
+          <span class="animate-spin rounded-full h-4 w-4 border-b-2 border-[var(--color-coral)]" [ngClass]="{'h-3 w-3': compact}"></span>
         </div>
       </div>
 
       <!-- File Select Button -->
       <label 
         [ngClass]="compact ? 'px-2 py-1 text-[8px] rounded-lg' : 'px-4 py-2.5 text-[10px] rounded-xl'"
-        class="border border-[#2A2522]/15 hover:bg-[#2A2522]/5 text-[#2A2522] font-bold uppercase tracking-widest transition-all cursor-pointer select-none relative overflow-hidden flex-shrink-0"
+        class="border border-[var(--text-charcoal)]/15 hover:bg-[var(--text-charcoal)]/5 text-[var(--text-charcoal)] font-bold uppercase tracking-widest transition-all cursor-pointer select-none relative overflow-hidden flex-shrink-0"
       >
         {{ loading() ? 'Uploading...' : label }}
         <input type="file" accept="image/*" class="hidden" [disabled]="loading()" (change)="onFileSelected($event)" />
